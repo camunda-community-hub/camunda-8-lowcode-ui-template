@@ -1,6 +1,7 @@
-# Camunda Platform 8
+# Process Solution Template for Camunda Platform 8
 
-This repository contains links to Camunda Platform 8 resources, the offical release artifacts and a [docker-compose.yaml](docker-compose.yaml) file for local development. For production setups we recommend to use our [helm charts](https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/).
+This repository contains a process application template for Camunda Platform 8
+and a [docker-compose.yaml](docker-compose.yaml) file for local development. For production setups we recommend to use our [helm charts](https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/).
 
 - [Documentation](https://docs.camunda.io)
 - [Camunda Platform SaaS](https://camunda.io)
@@ -54,8 +55,3 @@ docker-compose -f docker-compose-core.yml up -d
 ```
 
 Zeebe, Operate, Tasklist, along with Optimize require a separate network from Identity as you'll see in the docker-compose file. Feedback and updates are welcome!
-
-# Camunda Platform 7
-
-- [Documentation](https://docs.camunda.org/)
-- [GitHub](https://github.com/camunda/camunda-bpm-platform)
