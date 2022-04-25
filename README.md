@@ -225,3 +225,26 @@ Looking for information on Camunda Platform 7? Check out the links below:
 
 - [Documentation](https://docs.camunda.org/)
 - [GitHub](https://github.com/camunda/camunda-bpm-platform)
+
+## Using the Spring Boot application
+Run the application via
+```
+./mvnw spring-boot:run
+```
+
+Maybe skip the tests if you are on an older JDK than Version 17
+```
+./mvnw spring-boot:run -Dmaven.test.skip=true
+```
+
+[Swagger Endpoints](http://localhost:8080/swagger-ui.html)
+
+## Using this template
+
+Fork [this repository](https://github.com/camunda-community-hub/camunda-process-solution-template) on GitHub
+and rename/refactor the following artifacts:
+
+* `groupId`, `artifactId`, `name`, and `description` in [pom.xml](pom.xml)
+* `process/@id` and `process/@name` in [src/main/resources/models/camunda-process.bpmn](src/main/resources/models/camunda-process.bpmn)
+* `ProcessConstansts#BPMN_PROCESS_ID` in [src/main/java/org/example/camunda/process/solution/ProcessConstants.java](src/main/java/org/example/camunda/process/solution/ProcessConstants.java)
+* Java package name, e.g. `org.example.camunda.process.solution.*`
