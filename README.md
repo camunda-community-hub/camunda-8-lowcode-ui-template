@@ -1,6 +1,6 @@
-# Camunda Platform 8
+# Process Solution Template for Camunda Platform 8
 
-This repository contains links to Camunda Platform 8 resources, the official release artifacts (binaries), and supporting config files for running Docker Compose as a local development option. 
+This repository contains links to Camunda Platform 8 resources, the official release artifacts (binaries), and supporting config files for running Docker Compose as a local development option.
 
 :warning: **Docker Compose is only recommended for local development.** :warning:
 
@@ -177,7 +177,7 @@ If you enabled authentication for GRPC requests on Zeebe you need to provide cli
 * Audience: `zeebe-api`
 
 ### Emails
-The setup includes [Mailpit](https://github.com/axllent/mailpit) as a test SMTP server. It captures all emails sent by Web Modeler, but does not forward them to the actual recipients. 
+The setup includes [Mailpit](https://github.com/axllent/mailpit) as a test SMTP server. It captures all emails sent by Web Modeler, but does not forward them to the actual recipients.
 
 You can access emails in Mailpit's Web UI at [http://localhost:8075](http://localhost:8075).
 
@@ -204,7 +204,7 @@ $ DOCKER_BUILDKIT=0 docker build -t bitnami/keycloak:19.0.3 "https://github.com/
 You can control access to specific processes and decision tables in Operate and Tasklist with resource
 based authorization.
 
-This feature is disabled by default and can be enabled by setting 
+This feature is disabled by default and can be enabled by setting
 `RESOURCE_AUTHORIZATIONS_ENABLED` to `true`, e.g. via running:
 
 ```
