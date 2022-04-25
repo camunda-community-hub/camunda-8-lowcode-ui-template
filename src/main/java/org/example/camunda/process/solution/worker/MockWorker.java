@@ -19,7 +19,7 @@ public class MockWorker {
   private final static Logger LOG = LoggerFactory.getLogger(MockWorker.class);
 
   @Autowired
-  private ZeebeClient client;
+  private ZeebeClient client; // just for logging variables
 
   @Autowired
   private MockService mockService;
