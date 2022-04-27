@@ -10,6 +10,7 @@ import java.time.Duration;
 
 import org.example.camunda.process.solution.service.MyService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,9 +38,11 @@ public class ProcessUnitTest {
 
     @Test
     public void testHappyPath() throws Exception {
+        // define mock behavior
         when(myService.myOperation(anyString()))
             .thenReturn(true);
 
+        // deploy models
         assertThat(
             client.newDeployResourceCommand()
             .addResourceFromClasspath("models/camunda-process.bpmn")
@@ -47,9 +50,11 @@ public class ProcessUnitTest {
             .join()
         );
 
+        // prepare data
         final ProcessVariables variables = new ProcessVariables();
         variables.setBusinessKey("23");
 
+        // start a process instance
         ProcessInstanceEvent processInstance = client.newCreateInstanceCommand()
             .bpmnProcessId(ProcessConstants.BPMN_PROCESS_ID)
             .latestVersion()
@@ -57,18 +62,22 @@ public class ProcessUnitTest {
             .send()
             .join();
 
+        // wait for process to be started
         engine.waitForIdleState(Duration.ofSeconds(1));
-
         assertThat(processInstance).isStarted();
 
+        // check that service task has been completed
         waitForProcessInstanceHasPassedElement(processInstance, "Task_InvokeService");
+        Mockito.verify(myService).myOperation("23");
 
+        // check that process is ended with the right result
         waitForProcessInstanceCompleted(processInstance);
-
         assertThat(processInstance).isCompleted()
             .hasPassedElement("Task_InvokeService")
             .hasVariableWithValue("result", true);
 
+        // ensure no other side effects
+        Mockito.verifyNoMoreInteractions(myService);
     }
 
 }
