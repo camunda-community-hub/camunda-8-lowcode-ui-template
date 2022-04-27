@@ -1,7 +1,5 @@
 package org.example.camunda.process.solution.worker;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import org.example.camunda.process.solution.ProcessVariables;
 import org.example.camunda.process.solution.service.MyService;
 import org.slf4j.Logger;
@@ -25,7 +23,7 @@ public class MyWorker {
   private MyService myService;
 
   @ZeebeWorker(type = "my-service", autoComplete = true)
-  public ProcessVariables invokeMyService(@ZeebeVariablesAsType ProcessVariables variables) throws JsonProcessingException {
+  public ProcessVariables invokeMyService(@ZeebeVariablesAsType ProcessVariables variables) {
     LOG.info("Invoking myService with variables: " + client.getConfiguration().getJsonMapper().toJson(variables));
     boolean result = myService.myOperation(variables.getBusinessKey());
     variables.setResult(result);
