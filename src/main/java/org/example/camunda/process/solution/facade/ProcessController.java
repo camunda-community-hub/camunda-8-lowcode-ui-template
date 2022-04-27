@@ -2,6 +2,7 @@ package org.example.camunda.process.solution.facade;
 
 import org.example.camunda.process.solution.ProcessConstants;
 import org.example.camunda.process.solution.ProcessVariables;
+import org.example.camunda.process.solution.util.ZeebeClientJsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.camunda.zeebe.client.ZeebeClient;
-import io.camunda.zeebe.client.api.JsonMapper;
 
 
 @RestController
@@ -24,7 +24,7 @@ public class ProcessController {
     private ZeebeClient client;
 
     @Autowired
-    private JsonMapper mapper; // just for logging variables
+    private ZeebeClientJsonMapper mapper; // just for logging variables
 
     @PostMapping("/start")
     public void startProcessInstance(@RequestBody ProcessVariables variables) {
