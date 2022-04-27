@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.api.JsonMapper;
 
 
 @RestController
@@ -22,11 +23,13 @@ public class ProcessController {
     @Autowired
     private ZeebeClient client;
 
+    @Autowired
+    private JsonMapper mapper; // just for logging variables
+
     @PostMapping("/start")
     public void startProcessInstance(@RequestBody ProcessVariables variables) {
 
-        LOG.info("Starting process `" + ProcessConstants.BPMN_PROCESS_ID + "` with variables: "
-        + client.getConfiguration().getJsonMapper().toJson(variables));
+        LOG.info("Starting process `" + ProcessConstants.BPMN_PROCESS_ID + "` with variables: " + mapper.toJson(variables));
 
         client.newCreateInstanceCommand()
             .bpmnProcessId(ProcessConstants.BPMN_PROCESS_ID)
