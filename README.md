@@ -4,7 +4,8 @@
 
 # Process Solution Template for Camunda Platform 8
 
-This repository contains links to Camunda Platform 8 resources, the official release artifacts (binaries), and supporting config files for running Docker Compose as a local development option.
+This repository contains a Java application template for Camunda Platform 8 using Spring Boot
+and links to Camunda Platform 8 resources, the official release artifacts (binaries), and supporting config files for running Docker Compose as a local development option.
 
 :warning: **Docker Compose is only recommended for local development.** :warning:
 
@@ -14,6 +15,26 @@ For more information about Self-Managed, including additional [development insta
 
 For production setups we recommend using [Helm charts](https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/) which can be found at [helm.camunda.io](https://helm.camunda.io/).
 
+## Using the Spring Boot application
+
+The application requires a running Zeebe engine.
+You can run Zeebe locally using the instructions below for Docker Compose
+or have a look at our
+[recommended deployment options for Camunda Platform](https://docs.camunda.io/docs/self-managed/platform-deployment/#deployment-recommendation.).
+
+Run the application via
+```
+./mvnw spring-boot:run
+```
+
+Maybe skip the tests if you are on an older JDK than Version 17
+```
+./mvnw spring-boot:run -Dmaven.test.skip=true
+```
+
+[Swagger Endpoints](http://localhost:8080/swagger-ui.html)
+
+## Using docker-compose
 ## Links to additional Camunda Platform 8 repos and assets
 
 - [Documentation](https://docs.camunda.io)
@@ -225,19 +246,6 @@ Looking for information on Camunda Platform 7? Check out the links below:
 
 - [Documentation](https://docs.camunda.org/)
 - [GitHub](https://github.com/camunda/camunda-bpm-platform)
-
-## Using the Spring Boot application
-Run the application via
-```
-./mvnw spring-boot:run
-```
-
-Maybe skip the tests if you are on an older JDK than Version 17
-```
-./mvnw spring-boot:run -Dmaven.test.skip=true
-```
-
-[Swagger Endpoints](http://localhost:8080/swagger-ui.html)
 
 ## Using this template
 
