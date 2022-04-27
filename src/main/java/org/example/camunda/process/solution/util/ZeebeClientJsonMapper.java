@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import io.camunda.zeebe.client.ZeebeClient;
@@ -28,6 +29,7 @@ import io.camunda.zeebe.client.api.JsonMapper;
 @Component // TODO delete class once included in Spring Zeebe https://github.com/camunda-community-hub/spring-zeebe/pull/195
 public class ZeebeClientJsonMapper implements JsonMapper {
     
+    @Lazy
     @Autowired
     ZeebeClient client;
     
