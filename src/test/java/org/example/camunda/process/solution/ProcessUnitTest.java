@@ -1,12 +1,11 @@
+package org.example.camunda.process.solution;
+
 import static io.camunda.zeebe.process.test.assertions.BpmnAssert.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.time.Duration;
 
-import org.example.camunda.process.solution.ProcessApplication;
-import org.example.camunda.process.solution.ProcessConstants;
-import org.example.camunda.process.solution.ProcessVariables;
 import org.example.camunda.process.solution.service.MyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
