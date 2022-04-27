@@ -2,9 +2,9 @@
 ![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
 [![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
 
-# Process Solution Template for Camunda Platform 8
+# Process Solution Template for Camunda Platform 8 using Java and Spring Boot
 
-This repository contains a process application template for Camunda Platform 8
+This repository contains a Java application template for Camunda Platform 8 using Spring Boot
 and a [docker-compose.yaml](docker-compose.yaml) file for local development. For production setups we recommend to use our [helm charts](https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/).
 
 - [Documentation](https://docs.camunda.io)
@@ -14,6 +14,25 @@ and a [docker-compose.yaml](docker-compose.yaml) file for local development. For
 - [Helm Charts](https://helm.camunda.io/)
 - [Zeebe Workflow Engine](https://github.com/camunda/zeebe)
 - [Contact](https://docs.camunda.io/contact/)
+
+## Using the Spring Boot application
+
+The application requires a running Zeebe engine.
+You can run Zeebe locally using the instructions below for Docker Compose
+or have a look at our
+[recommended deployment options for Camunda Platform](https://docs.camunda.io/docs/self-managed/platform-deployment/#deployment-recommendation.).
+
+Run the application via
+```
+./mvnw spring-boot:run
+```
+
+Maybe skip the tests if you are on an older JDK than Version 17
+```
+./mvnw spring-boot:run -Dmaven.test.skip=true
+```
+
+[Swagger Endpoints](http://localhost:8080/swagger-ui.html)
 
 ## Using docker-compose
 
@@ -59,19 +78,6 @@ docker-compose -f docker-compose-core.yaml up -d
 ```
 
 Zeebe, Operate, Tasklist, along with Optimize require a separate network from Identity as you'll see in the docker-compose file. Feedback and updates are welcome!
-
-## Using the Spring Boot application
-Run the application via
-```
-./mvnw spring-boot:run
-```
-
-Maybe skip the tests if you are on an older JDK than Version 17
-```
-./mvnw spring-boot:run -Dmaven.test.skip=true
-```
-
-[Swagger Endpoints](http://localhost:8080/swagger-ui.html)
 
 ## Using this template
 
