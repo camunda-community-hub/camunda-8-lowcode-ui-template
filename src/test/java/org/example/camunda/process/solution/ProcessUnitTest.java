@@ -1,6 +1,8 @@
 package org.example.camunda.process.solution;
 
 import static io.camunda.zeebe.process.test.assertions.BpmnAssert.assertThat;
+import static io.camunda.zeebe.spring.test.ZeebeTestThreadSupport.waitForProcessInstanceCompleted;
+import static io.camunda.zeebe.spring.test.ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -59,7 +61,9 @@ public class ProcessUnitTest {
 
         assertThat(processInstance).isStarted();
 
-        engine.waitForIdleState(Duration.ofSeconds(1));
+        waitForProcessInstanceHasPassedElement(processInstance, "Task_InvokeService");
+
+        waitForProcessInstanceCompleted(processInstance);
 
         assertThat(processInstance).isCompleted()
             .hasPassedElement("Task_InvokeService")
