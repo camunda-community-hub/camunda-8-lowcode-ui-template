@@ -18,7 +18,7 @@
 
 	<properties>
 		<java.version>8</java.version>
-		<spring-zeebe.version>8.0.2</spring-zeebe.version>
+		<spring-zeebe.version>8.0.3</spring-zeebe.version>
 		<zeebe.version>8.0.1</zeebe.version>
 	</properties>
 
@@ -47,17 +47,30 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.camunda</groupId>
+			<artifactId>spring-zeebe-test</artifactId>
+			<version>${spring-zeebe.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<!-- see: https://docs.camunda.io/docs/components/best-practices/development/testing-process-definitions/#writing-process-tests-in-java -->
 			<groupId>io.camunda</groupId>
 			<artifactId>zeebe-process-test-extension-testcontainer</artifactId>
 			<version>${zeebe.version}</version>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.4</version>
 		</dependency>
 
 	</dependencies>
