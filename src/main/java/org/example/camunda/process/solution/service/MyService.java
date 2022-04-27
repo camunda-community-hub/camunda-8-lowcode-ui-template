@@ -5,9 +5,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MockService {
+public class MyService {
 
-    public void invoke(String businessKey) throws JsonProcessingException {
+    public boolean myOperation(String businessKey) throws JsonProcessingException {
+        return true;
     }
 
 }
