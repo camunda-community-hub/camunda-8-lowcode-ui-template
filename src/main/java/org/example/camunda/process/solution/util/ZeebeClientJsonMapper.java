@@ -27,7 +27,7 @@ import io.camunda.zeebe.client.api.JsonMapper;
  * </pre>
  */
 @Component // TODO delete class once included in Spring Zeebe https://github.com/camunda-community-hub/spring-zeebe/pull/195
-public class ZeebeClientJsonMapper implements JsonMapper {
+public class ZeebeClientJsonMapper /*implements JsonMapper*/ {
     
     @Lazy
     @Autowired
@@ -37,32 +37,32 @@ public class ZeebeClientJsonMapper implements JsonMapper {
         return client.getConfiguration().getJsonMapper();
     }
     
-    @Override
+    //@Override
     public <T> T fromJson(String json, Class<T> typeClass) {
         return getMapper().fromJson(json, typeClass);
     }    
 
-    @Override
+    //@Override
     public Map<String, Object> fromJsonAsMap(String json) {
         return getMapper().fromJsonAsMap(json);
     }    
 
-    @Override
+    //@Override
     public Map<String, String> fromJsonAsStringMap(String json) {
         return getMapper().fromJsonAsStringMap(json);
     }    
 
-    @Override
+    //@Override
     public String toJson(Object value) {
         return getMapper().toJson(value);
     }    
 
-    @Override
+    //@Override
     public String validateJson(String propertyName, String jsonInput) {
         return getMapper().validateJson(propertyName, jsonInput);
     }
 
-    @Override
+    //@Override
     public String validateJson(String propertyName, InputStream jsonInput) {
         return getMapper().validateJson(propertyName, jsonInput);
     }
