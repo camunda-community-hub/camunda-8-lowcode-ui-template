@@ -32,7 +32,7 @@ Maybe skip the tests if you are on an older JDK than Version 17
 ./mvnw spring-boot:run -Dmaven.test.skip=true
 ```
 
-[Swagger Endpoints](http://localhost:8080/swagger-ui.html)
+Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ## Using docker-compose
 ## Links to additional Camunda Platform 8 repos and assets
