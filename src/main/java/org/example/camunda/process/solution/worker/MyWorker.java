@@ -3,7 +3,7 @@ package org.example.camunda.process.solution.worker;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.example.camunda.process.solution.ProcessVariables;
-import org.example.camunda.process.solution.service.MockService;
+import org.example.camunda.process.solution.service.MyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +14,21 @@ import io.camunda.zeebe.spring.client.annotation.ZeebeVariablesAsType;
 import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
 
 @Component
-public class MockWorker {
+public class MyWorker {
 
-  private final static Logger LOG = LoggerFactory.getLogger(MockWorker.class);
+  private final static Logger LOG = LoggerFactory.getLogger(MyWorker.class);
 
   @Autowired
   private ZeebeClient client; // just for logging variables
 
   @Autowired
-  private MockService mockService;
+  private MyService myService;
 
-  @ZeebeWorker(type = "mock", autoComplete = true)
-  public ProcessVariables mock(@ZeebeVariablesAsType ProcessVariables variables) throws JsonProcessingException {
-    LOG.info("Mock service invoked with variables: " + client.getConfiguration().getJsonMapper().toJson(variables));
-
-    mockService.invoke(variables.getBusinessKey());
+  @ZeebeWorker(type = "my-service", autoComplete = true)
+  public ProcessVariables invokeMyService(@ZeebeVariablesAsType ProcessVariables variables) throws JsonProcessingException {
+    LOG.info("Invoking myService with variables: " + client.getConfiguration().getJsonMapper().toJson(variables));
+    boolean result = myService.myOperation(variables.getBusinessKey());
+    variables.setResult(result);
     return variables;
   }
 
