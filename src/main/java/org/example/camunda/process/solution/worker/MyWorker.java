@@ -6,7 +6,6 @@ import org.example.camunda.process.solution.ProcessVariables;
 import org.example.camunda.process.solution.service.MyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +13,11 @@ public class MyWorker {
 
   private static final Logger LOG = LoggerFactory.getLogger(MyWorker.class);
 
-  @Autowired private MyService myService;
+  private final MyService myService;
+
+  public MyWorker(MyService myService) {
+    this.myService = myService;
+  }
 
   @ZeebeWorker(type = "my-service", autoComplete = true)
   public ProcessVariables invokeMyService(@ZeebeVariablesAsType ProcessVariables variables) {

@@ -5,7 +5,6 @@ import org.example.camunda.process.solution.ProcessConstants;
 import org.example.camunda.process.solution.ProcessVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProcessController {
 
   private static final Logger LOG = LoggerFactory.getLogger(ProcessController.class);
+  private final ZeebeClient zeebe;
 
-  @Autowired private ZeebeClient zeebe;
+  public ProcessController(ZeebeClient client) {
+    this.zeebe = client;
+  }
 
   @PostMapping("/start")
   public void startProcessInstance(@RequestBody ProcessVariables variables) {
