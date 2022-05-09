@@ -28,7 +28,7 @@ import io.camunda.zeebe.spring.test.ZeebeSpringTest;
 public class ProcessUnitTest {
 
     @Autowired
-    private ZeebeClient client;
+    private ZeebeClient zeebe;
 
     @Autowired
     private ZeebeTestEngine engine;
@@ -44,7 +44,7 @@ public class ProcessUnitTest {
 
         // deploy models
         assertThat(
-            client.newDeployResourceCommand()
+            zeebe.newDeployResourceCommand()
             .addResourceFromClasspath("models/camunda-process.bpmn")
             .send()
             .join()
@@ -55,7 +55,7 @@ public class ProcessUnitTest {
         variables.setBusinessKey("23");
 
         // start a process instance
-        ProcessInstanceEvent processInstance = client.newCreateInstanceCommand()
+        ProcessInstanceEvent processInstance = zeebe.newCreateInstanceCommand()
             .bpmnProcessId(ProcessConstants.BPMN_PROCESS_ID)
             .latestVersion()
             .variables(variables)
