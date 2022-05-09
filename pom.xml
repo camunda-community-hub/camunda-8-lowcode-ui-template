@@ -60,7 +60,7 @@
 
 		<dependency>
 			<groupId>io.camunda</groupId>
-			<artifactId>spring-zeebe-test</artifactId>
+			<artifactId>spring-zeebe-test-testcontainer</artifactId>
 			<version>${spring-zeebe.version}</version>
 			<scope>test</scope>
 		</dependency>
