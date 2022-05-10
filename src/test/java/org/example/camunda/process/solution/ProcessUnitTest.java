@@ -23,7 +23,7 @@ import io.camunda.zeebe.spring.test.ZeebeSpringTest;
 /**
  * @see https://docs.camunda.io/docs/components/best-practices/development/testing-process-definitions/#writing-process-tests-in-java
  */
-@SpringBootTest(classes = ProcessApplication.class)
+@SpringBootTest(classes = ProcessApplication.class) // will deploy BPMN & DMN models
 @ZeebeSpringTest
 public class ProcessUnitTest {
 
@@ -41,14 +41,6 @@ public class ProcessUnitTest {
         // define mock behavior
         when(myService.myOperation(anyString()))
             .thenReturn(true);
-
-        // deploy models
-        assertThat(
-            zeebe.newDeployResourceCommand()
-            .addResourceFromClasspath("models/camunda-process.bpmn")
-            .send()
-            .join()
-        );
 
         // prepare data
         final ProcessVariables variables = new ProcessVariables();
