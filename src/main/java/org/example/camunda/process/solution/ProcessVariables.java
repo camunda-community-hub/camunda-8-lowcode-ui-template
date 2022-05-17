@@ -17,16 +17,18 @@ public class ProcessVariables {
         return businessKey;
     }
 
-    public void setBusinessKey(String businessKey) {
+    public ProcessVariables setBusinessKey(String businessKey) {
         this.businessKey = businessKey;
+        return this;
     }
 
     public Boolean getResult() {
         return result;
     }
 
-    public void setResult(Boolean result) {
+    public ProcessVariables setResult(Boolean result) {
         this.result = result;
+        return this;
     }    
 
     @Override
