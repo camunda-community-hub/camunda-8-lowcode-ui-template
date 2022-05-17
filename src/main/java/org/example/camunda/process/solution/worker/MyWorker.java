@@ -23,8 +23,8 @@ public class MyWorker {
     LOG.info("Invoking myService with variables: " + variables);
 
     boolean result = myService.myOperation(variables.getBusinessKey());
-    variables.setResult(result);
-    return variables;
+
+    return new ProcessVariables().setResult(result); // new object to avoid sending unchanged variables
   }
 
 }
