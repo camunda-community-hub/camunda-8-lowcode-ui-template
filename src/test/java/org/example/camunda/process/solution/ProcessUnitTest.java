@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.Duration;
 
+import org.example.camunda.process.solution.facade.ProcessController;
 import org.example.camunda.process.solution.service.MyService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,6 +19,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
+import io.camunda.zeebe.process.test.inspections.InspectionUtility;
+import io.camunda.zeebe.process.test.inspections.model.InspectedProcessInstance;
 import io.camunda.zeebe.spring.test.ZeebeSpringTest;
 
 /**
@@ -28,7 +31,7 @@ import io.camunda.zeebe.spring.test.ZeebeSpringTest;
 public class ProcessUnitTest {
 
     @Autowired
-    private ZeebeClient zeebe;
+    private ProcessController processController;
 
     @Autowired
     private ZeebeTestEngine engine;
@@ -47,15 +50,12 @@ public class ProcessUnitTest {
             .setBusinessKey("23");
 
         // start a process instance
-        ProcessInstanceEvent processInstance = zeebe.newCreateInstanceCommand()
-            .bpmnProcessId(ProcessConstants.BPMN_PROCESS_ID)
-            .latestVersion()
-            .variables(variables)
-            .send()
-            .join();
-
+        processController.startProcessInstance(variables);
+        
         // wait for process to be started
         engine.waitForIdleState(Duration.ofSeconds(1));
+        InspectedProcessInstance processInstance = InspectionUtility.findProcessInstances()
+            .findLastProcessInstance().get();
         assertThat(processInstance).isStarted();
 
         // check that service task has been completed
