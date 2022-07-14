@@ -22,9 +22,9 @@ public class MyWorker {
   public ProcessVariables invokeMyService(@ZeebeVariablesAsType ProcessVariables variables) {
     LOG.info("Invoking myService with variables: " + variables);
 
-    boolean result = myService.myOperation(variables.getBusinessKey());
+    boolean result = myService.myOperation(variables.getTexte());
 
-    return new ProcessVariables().setResult(result); // new object to avoid sending unchanged variables
+    return new ProcessVariables().setNumber(3L); // new object to avoid sending unchanged variables
   }
 
 }

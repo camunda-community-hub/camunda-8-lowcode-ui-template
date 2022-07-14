@@ -44,7 +44,7 @@ public class ProcessUnitTest {
 
         // prepare data
         final ProcessVariables variables = new ProcessVariables()
-            .setBusinessKey("23");
+            .setTexte("23");
 
         // start a process instance
         ProcessInstanceEvent processInstance = zeebe.newCreateInstanceCommand()

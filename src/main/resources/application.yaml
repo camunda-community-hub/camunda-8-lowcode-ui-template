@@ -1,0 +1,33 @@
+# https://github.com/camunda-community-hub/spring-zeebe#configuring-camunda-platform-8-saas-connection
+# https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
+zeebe.client.cloud:
+  region: bru-2
+  clusterId: XXX
+  clientId: XXX
+  clientSecret: XXX
+
+spring:
+  datasource:
+    url: jdbc:h2:file:./h2/db
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false      
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1048576    
+    
+logging:
+  level:
+    root: INFO

@@ -1,0 +1,40 @@
+.error, .grant, .signin {
+    padding: 3rem;
+}
+@media only screen and (min-width: 768px)
+.error, .grant, .signin {
+    max-width: 31rem;
+    margin: 1.5rem auto 0;
+    padding: 3rem 0 0;
+}
+form.signin {
+	border-radius: 1rem;
+    box-shadow: 0 2rem 2rem rgb(115 129 136 / 20%);
+    background-color: #F60;
+    margin-top: 30px;
+    opacity: 0.9;
+}
+form.signin:hover {
+	opacity:1;
+}
+.error__title, .grant__title, .signin__title {
+    font-family: Sana\ Sans\ Black,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-top: 0;
+    font-weight: 700;
+}
+.https {
+    color: #009655;
+    font-size: 10px;
+}
+.https__text span {
+    color: #000;
+}
+
+.mainSignin {
+	background: url(/assets/img/background.jfif) no-repeat top;
+    background-size: cover;
+}
