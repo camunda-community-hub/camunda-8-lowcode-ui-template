@@ -10,26 +10,35 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @JsonInclude(Include.NON_NULL)
 public class ProcessVariables {
 
-    private String businessKey;
-    private Boolean result;
-
-    public String getBusinessKey() {
-        return businessKey;
+    private String texte;
+    private Long number;
+    private String date;
+    
+    public String getTexte() {
+        return texte;
     }
 
-    public ProcessVariables setBusinessKey(String businessKey) {
-        this.businessKey = businessKey;
+    public ProcessVariables setTexte(String texte) {
+        this.texte = texte;
+        return this;
+    }
+    public Long getNumber() {
+        return number;
+    }
+
+    public ProcessVariables setNumber(Long number) {
+        this.number = number;
         return this;
     }
 
-    public Boolean getResult() {
-        return result;
+    public String getDate() {
+        return date;
     }
 
-    public ProcessVariables setResult(Boolean result) {
-        this.result = result;
+    public ProcessVariables setDate(String date) {
+        this.date = date;
         return this;
-    }    
+    }
 
     @Override
     public String toString() {

@@ -6,7 +6,7 @@
 	<name>Camunda Process Solution</name>
 	<description>A process solution for Camunda Platform 8</description>
 	<groupId>org.example.camunda.process.solution</groupId>
-	<artifactId>camunda-process-solution</artifactId>
+	<artifactId>camunda-lowcode-ui-solution</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<parent>
@@ -33,6 +33,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>io.camunda</groupId>
@@ -50,6 +55,25 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.4</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.camunda</groupId>
+			<artifactId>camunda-tasklist-client-java</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.squareup.okhttp3</groupId>
+		    <artifactId>okhttp</artifactId>
+		    <version>4.9.3</version>
+		</dependency>
+	    
+		<!-- h2 runtime -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
