@@ -476,8 +476,8 @@
     return _typeof(obj);
   }
 
-  function _extends$d() {
-    _extends$d = Object.assign || function (target) {
+  function _extends$e() {
+    _extends$e = Object.assign || function (target) {
       for (var i = 1; i < arguments.length; i++) {
         var source = arguments[i];
 
@@ -491,7 +491,7 @@
       return target;
     };
 
-    return _extends$d.apply(this, arguments);
+    return _extends$e.apply(this, arguments);
   }
 
   /**
@@ -508,7 +508,7 @@
       others[_key - 1] = arguments[_key];
     }
 
-    return _extends$d.apply(void 0, [target].concat(others));
+    return _extends$e.apply(void 0, [target].concat(others));
   }
   /**
    * Sets a nested property of a given object to the specified value.
@@ -580,9 +580,9 @@
 
   var n$1,l$2,u$1,t$1,o$3,r$1,f$1,e$3={},c$1=[],s$1=/acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;function a$2(n,l){for(var u in l)n[u]=l[u];return n}function h$1(n){var l=n.parentNode;l&&l.removeChild(n);}function v$1(l,u,i){var t,o,r,f={};for(r in u)"key"==r?t=u[r]:"ref"==r?o=u[r]:f[r]=u[r];if(arguments.length>2&&(f.children=arguments.length>3?n$1.call(arguments,2):i),"function"==typeof l&&null!=l.defaultProps)for(r in l.defaultProps)void 0===f[r]&&(f[r]=l.defaultProps[r]);return y$1(l,f,t,o,null)}function y$1(n,i,t,o,r){var f={type:n,props:i,key:t,ref:o,__k:null,__:null,__b:0,__e:null,__d:void 0,__c:null,__h:null,constructor:void 0,__v:null==r?++u$1:r};return null!=l$2.vnode&&l$2.vnode(f),f}function p$2(){return {current:null}}function d$1(n){return n.children}function _$1(n,l){this.props=n,this.context=l;}function k$2(n,l){if(null==l)return n.__?k$2(n.__,n.__.__k.indexOf(n)+1):null;for(var u;l<n.__k.length;l++)if(null!=(u=n.__k[l])&&null!=u.__e)return u.__e;return "function"==typeof n.type?k$2(n):null}function b$1(n){var l,u;if(null!=(n=n.__)&&null!=n.__c){for(n.__e=n.__c.base=null,l=0;l<n.__k.length;l++)if(null!=(u=n.__k[l])&&null!=u.__e){n.__e=n.__c.base=u.__e;break}return b$1(n)}}function m$1(n){(!n.__d&&(n.__d=!0)&&t$1.push(n)&&!g$2.__r++||r$1!==l$2.debounceRendering)&&((r$1=l$2.debounceRendering)||o$3)(g$2);}function g$2(){for(var n;g$2.__r=t$1.length;)n=t$1.sort(function(n,l){return n.__v.__b-l.__v.__b}),t$1=[],n.some(function(n){var l,u,i,t,o,r;n.__d&&(o=(t=(l=n).__v).__e,(r=l.__P)&&(u=[],(i=a$2({},t)).__v=t.__v+1,j$2(r,t,i,l.__n,void 0!==r.ownerSVGElement,null!=t.__h?[o]:null,u,null==o?k$2(t):o,t.__h),z$1(u,t),t.__e!=o&&b$1(t)));});}function w$2(n,l,u,i,t,o,r,f,s,a){var h,v,p,_,b,m,g,w=i&&i.__k||c$1,A=w.length;for(u.__k=[],h=0;h<l.length;h++)if(null!=(_=u.__k[h]=null==(_=l[h])||"boolean"==typeof _?null:"string"==typeof _||"number"==typeof _||"bigint"==typeof _?y$1(null,_,null,null,_):Array.isArray(_)?y$1(d$1,{children:_},null,null,null):_.__b>0?y$1(_.type,_.props,_.key,null,_.__v):_)){if(_.__=u,_.__b=u.__b+1,null===(p=w[h])||p&&_.key==p.key&&_.type===p.type)w[h]=void 0;else for(v=0;v<A;v++){if((p=w[v])&&_.key==p.key&&_.type===p.type){w[v]=void 0;break}p=null;}j$2(n,_,p=p||e$3,t,o,r,f,s,a),b=_.__e,(v=_.ref)&&p.ref!=v&&(g||(g=[]),p.ref&&g.push(p.ref,null,_),g.push(v,_.__c||b,_)),null!=b?(null==m&&(m=b),"function"==typeof _.type&&null!=_.__k&&_.__k===p.__k?_.__d=s=x$2(_,s,n):s=P$1(n,_,p,w,b,s),a||"option"!==u.type?"function"==typeof u.type&&(u.__d=s):n.value=""):s&&p.__e==s&&s.parentNode!=n&&(s=k$2(p));}for(u.__e=m,h=A;h--;)null!=w[h]&&("function"==typeof u.type&&null!=w[h].__e&&w[h].__e==u.__d&&(u.__d=k$2(i,h+1)),N$1(w[h],w[h]));if(g)for(h=0;h<g.length;h++)M$1(g[h],g[++h],g[++h]);}function x$2(n,l,u){var i,t;for(i=0;i<n.__k.length;i++)(t=n.__k[i])&&(t.__=n,l="function"==typeof t.type?x$2(t,l,u):P$1(u,t,t,n.__k,t.__e,l));return l}function A$2(n,l){return l=l||[],null==n||"boolean"==typeof n||(Array.isArray(n)?n.some(function(n){A$2(n,l);}):l.push(n)),l}function P$1(n,l,u,i,t,o){var r,f,e;if(void 0!==l.__d)r=l.__d,l.__d=void 0;else if(null==u||t!=o||null==t.parentNode)n:if(null==o||o.parentNode!==n)n.appendChild(t),r=null;else {for(f=o,e=0;(f=f.nextSibling)&&e<i.length;e+=2)if(f==t)break n;n.insertBefore(t,o),r=o;}return void 0!==r?r:t.nextSibling}function C$1(n,l,u,i,t){var o;for(o in u)"children"===o||"key"===o||o in l||H$1(n,o,null,u[o],i);for(o in l)t&&"function"!=typeof l[o]||"children"===o||"key"===o||"value"===o||"checked"===o||u[o]===l[o]||H$1(n,o,l[o],u[o],i);}function $$1(n,l,u){"-"===l[0]?n.setProperty(l,u):n[l]=null==u?"":"number"!=typeof u||s$1.test(l)?u:u+"px";}function H$1(n,l,u,i,t){var o;n:if("style"===l)if("string"==typeof u)n.style.cssText=u;else {if("string"==typeof i&&(n.style.cssText=i=""),i)for(l in i)u&&l in u||$$1(n.style,l,"");if(u)for(l in u)i&&u[l]===i[l]||$$1(n.style,l,u[l]);}else if("o"===l[0]&&"n"===l[1])o=l!==(l=l.replace(/Capture$/,"")),l=l.toLowerCase()in n?l.toLowerCase().slice(2):l.slice(2),n.l||(n.l={}),n.l[l+o]=u,u?i||n.addEventListener(l,o?T$2:I$1,o):n.removeEventListener(l,o?T$2:I$1,o);else if("dangerouslySetInnerHTML"!==l){if(t)l=l.replace(/xlink[H:h]/,"h").replace(/sName$/,"s");else if("href"!==l&&"list"!==l&&"form"!==l&&"tabIndex"!==l&&"download"!==l&&l in n)try{n[l]=null==u?"":u;break n}catch(n){}"function"==typeof u||(null!=u&&(!1!==u||"a"===l[0]&&"r"===l[1])?n.setAttribute(l,u):n.removeAttribute(l));}}function I$1(n){this.l[n.type+!1](l$2.event?l$2.event(n):n);}function T$2(n){this.l[n.type+!0](l$2.event?l$2.event(n):n);}function j$2(n,u,i,t,o,r,f,e,c){var s,h,v,y,p,k,b,m,g,x,A,P=u.type;if(void 0!==u.constructor)return null;null!=i.__h&&(c=i.__h,e=u.__e=i.__e,u.__h=null,r=[e]),(s=l$2.__b)&&s(u);try{n:if("function"==typeof P){if(m=u.props,g=(s=P.contextType)&&t[s.__c],x=s?g?g.props.value:s.__:t,i.__c?b=(h=u.__c=i.__c).__=h.__E:("prototype"in P&&P.prototype.render?u.__c=h=new P(m,x):(u.__c=h=new _$1(m,x),h.constructor=P,h.render=O$1),g&&g.sub(h),h.props=m,h.state||(h.state={}),h.context=x,h.__n=t,v=h.__d=!0,h.__h=[]),null==h.__s&&(h.__s=h.state),null!=P.getDerivedStateFromProps&&(h.__s==h.state&&(h.__s=a$2({},h.__s)),a$2(h.__s,P.getDerivedStateFromProps(m,h.__s))),y=h.props,p=h.state,v)null==P.getDerivedStateFromProps&&null!=h.componentWillMount&&h.componentWillMount(),null!=h.componentDidMount&&h.__h.push(h.componentDidMount);else {if(null==P.getDerivedStateFromProps&&m!==y&&null!=h.componentWillReceiveProps&&h.componentWillReceiveProps(m,x),!h.__e&&null!=h.shouldComponentUpdate&&!1===h.shouldComponentUpdate(m,h.__s,x)||u.__v===i.__v){h.props=m,h.state=h.__s,u.__v!==i.__v&&(h.__d=!1),h.__v=u,u.__e=i.__e,u.__k=i.__k,u.__k.forEach(function(n){n&&(n.__=u);}),h.__h.length&&f.push(h);break n}null!=h.componentWillUpdate&&h.componentWillUpdate(m,h.__s,x),null!=h.componentDidUpdate&&h.__h.push(function(){h.componentDidUpdate(y,p,k);});}h.context=x,h.props=m,h.state=h.__s,(s=l$2.__r)&&s(u),h.__d=!1,h.__v=u,h.__P=n,s=h.render(h.props,h.state,h.context),h.state=h.__s,null!=h.getChildContext&&(t=a$2(a$2({},t),h.getChildContext())),v||null==h.getSnapshotBeforeUpdate||(k=h.getSnapshotBeforeUpdate(y,p)),A=null!=s&&s.type===d$1&&null==s.key?s.props.children:s,w$2(n,Array.isArray(A)?A:[A],u,i,t,o,r,f,e,c),h.base=u.__e,u.__h=null,h.__h.length&&f.push(h),b&&(h.__E=h.__=null),h.__e=!1;}else null==r&&u.__v===i.__v?(u.__k=i.__k,u.__e=i.__e):u.__e=L$1(i.__e,u,i,t,o,r,f,c);(s=l$2.diffed)&&s(u);}catch(n){u.__v=null,(c||null!=r)&&(u.__e=e,u.__h=!!c,r[r.indexOf(e)]=null),l$2.__e(n,u,i);}}function z$1(n,u){l$2.__c&&l$2.__c(u,n),n.some(function(u){try{n=u.__h,u.__h=[],n.some(function(n){n.call(u);});}catch(n){l$2.__e(n,u.__v);}});}function L$1(l,u,i,t,o,r,f,c){var s,a,v,y=i.props,p=u.props,d=u.type,_=0;if("svg"===d&&(o=!0),null!=r)for(;_<r.length;_++)if((s=r[_])&&(s===l||(d?s.localName==d:3==s.nodeType))){l=s,r[_]=null;break}if(null==l){if(null===d)return document.createTextNode(p);l=o?document.createElementNS("http://www.w3.org/2000/svg",d):document.createElement(d,p.is&&p),r=null,c=!1;}if(null===d)y===p||c&&l.data===p||(l.data=p);else {if(r=r&&n$1.call(l.childNodes),a=(y=i.props||e$3).dangerouslySetInnerHTML,v=p.dangerouslySetInnerHTML,!c){if(null!=r)for(y={},_=0;_<l.attributes.length;_++)y[l.attributes[_].name]=l.attributes[_].value;(v||a)&&(v&&(a&&v.__html==a.__html||v.__html===l.innerHTML)||(l.innerHTML=v&&v.__html||""));}if(C$1(l,p,y,o,c),v)u.__k=[];else if(_=u.props.children,w$2(l,Array.isArray(_)?_:[_],u,i,t,o&&"foreignObject"!==d,r,f,r?r[0]:i.__k&&k$2(i,0),c),null!=r)for(_=r.length;_--;)null!=r[_]&&h$1(r[_]);c||("value"in p&&void 0!==(_=p.value)&&(_!==l.value||"progress"===d&&!_)&&H$1(l,"value",_,y.value,!1),"checked"in p&&void 0!==(_=p.checked)&&_!==l.checked&&H$1(l,"checked",_,y.checked,!1));}return l}function M$1(n,u,i){try{"function"==typeof n?n(u):n.current=u;}catch(n){l$2.__e(n,i);}}function N$1(n,u,i){var t,o;if(l$2.unmount&&l$2.unmount(n),(t=n.ref)&&(t.current&&t.current!==n.__e||M$1(t,null,u)),null!=(t=n.__c)){if(t.componentWillUnmount)try{t.componentWillUnmount();}catch(n){l$2.__e(n,u);}t.base=t.__P=null;}if(t=n.__k)for(o=0;o<t.length;o++)t[o]&&N$1(t[o],u,"function"!=typeof n.type);i||null==n.__e||h$1(n.__e),n.__e=n.__d=void 0;}function O$1(n,l,u){return this.constructor(n,u)}function S$1(u,i,t){var o,r,f;l$2.__&&l$2.__(u,i),r=(o="function"==typeof t)?null:t&&t.__k||i.__k,f=[],j$2(i,u=(!o&&t||i).__k=v$1(d$1,null,[u]),r||e$3,e$3,void 0!==i.ownerSVGElement,!o&&t?[t]:r?null:i.firstChild?n$1.call(i.childNodes):null,f,!o&&t?t:r?r.__e:i.firstChild,o),z$1(f,u);}function q$1(n,l){S$1(n,l,q$1);}function B$1(l,u,i){var t,o,r,f=a$2({},l.props);for(r in u)"key"==r?t=u[r]:"ref"==r?o=u[r]:f[r]=u[r];return arguments.length>2&&(f.children=arguments.length>3?n$1.call(arguments,2):i),y$1(l.type,f,t||l.key,o||l.ref,null)}function D$1(n,l){var u={__c:l="__cC"+f$1++,__:n,Consumer:function(n,l){return n.children(l)},Provider:function(n){var u,i;return this.getChildContext||(u=[],(i={})[l]=this,this.getChildContext=function(){return i},this.shouldComponentUpdate=function(n){this.props.value!==n.value&&u.some(m$1);},this.sub=function(n){u.push(n);var l=n.componentWillUnmount;n.componentWillUnmount=function(){u.splice(u.indexOf(n),1),l&&l.call(n);};}),n.children}};return u.Provider.__=u.Consumer.contextType=u}n$1=c$1.slice,l$2={__e:function(n,l){for(var u,i,t;l=l.__;)if((u=l.__c)&&!u.__)try{if((i=u.constructor)&&null!=i.getDerivedStateFromError&&(u.setState(i.getDerivedStateFromError(n)),t=u.__d),null!=u.componentDidCatch&&(u.componentDidCatch(n),t=u.__d),t)return u.__E=u}catch(l){n=l;}throw n}},u$1=0,_$1.prototype.setState=function(n,l){var u;u=null!=this.__s&&this.__s!==this.state?this.__s:this.__s=a$2({},this.state),"function"==typeof n&&(n=n(a$2({},u),this.props)),n&&a$2(u,n),null!=n&&this.__v&&(l&&this.__h.push(l),m$1(this));},_$1.prototype.forceUpdate=function(n){this.__v&&(this.__e=!0,n&&this.__h.push(n),m$1(this));},_$1.prototype.render=d$1,t$1=[],o$3="function"==typeof Promise?Promise.prototype.then.bind(Promise.resolve()):setTimeout,g$2.__r=0,f$1=0;
 
-  var o$2=0;function e$2(_,e,n,t,f){var l,s,u={};for(s in e)"ref"==s?l=e[s]:u[s]=e[s];var a={type:_,props:u,key:n,ref:l,__k:null,__:null,__b:0,__e:null,__d:void 0,__c:null,__h:null,constructor:void 0,__v:--o$2,__source:t,__self:f};if("function"==typeof _&&(l=_.defaultProps))for(s in l)void 0===u[s]&&(u[s]=l[s]);return l$2.vnode&&l$2.vnode(a),a}
+  var t,u,r,o$2=0,i$1=[],c=l$2.__b,f=l$2.__r,e$2=l$2.diffed,a$1=l$2.__c,v=l$2.unmount;function m(t,r){l$2.__h&&l$2.__h(u,t,o$2||r),o$2=0;var i=u.__H||(u.__H={__:[],__h:[]});return t>=i.__.length&&i.__.push({}),i.__[t]}function l$1(n){return o$2=1,p$1(w$1,n)}function p$1(n,r,o){var i=m(t++,2);return i.t=n,i.__c||(i.__=[o?o(r):w$1(void 0,r),function(n){var t=i.t(i.__[0],n);i.__[0]!==t&&(i.__=[t,i.__[1]],i.__c.setState({}));}],i.__c=u),i.__}function y(r,o){var i=m(t++,3);!l$2.__s&&k$1(i.__H,o)&&(i.__=r,i.__H=o,u.__H.__h.push(i));}function h(r,o){var i=m(t++,4);!l$2.__s&&k$1(i.__H,o)&&(i.__=r,i.__H=o,u.__h.push(i));}function s(n){return o$2=5,d(function(){return {current:n}},[])}function _(n,t,u){o$2=6,h(function(){"function"==typeof n?n(t()):n&&(n.current=t());},null==u?u:u.concat(n));}function d(n,u){var r=m(t++,7);return k$1(r.__H,u)&&(r.__=n(),r.__H=u,r.__h=n),r.__}function A$1(n,t){return o$2=8,d(function(){return n},t)}function F$1(n){var r=u.context[n.__c],o=m(t++,9);return o.c=n,r?(null==o.__&&(o.__=!0,r.sub(u)),r.props.value):n.__}function T$1(t,u){l$2.useDebugValue&&l$2.useDebugValue(u?u(t):t);}function x$1(){i$1.forEach(function(t){if(t.__P)try{t.__H.__h.forEach(g$1),t.__H.__h.forEach(j$1),t.__H.__h=[];}catch(u){t.__H.__h=[],l$2.__e(u,t.__v);}}),i$1=[];}l$2.__b=function(n){u=null,c&&c(n);},l$2.__r=function(n){f&&f(n),t=0;var r=(u=n.__c).__H;r&&(r.__h.forEach(g$1),r.__h.forEach(j$1),r.__h=[]);},l$2.diffed=function(t){e$2&&e$2(t);var o=t.__c;o&&o.__H&&o.__H.__h.length&&(1!==i$1.push(o)&&r===l$2.requestAnimationFrame||((r=l$2.requestAnimationFrame)||function(n){var t,u=function(){clearTimeout(r),b&&cancelAnimationFrame(t),setTimeout(n);},r=setTimeout(u,100);b&&(t=requestAnimationFrame(u));})(x$1)),u=void 0;},l$2.__c=function(t,u){u.some(function(t){try{t.__h.forEach(g$1),t.__h=t.__h.filter(function(n){return !n.__||j$1(n)});}catch(r){u.some(function(n){n.__h&&(n.__h=[]);}),u=[],l$2.__e(r,t.__v);}}),a$1&&a$1(t,u);},l$2.unmount=function(t){v&&v(t);var u=t.__c;if(u&&u.__H)try{u.__H.__.forEach(g$1);}catch(t){l$2.__e(t,u.__v);}};var b="function"==typeof requestAnimationFrame;function g$1(n){var t=u;"function"==typeof n.__c&&n.__c(),u=t;}function j$1(n){var t=u;n.__c=n.__(),u=t;}function k$1(n,t){return !n||n.length!==t.length||t.some(function(t,u){return t!==n[u]})}function w$1(n,t){return "function"==typeof t?t(n):t}
 
-  var t,u,r,o$1=0,i$1=[],c=l$2.__b,f=l$2.__r,e$1=l$2.diffed,a$1=l$2.__c,v=l$2.unmount;function m(t,r){l$2.__h&&l$2.__h(u,t,o$1||r),o$1=0;var i=u.__H||(u.__H={__:[],__h:[]});return t>=i.__.length&&i.__.push({}),i.__[t]}function l$1(n){return o$1=1,p$1(w$1,n)}function p$1(n,r,o){var i=m(t++,2);return i.t=n,i.__c||(i.__=[o?o(r):w$1(void 0,r),function(n){var t=i.t(i.__[0],n);i.__[0]!==t&&(i.__=[t,i.__[1]],i.__c.setState({}));}],i.__c=u),i.__}function y(r,o){var i=m(t++,3);!l$2.__s&&k$1(i.__H,o)&&(i.__=r,i.__H=o,u.__H.__h.push(i));}function h(r,o){var i=m(t++,4);!l$2.__s&&k$1(i.__H,o)&&(i.__=r,i.__H=o,u.__h.push(i));}function s(n){return o$1=5,d(function(){return {current:n}},[])}function _(n,t,u){o$1=6,h(function(){"function"==typeof n?n(t()):n&&(n.current=t());},null==u?u:u.concat(n));}function d(n,u){var r=m(t++,7);return k$1(r.__H,u)&&(r.__=n(),r.__H=u,r.__h=n),r.__}function A$1(n,t){return o$1=8,d(function(){return n},t)}function F$1(n){var r=u.context[n.__c],o=m(t++,9);return o.c=n,r?(null==o.__&&(o.__=!0,r.sub(u)),r.props.value):n.__}function T$1(t,u){l$2.useDebugValue&&l$2.useDebugValue(u?u(t):t);}function x$1(){i$1.forEach(function(t){if(t.__P)try{t.__H.__h.forEach(g$1),t.__H.__h.forEach(j$1),t.__H.__h=[];}catch(u){t.__H.__h=[],l$2.__e(u,t.__v);}}),i$1=[];}l$2.__b=function(n){u=null,c&&c(n);},l$2.__r=function(n){f&&f(n),t=0;var r=(u=n.__c).__H;r&&(r.__h.forEach(g$1),r.__h.forEach(j$1),r.__h=[]);},l$2.diffed=function(t){e$1&&e$1(t);var o=t.__c;o&&o.__H&&o.__H.__h.length&&(1!==i$1.push(o)&&r===l$2.requestAnimationFrame||((r=l$2.requestAnimationFrame)||function(n){var t,u=function(){clearTimeout(r),b&&cancelAnimationFrame(t),setTimeout(n);},r=setTimeout(u,100);b&&(t=requestAnimationFrame(u));})(x$1)),u=void 0;},l$2.__c=function(t,u){u.some(function(t){try{t.__h.forEach(g$1),t.__h=t.__h.filter(function(n){return !n.__||j$1(n)});}catch(r){u.some(function(n){n.__h&&(n.__h=[]);}),u=[],l$2.__e(r,t.__v);}}),a$1&&a$1(t,u);},l$2.unmount=function(t){v&&v(t);var u=t.__c;if(u&&u.__H)try{u.__H.__.forEach(g$1);}catch(t){l$2.__e(t,u.__v);}};var b="function"==typeof requestAnimationFrame;function g$1(n){var t=u;"function"==typeof n.__c&&n.__c(),u=t;}function j$1(n){var t=u;n.__c=n.__(),u=t;}function k$1(n,t){return !n||n.length!==t.length||t.some(function(t,u){return t!==n[u]})}function w$1(n,t){return "function"==typeof t?t(n):t}
+  var o$1=0;function e$1(_,e,n,t,f){var l,s,u={};for(s in e)"ref"==s?l=e[s]:u[s]=e[s];var a={type:_,props:u,key:n,ref:l,__k:null,__:null,__b:0,__e:null,__d:void 0,__c:null,__h:null,constructor:void 0,__v:--o$1,__source:t,__self:f};if("function"==typeof _&&(l=_.defaultProps))for(s in l)void 0===u[s]&&(u[s]=l[s]);return l$2.vnode&&l$2.vnode(a),a}
 
   function S(n,t){for(var e in t)n[e]=t[e];return n}function C(n,t){for(var e in n)if("__source"!==e&&!(e in t))return !0;for(var r in t)if("__source"!==r&&n[r]!==t[r])return !0;return !1}function E(n){this.props=n;}function g(n,t){function e(n){var e=this.props.ref,r=e==n.ref;return !r&&e&&(e.call?e(null):e.current=null),t?!t(this.props,n)||!r:C(this.props,n)}function r(t){return this.shouldComponentUpdate=e,v$1(n,t)}return r.displayName="Memo("+(n.displayName||n.name)+")",r.prototype.isReactComponent=!0,r.__f=!0,r}(E.prototype=new _$1).isPureReactComponent=!0,E.prototype.shouldComponentUpdate=function(n,t){return C(this.props,n)||C(this.state,t)};var w=l$2.__b;l$2.__b=function(n){n.type&&n.type.__f&&n.ref&&(n.props.ref=n.ref,n.ref=null),w&&w(n);};var R="undefined"!=typeof Symbol&&Symbol.for&&Symbol.for("react.forward_ref")||3911;function x(n){function t(t,e){var r=S({},t);return delete r.ref,n(r,(e=t.ref||e)&&("object"!=typeof e||"current"in e)?e:null)}return t.$$typeof=R,t.render=t,t.prototype.isReactComponent=t.__f=!0,t.displayName="ForwardRef("+(n.displayName||n.name)+")",t}var N=function(n,t){return null==n?null:A$2(A$2(n).map(t))},k={map:N,forEach:N,count:function(n){return n?A$2(n).length:0},only:function(n){var t=A$2(n);if(1!==t.length)throw "Children.only";return t[0]},toArray:A$2},A=l$2.__e;l$2.__e=function(n,t,e){if(n.then)for(var r,u=t;u=u.__;)if((r=u.__c)&&r.__c)return null==t.__e&&(t.__e=e.__e,t.__k=e.__k),r.__c(n,t);A(n,t,e);};var O=l$2.unmount;function L(){this.__u=0,this.t=null,this.__b=null;}function U(n){var t=n.__.__c;return t&&t.__e&&t.__e(n)}function F(n){var t,e,r;function u(u){if(t||(t=n()).then(function(n){e=n.default||n;},function(n){r=n;}),r)throw r;if(!e)throw t;return v$1(e,u)}return u.displayName="Lazy",u.__f=!0,u}function M(){this.u=null,this.o=null;}l$2.unmount=function(n){var t=n.__c;t&&t.__R&&t.__R(),t&&!0===n.__h&&(n.type=null),O&&O(n);},(L.prototype=new _$1).__c=function(n,t){var e=t.__c,r=this;null==r.t&&(r.t=[]),r.t.push(e);var u=U(r.__v),o=!1,i=function(){o||(o=!0,e.__R=null,u?u(l):l());};e.__R=i;var l=function(){if(!--r.__u){if(r.state.__e){var n=r.state.__e;r.__v.__k[0]=function n(t,e,r){return t&&(t.__v=null,t.__k=t.__k&&t.__k.map(function(t){return n(t,e,r)}),t.__c&&t.__c.__P===e&&(t.__e&&r.insertBefore(t.__e,t.__d),t.__c.__e=!0,t.__c.__P=r)),t}(n,n.__c.__P,n.__c.__O);}var t;for(r.setState({__e:r.__b=null});t=r.t.pop();)t.forceUpdate();}},f=!0===t.__h;r.__u++||f||r.setState({__e:r.__b=r.__v.__k[0]}),n.then(i,i);},L.prototype.componentWillUnmount=function(){this.t=[];},L.prototype.render=function(n,t){if(this.__b){if(this.__v.__k){var e=document.createElement("div"),r=this.__v.__k[0].__c;this.__v.__k[0]=function n(t,e,r){return t&&(t.__c&&t.__c.__H&&(t.__c.__H.__.forEach(function(n){"function"==typeof n.__c&&n.__c();}),t.__c.__H=null),null!=(t=S({},t)).__c&&(t.__c.__P===r&&(t.__c.__P=e),t.__c=null),t.__k=t.__k&&t.__k.map(function(t){return n(t,e,r)})),t}(this.__b,e,r.__O=r.__P);}this.__b=null;}var u=t.__e&&v$1(d$1,null,n.fallback);return u&&(u.__h=null),[v$1(d$1,null,t.__e?null:n.children),u]};var T=function(n,t,e){if(++e[1]===e[0]&&n.o.delete(t),n.props.revealOrder&&("t"!==n.props.revealOrder[0]||!n.o.size))for(e=n.u;e;){for(;e.length>3;)e.pop()();if(e[1]<e[0])break;n.u=e=e[2];}};function D(n){return this.getChildContext=function(){return n.context},n.children}function I(n){var t=this,e=n.i;t.componentWillUnmount=function(){S$1(null,t.l),t.l=null,t.i=null;},t.i&&t.i!==e&&t.componentWillUnmount(),n.__v?(t.l||(t.i=e,t.l={nodeType:1,parentNode:e,childNodes:[],appendChild:function(n){this.childNodes.push(n),t.i.appendChild(n);},insertBefore:function(n,e){this.childNodes.push(n),t.i.appendChild(n);},removeChild:function(n){this.childNodes.splice(this.childNodes.indexOf(n)>>>1,1),t.i.removeChild(n);}}),S$1(v$1(D,{context:t.context},n.__v),t.l)):t.l&&t.componentWillUnmount();}function W(n,t){return v$1(I,{__v:n,i:t})}(M.prototype=new _$1).__e=function(n){var t=this,e=U(t.__v),r=t.o.get(n);return r[0]++,function(u){var o=function(){t.props.revealOrder?(r.push(u),T(t,n,r)):u();};e?e(o):o();}},M.prototype.render=function(n){this.u=null,this.o=new Map;var t=A$2(n.children);n.revealOrder&&"b"===n.revealOrder[0]&&t.reverse();for(var e=t.length;e--;)this.o.set(t[e],this.u=[1,0,this.u]);return n.children},M.prototype.componentDidUpdate=M.prototype.componentDidMount=function(){var n=this;this.o.forEach(function(t,e){T(n,e,t);});};var j="undefined"!=typeof Symbol&&Symbol.for&&Symbol.for("react.element")||60103,P=/^(?:accent|alignment|arabic|baseline|cap|clip(?!PathU)|color|fill|flood|font|glyph(?!R)|horiz|marker(?!H|W|U)|overline|paint|stop|strikethrough|stroke|text(?!L)|underline|unicode|units|v|vector|vert|word|writing|x(?!C))[A-Z]/,V=function(n){return ("undefined"!=typeof Symbol&&"symbol"==typeof Symbol()?/fil|che|rad/i:/fil|che|ra/i).test(n)};function z(n,t,e){return null==t.__k&&(t.textContent=""),S$1(n,t),"function"==typeof e&&e(),n?n.__c:null}function B(n,t,e){return q$1(n,t),"function"==typeof e&&e(),n?n.__c:null}_$1.prototype.isReactComponent={},["componentWillMount","componentWillReceiveProps","componentWillUpdate"].forEach(function(n){Object.defineProperty(_$1.prototype,n,{configurable:!0,get:function(){return this["UNSAFE_"+n]},set:function(t){Object.defineProperty(this,n,{configurable:!0,writable:!0,value:t});}});});var H=l$2.event;function Z(){}function Y(){return this.cancelBubble}function $(){return this.defaultPrevented}l$2.event=function(n){return H&&(n=H(n)),n.persist=Z,n.isPropagationStopped=Y,n.isDefaultPrevented=$,n.nativeEvent=n};var q,G={configurable:!0,get:function(){return this.class}},J=l$2.vnode;l$2.vnode=function(n){var t=n.type,e=n.props,r=e;if("string"==typeof t){for(var u in r={},e){var o=e[u];"value"===u&&"defaultValue"in e&&null==o||("defaultValue"===u&&"value"in e&&null==e.value?u="value":"download"===u&&!0===o?o="":/ondoubleclick/i.test(u)?u="ondblclick":/^onchange(textarea|input)/i.test(u+t)&&!V(e.type)?u="oninput":/^on(Ani|Tra|Tou|BeforeInp)/.test(u)?u=u.toLowerCase():P.test(u)?u=u.replace(/[A-Z0-9]/,"-$&").toLowerCase():null===o&&(o=void 0),r[u]=o);}"select"==t&&r.multiple&&Array.isArray(r.value)&&(r.value=A$2(e.children).forEach(function(n){n.props.selected=-1!=r.value.indexOf(n.props.value);})),"select"==t&&null!=r.defaultValue&&(r.value=A$2(e.children).forEach(function(n){n.props.selected=r.multiple?-1!=r.defaultValue.indexOf(n.props.value):r.defaultValue==n.props.value;})),n.props=r;}t&&e.class!=e.className&&(G.enumerable="className"in e,null!=e.className&&(r.class=e.className),Object.defineProperty(r,"className",G)),n.$$typeof=j,J&&J(n);};var K=l$2.__r;l$2.__r=function(n){K&&K(n),q=n.__c;};var Q={ReactCurrentDispatcher:{current:{readContext:function(n){return q.__n[n.__c].props.value}}}};function nn(n){return v$1.bind(null,n)}function tn(n){return !!n&&n.$$typeof===j}function en(n){return tn(n)?B$1.apply(null,arguments):n}function rn(n){return !!n.__k&&(S$1(null,n),!0)}function un(n){return n&&(n.base||1===n.nodeType&&n)||null}var on=function(n,t){return n(t)},ln=function(n,t){return n(t)};var React = {useState:l$1,useReducer:p$1,useEffect:y,useLayoutEffect:h,useRef:s,useImperativeHandle:_,useMemo:d,useCallback:A$1,useContext:F$1,useDebugValue:T$1,version:"17.0.2",Children:k,render:z,hydrate:B,unmountComponentAtNode:rn,createPortal:W,createElement:v$1,createContext:D$1,createFactory:nn,cloneElement:en,createRef:p$2,Fragment:d$1,isValidElement:tn,findDOMNode:un,Component:_$1,PureComponent:E,memo:g,forwardRef:x,flushSync:ln,unstable_batchedUpdates:on,StrictMode:d$1,Suspense:L,SuspenseList:M,lazy:F,__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:Q};
 
@@ -1244,67 +1244,6 @@
     return true;
   }
 
-  function formFieldClasses(type, errors = []) {
-    if (!type) {
-      throw new Error('type required');
-    }
-
-    const classes = ['fjs-form-field', `fjs-form-field-${type}`];
-
-    if (errors.length) {
-      classes.push('fjs-has-errors');
-    }
-
-    return classes.join(' ');
-  }
-  function prefixId(id, formId) {
-    if (formId) {
-      return `fjs-form-${formId}-${id}`;
-    }
-
-    return `fjs-form-${id}`;
-  }
-  function markdownToHTML(markdown) {
-    const htmls = markdown.split(/(?:\r?\n){2,}/).map(line => /^((\d+.)|[><\s#-*])/.test(line) ? t$2(line) : `<p>${t$2(line)}</p>`);
-    return htmls.join('\n\n');
-  } // see https://github.com/developit/snarkdown/issues/70
-
-  function safeMarkdown(markdown) {
-    const html = markdownToHTML(markdown);
-    return sanitizeHTML(html);
-  }
-
-  const type$8 = 'button';
-  function Button(props) {
-    const {
-      disabled,
-      field
-    } = props;
-    const {
-      action = 'submit'
-    } = field;
-    return e$2("div", {
-      class: formFieldClasses(type$8),
-      children: e$2("button", {
-        class: "fjs-button",
-        type: action,
-        disabled: disabled,
-        children: field.label
-      })
-    });
-  }
-
-  Button.create = function (options = {}) {
-    return {
-      action: 'submit',
-      ...options
-    };
-  };
-
-  Button.type = type$8;
-  Button.label = 'Button';
-  Button.keyed = true;
-
   const FormRenderContext = D$1({
     Empty: props => {
       return null;
@@ -1331,6 +1270,102 @@
     formId: null
   });
 
+  function useService$1 (type, strict) {
+    const {
+      getService
+    } = F$1(FormContext);
+    return getService(type, strict);
+  }
+
+  function formFieldClasses(type, errors = []) {
+    if (!type) {
+      throw new Error('type required');
+    }
+
+    const classes = ['fjs-form-field', `fjs-form-field-${type}`];
+
+    if (errors.length) {
+      classes.push('fjs-has-errors');
+    }
+
+    return classes.join(' ');
+  }
+  function formFieldClassesCustom(type, hiddenFx, errors = []) {
+    const form = useService$1('form');
+    let dataStr = JSON.stringify(form._getState().data);
+    console.log(form);
+
+    if (!type) {
+      throw new Error('type required');
+    }
+
+    console.log("let data = " + dataStr + "; return " + hiddenFx);
+    let hidden = false;
+
+    try {
+      hidden = Function("let data = " + dataStr + "; return " + hiddenFx).call();
+    } catch (err) {
+      hidden = false;
+    }
+
+    let fieldClass = hidden ? 'fjs-form-field hidden' : 'fjs-form-field';
+    const classes = [fieldClass, `fjs-form-field-${type}`];
+    console.log(fieldClass);
+
+    if (errors.length) {
+      classes.push('fjs-has-errors');
+    }
+
+    return classes.join(' ');
+  }
+  function prefixId(id, formId) {
+    if (formId) {
+      return `fjs-form-${formId}-${id}`;
+    }
+
+    return `fjs-form-${id}`;
+  }
+  function markdownToHTML(markdown) {
+    const htmls = markdown.split(/(?:\r?\n){2,}/).map(line => /^((\d+.)|[><\s#-*])/.test(line) ? t$2(line) : `<p>${t$2(line)}</p>`);
+    return htmls.join('\n\n');
+  } // see https://github.com/developit/snarkdown/issues/70
+
+  function safeMarkdown(markdown) {
+    const html = markdownToHTML(markdown);
+    return sanitizeHTML(html);
+  }
+
+  const type$9 = 'button';
+  function Button(props) {
+    const {
+      disabled,
+      field
+    } = props;
+    const {
+      action = 'submit'
+    } = field;
+    return e$1("div", {
+      class: formFieldClasses(type$9),
+      children: e$1("button", {
+        class: "fjs-button",
+        type: action,
+        disabled: disabled,
+        children: field.label
+      })
+    });
+  }
+
+  Button.create = function (options = {}) {
+    return {
+      action: 'submit',
+      ...options
+    };
+  };
+
+  Button.type = type$9;
+  Button.label = 'Button';
+  Button.keyed = true;
+
   function Description$2(props) {
     const {
       description
@@ -1340,7 +1375,7 @@
       return null;
     }
 
-    return e$2("div", {
+    return e$1("div", {
       class: "fjs-form-field-description",
       children: description
     });
@@ -1355,11 +1390,11 @@
       return null;
     }
 
-    return e$2("div", {
+    return e$1("div", {
       class: "fjs-form-field-error",
-      children: e$2("ul", {
+      children: e$1("ul", {
         children: errors.map(error => {
-          return e$2("li", {
+          return e$1("li", {
             children: error
           });
         })
@@ -1373,17 +1408,17 @@
       label,
       required = false
     } = props;
-    return e$2("label", {
+    return e$1("label", {
       for: id,
       class: "fjs-form-field-label",
-      children: [props.children, label || '', required && e$2("span", {
+      children: [props.children, label || '', required && e$1("span", {
         class: "fjs-asterix",
         children: "*"
       })]
     });
   }
 
-  const type$7 = 'checkbox';
+  const type$8 = 'checkbox';
   function Checkbox$1(props) {
     const {
       disabled,
@@ -1409,13 +1444,13 @@
     const {
       formId
     } = F$1(FormContext);
-    return e$2("div", {
-      class: formFieldClasses(type$7, errors),
-      children: [e$2(Label$2, {
+    return e$1("div", {
+      class: formFieldClasses(type$8, errors),
+      children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
         required: false,
-        children: e$2("input", {
+        children: e$1("input", {
           checked: value,
           class: "fjs-input",
           disabled: disabled,
@@ -1423,9 +1458,9 @@
           type: "checkbox",
           onChange: onChange
         })
-      }), e$2(Description$2, {
+      }), e$1(Description$2, {
         description: description
-      }), e$2(Errors, {
+      }), e$1(Errors, {
         errors: errors
       })]
     });
@@ -1436,12 +1471,12 @@
     };
   };
 
-  Checkbox$1.type = type$7;
+  Checkbox$1.type = type$8;
   Checkbox$1.label = 'Checkbox';
   Checkbox$1.keyed = true;
   Checkbox$1.emptyValue = false;
 
-  const type$6 = 'checklist';
+  const type$7 = 'checklist';
   function Checklist(props) {
     const {
       disabled,
@@ -1474,16 +1509,16 @@
     const {
       formId
     } = F$1(FormContext);
-    return e$2("div", {
-      class: formFieldClasses(type$6, errors),
-      children: [e$2(Label$2, {
+    return e$1("div", {
+      class: formFieldClasses(type$7, errors),
+      children: [e$1(Label$2, {
         label: label
       }), values.map((v, index) => {
-        return e$2(Label$2, {
+        return e$1(Label$2, {
           id: prefixId(`${id}-${index}`, formId),
           label: v.label,
           required: false,
-          children: e$2("input", {
+          children: e$1("input", {
             checked: value.includes(v.value),
             class: "fjs-input",
             disabled: disabled,
@@ -1492,9 +1527,9 @@
             onClick: () => toggleCheckbox(v.value)
           })
         }, `${id}-${index}`);
-      }), e$2(Description$2, {
+      }), e$1(Description$2, {
         description: description
-      }), e$2(Errors, {
+      }), e$1(Errors, {
         errors: errors
       })]
     });
@@ -1510,17 +1545,10 @@
     };
   };
 
-  Checklist.type = type$6;
+  Checklist.type = type$7;
   Checklist.label = 'Checklist';
   Checklist.keyed = true;
   Checklist.emptyValue = [];
-
-  function useService$1 (type, strict) {
-    const {
-      getService
-    } = F$1(FormContext);
-    return getService(type, strict);
-  }
 
   const noop$1$1 = () => false;
 
@@ -1553,9 +1581,9 @@
     const value = get(data, _path);
     const fieldErrors = findErrors(errors, _path);
     const disabled = properties.readOnly || field.disabled || false;
-    return e$2(Element, {
+    return e$1(Element, {
       field: field,
-      children: e$2(FormFieldComponent, { ...props,
+      children: e$1(FormFieldComponent, { ...props,
         disabled: disabled,
         errors: fieldErrors,
         onChange: disabled ? noop$1$1 : onChange,
@@ -1575,7 +1603,7 @@
     const {
       components = []
     } = field;
-    return e$2(Children, {
+    return e$1(Children, {
       class: "fjs-vertical-layout",
       field: field,
       children: [components.map(childField => {
@@ -1583,7 +1611,7 @@
           key: childField.id,
           field: childField
         });
-      }), components.length ? null : e$2(Empty, {})]
+      }), components.length ? null : e$1(Empty, {})]
     });
   }
 
@@ -1604,16 +1632,16 @@
    */
 
   function Logo() {
-    return e$2("svg", {
+    return e$1("svg", {
       xmlns: "http://www.w3.org/2000/svg",
       viewBox: "0 0 14.02 5.57",
       width: "53",
       height: "21",
       style: "vertical-align:middle",
-      children: [e$2("path", {
+      children: [e$1("path", {
         fill: "currentColor",
         d: "M1.88.92v.14c0 .41-.13.68-.4.8.33.14.46.44.46.86v.33c0 .61-.33.95-.95.95H0V0h.95c.65 0 .93.3.93.92zM.63.57v1.06h.24c.24 0 .38-.1.38-.43V.98c0-.28-.1-.4-.32-.4zm0 1.63v1.22h.36c.2 0 .32-.1.32-.39v-.35c0-.37-.12-.48-.4-.48H.63zM4.18.99v.52c0 .64-.31.98-.94.98h-.3V4h-.62V0h.92c.63 0 .94.35.94.99zM2.94.57v1.35h.3c.2 0 .3-.09.3-.37v-.6c0-.29-.1-.38-.3-.38h-.3zm2.89 2.27L6.25 0h.88v4h-.6V1.12L6.1 3.99h-.6l-.46-2.82v2.82h-.55V0h.87zM8.14 1.1V4h-.56V0h.79L9 2.4V0h.56v4h-.64zm2.49 2.29v.6h-.6v-.6zM12.12 1c0-.63.33-1 .95-1 .61 0 .95.37.95 1v2.04c0 .64-.34 1-.95 1-.62 0-.95-.37-.95-1zm.62 2.08c0 .28.13.39.33.39s.32-.1.32-.4V.98c0-.29-.12-.4-.32-.4s-.33.11-.33.4z"
-      }), e$2("path", {
+      }), e$1("path", {
         fill: "currentColor",
         d: "M0 4.53h14.02v1.04H0zM11.08 0h.63v.62h-.63zm.63 4V1h-.63v2.98z"
       })]
@@ -1629,24 +1657,24 @@
       return null;
     }
 
-    return e$2("div", {
+    return e$1("div", {
       class: "fjs-powered-by-lightbox",
       style: "z-index: 100; position: fixed; top: 0; left: 0;right: 0; bottom: 0",
-      children: [e$2("div", {
+      children: [e$1("div", {
         class: "backdrop",
         style: "width: 100%; height: 100%; background: rgba(40 40 40 / 20%)",
         onClick: props.onBackdropClick
-      }), e$2("div", {
+      }), e$1("div", {
         class: "notice",
         style: "position: absolute; left: 50%; top: 40%; transform: translate(-50%); width: 260px; padding: 10px; background: white; box-shadow: 0  1px 4px rgba(0 0 0 / 30%); font-family: Helvetica, Arial, sans-serif; font-size: 14px; display: flex; line-height: 1.3",
-        children: [e$2("a", {
+        children: [e$1("a", {
           href: "https://bpmn.io",
           target: "_blank",
           rel: "noopener",
           style: "margin: 15px 20px 15px 10px; align-self: center; color: #404040",
-          children: e$2(Logo, {})
-        }), e$2("span", {
-          children: ["Web-based tooling for BPMN, DMN, and forms powered by ", e$2("a", {
+          children: e$1(Logo, {})
+        }), e$1("span", {
+          children: ["Web-based tooling for BPMN, DMN, and forms powered by ", e$1("a", {
             href: "https://bpmn.io",
             target: "_blank",
             rel: "noopener",
@@ -1658,10 +1686,10 @@
   }
 
   function Link(props) {
-    return e$2("div", {
+    return e$1("div", {
       class: "fjs-powered-by fjs-form-field",
       style: "text-align: right",
-      children: e$2("a", {
+      children: e$1("a", {
         href: "https://bpmn.io",
         target: "_blank",
         rel: "noopener",
@@ -1669,7 +1697,7 @@
         title: "Powered by bpmn.io",
         style: "color: #404040",
         onClick: props.onClick,
-        children: e$2(Logo, {})
+        children: e$1(Logo, {})
       })
     });
   }
@@ -1684,11 +1712,11 @@
       };
     }
 
-    return e$2(d$1, {
-      children: [W(e$2(Lightbox, {
+    return e$1(d$1, {
+      children: [W(e$1(Lightbox, {
         open: open,
         onBackdropClick: toggleOpen(false)
-      }), document.body), e$2(Link, {
+      }), document.body), e$1(Link, {
         onClick: toggleOpen(true)
       })]
     });
@@ -1719,18 +1747,18 @@
       onReset();
     };
 
-    return e$2("form", {
+    return e$1("form", {
       class: "fjs-form",
       onSubmit: handleSubmit,
       onReset: handleReset,
-      children: [e$2(FormField, {
+      children: [e$1(FormField, {
         field: schema,
         onChange: onChange
-      }), e$2(PoweredBy, {})]
+      }), e$1(PoweredBy, {})]
     });
   }
 
-  const type$5 = 'number';
+  const type$6 = 'number';
   function Number$1(props) {
     const {
       disabled,
@@ -1742,6 +1770,7 @@
       description,
       id,
       label,
+      hiddenFx,
       validate = {}
     } = field;
     const {
@@ -1761,22 +1790,22 @@
     const {
       formId
     } = F$1(FormContext);
-    return e$2("div", {
-      class: formFieldClasses(type$5, errors),
-      children: [e$2(Label$2, {
+    return e$1("div", {
+      class: formFieldClassesCustom(type$6, hiddenFx, errors),
+      children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
         required: required
-      }), e$2("input", {
+      }), e$1("input", {
         class: "fjs-input",
         disabled: disabled,
         id: prefixId(id, formId),
         onInput: onChange,
         type: "number",
         value: value || ''
-      }), e$2(Description$2, {
+      }), e$1(Description$2, {
         description: description
-      }), e$2(Errors, {
+      }), e$1(Errors, {
         errors: errors
       })]
     });
@@ -1787,12 +1816,13 @@
     };
   };
 
-  Number$1.type = type$5;
+  Number$1.type = type$6;
   Number$1.keyed = true;
   Number$1.label = 'Number';
   Number$1.emptyValue = null;
+  Number$1.hiddenFx = 'false';
 
-  const type$4 = 'radio';
+  const type$5 = 'radio';
   function Radio(props) {
     const {
       disabled,
@@ -1821,17 +1851,17 @@
     const {
       formId
     } = F$1(FormContext);
-    return e$2("div", {
-      class: formFieldClasses(type$4, errors),
-      children: [e$2(Label$2, {
+    return e$1("div", {
+      class: formFieldClasses(type$5, errors),
+      children: [e$1(Label$2, {
         label: label,
         required: required
       }), values.map((v, index) => {
-        return e$2(Label$2, {
+        return e$1(Label$2, {
           id: prefixId(`${id}-${index}`, formId),
           label: v.label,
           required: false,
-          children: e$2("input", {
+          children: e$1("input", {
             checked: v.value === value,
             class: "fjs-input",
             disabled: disabled,
@@ -1840,9 +1870,9 @@
             onClick: () => onChange(v.value)
           })
         }, `${id}-${index}`);
-      }), e$2(Description$2, {
+      }), e$1(Description$2, {
         description: description
-      }), e$2(Errors, {
+      }), e$1(Errors, {
         errors: errors
       })]
     });
@@ -1858,12 +1888,12 @@
     };
   };
 
-  Radio.type = type$4;
+  Radio.type = type$5;
   Radio.label = 'Radio';
   Radio.keyed = true;
   Radio.emptyValue = null;
 
-  const type$3 = 'select';
+  const type$4 = 'select';
   function Select$1(props) {
     const {
       disabled,
@@ -1875,6 +1905,7 @@
       description,
       id,
       label,
+      hiddenFx,
       validate = {},
       values
     } = field;
@@ -1894,29 +1925,29 @@
     const {
       formId
     } = F$1(FormContext);
-    return e$2("div", {
-      class: formFieldClasses(type$3, errors),
-      children: [e$2(Label$2, {
+    return e$1("div", {
+      class: formFieldClassesCustom(type$4, hiddenFx, errors),
+      children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
         required: required
-      }), e$2("select", {
+      }), e$1("select", {
         class: "fjs-select",
         disabled: disabled,
         id: prefixId(id, formId),
         onChange: onChange,
         value: value || '',
-        children: [e$2("option", {
+        children: [e$1("option", {
           value: ""
         }), values.map((v, index) => {
-          return e$2("option", {
+          return e$1("option", {
             value: v.value,
             children: v.label
           }, `${id}-${index}`);
         })]
-      }), e$2(Description$2, {
+      }), e$1(Description$2, {
         description: description
-      }), e$2(Errors, {
+      }), e$1(Errors, {
         errors: errors
       })]
     });
@@ -1932,16 +1963,17 @@
     };
   };
 
-  Select$1.type = type$3;
+  Select$1.type = type$4;
   Select$1.label = 'Select';
   Select$1.keyed = true;
   Select$1.emptyValue = null;
+  Select$1.hiddenFx = 'false';
 
-  function _extends$c() { _extends$c = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$c.apply(this, arguments); }
+  function _extends$d() { _extends$d = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$d.apply(this, arguments); }
   var CloseIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$c({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$d({
     width: "16",
     height: "16",
     fill: "none",
@@ -2044,7 +2076,7 @@
       }
     };
 
-    return e$2("div", {
+    return e$1("div", {
       ref: dropdownContainer,
       tabIndex: -1,
       class: "fjs-dropdownlist",
@@ -2052,7 +2084,7 @@
         maxHeight: height
       },
       children: [!!values.length && values.map((v, i) => {
-        return e$2("div", {
+        return e$1("div", {
           class: 'fjs-dropdownlist-item' + (focusedValueIndex === i ? ' focused' : ''),
           onMouseMove: e => mouseMove(e, i),
           onMouseEnter: mouseControl ? () => setFocusedValueIndex(i) : undefined,
@@ -2062,14 +2094,14 @@
           },
           children: getLabel(v)
         });
-      }), !values.length && e$2("div", {
+      }), !values.length && e$1("div", {
         class: "fjs-dropdownlist-empty",
         children: emptyListMessage
       })]
     });
   }
 
-  const type$2 = 'taglist';
+  const type$3 = 'taglist';
   function Taglist(props) {
     const {
       disabled,
@@ -2155,29 +2187,29 @@
       }
     };
 
-    return e$2("div", {
-      class: formFieldClasses(type$2, errors),
-      children: [e$2(Label$2, {
+    return e$1("div", {
+      class: formFieldClasses(type$3, errors),
+      children: [e$1(Label$2, {
         label: label,
         id: prefixId(id, formId)
-      }), e$2("div", {
+      }), e$1("div", {
         class: classnames('fjs-taglist', {
           'disabled': disabled
         }),
         children: [!disabled && selectedValues.map(sv => {
-          return e$2("div", {
+          return e$1("div", {
             class: "fjs-taglist-tag",
             onMouseDown: e => e.preventDefault(),
-            children: [e$2("span", {
+            children: [e$1("span", {
               class: "fjs-taglist-tag-label",
               children: sv.label
-            }), e$2("span", {
+            }), e$1("span", {
               class: "fjs-taglist-tag-remove",
               onMouseDown: () => deselectValue(sv),
-              children: e$2(CloseIcon, {})
+              children: e$1(CloseIcon, {})
             })]
           });
-        }), e$2("input", {
+        }), e$1("input", {
           disabled: disabled,
           class: "fjs-taglist-input",
           ref: searchbarRef,
@@ -2195,18 +2227,18 @@
             setFilter('');
           }
         })]
-      }), e$2("div", {
+      }), e$1("div", {
         class: "fjs-taglist-anchor",
-        children: !disabled && isDropdownExpanded && !escapeClose && e$2(DropdownList, {
+        children: !disabled && isDropdownExpanded && !escapeClose && e$1(DropdownList, {
           values: filteredValues,
           getLabel: v => v.label,
           onValueSelected: v => selectValue(v),
           emptyListMessage: hasValuesLeft ? 'No results' : 'All values selected',
           listenerElement: searchbarRef.current
         })
-      }), e$2(Description$2, {
+      }), e$1(Description$2, {
         description: description
-      }), e$2(Errors, {
+      }), e$1(Errors, {
         errors: errors
       })]
     });
@@ -2222,12 +2254,12 @@
     };
   };
 
-  Taglist.type = type$2;
+  Taglist.type = type$3;
   Taglist.label = 'Taglist';
   Taglist.keyed = true;
   Taglist.emptyValue = [];
 
-  const type$1 = 'text';
+  const type$2 = 'text';
   function Text$1(props) {
     const {
       field
@@ -2235,9 +2267,9 @@
     const {
       text = ''
     } = field;
-    return e$2("div", {
-      class: formFieldClasses(type$1),
-      children: e$2(Markup, {
+    return e$1("div", {
+      class: formFieldClasses(type$2),
+      children: e$1(Markup, {
         markup: safeMarkdown(text),
         trim: false
       })
@@ -2251,10 +2283,10 @@
     };
   };
 
-  Text$1.type = type$1;
+  Text$1.type = type$2;
   Text$1.keyed = false;
 
-  const type = 'textfield';
+  const type$1 = 'textfield';
   function Textfield$1(props) {
     const {
       disabled,
@@ -2266,6 +2298,7 @@
       description,
       id,
       label,
+      hiddenFx,
       validate = {}
     } = field;
     const {
@@ -2284,22 +2317,22 @@
     const {
       formId
     } = F$1(FormContext);
-    return e$2("div", {
-      class: formFieldClasses(type, errors),
-      children: [e$2(Label$2, {
+    return e$1("div", {
+      class: formFieldClassesCustom(type$1, hiddenFx, errors),
+      children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
         required: required
-      }), e$2("input", {
+      }), e$1("input", {
         class: "fjs-input",
         disabled: disabled,
         id: prefixId(id, formId),
         onInput: onChange,
         type: "text",
         value: value
-      }), e$2(Description$2, {
+      }), e$1(Description$2, {
         description: description
-      }), e$2(Errors, {
+      }), e$1(Errors, {
         errors: errors
       })]
     });
@@ -2310,12 +2343,76 @@
     };
   };
 
-  Textfield$1.type = type;
+  Textfield$1.type = type$1;
   Textfield$1.label = 'Text Field';
   Textfield$1.keyed = true;
   Textfield$1.emptyValue = '';
+  Textfield$1.hiddenFx = 'false';
 
-  const formFields = [Button, Checkbox$1, Checklist, Default, Number$1, Radio, Select$1, Taglist, Text$1, Textfield$1];
+  const type = 'datefield';
+  function Datefield(props) {
+    const {
+      disabled,
+      errors = [],
+      field,
+      value = ''
+    } = props;
+    const {
+      description,
+      id,
+      label,
+      hiddenFx,
+      validate = {}
+    } = field;
+    const {
+      required
+    } = validate;
+
+    const onChange = ({
+      target
+    }) => {
+      props.onChange({
+        field,
+        value: target.value
+      });
+    };
+
+    const {
+      formId
+    } = F$1(FormContext);
+    return e$1("div", {
+      class: formFieldClassesCustom(type, hiddenFx, errors),
+      children: [e$1(Label$2, {
+        id: prefixId(id, formId),
+        label: label,
+        required: required
+      }), e$1("input", {
+        class: "fjs-input",
+        disabled: disabled,
+        id: prefixId(id, formId),
+        onInput: onChange,
+        type: "date",
+        value: value
+      }), e$1(Description$2, {
+        description: description
+      }), e$1(Errors, {
+        errors: errors
+      })]
+    });
+  }
+
+  Datefield.create = function (options = {}) {
+    return { ...options
+    };
+  };
+
+  Datefield.type = type;
+  Datefield.label = 'Date Field';
+  Datefield.keyed = true;
+  Datefield.emptyValue = '';
+  Datefield.hiddenFx = 'false';
+
+  const formFields = [Button, Checkbox$1, Checklist, Default, Number$1, Radio, Select$1, Taglist, Text$1, Textfield$1, Datefield];
 
   class FormFields {
     constructor() {
@@ -4136,11 +4233,11 @@
     return getService(type, strict);
   }
 
-  function _extends$b() { _extends$b = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$b.apply(this, arguments); }
+  function _extends$c() { _extends$c = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$c.apply(this, arguments); }
   var ButtonIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$b({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$c({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4149,11 +4246,11 @@
     d: "M45 17a3 3 0 013 3v14a3 3 0 01-3 3H9a3 3 0 01-3-3V20a3 3 0 013-3h36zm-9 8.889H18v2.222h18V25.89z"
   })));
 
-  function _extends$a() { _extends$a = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$a.apply(this, arguments); }
+  function _extends$b() { _extends$b = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$b.apply(this, arguments); }
   var CheckboxIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$a({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$b({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4161,11 +4258,11 @@
     d: "M34 18H20a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V20a2 2 0 00-2-2zm-9 14l-5-5 1.41-1.41L25 29.17l7.59-7.59L34 23l-9 9z"
   })));
 
-  function _extends$9() { _extends$9 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
+  function _extends$a() { _extends$a = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$a.apply(this, arguments); }
   var ChecklistIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$9({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$a({
     width: "54",
     height: "54",
     fill: "none",
@@ -4180,11 +4277,11 @@
     fill: "#22242A"
   })));
 
-  function _extends$8() { _extends$8 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
+  function _extends$9() { _extends$9 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
   var TaglistIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$8({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$9({
     width: "54",
     height: "54",
     fill: "none",
@@ -4199,11 +4296,11 @@
     fill: "#505562"
   })));
 
-  function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
+  function _extends$8() { _extends$8 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
   var FormIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$7({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$8({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4227,11 +4324,11 @@
     rx: "1"
   })));
 
-  function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
+  function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
   var ColumnsIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$6({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$7({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4240,11 +4337,11 @@
     d: "M8 33v5a1 1 0 001 1h4v2H9a3 3 0 01-3-3v-5h2zm18 6v2H15v-2h11zm13 0v2H28v-2h11zm9-6v5a3 3 0 01-3 3h-4v-2h4a1 1 0 00.993-.883L46 38v-5h2zM8 22v9H6v-9h2zm40 0v9h-2v-9h2zm-35-9v2H9a1 1 0 00-.993.883L8 16v4H6v-4a3 3 0 013-3h4zm32 0a3 3 0 013 3v4h-2v-4a1 1 0 00-.883-.993L45 15h-4v-2h4zm-6 0v2H28v-2h11zm-13 0v2H15v-2h11z"
   })));
 
-  function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
+  function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
   var NumberIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$5({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$6({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4253,11 +4350,11 @@
     d: "M45 16a3 3 0 013 3v16a3 3 0 01-3 3H9a3 3 0 01-3-3V19a3 3 0 013-3h36zm0 2H9a1 1 0 00-1 1v16a1 1 0 001 1h36a1 1 0 001-1V19a1 1 0 00-1-1zM35 28.444h7l-3.5 4-3.5-4zM35 26h7l-3.5-4-3.5 4z"
   })));
 
-  function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
+  function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
   var RadioIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$4({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$5({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4265,11 +4362,11 @@
     d: "M27 22c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
   })));
 
-  function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
+  function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
   var SelectIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$3({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$4({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4278,11 +4375,11 @@
     d: "M45 16a3 3 0 013 3v16a3 3 0 01-3 3H9a3 3 0 01-3-3V19a3 3 0 013-3h36zm0 2H9a1 1 0 00-1 1v16a1 1 0 001 1h36a1 1 0 001-1V19a1 1 0 00-1-1zm-12 7h9l-4.5 6-4.5-6z"
   })));
 
-  function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
+  function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
   var TextIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$2({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$3({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4290,17 +4387,30 @@
     d: "M20.58 33.77h-3l-1.18-3.08H11l-1.1 3.08H7l5.27-13.54h2.89zm-5-5.36l-1.86-5-1.83 5zM22 20.23h5.41a15.47 15.47 0 012.4.14 3.42 3.42 0 011.41.55 3.47 3.47 0 011 1.14 3 3 0 01.42 1.58 3.26 3.26 0 01-1.91 2.94 3.63 3.63 0 011.91 1.22 3.28 3.28 0 01.66 2 4 4 0 01-.43 1.8 3.63 3.63 0 01-1.09 1.4 3.89 3.89 0 01-1.83.65q-.69.07-3.3.09H22zm2.73 2.25v3.13h3.8a1.79 1.79 0 001.1-.49 1.41 1.41 0 00.41-1 1.49 1.49 0 00-.35-1 1.54 1.54 0 00-1-.48c-.27 0-1.05-.05-2.34-.05zm0 5.39v3.62h2.57a11.52 11.52 0 001.88-.09 1.65 1.65 0 001-.54 1.6 1.6 0 00.38-1.14 1.75 1.75 0 00-.29-1 1.69 1.69 0 00-.86-.62 9.28 9.28 0 00-2.41-.23zM44.35 28.79l2.65.84a5.94 5.94 0 01-2 3.29A5.74 5.74 0 0141.38 34a5.87 5.87 0 01-4.44-1.84 7.09 7.09 0 01-1.73-5A7.43 7.43 0 0137 21.87 6 6 0 0141.54 20a5.64 5.64 0 014 1.47A5.33 5.33 0 0147 24l-2.7.65a2.8 2.8 0 00-2.86-2.27A3.09 3.09 0 0039 23.42a5.31 5.31 0 00-.93 3.5 5.62 5.62 0 00.93 3.65 3 3 0 002.4 1.09 2.72 2.72 0 001.82-.66 4 4 0 001.13-2.21z"
   })));
 
-  function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+  function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
   var TextfieldIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$1({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$2({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
   }, props), /*#__PURE__*/React.createElement("path", {
     fillRule: "evenodd",
     d: "M45 16a3 3 0 013 3v16a3 3 0 01-3 3H9a3 3 0 01-3-3V19a3 3 0 013-3h36zm0 2H9a1 1 0 00-1 1v16a1 1 0 001 1h36a1 1 0 001-1V19a1 1 0 00-1-1zm-32 4v10h-2V22h2z"
+  })));
+
+  function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+  var DateFieldIcon = (({
+    styles = {},
+    ...props
+  }) => /*#__PURE__*/React.createElement("svg", _extends$1({
+    xmlns: "http://www.w3.org/2000/svg",
+    width: "54",
+    height: "54",
+    viewBox: "0 0 448 512"
+  }, props), /*#__PURE__*/React.createElement("path", {
+    d: "M152 64h144V24c0-13.25 10.7-24 24-24s24 10.75 24 24v40h40c35.3 0 64 28.65 64 64v320c0 35.3-28.7 64-64 64H64c-35.35 0-64-28.7-64-64V128c0-35.35 28.65-64 64-64h40V24c0-13.25 10.7-24 24-24s24 10.75 24 24v40zM48 448c0 8.8 7.16 16 16 16h320c8.8 0 16-7.2 16-16V192H48v256z"
   })));
 
   const iconsByType = {
@@ -4314,6 +4424,7 @@
     taglist: TaglistIcon,
     text: TextIcon,
     textfield: TextfieldIcon,
+    datefield: DateFieldIcon,
     default: FormIcon
   };
 
@@ -4344,34 +4455,41 @@
   }, {
     label: 'Button',
     type: 'button'
+  }, {
+    label: 'Date Field',
+    type: 'datefield'
   }];
   function Palette(props) {
-    return e$2("div", {
+    return e$1("div", {
       class: "fjs-palette",
-      children: [e$2("div", {
+      children: [e$1("div", {
         class: "fjs-palette-header",
         title: "Form elements library",
-        children: [e$2("span", {
+        children: [e$1("span", {
           class: "fjs-hide-compact",
           children: "FORM ELEMENTS "
         }), "LIBRARY"]
-      }), e$2("div", {
+      }), e$1("div", {
         class: "fjs-palette-fields fjs-drag-container fjs-no-drop",
         children: types.map(({
           label,
           type
         }) => {
           const Icon = iconsByType[type];
-          return e$2("div", {
+          return e$1("div", {
             class: "fjs-palette-field fjs-drag-copy fjs-no-drop",
             "data-field-type": type,
             title: `Create a ${label} element`,
-            children: [Icon ? e$2(Icon, {
+            children: [Icon ? Icon.name == "DateFieldIcon" ? e$1(Icon, {
+              class: "fjs-palette-field-icon",
+              width: "36",
+              height: "36"
+            }) : e$1(Icon, {
               class: "fjs-palette-field-icon",
               width: "36",
               height: "36",
               viewBox: "0 0 54 54"
-            }) : null, e$2("span", {
+            }) : null, e$1("span", {
               class: "fjs-palette-field-text fjs-hide-compact",
               children: label
             })]
@@ -4382,8 +4500,8 @@
   }
 
   var ArrowIcon = function ArrowIcon(props) {
-    return e$2("svg", { ...props,
-      children: e$2("path", {
+    return e$1("svg", { ...props,
+      children: e$1("path", {
         fillRule: "evenodd",
         d: "m11.657 8-4.95 4.95a1 1 0 0 1-1.414-1.414L8.828 8 5.293 4.464A1 1 0 1 1 6.707 3.05L11.657 8z"
       })
@@ -4397,8 +4515,8 @@
   };
 
   var CreateIcon = function CreateIcon(props) {
-    return e$2("svg", { ...props,
-      children: e$2("path", {
+    return e$1("svg", { ...props,
+      children: e$1("path", {
         fillRule: "evenodd",
         d: "M9 13V9h4a1 1 0 0 0 0-2H9V3a1 1 0 1 0-2 0v4H3a1 1 0 1 0 0 2h4v4a1 1 0 0 0 2 0z"
       })
@@ -4412,8 +4530,8 @@
   };
 
   var DeleteIcon = function DeleteIcon(props) {
-    return e$2("svg", { ...props,
-      children: e$2("path", {
+    return e$1("svg", { ...props,
+      children: e$1("path", {
         fillRule: "evenodd",
         d: "M12 6v7c0 1.1-.4 1.55-1.5 1.55h-5C4.4 14.55 4 14.1 4 13V6h8zm-1.5 1.5h-5v4.3c0 .66.5 1.2 1.111 1.2H9.39c.611 0 1.111-.54 1.111-1.2V7.5zM13 3h-2l-1-1H6L5 3H3v1.5h10V3z"
       })
@@ -4427,8 +4545,8 @@
   };
 
   var ExternalLinkIcon = function ExternalLinkIcon(props) {
-    return e$2("svg", { ...props,
-      children: e$2("path", {
+    return e$1("svg", { ...props,
+      children: e$1("path", {
         fillRule: "evenodd",
         clipRule: "evenodd",
         d: "M12.637 12.637v-4.72h1.362v4.721c0 .36-.137.676-.411.95-.275.275-.591.412-.95.412H3.362c-.38 0-.703-.132-.967-.396A1.315 1.315 0 0 1 2 12.638V3.362c0-.38.132-.703.396-.967S2.982 2 3.363 2h4.553v1.363H3.363v9.274h9.274zM14 2H9.28l-.001 1.362h2.408L5.065 9.984l.95.95 6.622-6.622v2.409H14V2z",
@@ -4445,16 +4563,16 @@
   };
 
   var FeelRequiredIcon = function FeelRequiredIcon(props) {
-    return e$2("svg", { ...props,
-      children: [e$2("path", {
+    return e$1("svg", { ...props,
+      children: [e$1("path", {
         d: "M5.8 7.06V5.95h4.307v1.11H5.8zm0 3.071v-1.11h4.307v1.11H5.8z",
         fill: "#505562"
-      }), e$2("path", {
+      }), e$1("path", {
         fillRule: "evenodd",
         clipRule: "evenodd",
         d: "M8 3.268A4.732 4.732 0 1 0 12.732 8H14a6 6 0 1 1-6-6v1.268z",
         fill: "#505562"
-      }), e$2("path", {
+      }), e$1("path", {
         d: "m11.28 6.072-.832-.56 1.016-1.224L10 3.848l.312-.912 1.392.584L11.632 2h1.032l-.072 1.52 1.392-.584.312.912-1.464.44 1.008 1.224-.832.552-.864-1.296-.864 1.304z",
         fill: "#505562"
       })]
@@ -4468,11 +4586,11 @@
   };
 
   var FeelOptionalIcon = function FeelOptionalIcon(props) {
-    return e$2("svg", { ...props,
-      children: [e$2("path", {
+    return e$1("svg", { ...props,
+      children: [e$1("path", {
         d: "M5.845 7.04V5.93h4.307v1.11H5.845zm0 3.07V9h4.307v1.11H5.845z",
         fill: "#505562"
-      }), e$2("path", {
+      }), e$1("path", {
         fillRule: "evenodd",
         clipRule: "evenodd",
         d: "M3.286 8a4.714 4.714 0 1 0 9.428 0 4.714 4.714 0 0 0-9.428 0zM8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2z",
@@ -4502,35 +4620,35 @@
     const type = getTypeLabel(element);
     const documentationRef = getDocumentationRef && getDocumentationRef(element);
     const ElementIcon = getElementIcon(element);
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-header",
-      children: [e$2("div", {
+      children: [e$1("div", {
         class: "bio-properties-panel-header-icon",
-        children: ElementIcon && e$2(ElementIcon, {
+        children: ElementIcon && e$1(ElementIcon, {
           width: "32",
           height: "32",
           viewBox: "0 0 32 32"
         })
-      }), e$2("div", {
+      }), e$1("div", {
         class: "bio-properties-panel-header-labels",
-        children: [e$2("div", {
+        children: [e$1("div", {
           title: type,
           class: "bio-properties-panel-header-type",
           children: type
-        }), label ? e$2("div", {
+        }), label ? e$1("div", {
           title: label,
           class: "bio-properties-panel-header-label",
           children: label
         }) : null]
-      }), e$2("div", {
+      }), e$1("div", {
         class: "bio-properties-panel-header-actions",
-        children: documentationRef ? e$2("a", {
+        children: documentationRef ? e$1("a", {
           rel: "noopener",
           class: "bio-properties-panel-header-link",
           href: documentationRef,
           title: "Open documentation",
           target: "_blank",
-          children: e$2(ExternalLinkIcon, {})
+          children: e$1(ExternalLinkIcon, {})
         }) : null
       })]
     });
@@ -4878,30 +4996,30 @@
     const propertiesPanelContext = { ...F$1(LayoutContext),
       onShow
     };
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-group",
       "data-group-id": 'group-' + id,
       ref: groupRef,
-      children: [e$2("div", {
+      children: [e$1("div", {
         class: classnames('bio-properties-panel-group-header', edited ? '' : 'empty', open ? 'open' : '', sticky && open ? 'sticky' : ''),
         onClick: toggleOpen,
-        children: [e$2("div", {
+        children: [e$1("div", {
           title: label,
           class: "bio-properties-panel-group-header-title",
           children: label
-        }), e$2("div", {
+        }), e$1("div", {
           class: "bio-properties-panel-group-header-buttons",
-          children: [edited && e$2(DataMarker, {}), e$2("button", {
+          children: [edited && e$1(DataMarker, {}), e$1("button", {
             title: "Toggle section",
             class: "bio-properties-panel-group-header-button bio-properties-panel-arrow",
-            children: e$2(ArrowIcon, {
+            children: e$1(ArrowIcon, {
               class: open ? 'bio-properties-panel-arrow-down' : 'bio-properties-panel-arrow-right'
             })
           })]
         })]
-      }), e$2("div", {
+      }), e$1("div", {
         class: classnames('bio-properties-panel-group-entries', open ? 'open' : ''),
-        children: e$2(LayoutContext.Provider, {
+        children: e$1(LayoutContext.Provider, {
           value: propertiesPanelContext,
           children: entries.map(entry => {
             const {
@@ -4919,7 +5037,7 @@
   }
 
   function DataMarker() {
-    return e$2("div", {
+    return e$1("div", {
       title: "Section contains data",
       class: "bio-properties-panel-dot"
     });
@@ -4939,13 +5057,13 @@
       text,
       icon: Icon
     } = props;
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel open",
-      children: e$2("section", {
+      children: e$1("section", {
         class: "bio-properties-panel-placeholder",
-        children: [Icon && e$2(Icon, {
+        children: [Icon && e$1(Icon, {
           class: "bio-properties-panel-placeholder-icon"
-        }), e$2("p", {
+        }), e$1("p", {
           class: "bio-properties-panel-placeholder-text",
           children: text
         })]
@@ -5086,30 +5204,30 @@
     }; // empty state
 
     if (placeholderProvider && !element) {
-      return e$2(Placeholder, { ...placeholderProvider.getEmpty()
+      return e$1(Placeholder, { ...placeholderProvider.getEmpty()
       });
     } // multiple state
 
 
     if (placeholderProvider && isArray$1(element)) {
-      return e$2(Placeholder, { ...placeholderProvider.getMultiple()
+      return e$1(Placeholder, { ...placeholderProvider.getMultiple()
       });
     }
 
-    return e$2(LayoutContext.Provider, {
+    return e$1(LayoutContext.Provider, {
       value: propertiesPanelContext,
-      children: e$2(DescriptionContext.Provider, {
+      children: e$1(DescriptionContext.Provider, {
         value: descriptionContext,
-        children: e$2(LayoutContext.Provider, {
+        children: e$1(LayoutContext.Provider, {
           value: layoutContext,
-          children: e$2(EventContext.Provider, {
+          children: e$1(EventContext.Provider, {
             value: eventContext,
-            children: e$2("div", {
+            children: e$1("div", {
               class: classnames('bio-properties-panel', layout.open ? 'open' : ''),
-              children: [e$2(Header, {
+              children: [e$1(Header, {
                 element: element,
                 headerProvider: headerProvider
-              }), e$2("div", {
+              }), e$1("div", {
                 class: "bio-properties-panel-scroll-container",
                 children: groups.map(group => {
                   const {
@@ -5169,31 +5287,31 @@
     }; // todo(pinussilvestrus): translate once we have a translate mechanism for the core
 
     const placeholderLabel = '<empty>';
-    return e$2("div", {
+    return e$1("div", {
       "data-entry-id": id,
       class: classnames('bio-properties-panel-collapsible-entry', open ? 'open' : ''),
-      children: [e$2("div", {
+      children: [e$1("div", {
         class: "bio-properties-panel-collapsible-entry-header",
         onClick: toggleOpen,
-        children: [e$2("div", {
+        children: [e$1("div", {
           title: label || placeholderLabel,
           class: classnames('bio-properties-panel-collapsible-entry-header-title', !label && 'empty'),
           children: label || placeholderLabel
-        }), e$2("button", {
+        }), e$1("button", {
           title: "Toggle list item",
           class: "bio-properties-panel-arrow  bio-properties-panel-collapsible-entry-arrow",
-          children: e$2(ArrowIcon, {
+          children: e$1(ArrowIcon, {
             class: open ? 'bio-properties-panel-arrow-down' : 'bio-properties-panel-arrow-right'
           })
-        }), remove ? e$2("button", {
+        }), remove ? e$1("button", {
           title: "Delete item",
           class: "bio-properties-panel-remove-entry",
           onClick: remove,
-          children: e$2(DeleteIcon, {})
+          children: e$1(DeleteIcon, {})
         }) : null]
-      }), e$2("div", {
+      }), e$1("div", {
         class: classnames('bio-properties-panel-collapsible-entry-entries', open ? 'open' : ''),
-        children: e$2(LayoutContext.Provider, {
+        children: e$1(LayoutContext.Provider, {
           value: propertiesPanelContext,
           children: entries.map(entry => {
             const {
@@ -5230,9 +5348,9 @@
         }
       }
     }, [autoOpen, autoFocusEntry]);
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-list-item",
-      children: e$2(CollapsibleEntry, { ...props,
+      children: e$1(CollapsibleEntry, { ...props,
         open: autoOpen
       })
     });
@@ -5337,42 +5455,42 @@
     const propertiesPanelContext = { ...F$1(LayoutContext),
       onShow
     };
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-group",
       "data-group-id": 'group-' + id,
       ref: groupRef,
-      children: [e$2("div", {
+      children: [e$1("div", {
         class: classnames('bio-properties-panel-group-header', hasItems ? '' : 'empty', hasItems && open ? 'open' : '', sticky && open ? 'sticky' : ''),
         onClick: hasItems ? toggleOpen : noop$3,
-        children: [e$2("div", {
+        children: [e$1("div", {
           title: label,
           class: "bio-properties-panel-group-header-title",
           children: label
-        }), e$2("div", {
+        }), e$1("div", {
           class: "bio-properties-panel-group-header-buttons",
-          children: [add ? e$2("button", {
+          children: [add ? e$1("button", {
             title: "Create new list item",
             class: "bio-properties-panel-group-header-button bio-properties-panel-add-entry",
             onClick: add,
-            children: [e$2(CreateIcon, {}), !hasItems ? e$2("span", {
+            children: [e$1(CreateIcon, {}), !hasItems ? e$1("span", {
               class: "bio-properties-panel-add-entry-label",
               children: "Create"
             }) : null]
-          }) : null, hasItems ? e$2("div", {
+          }) : null, hasItems ? e$1("div", {
             title: `List contains ${items.length} item${items.length != 1 ? 's' : ''}`,
             class: "bio-properties-panel-list-badge",
             children: items.length
-          }) : null, hasItems ? e$2("button", {
+          }) : null, hasItems ? e$1("button", {
             title: "Toggle section",
             class: "bio-properties-panel-group-header-button bio-properties-panel-arrow",
-            children: e$2(ArrowIcon, {
+            children: e$1(ArrowIcon, {
               class: open ? 'bio-properties-panel-arrow-down' : 'bio-properties-panel-arrow-right'
             })
           }) : null]
         })]
-      }), e$2("div", {
+      }), e$1("div", {
         class: classnames('bio-properties-panel-list', open && hasItems ? 'open' : ''),
-        children: e$2(LayoutContext.Provider, {
+        children: e$1(LayoutContext.Provider, {
           value: propertiesPanelContext,
           children: ordering.map((o, index) => {
             const item = getItem(items, o);
@@ -5425,7 +5543,7 @@
     const description = value || contextDescription;
 
     if (description) {
-      return e$2("div", {
+      return e$1("div", {
         class: "bio-properties-panel-description",
         children: description
       });
@@ -5451,9 +5569,9 @@
     };
 
     const ref = useShowEntryEvent(show);
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-checkbox",
-      children: [e$2("input", {
+      children: [e$1("input", {
         ref: ref,
         id: prefixId$6(id),
         name: id,
@@ -5462,7 +5580,7 @@
         onChange: handleChange,
         checked: value,
         disabled: disabled
-      }), e$2("label", {
+      }), e$1("label", {
         for: prefixId$6(id),
         class: "bio-properties-panel-label",
         children: label
@@ -5494,20 +5612,20 @@
     } = props;
     const value = getValue(element);
     const error = useShowErrorEvent(show);
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-entry bio-properties-panel-checkbox-entry",
       "data-entry-id": id,
-      children: [e$2(Checkbox, {
+      children: [e$1(Checkbox, {
         disabled: disabled,
         id: id,
         label: label,
         onChange: setValue,
         show: show,
         value: value
-      }), error && e$2("div", {
+      }), error && e$1("div", {
         class: "bio-properties-panel-error",
         children: error
-      }), e$2(Description$1, {
+      }), e$1(Description$1, {
         forId: id,
         element: element,
         value: description
@@ -5548,13 +5666,13 @@
         }
       });
     }, [onInput, debounce]);
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-numberfield",
-      children: [e$2("label", {
+      children: [e$1("label", {
         for: prefixId$5(id),
         class: "bio-properties-panel-label",
         children: label
-      }), e$2("input", {
+      }), e$1("input", {
         id: prefixId$5(id),
         type: "number",
         name: id,
@@ -5601,10 +5719,10 @@
       step
     } = props;
     const value = getValue(element);
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-entry",
       "data-entry-id": id,
-      children: [e$2(NumberField, {
+      children: [e$1(NumberField, {
         debounce: debounce,
         disabled: disabled,
         id: id,
@@ -5614,7 +5732,7 @@
         min: min,
         step: step,
         value: value
-      }), e$2(Description$1, {
+      }), e$1(Description$1, {
         forId: id,
         element: element,
         value: description
@@ -5668,13 +5786,13 @@
       onChange(target.value);
     };
 
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-select",
-      children: [e$2("label", {
+      children: [e$1("label", {
         for: prefixId$4(id),
         class: "bio-properties-panel-label",
         children: label
-      }), e$2("select", {
+      }), e$1("select", {
         ref: ref,
         id: prefixId$4(id),
         name: id,
@@ -5683,7 +5801,7 @@
         value: value,
         disabled: disabled,
         children: options.map((option, idx) => {
-          return e$2("option", {
+          return e$1("option", {
             value: option.value,
             disabled: option.disabled,
             children: option.label
@@ -5720,10 +5838,10 @@
     const value = getValue(element);
     const options = getOptions(element);
     const error = useShowErrorEvent(show);
-    return e$2("div", {
+    return e$1("div", {
       class: classnames('bio-properties-panel-entry', error ? 'has-error' : ''),
       "data-entry-id": id,
-      children: [e$2(Select, {
+      children: [e$1(Select, {
         id: id,
         label: label,
         value: value,
@@ -5731,10 +5849,10 @@
         options: options,
         disabled: disabled,
         show: show
-      }), error && e$2("div", {
+      }), error && e$1("div", {
         class: "bio-properties-panel-error",
         children: error
-      }), e$2(Description$1, {
+      }), e$1(Description$1, {
         forId: id,
         element: element,
         value: description
@@ -5758,10 +5876,10 @@
     } = props;
     const feelRequiredLabel = ' must be a FEEL expression';
     const feelOptionalLabel = ' can optionally be a FEEL expression';
-    return e$2("i", {
+    return e$1("i", {
       class: "bio-properties-panel-feel-icon",
       title: label + (feel === 'required' ? feelRequiredLabel : feelOptionalLabel),
-      children: feel === 'required' ? e$2(FeelRequiredIcon, {}) : e$2(FeelOptionalIcon, {})
+      children: feel === 'required' ? e$1(FeelRequiredIcon, {}) : e$1(FeelOptionalIcon, {})
     });
   }
 
@@ -5782,16 +5900,16 @@
         target
       }) => onInput(target.value.length ? target.value : undefined));
     }, [onInput, debounce]);
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-textarea",
-      children: [e$2("label", {
+      children: [e$1("label", {
         for: prefixId$2(id),
         class: "bio-properties-panel-label",
-        children: [label, feel && e$2(FeelIcon, {
+        children: [label, feel && e$1(FeelIcon, {
           feel: feel,
           label: label
         })]
-      }), e$2("textarea", {
+      }), e$1("textarea", {
         id: prefixId$2(id),
         name: id,
         spellCheck: "false",
@@ -5835,10 +5953,10 @@
       disabled
     } = props;
     const value = getValue(element);
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-entry",
       "data-entry-id": id,
-      children: [e$2(TextArea, {
+      children: [e$1(TextArea, {
         id: id,
         label: label,
         value: value,
@@ -5848,7 +5966,7 @@
         monospace: monospace,
         feel: feel,
         disabled: disabled
-      }), e$2(Description$1, {
+      }), e$1(Description$1, {
         forId: id,
         element: element,
         value: description
@@ -5884,16 +6002,16 @@
         target
       }) => onInput(target.value.length ? target.value : undefined));
     }, [onInput, debounce]);
-    return e$2("div", {
+    return e$1("div", {
       class: "bio-properties-panel-textfield",
-      children: [e$2("label", {
+      children: [e$1("label", {
         for: prefixId$1(id),
         class: "bio-properties-panel-label",
-        children: [label, feel && e$2(FeelIcon, {
+        children: [label, feel && e$1(FeelIcon, {
           feel: feel,
           label: label
         })]
-      }), e$2("input", {
+      }), e$1("input", {
         ref: ref,
         id: prefixId$1(id),
         type: "text",
@@ -5970,10 +6088,10 @@
 
     const temporaryError = useShowErrorEvent(show);
     const error = temporaryError || validationError;
-    return e$2("div", {
+    return e$1("div", {
       class: classnames('bio-properties-panel-entry', error ? 'has-error' : ''),
       "data-entry-id": id,
-      children: [e$2(Textfield, {
+      children: [e$1(Textfield, {
         debounce: debounce,
         disabled: disabled,
         feel: feel,
@@ -5982,10 +6100,10 @@
         onInput: onInput,
         show: show,
         value: value
-      }), error && e$2("div", {
+      }), error && e$1("div", {
         class: "bio-properties-panel-error",
         children: error
-      }), e$2(Description$1, {
+      }), e$1(Description$1, {
         forId: id,
         element: element,
         value: description
@@ -6019,7 +6137,7 @@
 
     return text;
   }
-  const INPUTS = ['checkbox', 'checklist', 'number', 'radio', 'select', 'taglist', 'textfield'];
+  const INPUTS = ['checkbox', 'checklist', 'number', 'radio', 'select', 'taglist', 'textfield', 'datefield'];
   const OPTIONS_INPUTS = ['checklist', 'radio', 'select', 'taglist'];
 
   const labelsByType = {
@@ -6033,7 +6151,8 @@
     select: 'SELECT',
     taglist: 'TAGLIST',
     text: 'TEXT',
-    textfield: 'TEXT FIELD'
+    textfield: 'TEXT FIELD',
+    datefield: 'DATEFIELD'
   };
   const PropertiesPanelHeaderProvider = {
     getElementLabel: field => {
@@ -6058,7 +6177,7 @@
       const Icon = iconsByType[type];
 
       if (Icon) {
-        return () => e$2(Icon, {
+        return () => e$1(Icon, {
           width: "36",
           height: "36",
           viewBox: "0 0 54 54"
@@ -6984,6 +7103,56 @@
     }, {});
   }
 
+  function HiddenEntry(props) {
+    const {
+      editField,
+      field
+    } = props;
+    const {
+      type
+    } = field;
+    const entries = [];
+
+    if (INPUTS.includes(type) || type === 'button') {
+      entries.push({
+        id: 'hiddenFx',
+        component: HiddenFx,
+        editField: editField,
+        field: field,
+        isEdited: isEdited$1
+      });
+    }
+
+    return entries;
+  }
+
+  function HiddenFx(props) {
+    const {
+      editField,
+      field,
+      id
+    } = props;
+    const debounce = useService('debounce');
+    const path = ['hiddenFx'];
+
+    const getValue = () => {
+      return get(field, path, '');
+    };
+
+    const setValue = value => {
+      return editField(field, path, value);
+    };
+
+    return TextfieldEntry({
+      debounce,
+      element: field,
+      getValue,
+      id,
+      label: 'Should be hidden',
+      setValue
+    });
+  }
+
   function GeneralGroup(field, editField) {
     const entries = [...IdEntry({
       field,
@@ -7010,6 +7179,9 @@
       field,
       editField
     }), ...DisabledEntry({
+      field,
+      editField
+    }), ...HiddenEntry({
       field,
       editField
     })];
@@ -7397,12 +7569,12 @@
 
     const onBlur = () => eventBus.fire('propertiesPanel.focusout');
 
-    return e$2("div", {
+    return e$1("div", {
       class: "fjs-properties-panel",
       "data-field": field && field.id,
       onFocusCapture: onFocus,
       onBlurCapture: onBlur,
-      children: e$2(PropertiesPanel, {
+      children: e$1(PropertiesPanel, {
         element: field,
         eventBus: eventBus,
         groups: getGroups(field, editField),
@@ -7429,7 +7601,7 @@
       return null;
     }
 
-    return e$2("div", {
+    return e$1("div", {
       class: "fjs-context-pad",
       children: props.children
     });
@@ -7496,17 +7668,17 @@
       modeling.removeFormField(field, parentField, index);
     };
 
-    return e$2("div", {
+    return e$1("div", {
       class: classes.join(' '),
       "data-id": id,
       "data-field-type": type,
       onClick: onClick,
       ref: ref,
-      children: [e$2(ContextPad, {
-        children: selection.isSelected(field) && field.type !== 'default' ? e$2("button", {
+      children: [e$1(ContextPad, {
+        children: selection.isSelected(field) && field.type !== 'default' ? e$1("button", {
           class: "fjs-context-pad-item",
           onClick: onRemove,
-          children: e$2(ListDeleteIcon, {})
+          children: e$1(ListDeleteIcon, {})
         }) : null
       }), props.children]
     });
@@ -7525,7 +7697,7 @@
       classes.push(...props.class.split(' '));
     }
 
-    return e$2("div", {
+    return e$1("div", {
       class: classes.join(' '),
       "data-id": id,
       children: props.children
@@ -7662,29 +7834,29 @@
     const onSubmit = A$1(() => {}, []);
     const onReset = A$1(() => {}, []);
     const editField = A$1((formField, key, value) => modeling.editFormField(formField, key, value), [modeling]);
-    return e$2("div", {
+    return e$1("div", {
       class: "fjs-form-editor",
-      children: [e$2(DragAndDropContext.Provider, {
+      children: [e$1(DragAndDropContext.Provider, {
         value: dragAndDropContext,
-        children: [e$2("div", {
+        children: [e$1("div", {
           class: "fjs-palette-container",
-          children: e$2(Palette, {})
-        }), e$2("div", {
+          children: e$1(Palette, {})
+        }), e$1("div", {
           class: "fjs-form-container",
-          children: e$2(FormContext.Provider, {
+          children: e$1(FormContext.Provider, {
             value: formContext,
-            children: e$2(FormRenderContext.Provider, {
+            children: e$1(FormRenderContext.Provider, {
               value: formRenderContext,
-              children: e$2(FormComponent, {
+              children: e$1(FormComponent, {
                 onSubmit: onSubmit,
                 onReset: onReset
               })
             })
           })
-        }), e$2(CreatePreview, {})]
-      }), e$2("div", {
+        }), e$1(CreatePreview, {})]
+      }), e$1("div", {
         class: "fjs-properties-container",
-        children: e$2(FormPropertiesPanel, {
+        children: e$1(FormPropertiesPanel, {
           field: selectedFormField,
           editField: editField
         })
@@ -7716,7 +7888,7 @@
       if (fieldType) {
         clone.innerHTML = '';
         clone.class = 'gu-mirror';
-        S$1(e$2(Icon, {}), clone);
+        S$1(e$1(Icon, {}), clone);
       }
     }
 
@@ -7757,17 +7929,17 @@
           return null;
         }
 
-        return e$2("div", {
+        return e$1("div", {
           class: `fjs-container fjs-editor-container ${compact ? 'fjs-editor-compact' : ''}`,
-          children: e$2(FormEditorContext.Provider, {
+          children: e$1(FormEditorContext.Provider, {
             value: formEditorContext,
-            children: e$2(FormEditor$1, {})
+            children: e$1(FormEditor$1, {})
           })
         });
       };
 
       eventBus.on('form.init', () => {
-        S$1(e$2(App, {}), container);
+        S$1(e$1(App, {}), container);
       });
       eventBus.on('form.destroy', () => {
         S$1(null, container);
