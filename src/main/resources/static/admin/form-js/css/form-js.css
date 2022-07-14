@@ -134,6 +134,7 @@
 
 .fjs-container .fjs-input[type='text'],
 .fjs-container .fjs-input[type='number'],
+.fjs-container .fjs-input[type='date'],
 .fjs-container .fjs-button[type='submit'],
 .fjs-container .fjs-button[type='reset'],
 .fjs-container .fjs-textarea,
@@ -334,4 +335,12 @@
 .fjs-container .fjs-dropdownlist .fjs-dropdownlist-empty {
   padding: 6px 8px;
   color: var(--color-text-lighter);
+}
+
+
+.hidden {
+	display: none;
+}
+.fjs-form-editor .hidden {
+	display: inline;
 }
