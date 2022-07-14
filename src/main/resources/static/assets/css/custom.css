@@ -94,3 +94,6 @@ h2 {
     border:0px;
     background:white;
 }
+.dropdown-menu {
+	box-shadow: -2px 2px 3px #666;
+}
