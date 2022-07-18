@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-/**
- * @author christophe.dame
- */
 public abstract class AbstractController {
 
     public abstract Logger getLogger();

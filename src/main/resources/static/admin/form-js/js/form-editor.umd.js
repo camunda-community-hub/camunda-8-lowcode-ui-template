@@ -476,8 +476,8 @@
     return _typeof(obj);
   }
 
-  function _extends$e() {
-    _extends$e = Object.assign || function (target) {
+  function _extends$f() {
+    _extends$f = Object.assign || function (target) {
       for (var i = 1; i < arguments.length; i++) {
         var source = arguments[i];
 
@@ -491,7 +491,7 @@
       return target;
     };
 
-    return _extends$e.apply(this, arguments);
+    return _extends$f.apply(this, arguments);
   }
 
   /**
@@ -508,7 +508,7 @@
       others[_key - 1] = arguments[_key];
     }
 
-    return _extends$e.apply(void 0, [target].concat(others));
+    return _extends$f.apply(void 0, [target].concat(others));
   }
   /**
    * Sets a nested property of a given object to the specified value.
@@ -1277,29 +1277,14 @@
     return getService(type, strict);
   }
 
-  function formFieldClasses(type, errors = []) {
-    if (!type) {
-      throw new Error('type required');
-    }
-
-    const classes = ['fjs-form-field', `fjs-form-field-${type}`];
-
-    if (errors.length) {
-      classes.push('fjs-has-errors');
-    }
-
-    return classes.join(' ');
-  }
   function formFieldClassesCustom(type, hiddenFx, errors = []) {
     const form = useService$1('form');
     let dataStr = JSON.stringify(form._getState().data);
-    console.log(form);
 
     if (!type) {
       throw new Error('type required');
     }
 
-    console.log("let data = " + dataStr + "; return " + hiddenFx);
     let hidden = false;
 
     try {
@@ -1310,7 +1295,6 @@
 
     let fieldClass = hidden ? 'fjs-form-field hidden' : 'fjs-form-field';
     const classes = [fieldClass, `fjs-form-field-${type}`];
-    console.log(fieldClass);
 
     if (errors.length) {
       classes.push('fjs-has-errors');
@@ -1335,17 +1319,20 @@
     return sanitizeHTML(html);
   }
 
-  const type$9 = 'button';
+  const type$a = 'button';
   function Button(props) {
     const {
       disabled,
       field
     } = props;
     const {
-      action = 'submit'
+      action = 'submit',
+      hiddenFx,
+      targetApi,
+      targetApiVerb
     } = field;
     return e$1("div", {
-      class: formFieldClasses(type$9),
+      class: formFieldClassesCustom(type$a, hiddenFx),
       children: e$1("button", {
         class: "fjs-button",
         type: action,
@@ -1362,9 +1349,10 @@
     };
   };
 
-  Button.type = type$9;
+  Button.type = type$a;
   Button.label = 'Button';
   Button.keyed = true;
+  Button.hiddenFx = 'false';
 
   function Description$2(props) {
     const {
@@ -1418,7 +1406,7 @@
     });
   }
 
-  const type$8 = 'checkbox';
+  const type$9 = 'checkbox';
   function Checkbox$1(props) {
     const {
       disabled,
@@ -1429,7 +1417,8 @@
     const {
       description,
       id,
-      label
+      label,
+      hiddenFx
     } = field;
 
     const onChange = ({
@@ -1445,7 +1434,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClasses(type$8, errors),
+      class: formFieldClassesCustom(type$9, hiddenFx, errors),
       children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
@@ -1471,12 +1460,13 @@
     };
   };
 
-  Checkbox$1.type = type$8;
+  Checkbox$1.type = type$9;
   Checkbox$1.label = 'Checkbox';
   Checkbox$1.keyed = true;
   Checkbox$1.emptyValue = false;
+  Checkbox$1.hiddenFx = 'false';
 
-  const type$7 = 'checklist';
+  const type$8 = 'checklist';
   function Checklist(props) {
     const {
       disabled,
@@ -1488,8 +1478,24 @@
       description,
       id,
       label,
-      values
+      values,
+      dataSource,
+      hiddenFx
     } = field;
+    const [myValues, myValuesSet] = l$1([]);
+    const fetchMyAPI = A$1(async () => {
+      if (dataSource && dataSource.length > 0) {
+        let response = await fetch(dataSource);
+        response = await response.json();
+        myValuesSet(response);
+      } else {
+        myValuesSet(values);
+      }
+    }, [dataSource]); // if dataSource changes, useEffect will run again
+
+    y(() => {
+      fetchMyAPI();
+    }, [fetchMyAPI]);
 
     const toggleCheckbox = v => {
       let newValue = [...value];
@@ -1510,10 +1516,10 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClasses(type$7, errors),
+      class: formFieldClassesCustom(type$8, hiddenFx, errors),
       children: [e$1(Label$2, {
         label: label
-      }), values.map((v, index) => {
+      }), myValues.map((v, index) => {
         return e$1(Label$2, {
           id: prefixId(`${id}-${index}`, formId),
           label: v.label,
@@ -1545,10 +1551,11 @@
     };
   };
 
-  Checklist.type = type$7;
+  Checklist.type = type$8;
   Checklist.label = 'Checklist';
   Checklist.keyed = true;
   Checklist.emptyValue = [];
+  Checklist.hiddenFx = 'false';
 
   const noop$1$1 = () => false;
 
@@ -1758,7 +1765,7 @@
     });
   }
 
-  const type$6 = 'number';
+  const type$7 = 'number';
   function Number$1(props) {
     const {
       disabled,
@@ -1791,7 +1798,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$6, hiddenFx, errors),
+      class: formFieldClassesCustom(type$7, hiddenFx, errors),
       children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
@@ -1816,13 +1823,13 @@
     };
   };
 
-  Number$1.type = type$6;
+  Number$1.type = type$7;
   Number$1.keyed = true;
   Number$1.label = 'Number';
   Number$1.emptyValue = null;
   Number$1.hiddenFx = 'false';
 
-  const type$5 = 'radio';
+  const type$6 = 'radio';
   function Radio(props) {
     const {
       disabled,
@@ -1835,7 +1842,8 @@
       id,
       label,
       validate = {},
-      values
+      values,
+      hiddenFx
     } = field;
     const {
       required
@@ -1852,7 +1860,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClasses(type$5, errors),
+      class: formFieldClassesCustom(type$6, hiddenFx, errors),
       children: [e$1(Label$2, {
         label: label,
         required: required
@@ -1888,12 +1896,13 @@
     };
   };
 
-  Radio.type = type$5;
+  Radio.type = type$6;
   Radio.label = 'Radio';
   Radio.keyed = true;
   Radio.emptyValue = null;
+  Radio.hiddenFx = 'false';
 
-  const type$4 = 'select';
+  const type$5 = 'select';
   function Select$1(props) {
     const {
       disabled,
@@ -1907,11 +1916,26 @@
       label,
       hiddenFx,
       validate = {},
+      dataSource,
       values
     } = field;
     const {
       required
     } = validate;
+    const [myValues, myValuesSet] = l$1([]);
+    const fetchMyAPI = A$1(async () => {
+      if (dataSource && dataSource.length > 0) {
+        let response = await fetch(dataSource);
+        response = await response.json();
+        myValuesSet(response);
+      } else {
+        myValuesSet(values);
+      }
+    }, [dataSource]); // if dataSource changes, useEffect will run again
+
+    y(() => {
+      fetchMyAPI();
+    }, [fetchMyAPI]);
 
     const onChange = ({
       target
@@ -1926,7 +1950,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$4, hiddenFx, errors),
+      class: formFieldClassesCustom(type$5, hiddenFx, errors),
       children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
@@ -1939,7 +1963,7 @@
         value: value || '',
         children: [e$1("option", {
           value: ""
-        }), values.map((v, index) => {
+        }), myValues.map((v, index) => {
           return e$1("option", {
             value: v.value,
             children: v.label
@@ -1963,17 +1987,17 @@
     };
   };
 
-  Select$1.type = type$4;
+  Select$1.type = type$5;
   Select$1.label = 'Select';
   Select$1.keyed = true;
   Select$1.emptyValue = null;
   Select$1.hiddenFx = 'false';
 
-  function _extends$d() { _extends$d = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$d.apply(this, arguments); }
+  function _extends$e() { _extends$e = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$e.apply(this, arguments); }
   var CloseIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$d({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$e({
     width: "16",
     height: "16",
     fill: "none",
@@ -2101,7 +2125,7 @@
     });
   }
 
-  const type$3 = 'taglist';
+  const type$4 = 'taglist';
   function Taglist(props) {
     const {
       disabled,
@@ -2113,7 +2137,9 @@
       description,
       id,
       label,
-      values: options
+      dataSource,
+      values: options,
+      hiddenFx
     } = field;
     const {
       formId
@@ -2124,18 +2150,32 @@
     const [isDropdownExpanded, setIsDropdownExpanded] = l$1(false);
     const [hasValuesLeft, setHasValuesLeft] = l$1(true);
     const [escapeClose, setEscapeClose] = l$1(false);
-    const searchbarRef = s(); // Usage of stringify is necessary here because we want this effect to only trigger when there is a value change to the array
+    const searchbarRef = s();
+    const [myOptions, myOptionsSet] = l$1([]);
+    const fetchMyAPI = A$1(async () => {
+      if (dataSource && dataSource.length > 0) {
+        let response = await fetch(dataSource);
+        response = await response.json();
+        myOptionsSet(response);
+      } else {
+        myOptionsSet(options);
+      }
+    }, [dataSource]); // if dataSource changes, useEffect will run again
 
     y(() => {
-      const selectedValues = values.map(v => options.find(o => o.value === v)).filter(v => v !== undefined);
+      fetchMyAPI();
+    }, [fetchMyAPI]); // Usage of stringify is necessary here because we want this effect to only trigger when there is a value change to the array
+
+    y(() => {
+      const selectedValues = values.map(v => myOptions.find(o => o.value === v)).filter(v => v !== undefined);
       setSelectedValues(selectedValues);
-    }, [JSON.stringify(values), options]);
+    }, [JSON.stringify(values), myOptions]);
     y(() => {
-      setFilteredValues(options.filter(o => o.label && o.label.toLowerCase().includes(filter.toLowerCase()) && !values.includes(o.value)));
-    }, [filter, JSON.stringify(values), options]);
+      setFilteredValues(myOptions.filter(o => o.label && o.label.toLowerCase().includes(filter.toLowerCase()) && !values.includes(o.value)));
+    }, [filter, JSON.stringify(values), myOptions]);
     y(() => {
-      setHasValuesLeft(selectedValues.length < options.length);
-    }, [selectedValues.length, options.length]);
+      setHasValuesLeft(selectedValues.length < myOptions.length);
+    }, [selectedValues.length, myOptions.length]);
 
     const onFilterChange = ({
       target
@@ -2188,7 +2228,7 @@
     };
 
     return e$1("div", {
-      class: formFieldClasses(type$3, errors),
+      class: formFieldClassesCustom(type$4, hiddenFx, errors),
       children: [e$1(Label$2, {
         label: label,
         id: prefixId(id, formId)
@@ -2244,31 +2284,33 @@
     });
   }
 
-  Taglist.create = function (options = {}) {
+  Taglist.create = function (myOptions = {}) {
     return {
       values: [{
         label: 'Value',
         value: 'value'
       }],
-      ...options
+      ...myOptions
     };
   };
 
-  Taglist.type = type$3;
+  Taglist.type = type$4;
   Taglist.label = 'Taglist';
   Taglist.keyed = true;
   Taglist.emptyValue = [];
+  Taglist.hiddenFx = 'false';
 
-  const type$2 = 'text';
+  const type$3 = 'text';
   function Text$1(props) {
     const {
       field
     } = props;
     const {
-      text = ''
+      text = '',
+      hiddenFx
     } = field;
     return e$1("div", {
-      class: formFieldClasses(type$2),
+      class: formFieldClassesCustom(type$3, hiddenFx),
       children: e$1(Markup, {
         markup: safeMarkdown(text),
         trim: false
@@ -2283,11 +2325,75 @@
     };
   };
 
-  Text$1.type = type$2;
+  Text$1.type = type$3;
   Text$1.keyed = false;
+  Text$1.hiddenFx = 'false';
 
-  const type$1 = 'textfield';
+  const type$2 = 'textfield';
   function Textfield$1(props) {
+    const {
+      disabled,
+      errors = [],
+      field,
+      value = ''
+    } = props;
+    const {
+      description,
+      id,
+      label,
+      hiddenFx,
+      validate = {}
+    } = field;
+    const {
+      required
+    } = validate;
+
+    const onChange = ({
+      target
+    }) => {
+      props.onChange({
+        field,
+        value: target.value
+      });
+    };
+
+    const {
+      formId
+    } = F$1(FormContext);
+    return e$1("div", {
+      class: formFieldClassesCustom(type$2, hiddenFx, errors),
+      children: [e$1(Label$2, {
+        id: prefixId(id, formId),
+        label: label,
+        required: required
+      }), e$1("input", {
+        class: "fjs-input",
+        disabled: disabled,
+        id: prefixId(id, formId),
+        onInput: onChange,
+        type: "text",
+        value: value
+      }), e$1(Description$2, {
+        description: description
+      }), e$1(Errors, {
+        errors: errors
+      })]
+    });
+  }
+
+  Textfield$1.create = function (options = {}) {
+    return { ...options
+    };
+  };
+
+  Textfield$1.type = type$2;
+  Textfield$1.label = 'Text Field';
+  Textfield$1.keyed = true;
+  Textfield$1.emptyValue = '';
+  Textfield$1.hiddenFx = 'false';
+
+  const type$1 = 'datefield';
+  function Datefield(props) {
     const {
       disabled,
       errors = [],
@@ -2328,69 +2434,6 @@
         disabled: disabled,
         id: prefixId(id, formId),
         onInput: onChange,
-        type: "text",
-        value: value
-      }), e$1(Description$2, {
-        description: description
-      }), e$1(Errors, {
-        errors: errors
-      })]
-    });
-  }
-
-  Textfield$1.create = function (options = {}) {
-    return { ...options
-    };
-  };
-
-  Textfield$1.type = type$1;
-  Textfield$1.label = 'Text Field';
-  Textfield$1.keyed = true;
-  Textfield$1.emptyValue = '';
-  Textfield$1.hiddenFx = 'false';
-
-  const type = 'datefield';
-  function Datefield(props) {
-    const {
-      disabled,
-      errors = [],
-      field,
-      value = ''
-    } = props;
-    const {
-      description,
-      id,
-      label,
-      hiddenFx,
-      validate = {}
-    } = field;
-    const {
-      required
-    } = validate;
-
-    const onChange = ({
-      target
-    }) => {
-      props.onChange({
-        field,
-        value: target.value
-      });
-    };
-
-    const {
-      formId
-    } = F$1(FormContext);
-    return e$1("div", {
-      class: formFieldClassesCustom(type, hiddenFx, errors),
-      children: [e$1(Label$2, {
-        id: prefixId(id, formId),
-        label: label,
-        required: required
-      }), e$1("input", {
-        class: "fjs-input",
-        disabled: disabled,
-        id: prefixId(id, formId),
-        onInput: onChange,
         type: "date",
         value: value
       }), e$1(Description$2, {
@@ -2406,13 +2449,121 @@
     };
   };
 
-  Datefield.type = type;
+  Datefield.type = type$1;
   Datefield.label = 'Date Field';
   Datefield.keyed = true;
   Datefield.emptyValue = '';
   Datefield.hiddenFx = 'false';
 
-  const formFields = [Button, Checkbox$1, Checklist, Default, Number$1, Radio, Select$1, Taglist, Text$1, Textfield$1, Datefield];
+  const type = 'table';
+  function tableClasses(type, hiddenFx, length) {
+    let classes = formFieldClassesCustom(type, hiddenFx, []);
+    return classes + ' table' + length;
+  }
+  function Table(props) {
+    const {
+      disabled,
+      errors = [],
+      field,
+      value = ''
+    } = props;
+    const {
+      description,
+      id,
+      label,
+      hiddenFx,
+      headers,
+      headersNames,
+      editableColumns,
+      validate = {}
+    } = field;
+    const {
+      required
+    } = validate;
+    const headersArray = headers ? headers.split(",") : [];
+    const headersNamesArray = headersNames ? headersNames.split(",") : [];
+    const editableColumnsArray = editableColumns ? editableColumns.split(",") : [];
+    const editableMap = {}; //build the editableMap
+
+    for (let i = 0; i < editableColumnsArray.length; i++) {
+      let col = editableColumnsArray[i].trim();
+      let type = "text";
+      let colAndType = col.match(/([a-z0-9]+)[ ]*\[([a-z]+)\]/i);
+
+      if (colAndType != null) {
+        col = colAndType[1];
+        type = colAndType[2];
+      }
+
+      editableMap[col] = type;
+    }
+
+    const {
+      formId
+    } = F$1(FormContext);
+
+    const onChange = (index, col, newValue) => {
+      value[index][col] = newValue;
+      props.onChange({
+        field,
+        value: value
+      });
+    };
+
+    const getInput = (col, type, index) => {
+      return type == 'boolean' || type == 'bool' ? e$1("input", {
+        checked: value[index][col],
+        class: "fjs-table-checkbox",
+        type: "checkbox",
+        onChange: e => onChange(index, col, e.target.checked)
+      }) : e$1("input", {
+        class: "fjs-table-input",
+        onInput: e => onChange(index, col, e.target.value),
+        type: type,
+        value: value[index][col]
+      });
+    };
+
+    return e$1("div", {
+      class: tableClasses(type, hiddenFx, headersArray.length),
+      children: [e$1(Label$2, {
+        id: prefixId(id, formId),
+        label: label,
+        required: required
+      }), e$1("table", {
+        children: [e$1("thead", {
+          children: e$1("tr", {
+            children: headersNamesArray.map(header => e$1("th", {
+              children: header.trim()
+            }))
+          })
+        }), e$1("tbody", {
+          children: value && value.map((row, index) => e$1("tr", {
+            children: headersArray.map(header => e$1("td", {
+              children: editableMap[header.trim()] ? getInput(header.trim(), editableMap[header.trim()], index) : row[header.trim()]
+            }))
+          }))
+        })]
+      }), e$1(Description$2, {
+        description: description
+      }), e$1(Errors, {
+        errors: errors
+      })]
+    });
+  }
+
+  Table.create = function (options = {}) {
+    return { ...options
+    };
+  };
+
+  Table.type = type;
+  Table.label = 'Table';
+  Table.keyed = true;
+  Table.emptyValue = '';
+  Table.hiddenFx = 'false';
+
+  const formFields = [Button, Checkbox$1, Checklist, Default, Number$1, Radio, Select$1, Taglist, Text$1, Textfield$1, Datefield, Table];
 
   class FormFields {
     constructor() {
@@ -4233,11 +4384,11 @@
     return getService(type, strict);
   }
 
-  function _extends$c() { _extends$c = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$c.apply(this, arguments); }
+  function _extends$d() { _extends$d = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$d.apply(this, arguments); }
   var ButtonIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$c({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$d({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4246,11 +4397,11 @@
     d: "M45 17a3 3 0 013 3v14a3 3 0 01-3 3H9a3 3 0 01-3-3V20a3 3 0 013-3h36zm-9 8.889H18v2.222h18V25.89z"
   })));
 
-  function _extends$b() { _extends$b = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$b.apply(this, arguments); }
+  function _extends$c() { _extends$c = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$c.apply(this, arguments); }
   var CheckboxIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$b({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$c({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4258,11 +4409,11 @@
     d: "M34 18H20a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V20a2 2 0 00-2-2zm-9 14l-5-5 1.41-1.41L25 29.17l7.59-7.59L34 23l-9 9z"
   })));
 
-  function _extends$a() { _extends$a = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$a.apply(this, arguments); }
+  function _extends$b() { _extends$b = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$b.apply(this, arguments); }
   var ChecklistIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$a({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$b({
     width: "54",
     height: "54",
     fill: "none",
@@ -4277,11 +4428,11 @@
     fill: "#22242A"
   })));
 
-  function _extends$9() { _extends$9 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
+  function _extends$a() { _extends$a = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$a.apply(this, arguments); }
   var TaglistIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$9({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$a({
     width: "54",
     height: "54",
     fill: "none",
@@ -4296,11 +4447,11 @@
     fill: "#505562"
   })));
 
-  function _extends$8() { _extends$8 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
+  function _extends$9() { _extends$9 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
   var FormIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$8({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$9({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4324,11 +4475,11 @@
     rx: "1"
   })));
 
-  function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
+  function _extends$8() { _extends$8 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
   var ColumnsIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$7({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$8({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4337,11 +4488,11 @@
     d: "M8 33v5a1 1 0 001 1h4v2H9a3 3 0 01-3-3v-5h2zm18 6v2H15v-2h11zm13 0v2H28v-2h11zm9-6v5a3 3 0 01-3 3h-4v-2h4a1 1 0 00.993-.883L46 38v-5h2zM8 22v9H6v-9h2zm40 0v9h-2v-9h2zm-35-9v2H9a1 1 0 00-.993.883L8 16v4H6v-4a3 3 0 013-3h4zm32 0a3 3 0 013 3v4h-2v-4a1 1 0 00-.883-.993L45 15h-4v-2h4zm-6 0v2H28v-2h11zm-13 0v2H15v-2h11z"
   })));
 
-  function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
+  function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
   var NumberIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$6({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$7({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4350,11 +4501,11 @@
     d: "M45 16a3 3 0 013 3v16a3 3 0 01-3 3H9a3 3 0 01-3-3V19a3 3 0 013-3h36zm0 2H9a1 1 0 00-1 1v16a1 1 0 001 1h36a1 1 0 001-1V19a1 1 0 00-1-1zM35 28.444h7l-3.5 4-3.5-4zM35 26h7l-3.5-4-3.5 4z"
   })));
 
-  function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
+  function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
   var RadioIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$5({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$6({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4362,11 +4513,11 @@
     d: "M27 22c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
   })));
 
-  function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
+  function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
   var SelectIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$4({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$5({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4375,11 +4526,11 @@
     d: "M45 16a3 3 0 013 3v16a3 3 0 01-3 3H9a3 3 0 01-3-3V19a3 3 0 013-3h36zm0 2H9a1 1 0 00-1 1v16a1 1 0 001 1h36a1 1 0 001-1V19a1 1 0 00-1-1zm-12 7h9l-4.5 6-4.5-6z"
   })));
 
-  function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
+  function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
   var TextIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$3({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$4({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4387,11 +4538,11 @@
     d: "M20.58 33.77h-3l-1.18-3.08H11l-1.1 3.08H7l5.27-13.54h2.89zm-5-5.36l-1.86-5-1.83 5zM22 20.23h5.41a15.47 15.47 0 012.4.14 3.42 3.42 0 011.41.55 3.47 3.47 0 011 1.14 3 3 0 01.42 1.58 3.26 3.26 0 01-1.91 2.94 3.63 3.63 0 011.91 1.22 3.28 3.28 0 01.66 2 4 4 0 01-.43 1.8 3.63 3.63 0 01-1.09 1.4 3.89 3.89 0 01-1.83.65q-.69.07-3.3.09H22zm2.73 2.25v3.13h3.8a1.79 1.79 0 001.1-.49 1.41 1.41 0 00.41-1 1.49 1.49 0 00-.35-1 1.54 1.54 0 00-1-.48c-.27 0-1.05-.05-2.34-.05zm0 5.39v3.62h2.57a11.52 11.52 0 001.88-.09 1.65 1.65 0 001-.54 1.6 1.6 0 00.38-1.14 1.75 1.75 0 00-.29-1 1.69 1.69 0 00-.86-.62 9.28 9.28 0 00-2.41-.23zM44.35 28.79l2.65.84a5.94 5.94 0 01-2 3.29A5.74 5.74 0 0141.38 34a5.87 5.87 0 01-4.44-1.84 7.09 7.09 0 01-1.73-5A7.43 7.43 0 0137 21.87 6 6 0 0141.54 20a5.64 5.64 0 014 1.47A5.33 5.33 0 0147 24l-2.7.65a2.8 2.8 0 00-2.86-2.27A3.09 3.09 0 0039 23.42a5.31 5.31 0 00-.93 3.5 5.62 5.62 0 00.93 3.65 3 3 0 002.4 1.09 2.72 2.72 0 001.82-.66 4 4 0 001.13-2.21z"
   })));
 
-  function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
+  function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
   var TextfieldIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$2({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$3({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4400,17 +4551,30 @@
     d: "M45 16a3 3 0 013 3v16a3 3 0 01-3 3H9a3 3 0 01-3-3V19a3 3 0 013-3h36zm0 2H9a1 1 0 00-1 1v16a1 1 0 001 1h36a1 1 0 001-1V19a1 1 0 00-1-1zm-32 4v10h-2V22h2z"
   })));
 
-  function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+  function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
   var DateFieldIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$1({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$2({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54",
     viewBox: "0 0 448 512"
   }, props), /*#__PURE__*/React.createElement("path", {
     d: "M152 64h144V24c0-13.25 10.7-24 24-24s24 10.75 24 24v40h40c35.3 0 64 28.65 64 64v320c0 35.3-28.7 64-64 64H64c-35.35 0-64-28.7-64-64V128c0-35.35 28.65-64 64-64h40V24c0-13.25 10.7-24 24-24s24 10.75 24 24v40zM48 448c0 8.8 7.16 16 16 16h320c8.8 0 16-7.2 16-16V192H48v256z"
+  })));
+
+  function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+  var TableIcon = (({
+    styles = {},
+    ...props
+  }) => /*#__PURE__*/React.createElement("svg", _extends$1({
+    xmlns: "http://www.w3.org/2000/svg",
+    width: "54",
+    height: "54",
+    viewBox: "0 0 512 512"
+  }, props), /*#__PURE__*/React.createElement("path", {
+    d: "M448 32c35.3 0 64 28.65 64 64v320c0 35.3-28.7 64-64 64H64c-35.35 0-64-28.7-64-64V96c0-35.35 28.65-64 64-64h384zM224 256v-96H64v96h160zM64 320v96h160v-96H64zm224 96h160v-96H288v96zm160-160v-96H288v96h160z"
   })));
 
   const iconsByType = {
@@ -4425,6 +4589,7 @@
     text: TextIcon,
     textfield: TextfieldIcon,
     datefield: DateFieldIcon,
+    table: TableIcon,
     default: FormIcon
   };
 
@@ -4458,6 +4623,9 @@
   }, {
     label: 'Date Field',
     type: 'datefield'
+  }, {
+    label: 'Table',
+    type: 'table'
   }];
   function Palette(props) {
     return e$1("div", {
@@ -4480,7 +4648,7 @@
             class: "fjs-palette-field fjs-drag-copy fjs-no-drop",
             "data-field-type": type,
             title: `Create a ${label} element`,
-            children: [Icon ? Icon.name == "DateFieldIcon" ? e$1(Icon, {
+            children: [Icon ? Icon.name == "DateFieldIcon" || Icon.name == "TableIcon" ? e$1(Icon, {
               class: "fjs-palette-field-icon",
               width: "36",
               height: "36"
@@ -6137,7 +6305,7 @@
 
     return text;
   }
-  const INPUTS = ['checkbox', 'checklist', 'number', 'radio', 'select', 'taglist', 'textfield', 'datefield'];
+  const INPUTS = ['checkbox', 'checklist', 'number', 'radio', 'select', 'taglist', 'textfield', 'datefield', 'table'];
   const OPTIONS_INPUTS = ['checklist', 'radio', 'select', 'taglist'];
 
   const labelsByType = {
@@ -6152,7 +6320,8 @@
     taglist: 'TAGLIST',
     text: 'TEXT',
     textfield: 'TEXT FIELD',
-    datefield: 'DATEFIELD'
+    datefield: 'DATEFIELD',
+    table: 'TABLE'
   };
   const PropertiesPanelHeaderProvider = {
     getElementLabel: field => {
@@ -7548,12 +7717,239 @@
     }, {});
   }
 
+  function IntegrationGroup(field, editField) {
+    const {
+      type
+    } = field;
+
+    if (!OPTIONS_INPUTS.includes(type) && type !== 'button') {
+      return null;
+    }
+
+    const setDataSource = value => {
+      return editField(field, 'dataSource', value);
+    };
+
+    const setTargetApi = value => {
+      return editField(field, 'targetApi', value);
+    };
+
+    const setTargetApiVerb = value => {
+      return editField(field, 'targetApiVerb', value);
+    };
+
+    const getValue = key => {
+      return () => {
+        return get(field, [key], '');
+      };
+    };
+
+    let entries = [];
+
+    if (type === 'button') {
+      entries.push({
+        id: 'targetApi',
+        component: TargetApi,
+        getValue,
+        field,
+        isEdited: isEdited$1,
+        setTargetApi
+      }, {
+        id: 'targetApiVerb',
+        component: TargetApiVerb,
+        getValue,
+        field,
+        isEdited: isEdited$1,
+        setTargetApiVerb
+      });
+    } else {
+      entries.push({
+        id: 'dataSource',
+        component: DataSource,
+        getValue,
+        field,
+        isEdited: isEdited$1,
+        setDataSource
+      });
+    }
+
+    return {
+      id: 'integration',
+      label: 'Integration',
+      entries
+    };
+  }
+
+  function DataSource(props) {
+    const {
+      field,
+      getValue,
+      id,
+      setDataSource
+    } = props;
+    const debounce = useService('debounce');
+    return TextfieldEntry({
+      debounce,
+      element: field,
+      getValue: getValue('dataSource'),
+      id,
+      label: 'DataSource API',
+      setValue: setDataSource
+    });
+  }
+
+  function TargetApi(props) {
+    const {
+      field,
+      getValue,
+      id,
+      setTargetApi
+    } = props;
+    const debounce = useService('debounce');
+    return TextfieldEntry({
+      debounce,
+      element: field,
+      getValue: getValue('targetApi'),
+      id,
+      label: 'Target API',
+      setValue: setTargetApi
+    });
+  }
+
+  function TargetApiVerb(props) {
+    const {
+      field,
+      getValue,
+      id,
+      setTargetApiVerb
+    } = props;
+    const debounce = useService('debounce');
+    return TextfieldEntry({
+      debounce,
+      element: field,
+      getValue: getValue('targetApiVerb'),
+      id,
+      label: 'Target HTTP Verb',
+      setValue: setTargetApiVerb
+    });
+  }
+
+  function TableGroup(field, editField) {
+    const {
+      type
+    } = field;
+
+    if (type !== 'table') {
+      return null;
+    }
+
+    const setHeaders = value => {
+      return editField(field, 'headers', value);
+    };
+
+    const setHeadersNames = value => {
+      return editField(field, 'headersNames', value);
+    };
+
+    const setEditableColumns = value => {
+      return editField(field, 'editableColumns', value);
+    };
+
+    const getValue = key => {
+      return () => {
+        return get(field, [key], '');
+      };
+    };
+
+    let entries = [{
+      id: 'headers',
+      component: Headers,
+      getValue,
+      field,
+      isEdited: isEdited$1,
+      setHeaders
+    }, {
+      id: 'headersNames',
+      component: HeadersNames,
+      getValue,
+      field,
+      isEdited: isEdited$1,
+      setHeadersNames
+    }, {
+      id: 'editableColumns',
+      component: EditableColumns,
+      getValue,
+      field,
+      isEdited: isEdited$1,
+      setEditableColumns
+    }];
+    return {
+      id: 'tableDef',
+      label: 'Table definition',
+      entries
+    };
+  }
+
+  function Headers(props) {
+    const {
+      field,
+      getValue,
+      id,
+      setHeaders
+    } = props;
+    const debounce = useService('debounce');
+    return TextfieldEntry({
+      debounce,
+      element: field,
+      getValue: getValue('headers'),
+      id,
+      label: 'Headers (coma separated)',
+      setValue: setHeaders
+    });
+  }
+
+  function HeadersNames(props) {
+    const {
+      field,
+      getValue,
+      id,
+      setHeadersNames
+    } = props;
+    const debounce = useService('debounce');
+    return TextfieldEntry({
+      debounce,
+      element: field,
+      getValue: getValue('headersNames'),
+      id,
+      label: 'Header names (coma separated)',
+      setValue: setHeadersNames
+    });
+  }
+
+  function EditableColumns(props) {
+    const {
+      field,
+      getValue,
+      id,
+      setEditableColumns
+    } = props;
+    const debounce = useService('debounce');
+    return TextfieldEntry({
+      debounce,
+      element: field,
+      getValue: getValue('editableColumns'),
+      id,
+      label: 'Editable cols (header[type], header2[type])',
+      setValue: setEditableColumns
+    });
+  }
+
   function getGroups(field, editField) {
     if (!field) {
       return [];
     }
 
-    const groups = [GeneralGroup(field, editField), ValuesGroup(field, editField), ValidationGroup(field, editField), CustomValuesGroup(field, editField)]; // contract: if a group returns null, it should not be displayed at all
+    const groups = [GeneralGroup(field, editField), IntegrationGroup(field, editField), ValuesGroup(field, editField), ValidationGroup(field, editField), CustomValuesGroup(field, editField), TableGroup(field, editField)]; // contract: if a group returns null, it should not be displayed at all
 
     return groups.filter(group => group !== null);
   }
