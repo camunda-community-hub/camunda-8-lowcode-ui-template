@@ -344,3 +344,70 @@
 .fjs-form-editor .hidden {
 	display: inline;
 }
+
+.fjs-form-field-table table {
+	width: 100%;
+	box-shadow: 0 0 1px gray;
+	border-radius: 3px;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.fjs-form-field-table table thead {
+	background: lightblue;
+}
+.fjs-form-field-table table th,
+.fjs-form-field-table table td {
+	padding: 8px;
+}
+.fjs-form-field-table table tbody tr:nth-child(even) {background: #eee}
+
+.fjs-table-input {
+  border: none;
+  background: transparent;
+  width: 100%;
+}
+.fjs-table-input:focus {
+  border: 1px;
+  background: white;
+}
+.fjs-form-field-table.table1 table th,
+.fjs-form-field-table.table1 table td {
+	width:100%;
+}
+.fjs-form-field-table.table2 table th,
+.fjs-form-field-table.table2 table td {
+	width:50%;
+}
+.fjs-form-field-table.table3 table th,
+.fjs-form-field-table.table3 table td {
+	width:33.3%;
+}
+.fjs-form-field-table.table4 table th,
+.fjs-form-field-table.table4 table td {
+	width:25%;
+}
+.fjs-form-field-table.table5 table th,
+.fjs-form-field-table.table5 table td {
+	width:20%;
+}
+.fjs-form-field-table.table6 table th,
+.fjs-form-field-table.table6 table td {
+	width:16.6%;
+}
+.fjs-form-field-table.table7 table th,
+.fjs-form-field-table.table7 table td {
+	width:14.28%;
+}
+.fjs-form-field-table.table8 table th,
+.fjs-form-field-table.table8 table td {
+	width:12.5%;
+}
+.fjs-form-field-table.table9 table th,
+.fjs-form-field-table.table9 table td {
+	width:11.1%;
+}
+.fjs-form-field-table.table10 table th,
+.fjs-form-field-table.table10 table td {
+	width:10%;
+}

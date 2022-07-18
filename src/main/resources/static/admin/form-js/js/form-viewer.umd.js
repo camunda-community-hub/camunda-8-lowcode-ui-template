@@ -1745,29 +1745,14 @@
     return getService(type, strict);
   }
 
-  function formFieldClasses(type, errors = []) {
-    if (!type) {
-      throw new Error('type required');
-    }
-
-    const classes = ['fjs-form-field', `fjs-form-field-${type}`];
-
-    if (errors.length) {
-      classes.push('fjs-has-errors');
-    }
-
-    return classes.join(' ');
-  }
   function formFieldClassesCustom(type, hiddenFx, errors = []) {
     const form = useService('form');
     let dataStr = JSON.stringify(form._getState().data);
-    console.log(form);
 
     if (!type) {
       throw new Error('type required');
     }
 
-    console.log("let data = " + dataStr + "; return " + hiddenFx);
     let hidden = false;
 
     try {
@@ -1778,7 +1763,6 @@
 
     let fieldClass = hidden ? 'fjs-form-field hidden' : 'fjs-form-field';
     const classes = [fieldClass, `fjs-form-field-${type}`];
-    console.log(fieldClass);
 
     if (errors.length) {
       classes.push('fjs-has-errors');
@@ -1803,17 +1787,20 @@
     return sanitizeHTML(html);
   }
 
-  const type$9 = 'button';
+  const type$a = 'button';
   function Button(props) {
     const {
       disabled,
       field
     } = props;
     const {
-      action = 'submit'
+      action = 'submit',
+      hiddenFx,
+      targetApi,
+      targetApiVerb
     } = field;
     return e$1("div", {
-      class: formFieldClasses(type$9),
+      class: formFieldClassesCustom(type$a, hiddenFx),
       children: e$1("button", {
         class: "fjs-button",
         type: action,
@@ -1830,9 +1817,10 @@
     };
   };
 
-  Button.type = type$9;
+  Button.type = type$a;
   Button.label = 'Button';
   Button.keyed = true;
+  Button.hiddenFx = 'false';
 
   function Description(props) {
     const {
@@ -1886,7 +1874,7 @@
     });
   }
 
-  const type$8 = 'checkbox';
+  const type$9 = 'checkbox';
   function Checkbox(props) {
     const {
       disabled,
@@ -1897,7 +1885,8 @@
     const {
       description,
       id,
-      label
+      label,
+      hiddenFx
     } = field;
 
     const onChange = ({
@@ -1913,7 +1902,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClasses(type$8, errors),
+      class: formFieldClassesCustom(type$9, hiddenFx, errors),
       children: [e$1(Label, {
         id: prefixId(id, formId),
         label: label,
@@ -1939,12 +1928,13 @@
     };
   };
 
-  Checkbox.type = type$8;
+  Checkbox.type = type$9;
   Checkbox.label = 'Checkbox';
   Checkbox.keyed = true;
   Checkbox.emptyValue = false;
+  Checkbox.hiddenFx = 'false';
 
-  const type$7 = 'checklist';
+  const type$8 = 'checklist';
   function Checklist(props) {
     const {
       disabled,
@@ -1956,8 +1946,24 @@
       description,
       id,
       label,
-      values
+      values,
+      dataSource,
+      hiddenFx
     } = field;
+    const [myValues, myValuesSet] = l$1([]);
+    const fetchMyAPI = A$1(async () => {
+      if (dataSource && dataSource.length > 0) {
+        let response = await fetch(dataSource);
+        response = await response.json();
+        myValuesSet(response);
+      } else {
+        myValuesSet(values);
+      }
+    }, [dataSource]); // if dataSource changes, useEffect will run again
+
+    y(() => {
+      fetchMyAPI();
+    }, [fetchMyAPI]);
 
     const toggleCheckbox = v => {
       let newValue = [...value];
@@ -1978,10 +1984,10 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClasses(type$7, errors),
+      class: formFieldClassesCustom(type$8, hiddenFx, errors),
       children: [e$1(Label, {
         label: label
-      }), values.map((v, index) => {
+      }), myValues.map((v, index) => {
         return e$1(Label, {
           id: prefixId(`${id}-${index}`, formId),
           label: v.label,
@@ -2013,10 +2019,11 @@
     };
   };
 
-  Checklist.type = type$7;
+  Checklist.type = type$8;
   Checklist.label = 'Checklist';
   Checklist.keyed = true;
   Checklist.emptyValue = [];
+  Checklist.hiddenFx = 'false';
 
   const noop$1 = () => false;
 
@@ -2226,7 +2233,7 @@
     });
   }
 
-  const type$6 = 'number';
+  const type$7 = 'number';
   function Number$1(props) {
     const {
       disabled,
@@ -2259,7 +2266,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$6, hiddenFx, errors),
+      class: formFieldClassesCustom(type$7, hiddenFx, errors),
       children: [e$1(Label, {
         id: prefixId(id, formId),
         label: label,
@@ -2284,13 +2291,13 @@
     };
   };
 
-  Number$1.type = type$6;
+  Number$1.type = type$7;
   Number$1.keyed = true;
   Number$1.label = 'Number';
   Number$1.emptyValue = null;
   Number$1.hiddenFx = 'false';
 
-  const type$5 = 'radio';
+  const type$6 = 'radio';
   function Radio(props) {
     const {
       disabled,
@@ -2303,7 +2310,8 @@
       id,
       label,
       validate = {},
-      values
+      values,
+      hiddenFx
     } = field;
     const {
       required
@@ -2320,7 +2328,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClasses(type$5, errors),
+      class: formFieldClassesCustom(type$6, hiddenFx, errors),
       children: [e$1(Label, {
         label: label,
         required: required
@@ -2356,12 +2364,13 @@
     };
   };
 
-  Radio.type = type$5;
+  Radio.type = type$6;
   Radio.label = 'Radio';
   Radio.keyed = true;
   Radio.emptyValue = null;
+  Radio.hiddenFx = 'false';
 
-  const type$4 = 'select';
+  const type$5 = 'select';
   function Select(props) {
     const {
       disabled,
@@ -2375,11 +2384,26 @@
       label,
       hiddenFx,
       validate = {},
+      dataSource,
       values
     } = field;
     const {
       required
     } = validate;
+    const [myValues, myValuesSet] = l$1([]);
+    const fetchMyAPI = A$1(async () => {
+      if (dataSource && dataSource.length > 0) {
+        let response = await fetch(dataSource);
+        response = await response.json();
+        myValuesSet(response);
+      } else {
+        myValuesSet(values);
+      }
+    }, [dataSource]); // if dataSource changes, useEffect will run again
+
+    y(() => {
+      fetchMyAPI();
+    }, [fetchMyAPI]);
 
     const onChange = ({
       target
@@ -2394,7 +2418,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$4, hiddenFx, errors),
+      class: formFieldClassesCustom(type$5, hiddenFx, errors),
       children: [e$1(Label, {
         id: prefixId(id, formId),
         label: label,
@@ -2407,7 +2431,7 @@
         value: value || '',
         children: [e$1("option", {
           value: ""
-        }), values.map((v, index) => {
+        }), myValues.map((v, index) => {
           return e$1("option", {
             value: v.value,
             children: v.label
@@ -2431,7 +2455,7 @@
     };
   };
 
-  Select.type = type$4;
+  Select.type = type$5;
   Select.label = 'Select';
   Select.keyed = true;
   Select.emptyValue = null;
@@ -2569,7 +2593,7 @@
     });
   }
 
-  const type$3 = 'taglist';
+  const type$4 = 'taglist';
   function Taglist(props) {
     const {
       disabled,
@@ -2581,7 +2605,9 @@
       description,
       id,
       label,
-      values: options
+      dataSource,
+      values: options,
+      hiddenFx
     } = field;
     const {
       formId
@@ -2592,18 +2618,32 @@
     const [isDropdownExpanded, setIsDropdownExpanded] = l$1(false);
     const [hasValuesLeft, setHasValuesLeft] = l$1(true);
     const [escapeClose, setEscapeClose] = l$1(false);
-    const searchbarRef = s(); // Usage of stringify is necessary here because we want this effect to only trigger when there is a value change to the array
+    const searchbarRef = s();
+    const [myOptions, myOptionsSet] = l$1([]);
+    const fetchMyAPI = A$1(async () => {
+      if (dataSource && dataSource.length > 0) {
+        let response = await fetch(dataSource);
+        response = await response.json();
+        myOptionsSet(response);
+      } else {
+        myOptionsSet(options);
+      }
+    }, [dataSource]); // if dataSource changes, useEffect will run again
 
     y(() => {
-      const selectedValues = values.map(v => options.find(o => o.value === v)).filter(v => v !== undefined);
+      fetchMyAPI();
+    }, [fetchMyAPI]); // Usage of stringify is necessary here because we want this effect to only trigger when there is a value change to the array
+
+    y(() => {
+      const selectedValues = values.map(v => myOptions.find(o => o.value === v)).filter(v => v !== undefined);
       setSelectedValues(selectedValues);
-    }, [JSON.stringify(values), options]);
+    }, [JSON.stringify(values), myOptions]);
     y(() => {
-      setFilteredValues(options.filter(o => o.label && o.label.toLowerCase().includes(filter.toLowerCase()) && !values.includes(o.value)));
-    }, [filter, JSON.stringify(values), options]);
+      setFilteredValues(myOptions.filter(o => o.label && o.label.toLowerCase().includes(filter.toLowerCase()) && !values.includes(o.value)));
+    }, [filter, JSON.stringify(values), myOptions]);
     y(() => {
-      setHasValuesLeft(selectedValues.length < options.length);
-    }, [selectedValues.length, options.length]);
+      setHasValuesLeft(selectedValues.length < myOptions.length);
+    }, [selectedValues.length, myOptions.length]);
 
     const onFilterChange = ({
       target
@@ -2656,7 +2696,7 @@
     };
 
     return e$1("div", {
-      class: formFieldClasses(type$3, errors),
+      class: formFieldClassesCustom(type$4, hiddenFx, errors),
       children: [e$1(Label, {
         label: label,
         id: prefixId(id, formId)
@@ -2712,31 +2752,33 @@
     });
   }
 
-  Taglist.create = function (options = {}) {
+  Taglist.create = function (myOptions = {}) {
     return {
       values: [{
         label: 'Value',
         value: 'value'
       }],
-      ...options
+      ...myOptions
     };
   };
 
-  Taglist.type = type$3;
+  Taglist.type = type$4;
   Taglist.label = 'Taglist';
   Taglist.keyed = true;
   Taglist.emptyValue = [];
+  Taglist.hiddenFx = 'false';
 
-  const type$2 = 'text';
+  const type$3 = 'text';
   function Text(props) {
     const {
       field
     } = props;
     const {
-      text = ''
+      text = '',
+      hiddenFx
     } = field;
     return e$1("div", {
-      class: formFieldClasses(type$2),
+      class: formFieldClassesCustom(type$3, hiddenFx),
       children: e$1(Markup, {
         markup: safeMarkdown(text),
         trim: false
@@ -2751,11 +2793,75 @@
     };
   };
 
-  Text.type = type$2;
+  Text.type = type$3;
   Text.keyed = false;
+  Text.hiddenFx = 'false';
 
-  const type$1 = 'textfield';
+  const type$2 = 'textfield';
   function Textfield(props) {
+    const {
+      disabled,
+      errors = [],
+      field,
+      value = ''
+    } = props;
+    const {
+      description,
+      id,
+      label,
+      hiddenFx,
+      validate = {}
+    } = field;
+    const {
+      required
+    } = validate;
+
+    const onChange = ({
+      target
+    }) => {
+      props.onChange({
+        field,
+        value: target.value
+      });
+    };
+
+    const {
+      formId
+    } = F$1(FormContext);
+    return e$1("div", {
+      class: formFieldClassesCustom(type$2, hiddenFx, errors),
+      children: [e$1(Label, {
+        id: prefixId(id, formId),
+        label: label,
+        required: required
+      }), e$1("input", {
+        class: "fjs-input",
+        disabled: disabled,
+        id: prefixId(id, formId),
+        onInput: onChange,
+        type: "text",
+        value: value
+      }), e$1(Description, {
+        description: description
+      }), e$1(Errors, {
+        errors: errors
+      })]
+    });
+  }
+
+  Textfield.create = function (options = {}) {
+    return { ...options
+    };
+  };
+
+  Textfield.type = type$2;
+  Textfield.label = 'Text Field';
+  Textfield.keyed = true;
+  Textfield.emptyValue = '';
+  Textfield.hiddenFx = 'false';
+
+  const type$1 = 'datefield';
+  function Datefield(props) {
     const {
       disabled,
       errors = [],
@@ -2796,69 +2902,6 @@
         disabled: disabled,
         id: prefixId(id, formId),
         onInput: onChange,
-        type: "text",
-        value: value
-      }), e$1(Description, {
-        description: description
-      }), e$1(Errors, {
-        errors: errors
-      })]
-    });
-  }
-
-  Textfield.create = function (options = {}) {
-    return { ...options
-    };
-  };
-
-  Textfield.type = type$1;
-  Textfield.label = 'Text Field';
-  Textfield.keyed = true;
-  Textfield.emptyValue = '';
-  Textfield.hiddenFx = 'false';
-
-  const type = 'datefield';
-  function Datefield(props) {
-    const {
-      disabled,
-      errors = [],
-      field,
-      value = ''
-    } = props;
-    const {
-      description,
-      id,
-      label,
-      hiddenFx,
-      validate = {}
-    } = field;
-    const {
-      required
-    } = validate;
-
-    const onChange = ({
-      target
-    }) => {
-      props.onChange({
-        field,
-        value: target.value
-      });
-    };
-
-    const {
-      formId
-    } = F$1(FormContext);
-    return e$1("div", {
-      class: formFieldClassesCustom(type, hiddenFx, errors),
-      children: [e$1(Label, {
-        id: prefixId(id, formId),
-        label: label,
-        required: required
-      }), e$1("input", {
-        class: "fjs-input",
-        disabled: disabled,
-        id: prefixId(id, formId),
-        onInput: onChange,
         type: "date",
         value: value
       }), e$1(Description, {
@@ -2874,13 +2917,121 @@
     };
   };
 
-  Datefield.type = type;
+  Datefield.type = type$1;
   Datefield.label = 'Date Field';
   Datefield.keyed = true;
   Datefield.emptyValue = '';
   Datefield.hiddenFx = 'false';
 
-  const formFields = [Button, Checkbox, Checklist, Default, Number$1, Radio, Select, Taglist, Text, Textfield, Datefield];
+  const type = 'table';
+  function tableClasses(type, hiddenFx, length) {
+    let classes = formFieldClassesCustom(type, hiddenFx, []);
+    return classes + ' table' + length;
+  }
+  function Table(props) {
+    const {
+      disabled,
+      errors = [],
+      field,
+      value = ''
+    } = props;
+    const {
+      description,
+      id,
+      label,
+      hiddenFx,
+      headers,
+      headersNames,
+      editableColumns,
+      validate = {}
+    } = field;
+    const {
+      required
+    } = validate;
+    const headersArray = headers ? headers.split(",") : [];
+    const headersNamesArray = headersNames ? headersNames.split(",") : [];
+    const editableColumnsArray = editableColumns ? editableColumns.split(",") : [];
+    const editableMap = {}; //build the editableMap
+
+    for (let i = 0; i < editableColumnsArray.length; i++) {
+      let col = editableColumnsArray[i].trim();
+      let type = "text";
+      let colAndType = col.match(/([a-z0-9]+)[ ]*\[([a-z]+)\]/i);
+
+      if (colAndType != null) {
+        col = colAndType[1];
+        type = colAndType[2];
+      }
+
+      editableMap[col] = type;
+    }
+
+    const {
+      formId
+    } = F$1(FormContext);
+
+    const onChange = (index, col, newValue) => {
+      value[index][col] = newValue;
+      props.onChange({
+        field,
+        value: value
+      });
+    };
+
+    const getInput = (col, type, index) => {
+      return type == 'boolean' || type == 'bool' ? e$1("input", {
+        checked: value[index][col],
+        class: "fjs-table-checkbox",
+        type: "checkbox",
+        onChange: e => onChange(index, col, e.target.checked)
+      }) : e$1("input", {
+        class: "fjs-table-input",
+        onInput: e => onChange(index, col, e.target.value),
+        type: type,
+        value: value[index][col]
+      });
+    };
+
+    return e$1("div", {
+      class: tableClasses(type, hiddenFx, headersArray.length),
+      children: [e$1(Label, {
+        id: prefixId(id, formId),
+        label: label,
+        required: required
+      }), e$1("table", {
+        children: [e$1("thead", {
+          children: e$1("tr", {
+            children: headersNamesArray.map(header => e$1("th", {
+              children: header.trim()
+            }))
+          })
+        }), e$1("tbody", {
+          children: value && value.map((row, index) => e$1("tr", {
+            children: headersArray.map(header => e$1("td", {
+              children: editableMap[header.trim()] ? getInput(header.trim(), editableMap[header.trim()], index) : row[header.trim()]
+            }))
+          }))
+        })]
+      }), e$1(Description, {
+        description: description
+      }), e$1(Errors, {
+        errors: errors
+      })]
+    });
+  }
+
+  Table.create = function (options = {}) {
+    return { ...options
+    };
+  };
+
+  Table.type = type;
+  Table.label = 'Table';
+  Table.keyed = true;
+  Table.emptyValue = '';
+  Table.hiddenFx = 'false';
+
+  const formFields = [Button, Checkbox, Checklist, Default, Number$1, Radio, Select, Taglist, Text, Textfield, Datefield, Table];
 
   class FormFields {
     constructor() {
