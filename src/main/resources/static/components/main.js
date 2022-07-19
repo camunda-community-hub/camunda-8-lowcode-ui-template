@@ -44,9 +44,9 @@ Vue.component('side-bar',{
 		'<div id="sidebar-nav" class="list-group bg-secondary border-0 rounded-0 text-sm-start">'+		
 			'<ul class="navbar-nav me-auto mb-2 mb-lg-0">'+
 				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'mytasks\')"><i class="bi bi-person-check"></i> {{ $t("message.mytasks") }}</a></li>'+
-				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'unassignedtasks\')"><i class="bi bi-person-x"></i> {{ $t("message.unassignedtasks") }}</a></li>'+
-				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'archivedtasks\')"><i class="bi bi-check-square"></i> {{ $t("message.archivedtasks") }}</a></li>'+
-				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'newInstance\')"><i class="bi bi-basket"></i> {{ $t("message.newInstance") }}</a></li>'+
+				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'unassignedtasks\')"><i class="bi bi-inboxes""></i> {{ $t("message.unassignedtasks") }}</a></li>'+
+				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'archivedtasks\')"><i class="bi bi-inboxes-fill"></i> {{ $t("message.archivedtasks") }}</a></li>'+
+				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'newInstance\')"><i class="bi bi-send"></i> {{ $t("message.newInstance") }}</a></li>'+
 			'</ul>'+
 		'</div>'+
 	'</div>',
