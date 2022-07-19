@@ -2,28 +2,42 @@ Vue.component('my-header',{ template: '<nav class="navbar bg-dark">'+
 		'<div class="container-fluid">'+
 			'<div class="row"><my-menu></my-menu>'+
 			'<div class="col input-group">'+
-						'<input type="text" class="form-control" placeholder="Form name" aria-label="Formname" v-model="$store.form.name">'+
-						'<button class="btn btn-sm btn-primary" v-on:click="saveForm()">Save</button>'+
-					'</div></div>'+
+				'<button class="btn btn-sm btn-primary" @click="preview()"><i class="bi bi-eye"></i></button>'+
+				'<input type="text" class="form-control" placeholder="Form name" aria-label="Formname" v-model="$store.form.name">'+
+				'<button class="btn btn-sm btn-primary" @click="saveForm()">Save</button>'+
+			'</div>'+
+
+			'</div>'+
 			'<div><span class="text-light"><b>{{$store.user.name}}</b> working on <b>{{$store.form.name}}</b></span> '+
 			' <a class="logout bi bi-box-arrow-left text-light" @click="logout()"></a></div>'+
 		'</div>'+
 	'</nav>',
+	data() {
+		return {"modal":null}
+	},
   methods: {
 	saveForm() {
 		this.$store.form.schema = this.$store.formEditor.getSchema();
+		this.$store.form.previewData = JSON.parse(this.$store.form.previewData);
 		axios.post('/edition/forms', this.$store.form).then(response => {
 			this.$store.form.id = response.data.id; 
 		}).catch(error => {
 			alert(error.message); 
 		})
+		this.$store.form.previewData = JSON.stringify(this.$store.form.previewData, null, 2);
 	},
-	  logout() {
-		this.$store.user.name=null;
-		this.$store.user.token=null;
-		this.$store.auth=false;
-		localStorage.removeItem('camundaUser');
-	  }
+	preview() {
+		if (!this.modal) {
+			this.modal = new bootstrap.Modal(document.getElementById('preview-form-modal'), {});
+		}
+		this.modal.show();
+	},
+	logout() {
+	  this.$store.user.name=null;
+	  this.$store.user.token=null;
+	  this.$store.auth=false;
+	  localStorage.removeItem('camundaUser');
+	}
   }
  });
  
@@ -32,32 +46,14 @@ Vue.component('main-page',{
   template: '<div><my-header></my-header>'+
 		'<div id="form-editor"></div>'+
 		'<upload-form-modal></upload-form-modal>'+
+		'<preview-form-modal></preview-form-modal>'+
 	'</div>',
 	mounted: function(){
-		schema = {
-		  "components": [
-			{
-			  "key": "sometext",
-			  "label": "Some Text",
-			  "type": "textfield",
-			  "id": "Field_1djmro0"
-			},
-		  ],
-		  "schemaVersion": 4,
-		  "type": "default",
-		  "id": "Form_"+Math.floor(1000000 + Math.random() * 9000000),
-		  "executionPlatform": "Camunda Cloud",
-		  "executionPlatformVersion": "1.1",
-		  "exporter": {
-			"name": "Camunda Modeler",
-			"version": "5.0.0"
-		  }
-		}
 
 		this.$store.formEditor = new FormEditor.FormEditor({
 		  container: document.querySelector('#form-editor')
 		});
-		this.$store.formEditor.importSchema(schema);
+		this.$store.formEditor.importSchema(this.$store.defaultForm);
 	}
 });
 
@@ -86,26 +82,7 @@ Vue.component('my-menu',{ template: '<div class="col dropdown">'+
   },
   methods: {
 	newForm() {
-		schema = {
-		  "components": [
-			{
-			  "key": "sometext",
-			  "label": "Some Text",
-			  "type": "textfield",
-			  "id": "Field_1djmro0"
-			},
-		  ],
-		  "schemaVersion": 4,
-		  "type": "default",
-		  "id": "Form_"+Math.floor(1000000 + Math.random() * 9000000),
-		  "executionPlatform": "Camunda Cloud",
-		  "executionPlatformVersion": "1.1",
-		  "exporter": {
-			"name": "Camunda Modeler",
-			"version": "5.0.0"
-		  }
-		}
-		this.$store.form.schema = schema;
+		this.$store.form.schema = this.$store.defaultForm;
 		this.$store.form.id=null;
 		this.$store.form.name='New Form';
 		this.$store.formEditor.importSchema(schema);
@@ -121,6 +98,7 @@ Vue.component('my-menu',{ template: '<div class="col dropdown">'+
 			this.$store.form.id = form.id;
 			this.$store.form.name = form.name;
 			this.$store.form.schema = form.schema;
+			this.$store.form.previewData = JSON.stringify(form.previewData, null, 2);
 			this.$store.formEditor.importSchema(form.schema);
 		}).catch(error => {
 			alert(error.message); 
@@ -187,7 +165,6 @@ Vue.component('upload-form-modal',{
 		  reader.readAsText(file);
 		  let _this = this;
 		  reader.onload = function(e) {
-			console.log(_this);
 		    _this.data.value = e.target.result;                     
 		  };
 		}
@@ -204,5 +181,84 @@ Vue.component('upload-form-modal',{
   },
   mounted(){
 	document.getElementById("formFile").addEventListener('change', this.prepareLoad);
+  }
+});
+
+
+Vue.component('preview-form-modal',{
+  template: '<div class="modal" id="preview-form-modal" ref="preview-form-modal" tabindex="-1">'+
+  '<div class="modal-dialog modal-fullscreen">'+
+    '<div class="modal-content">'+
+      '<div class="modal-header bg-secondary text-light">'+
+        '<h5 class="modal-title">Preview form</h5>'+
+        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
+      '</div>'+
+      '<div class="modal-body">'+
+		'<div class="row" v-if="shown==true">'+
+		  '<div class="card col"><data-preview-editor :form="form"></data-preview-editor></div>'+
+		  '<div class="card col"><div id="task-form-preview"></div></div>'+
+		'</div>'+
+      '</div>'+
+      '<div class="modal-footer">'+
+        '<button class="btn btn-primary" data-bs-dismiss="modal">Close</button>'+
+      '</div>'+
+    '</div>'+
+  '</div>'+
+'</div>',
+  data() {
+    return {
+	  shown: false,
+	  form: null
+    }
+  },
+  methods: {
+	  showned(){
+		  this.shown = true;
+	  },
+	  closed(){
+		  this.shown = false;
+		  this.form=null;
+	  }
+  },
+  updated(){
+	if (this.shown) {
+		if (this.form==null) {
+			this.form = new FormViewer.Form({
+				container: document.querySelector('#task-form-preview')
+			});
+		}
+		try {
+			this.form.importSchema(this.$store.formEditor._state.schema, JSON.parse(this.$store.form.previewData));
+		} catch(err) {
+			
+		}
+	}
+  },
+  mounted() {
+	document.getElementById("preview-form-modal").addEventListener('hide.bs.modal', this.closed);
+	document.getElementById("preview-form-modal").addEventListener('shown.bs.modal', this.showned);
+  }
+});
+
+Vue.component('data-preview-editor',{
+  template: '<div style="height: calc(100vh - 185px)"><span class="form-label">Data preview value</span><textarea id="jsonEditor">{{$store.form.previewData}}</textarea></div>',
+  props:['form'],
+  mounted() {
+	this.codemirror = CodeMirror.fromTextArea(document.getElementById('jsonEditor'), {
+				lineNumbers: true,
+				matchBrackets: true,
+				continueComments: "Enter",
+				extraKeys: {"Ctrl-Q": "toggleComment"},
+				autoRefresh:true,
+				mode: "json"
+			  });
+	this.codemirror.on('change', (cm) => {
+		this.$store.form.previewData = cm.getValue();
+		try {
+			this.form.importSchema(this.$store.formEditor._state.schema, JSON.parse(this.$store.form.previewData));
+		} catch(err) {
+			
+		}
+    });
   }
 });
