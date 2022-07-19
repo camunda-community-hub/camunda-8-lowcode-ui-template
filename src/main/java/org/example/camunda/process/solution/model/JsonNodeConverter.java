@@ -32,7 +32,9 @@ public class JsonNodeConverter implements AttributeConverter<JsonNode, String> {
 
     @Override
     public JsonNode convertToEntityAttribute(String json) {
-
+        if (json==null) {
+            return null;
+        }
         JsonNode attribute = null;
         try {
             attribute = objectMapper.readValue(json, JsonNode.class);

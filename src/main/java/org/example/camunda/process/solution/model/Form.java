@@ -15,6 +15,10 @@ public class Form extends BaseEntity {
     @Convert(converter = JsonNodeConverter.class)
     private JsonNode schema;
 
+    @Lob
+    @Convert(converter = JsonNodeConverter.class)
+    private JsonNode previewData;
+
 	public Form() {
 	}
 
@@ -39,4 +43,13 @@ public class Form extends BaseEntity {
     public void setSchema(JsonNode schema) {
         this.schema = schema;
     }
+
+    public JsonNode getPreviewData() {
+        return previewData;
+    }
+
+    public void setPreviewData(JsonNode previewData) {
+        this.previewData = previewData;
+    }
+    
 }
