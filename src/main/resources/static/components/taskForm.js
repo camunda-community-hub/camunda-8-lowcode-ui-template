@@ -17,21 +17,21 @@ Vue.component('task-form',{
 	},
 	methods: {
 		claim() {
-			axios.get('/process/tasks/'+this.$store.task.id+'/claim/'+this.$store.user.name).then(response => {
+			axios.get('/tasks/'+this.$store.task.id+'/claim/'+this.$store.user.name).then(response => {
 		    	this.$store.task.assignee=this.$store.user.name;
 			}).catch(error => {
 				alert(error.message); 
 			})
 		},
 		unclaim() {
-			axios.get('/process/tasks/'+this.$store.task.id+'/unclaim/').then(response => {
+			axios.get('/tasks/'+this.$store.task.id+'/unclaim/').then(response => {
 		    	this.$store.task.assignee=null;
 			}).catch(error => {
 				alert(error.message); 
 			})
 		},
 		submit() {
-		    axios.post('/process/tasks/'+this.$store.task.id, this.form._getState().data, this.$store.axiosHeaders).then(response => {
+		    axios.post('/tasks/'+this.$store.task.id, this.form._getState().data, this.$store.axiosHeaders).then(response => {
 				//Vue.set(this.$store.task, 'done', true);
 				let i =0;
 				for(;i<this.$store.tasks.length;i++) {

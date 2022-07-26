@@ -8,7 +8,7 @@ Vue.component('mytasks',{
 	}
   },
   created: function () {
-    axios.get('/process/tasks/myOpenedTasks/'+this.$store.user.name, this.$store.axiosHeaders).then(response => {
+    axios.get('/tasks/myOpenedTasks/'+this.$store.user.name, this.$store.axiosHeaders).then(response => {
 		this.$store.tasks = response.data; 
 	}).catch(error => {
 		alert(error.message); 
@@ -24,7 +24,7 @@ Vue.component('unassignedtasks',{
 	}
   },
   created: function () {
-    axios.get('/process/tasks/unassigned').then(response => {
+    axios.get('/tasks/unassigned').then(response => {
 		this.$store.tasks = response.data; 
 	}).catch(error => {
 		alert(error.message); 
@@ -39,7 +39,7 @@ Vue.component('archivedtasks',{
 	}
   },
   created: function () {
-    axios.get('/process/tasks/myArchivedTasks/'+this.$store.user.name).then(response => {
+    axios.get('/tasks/myArchivedTasks/'+this.$store.user.name).then(response => {
 		this.$store.tasks = response.data; 
 	}).catch(error => {
 		alert(error.message); 
