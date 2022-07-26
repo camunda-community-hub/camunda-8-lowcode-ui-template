@@ -3,7 +3,7 @@ Vue.component('task-form',{
 		template: '<div class="card" v-if="$store.task.id">'+
 			'<h5 class="card-title">{{$store.task.name}}</h5>'+
 			'<div id="task-form"></div>'+
-			'<div class="d-flex justify-content-between">'+
+			'<div class="ms-2 me-2 mb-2 d-flex justify-content-between">'+
 	        '<button v-if="$store.task.assignee" type="button" class="btn btn-primary" @click="unclaim()">{{ $t("message.unclaim") }}</button>'+
 	        '<button v-if="!$store.task.assignee" type="button" class="btn btn-primary" @click="claim()">{{ $t("message.claim") }}</button>'+
 	        '<button :disabled="!$store.task.assignee || $store.task.assignee!=$store.user.name" type="button" class="btn btn-primary" @click="submit()">{{ $t("message.submit") }}</button>'+
@@ -17,14 +17,14 @@ Vue.component('task-form',{
 	},
 	methods: {
 		claim() {
-			axios.get('/tasks/'+this.$store.task.id+'/claim/'+this.$store.user.name).then(response => {
+			axios.get('/tasks/'+this.$store.task.id+'/claim/'+this.$store.user.name, this.$store.axiosHeaders).then(response => {
 		    	this.$store.task.assignee=this.$store.user.name;
 			}).catch(error => {
 				alert(error.message); 
 			})
 		},
 		unclaim() {
-			axios.get('/tasks/'+this.$store.task.id+'/unclaim/').then(response => {
+			axios.get('/tasks/'+this.$store.task.id+'/unclaim/', this.$store.axiosHeaders).then(response => {
 		    	this.$store.task.assignee=null;
 			}).catch(error => {
 				alert(error.message); 
@@ -62,7 +62,7 @@ Vue.component('task-form',{
 		} else {
 			let url = '/forms/'+this.$store.task.processDefinitionId+'/'+this.$store.task.formKey;
 
-		    axios.get(url).then(response => {
+		    axios.get(url, this.$store.axiosHeaders).then(response => {
 				let schema = response.data; 
 				if (this.form==null) {
 					this.form = new FormViewer.Form({
