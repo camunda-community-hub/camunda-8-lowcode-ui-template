@@ -1,51 +1,49 @@
+
 Vue.component('new-instance',{
-  template: '<div>'+
-	    '<div class="alert alert-danger" role="alert" v-if="errors.length">'+
-		  '<b>Please correct the following error(s):</b>'+
-		  '<ul><li v-for="error in errors">{{ error }}</li></ul>'+
-		'</div>'+
-		'<div class="input-group mb-3">'+
-		  '<span class="input-group-text">Texte</span>'+
-		  '<input type="text" class="form-control" id="texte" placeholder="some text" v-model="data.texte">'+
-		  '<span class="input-group-text"><i class="bi bi-person"></i></span>'+
-		'</div>'+
-
-	
-
-        '<button type="button" class="btn btn-primary" @click="newInstance()">{{ $t("message.newInstance") }}</button>'+
-'</div>',
-  data() {
-    return {
-		data: {
-		  texte:"Chris",
-		  comments:""
-		},
-    	errors: []
-	}
-  },
-  methods: {
-	newInstance() {
-		this.checkForm();
-		if (this.errors.length==0) {
-
-		    axios.post('/process/start', this.data).then(response => {
+		template: '<div class="card" v-if="$store.process.bpmnProcessId">'+
+			'<div id="instanciation-form"></div>'+
+			'<div class="ms-2 me-2 mb-2 d-flex justify-content-end">'+
+	        '<button type="button" class="btn btn-primary" @click="submit()">{{ $t("message.submit") }}</button>'+
+	        '</div>'+
+			'</div>'
+	,
+	data() {
+    	return {
+     	  form: null
+		}
+	},
+	methods: {
+		submit() {
+		    axios.post('/process/'+this.$store.process.bpmnProcessId+'/start', this.form._getState().data, this.$store.axiosHeaders).then(response => {
 				this.$store.state='instanceConfirmation';
 			}).catch(error => {
 				alert(error.message); 
 			})
 		}
 	},
-	checkForm() {
-      
-      this.errors = [];
+	mounted:function() {
+		if (!this.$store.process.bpmnProcessId) {
+			this.form = null;
+		} else {
+			let url = '/forms/instanciation/'+this.$store.process.bpmnProcessId;
 
-      if (!this.data.texte) {
-        this.errors.push('texte required.');
-      }
-      
-    }
-  },
+		    axios.get(url, this.$store.axiosHeaders).then(response => {
+				let schema = response.data; 
+				if (this.form==null) {
+					this.form = new FormViewer.Form({
+					  container: document.querySelector('#instanciation-form')
+					});
+				}
+				
+				this.form.importSchema(schema, this.$store.task.variables);
+	
+			}).catch(error => {
+				alert(error.message); 
+			})
+		}
+	}
 });
+
 Vue.component('instance-confirmation',{
   template: '<div class="alert alert-success" role="alert">'+
   'Your request has been taken into account.'+

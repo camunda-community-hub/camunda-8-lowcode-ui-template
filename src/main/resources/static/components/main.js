@@ -27,7 +27,7 @@ Vue.component('main-page',{
 				'<mytasks v-if="$store.state==\'mytasks\'"></mytasks>'+
 				'<unassignedtasks v-if="$store.state==\'unassignedtasks\'"></unassignedtasks>'+
 				'<archivedtasks v-if="$store.state==\'archivedtasks\'"></archivedtasks>'+
-				'<new-instance v-if="$store.state==\'newInstance\'"></new-instance>'+
+				'<new-instance v-if="$store.state.startsWith(\'proc\')"></new-instance>'+
 				'<instance-confirmation v-if="$store.state==\'instanceConfirmation\'"></instance-confirmation>'+
 			'</main>'+
 		'</div>'+
@@ -35,22 +35,40 @@ Vue.component('main-page',{
 	'</div>',
 	computed: {
 		title() {
-			return this.$t("message."+this.$store.state);
+			if (!this.$store.state.startsWith('proc')) {
+				return this.$t("message."+this.$store.state);
+			}
+			return this.$store.process.name;
 		}
 	}
 });
 Vue.component('side-bar',{
   template: '<div id="sidebar" class="border-end">'+
 		'<div id="sidebar-nav" class="list-group bg-secondary border-0 rounded-0 text-sm-start">'+		
-			'<ul class="navbar-nav me-auto mb-2 mb-lg-0">'+
-				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'mytasks\')"><i class="bi bi-person-check"></i> {{ $t("message.mytasks") }}</a></li>'+
-				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'unassignedtasks\')"><i class="bi bi-inboxes""></i> {{ $t("message.unassignedtasks") }}</a></li>'+
-				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'archivedtasks\')"><i class="bi bi-inboxes-fill"></i> {{ $t("message.archivedtasks") }}</a></li>'+
-				'<li class="nav-item"><a class="nav-link text-light p-2" @click="open(\'newInstance\')"><i class="bi bi-send"></i> {{ $t("message.newInstance") }}</a></li>'+
-			'</ul>'+
+			'<a href="#taskmenu" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-light dropdown-toggle move">'+
+                 '<i class="bi bi-list-task"></i> <span class="ms-1 d-none d-sm-inline ">Tasks</span></a>'+
+                       ' <ul class="collapse nav flex-column ms-2 show" id="taskmenu">'+
+                           '<li><a href="#" class="nav-link px-0 text-light" @click="open(\'mytasks\')"><i class="bi bi-person-check"></i> {{ $t("message.mytasks") }}</a></li>'+
+                           '<li><a href="#" class="nav-link px-0 text-light" @click="open(\'unassignedtasks\')"><i class="bi bi-inboxes"></i> {{ $t("message.unassignedtasks") }}</a></li>'+
+                           '<li><a href="#" class="nav-link px-0 text-light" @click="open(\'archivedtasks\')"><i class="bi bi-inboxes-fill"></i> {{ $t("message.archivedtasks") }}</a></li>'+
+                        '</ul>'+
+            '<a href="#processmenu" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-light dropdown-toggle move">'+
+                 '<i class="bi bi-boxes"></i> <span class="ms-1 d-none d-sm-inline ">Processes</span></a>'+
+                       ' <ul class="collapse nav flex-column ms-2 show" id="processmenu">'+
+                           '<li v-for="proc in processes"><a href="#" class="nav-link px-0 text-light" @click="openProc(proc)">{{ proc.name }}</a></li>'+
+                        '</ul>'+
 		'</div>'+
 	'</div>',
+  data() {
+    return {
+      processes: []
+	}
+  },
   methods: {
+	  openProc(proc) {
+		this.$store.state='proc'+proc.bpmnProcessId;
+		this.$store.process=proc;
+	  },
 	  open(state) {
 		this.$store.state=state;
 		this.$store.task={
@@ -64,6 +82,13 @@ Vue.component('side-bar',{
 		let modal = new bootstrap.Modal(document.getElementById('newOrderModal'), {});
 		modal.show();
 	  }
+  },
+  created: function () {
+    axios.get('/process/definition/latest', this.$store.axiosHeaders).then(response => {
+		this.processes = response.data; 
+	}).catch(error => {
+		alert(error.message); 
+	})
   }
 });
 

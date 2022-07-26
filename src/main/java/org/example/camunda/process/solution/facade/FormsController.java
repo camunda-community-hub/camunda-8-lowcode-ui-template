@@ -37,13 +37,21 @@ public class FormsController extends AbstractController {
     @ResponseBody
     public JsonNode getFormSchema(@PathVariable String processDefinitionId, @PathVariable String formKey) throws TaskListException, IOException {
         if (formKey.startsWith("camunda-forms:bpmn:")) {
-            String formId = formKey.substring(formKey.lastIndexOf(":")+1);
+            String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
             String schema = taskListService.getForm(processDefinitionId, formId);
             return JsonUtils.toJsonNode(schema);
         }
         Form form = formService.findByName(formKey);
         return form.getSchema();
     }
+    
+    @GetMapping("/instanciation/{bpmnProcessId}")
+    @ResponseBody
+    public JsonNode getInstanciationFormSchema(@PathVariable String bpmnProcessId) throws IOException {
+        Form form = formService.findByName(bpmnProcessId);
+        return form.getSchema();
+    }
+
     @Override
     public Logger getLogger() {
         return logger;

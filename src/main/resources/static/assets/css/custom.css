@@ -97,3 +97,7 @@ h2 {
 .dropdown-menu {
 	box-shadow: -2px 2px 3px #666;
 }
+.dropdown-toggle.move[aria-expanded="false"]::after {
+    transform: rotate(-90deg);
+    transition: transform 0.35s ease;
+}
