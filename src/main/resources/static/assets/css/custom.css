@@ -5,6 +5,7 @@
 #sidebar-nav {
     height: calc(100vh - 76px);
     padding: 10px;
+    width: 180px;
 }
 
 .btn-primary:hover {
@@ -100,4 +101,8 @@ h2 {
 .dropdown-toggle.move[aria-expanded="false"]::after {
     transform: rotate(-90deg);
     transition: transform 0.35s ease;
+}
+.fjs-form-field-table table td.actions button.btn {
+    min-width: 36px;
+    font-weight: 900;
 }

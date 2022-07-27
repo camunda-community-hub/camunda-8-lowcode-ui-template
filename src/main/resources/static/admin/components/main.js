@@ -85,7 +85,7 @@ Vue.component('my-menu',{ template: '<div class="col dropdown">'+
 		this.$store.form.schema = this.$store.defaultForm;
 		this.$store.form.id=null;
 		this.$store.form.name='New Form';
-		this.$store.formEditor.importSchema(schema);
+		this.$store.formEditor.importSchema(this.$store.form.schema);
 	},
 	duplicate() {
 		this.$store.form.id=null;
