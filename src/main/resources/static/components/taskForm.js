@@ -22,6 +22,7 @@ Vue.component('task-form',{
 			}).catch(error => {
 				alert(error.message); 
 			})
+			this.form.setProperty('readOnly', false);
 		},
 		unclaim() {
 			axios.get('/tasks/'+this.$store.task.id+'/unclaim/', this.$store.axiosHeaders).then(response => {
@@ -29,6 +30,7 @@ Vue.component('task-form',{
 			}).catch(error => {
 				alert(error.message); 
 			})
+			this.form.setProperty('readOnly', true);
 		},
 		submit() {
 		    axios.post('/tasks/'+this.$store.task.id, this.form._getState().data, this.$store.axiosHeaders).then(response => {
@@ -71,7 +73,9 @@ Vue.component('task-form',{
 				}
 				
 				this.form.importSchema(schema, this.$store.task.variables);
-	
+				if (!this.$store.task.assignee) {
+					this.form.setProperty('readOnly', true);
+				}
 			}).catch(error => {
 				alert(error.message); 
 			})
