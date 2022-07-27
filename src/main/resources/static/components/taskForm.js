@@ -33,29 +33,37 @@ Vue.component('task-form',{
 			this.form.setProperty('readOnly', true);
 		},
 		submit() {
-		    axios.post('/tasks/'+this.$store.task.id, this.form._getState().data, this.$store.axiosHeaders).then(response => {
-				//Vue.set(this.$store.task, 'done', true);
-				let i =0;
-				for(;i<this.$store.tasks.length;i++) {
-					if (this.$store.tasks[i].id==this.$store.task.id) {
-						this.$store.tasks.splice(i,1);
-						break;
+			this.form.validate();
+			let errors = [];
+			for (const field in this.form._state.errors) {
+			  if (this.form._state.errors[field].length>0) {
+				Array.prototype.push.apply(errors, this.form._state.errors[field]);
+			  }
+			}
+			if (errors.length==0) {
+			    axios.post('/tasks/'+this.$store.task.id, this.form._getState().data, this.$store.axiosHeaders).then(response => {
+					let i =0;
+					for(;i<this.$store.tasks.length;i++) {
+						if (this.$store.tasks[i].id==this.$store.task.id) {
+							this.$store.tasks.splice(i,1);
+							break;
+						}
 					}
-				}
-				if(i<this.$store.tasks.length) {
-					this.$store.task = this.$store.tasks[i];
-				} else {
-					this.$store.task = {
-						id: null,
-						name: null,
-						creationTime: "1970-01-01"
-					};
-					this.form = null;	
-				}
-				
-			}).catch(error => {
-				alert(error.message); 
-			})
+					if(i<this.$store.tasks.length) {
+						this.$store.task = this.$store.tasks[i];
+					} else {
+						this.$store.task = {
+							id: null,
+							name: null,
+							creationTime: "1970-01-01"
+						};
+						this.form = null;	
+					}
+					
+				}).catch(error => {
+					alert(error.message); 
+				})
+			}
 		}
 	},
 	updated:function() {
