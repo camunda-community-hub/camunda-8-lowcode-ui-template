@@ -411,3 +411,9 @@
 .fjs-form-field-table.table10 table td {
 	width:10%;
 }
+.fjs-form-field-table table td.actions button {
+	min-width: 22px;
+}
+.fjs-form-field-table table tfoot {
+	background: lightgray;
+}

@@ -2465,7 +2465,7 @@
       disabled,
       errors = [],
       field,
-      value = ''
+      value = []
     } = props;
     const {
       description,
@@ -2475,6 +2475,7 @@
       headers,
       headersNames,
       editableColumns,
+      dynamicRows,
       validate = {}
     } = field;
     const {
@@ -2524,6 +2525,29 @@
       });
     };
 
+    const remove = index => {
+      value.splice(index, 1);
+      props.onChange({
+        field,
+        value: value
+      });
+    };
+
+    const add = () => {
+      if (!Array.isArray(value)) {
+        props.onChange({
+          field,
+          value: [{}]
+        });
+      } else {
+        value.push({});
+        props.onChange({
+          field,
+          value: value
+        });
+      }
+    };
+
     return e$1("div", {
       class: tableClasses(type, hiddenFx, headersArray.length),
       children: [e$1(Label$2, {
@@ -2533,17 +2557,35 @@
       }), e$1("table", {
         children: [e$1("thead", {
           children: e$1("tr", {
-            children: headersNamesArray.map(header => e$1("th", {
+            children: [headersNamesArray.map(header => e$1("th", {
               children: header.trim()
-            }))
+            })), dynamicRows ? e$1("th", {}) : null]
           })
         }), e$1("tbody", {
           children: value && value.map((row, index) => e$1("tr", {
-            children: headersArray.map(header => e$1("td", {
+            children: [headersArray.map(header => e$1("td", {
               children: editableMap[header.trim()] ? getInput(header.trim(), editableMap[header.trim()], index) : row[header.trim()]
-            }))
+            })), dynamicRows ? e$1("td", {
+              class: "actions",
+              children: e$1("button", {
+                class: "btn btn-danger",
+                onClick: () => remove(index),
+                children: " - "
+              })
+            }) : null]
           }))
-        })]
+        }), dynamicRows ? e$1("tfoot", {
+          children: e$1("tr", {
+            children: [headersNamesArray.map(header => e$1("td", {})), e$1("td", {
+              class: "actions",
+              children: e$1("button", {
+                class: "btn btn-primary",
+                onClick: () => add(),
+                children: " + "
+              })
+            })]
+          })
+        }) : null]
       }), e$1(Description$2, {
         description: description
       }), e$1(Errors, {
@@ -7855,6 +7897,10 @@
       return editField(field, 'editableColumns', value);
     };
 
+    const setDynamicRows = value => {
+      return editField(field, 'dynamicRows', value);
+    };
+
     const getValue = key => {
       return () => {
         return get(field, [key], '');
@@ -7882,6 +7928,13 @@
       field,
       isEdited: isEdited$1,
       setEditableColumns
+    }, {
+      id: 'dynamicRows',
+      component: DynamicRows,
+      getValue,
+      field,
+      isEdited: isEdited$6,
+      setDynamicRows
     }];
     return {
       id: 'tableDef',
@@ -7941,6 +7994,24 @@
       id,
       label: 'Editable cols (header[type], header2[type])',
       setValue: setEditableColumns
+    });
+  }
+
+  function DynamicRows(props) {
+    const {
+      field,
+      getValue,
+      id,
+      setDynamicRows
+    } = props;
+    const debounce = useService('debounce');
+    return CheckboxEntry({
+      debounce,
+      element: field,
+      getValue: getValue('dynamicRows'),
+      id,
+      label: 'Dynamic rows',
+      setValue: setDynamicRows
     });
   }
 
