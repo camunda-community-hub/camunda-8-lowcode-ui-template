@@ -58,7 +58,8 @@ Vue.component('main-page',{
 });
 
 Vue.component('my-menu',{ template: '<div class="col dropdown">'+
-			 ' <button class="btn btn-outline-light dropdown-toggle" type="button" id="menuEditor" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Camunda Form Editor</button>'+
+			  '<button class="btn btn-outline-light dropdown-toggle" v-on:click="toggleMenuEditor()">Camunda Form Editor</button>'+
+			  '<button id="menuEditor" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="false" style="display:none"> </button>'+
 			  '<div class="dropdown-menu" aria-labelledby="menuEditor" style="width:280px">'+
 				'<div class="btn-group dropend">'+
 				  '<button type="button" class="btn btn-block dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">'+
@@ -77,20 +78,31 @@ Vue.component('my-menu',{ template: '<div class="col dropdown">'+
 			'</div>',
   data: function () {
     return {
-      names: []
+      names: [],
+      menuEditor : null
     }
   },
   methods: {
+	toggleMenuEditor() {
+		if (this.menuEditor==null) {
+			this.menuEditor = new bootstrap.Dropdown(document.getElementById("menuEditor"));
+		}
+		this.menuEditor.toggle();
+	},
 	newForm() {
 		this.$store.form.schema = this.$store.defaultForm;
 		this.$store.form.id=null;
 		this.$store.form.name='New Form';
 		this.$store.formEditor.importSchema(this.$store.form.schema);
+		
+		this.toggleMenuEditor();
 	},
 	duplicate() {
 		this.$store.form.id=null;
 		this.$store.form.schema.id = "Form_"+Math.floor(1000000 + Math.random() * 9000000);
 		this.$store.form.name='Duplicate '+this.$store.form.name;
+		
+		this.toggleMenuEditor();
 	},
 	loadForm(name) {
 		axios.get('/edition/forms?name='+name).then(response => {
@@ -103,6 +115,7 @@ Vue.component('my-menu',{ template: '<div class="col dropdown">'+
 		}).catch(error => {
 			alert(error.message); 
 		})
+		this.toggleMenuEditor();
 	},
 	download() {
 		let url = window.URL.createObjectURL(new Blob([JSON.stringify(this.$store.form.schema, null, 2)], {type: "application/json"}));
@@ -113,10 +126,12 @@ Vue.component('my-menu',{ template: '<div class="col dropdown">'+
 	    a.click();
 	    window.URL.revokeObjectURL(url);
 	    a.remove();
+		this.toggleMenuEditor();
 	},
 	upload() {
 		let modal = new bootstrap.Modal(document.getElementById('upload-form-modal'), {});
 		modal.show();
+		this.toggleMenuEditor();
 	}
   },
   created: function () {
