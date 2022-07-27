@@ -3,9 +3,9 @@ package org.example.camunda.process.solution.facade;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import org.example.camunda.process.solution.ProcessVariables;
 import org.example.camunda.process.solution.service.OperateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class ProcessController {
     private OperateService operateService;
     
     @PostMapping("/{bpmnProcessId}/start")
-    public void startProcessInstance(@PathVariable String bpmnProcessId, @RequestBody ProcessVariables variables) {
+    public void startProcessInstance(@PathVariable String bpmnProcessId, @RequestBody Map<String, Object> variables) {
 
         LOG.info("Starting process `" + bpmnProcessId + "` with variables: " + variables);
 
