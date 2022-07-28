@@ -64,30 +64,37 @@ Vue.component('task-form',{
 					alert(error.message); 
 				})
 			}
+		},
+		mountForm() {
+			console.log(this.$store.task);
+			if (!this.$store.task.id) {
+				this.form = null;
+			} else {
+				let url = '/forms/'+this.$store.task.processDefinitionId+'/'+this.$store.task.formKey;
+	
+			    axios.get(url, this.$store.axiosHeaders).then(response => {
+					let schema = response.data; 
+					if (this.form==null) {
+						this.form = new FormViewer.Form({
+						  container: document.querySelector('#task-form')
+						});
+					}
+					
+					this.form.importSchema(schema, this.$store.task.variables);
+					if (!this.$store.task.assignee) {
+						this.form.setProperty('readOnly', true);
+					}
+				}).catch(error => {
+					alert(error.message); 
+				})
+			}
 		}
 	},
-	updated:function() {
-		if (!this.$store.task.id) {
-			this.form = null;
-		} else {
-			let url = '/forms/'+this.$store.task.processDefinitionId+'/'+this.$store.task.formKey;
-
-		    axios.get(url, this.$store.axiosHeaders).then(response => {
-				let schema = response.data; 
-				if (this.form==null) {
-					this.form = new FormViewer.Form({
-					  container: document.querySelector('#task-form')
-					});
-				}
-				
-				this.form.importSchema(schema, this.$store.task.variables);
-				if (!this.$store.task.assignee) {
-					this.form.setProperty('readOnly', true);
-				}
-			}).catch(error => {
-				alert(error.message); 
-			})
-		}
+	updated() {
+		this.mountForm();
+	},
+	mounted() {
+		this.mountForm();
 	}
 });
 
