@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.example.camunda.process.solution.facade.dto.Task;
+import org.example.camunda.process.solution.model.TaskToken;
 import org.example.camunda.process.solution.service.TaskListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,13 @@ public class TaskController {
     @GetMapping()
     public List<Task> getTasks() throws TaskListException {
         return taskListService.getTasks(null, null);
+    }
+
+    @GetMapping("/token/{token}")
+    public Task tokenTask(@PathVariable String token) throws TaskListException {
+        TaskToken taskToken = taskListService.retrieveToken(token);
+        
+        return taskListService.getTask(taskToken.getTaskId());
     }
 
     @GetMapping("/unassigned")

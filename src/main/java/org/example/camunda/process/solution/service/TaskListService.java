@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.example.camunda.process.solution.dao.TaskTokenRepository;
 import org.example.camunda.process.solution.facade.dto.Task;
+import org.example.camunda.process.solution.model.TaskToken;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +23,9 @@ import io.camunda.tasklist.exception.TaskListException;
 
 @Service
 public class TaskListService {
+
+    @Value("${baseUrl}")
+    private String baseUrl;
     
     @Value("${zeebe.client.cloud.client-id}")
     private String clientId;
@@ -34,6 +41,9 @@ public class TaskListService {
 
     private  CamundaTaskListClient client;
     
+    @Autowired
+    private TaskTokenRepository taskTokenRepository;
+    
     private CamundaTaskListClient getCamundaTaskListClient() throws TaskListException {
         if (client==null) {
             SaasAuthentication sa = new SaasAuthentication(clientId, clientSecret);
@@ -47,6 +57,9 @@ public class TaskListService {
     }
     public Task unclaim(String taskId) throws TaskListException {
         return convert(getCamundaTaskListClient().unclaim(taskId));
+    }
+    public Task getTask(String taskId) throws TaskListException {
+        return convert(getCamundaTaskListClient().getTask(taskId));
     }
 
     public List<Task> getGroupTasks(String group, TaskState state, Integer pageSize) throws TaskListException {
@@ -88,5 +101,23 @@ public class TaskListService {
             result.add(convert(task));
         }
         return result;
+    }
+    
+    public String generateLink(String taskId) {
+        String token = generateTaskToken(taskId);
+        return baseUrl+"/tasks.html?token="+token;
+    }
+    
+    public String generateTaskToken(String taskId) {
+        String token = UUID.randomUUID().toString();
+        TaskToken taskToken = new TaskToken();
+        taskToken.setTaskId(taskId);
+        taskToken.setToken(token);
+        taskTokenRepository.save(taskToken);
+        return token;
+    }
+    
+    public TaskToken retrieveToken(String token) {
+        return taskTokenRepository.findByToken(token);
     }
 }

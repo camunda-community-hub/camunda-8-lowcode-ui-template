@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Camunda Vue tasklist</title>
+    <script src="/assets/js/vue-2.6.14.min.js"></script>
+	<script src="assets/js/vue-i18n-8.27.1.min.js"></script>
+	<script src="/admin/form-js/js/form-viewer.umd.js"></script>
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/bootstrap-icons-1.7.2.css" rel="stylesheet">
+	<link href="assets/css/custom.css" rel="stylesheet">
+	<link href="assets/css/login.css" rel="stylesheet">
+	<link href="/admin/form-js/css/form-js.css"rel="stylesheet">
+	<link href="/admin/form-js/css/test.css"rel="stylesheet">
+	<script src="assets/js/axios-0.24.0.min.js"></script>
+	<script src="components/translation.js"></script>
+	<script src="components/login.js"></script>
+	<script src="components/main.js"></script>
+	<script src="components/linkableTask.js"></script>
+	<script src="components/taskForm.js"></script>
+</head>
+<body>
+<div id="app">
+	<linkable-task v-if="authenticated"></linkable-task>
+	<login v-else></login>
+	
+</div>
+</body>
+<script>
+  Vue.prototype.$store = Vue.observable({
+	auth: false,
+	user: {'name':null, 'token':null, 'organizer': false},
+	axiosHeaders:{'headers': {}},
+	task: {
+		id: null,
+		name: null,
+		creationTime: "1970-01-01",
+		variables:null
+	}
+  });
+  var app = new Vue({
+	i18n,
+    el: '#app',
+    data: {
+      message: 'Hello Vue!'
+    },
+	computed: {
+		authenticated() {
+			return this.$store.auth;
+		}
+	},
+	created: function() {
+		
+		let storedUser = localStorage.getItem('camundaUser');
+		if (storedUser) {
+			
+			storedUser = JSON.parse(storedUser);
+			console.log(storedUser);
+			if (storedUser /*&& storedUser.token*/) {
+				this.$store.user = storedUser;
+				//this.$store.axiosHeaders.headers = {'Authorization': storedUser.token}
+				this.$store.auth=true;
+			}
+	
+			const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			const token = urlParams.get('token')
+		    axios.get('/tasks/token/'+token, this.$store.axiosHeaders).then(response => {
+				this.$store.task = response.data; 
+			}).catch(error => {
+				alert(error.message); 
+			})
+		}
+	}
+  });
+</script>
+<script src="assets/js/bootstrap-5.0.2.bundle.min.js"></script>
+</html>
