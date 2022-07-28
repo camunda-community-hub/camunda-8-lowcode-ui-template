@@ -1,6 +1,6 @@
 
 Vue.component('task-form',{
-		template: '<div class="card" v-if="$store.task.id">'+
+		template: '<div class="card taskform" v-if="$store.task.id">'+
 			'<h5 class="card-title">{{$store.task.name}}</h5>'+
 			'<div id="task-form"></div>'+
 			'<div class="ms-2 me-2 mb-2 d-flex justify-content-between">'+
