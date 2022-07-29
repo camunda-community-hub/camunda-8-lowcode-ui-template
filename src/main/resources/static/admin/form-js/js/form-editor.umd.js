@@ -476,8 +476,8 @@
     return _typeof(obj);
   }
 
-  function _extends$f() {
-    _extends$f = Object.assign || function (target) {
+  function _extends$g() {
+    _extends$g = Object.assign || function (target) {
       for (var i = 1; i < arguments.length; i++) {
         var source = arguments[i];
 
@@ -491,7 +491,7 @@
       return target;
     };
 
-    return _extends$f.apply(this, arguments);
+    return _extends$g.apply(this, arguments);
   }
 
   /**
@@ -508,7 +508,7 @@
       others[_key - 1] = arguments[_key];
     }
 
-    return _extends$f.apply(void 0, [target].concat(others));
+    return _extends$g.apply(void 0, [target].concat(others));
   }
   /**
    * Sets a nested property of a given object to the specified value.
@@ -1277,9 +1277,12 @@
     return getService(type, strict);
   }
 
-  function formFieldClassesCustom(type, hiddenFx, errors = []) {
+  function getDataAsJson() {
     const form = useService$1('form');
-    let dataStr = JSON.stringify(form._getState().data);
+    return JSON.stringify(form._getState().data);
+  }
+  function formFieldClassesCustom(type, hiddenFx, errors = []) {
+    let dataStr = getDataAsJson();
 
     if (!type) {
       throw new Error('type required');
@@ -1319,7 +1322,7 @@
     return sanitizeHTML(html);
   }
 
-  const type$a = 'button';
+  const type$b = 'button';
   function Button(props) {
     const {
       disabled,
@@ -1332,7 +1335,7 @@
       targetApiVerb
     } = field;
     return e$1("div", {
-      class: formFieldClassesCustom(type$a, hiddenFx),
+      class: formFieldClassesCustom(type$b, hiddenFx),
       children: e$1("button", {
         class: "fjs-button",
         type: action,
@@ -1349,7 +1352,7 @@
     };
   };
 
-  Button.type = type$a;
+  Button.type = type$b;
   Button.label = 'Button';
   Button.keyed = true;
   Button.hiddenFx = 'false';
@@ -1406,7 +1409,7 @@
     });
   }
 
-  const type$9 = 'checkbox';
+  const type$a = 'checkbox';
   function Checkbox$1(props) {
     const {
       disabled,
@@ -1434,7 +1437,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$9, hiddenFx, errors),
+      class: formFieldClassesCustom(type$a, hiddenFx, errors),
       children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
@@ -1460,13 +1463,13 @@
     };
   };
 
-  Checkbox$1.type = type$9;
+  Checkbox$1.type = type$a;
   Checkbox$1.label = 'Checkbox';
   Checkbox$1.keyed = true;
   Checkbox$1.emptyValue = false;
   Checkbox$1.hiddenFx = 'false';
 
-  const type$8 = 'checklist';
+  const type$9 = 'checklist';
   function Checklist(props) {
     const {
       disabled,
@@ -1516,7 +1519,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$8, hiddenFx, errors),
+      class: formFieldClassesCustom(type$9, hiddenFx, errors),
       children: [e$1(Label$2, {
         label: label
       }), myValues.map((v, index) => {
@@ -1551,7 +1554,7 @@
     };
   };
 
-  Checklist.type = type$8;
+  Checklist.type = type$9;
   Checklist.label = 'Checklist';
   Checklist.keyed = true;
   Checklist.emptyValue = [];
@@ -1765,7 +1768,7 @@
     });
   }
 
-  const type$7 = 'number';
+  const type$8 = 'number';
   function Number$1(props) {
     const {
       disabled,
@@ -1798,7 +1801,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$7, hiddenFx, errors),
+      class: formFieldClassesCustom(type$8, hiddenFx, errors),
       children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
@@ -1823,13 +1826,13 @@
     };
   };
 
-  Number$1.type = type$7;
+  Number$1.type = type$8;
   Number$1.keyed = true;
   Number$1.label = 'Number';
   Number$1.emptyValue = null;
   Number$1.hiddenFx = 'false';
 
-  const type$6 = 'radio';
+  const type$7 = 'radio';
   function Radio(props) {
     const {
       disabled,
@@ -1860,7 +1863,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$6, hiddenFx, errors),
+      class: formFieldClassesCustom(type$7, hiddenFx, errors),
       children: [e$1(Label$2, {
         label: label,
         required: required
@@ -1896,13 +1899,13 @@
     };
   };
 
-  Radio.type = type$6;
+  Radio.type = type$7;
   Radio.label = 'Radio';
   Radio.keyed = true;
   Radio.emptyValue = null;
   Radio.hiddenFx = 'false';
 
-  const type$5 = 'select';
+  const type$6 = 'select';
   function Select$1(props) {
     const {
       disabled,
@@ -1923,11 +1926,28 @@
       required
     } = validate;
     const [myValues, myValuesSet] = l$1([]);
+    let dataFormStr = getDataAsJson();
+    console.log(dataFormStr);
     const fetchMyAPI = A$1(async () => {
       if (dataSource && dataSource.length > 0) {
-        let response = await fetch(dataSource);
-        response = await response.json();
-        myValuesSet(response);
+        let computedDs = dataSource;
+
+        if (dataSource.includes('${data')) {
+          try {
+            let transform = '"' + dataSource.replace('${', '"+').replace('}', '+"') + '"';
+            computedDs = Function("let data = " + dataFormStr + "; return " + transform + ";").call();
+          } catch (err) {
+            console.log(err);
+          }
+        }
+
+        try {
+          let response = await fetch(computedDs);
+          response = await response.json();
+          myValuesSet(response);
+        } catch (err) {
+          myValuesSet(values);
+        }
       } else {
         myValuesSet(values);
       }
@@ -1950,7 +1970,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$5, hiddenFx, errors),
+      class: formFieldClassesCustom(type$6, hiddenFx, errors),
       children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
@@ -1987,17 +2007,17 @@
     };
   };
 
-  Select$1.type = type$5;
+  Select$1.type = type$6;
   Select$1.label = 'Select';
   Select$1.keyed = true;
   Select$1.emptyValue = null;
   Select$1.hiddenFx = 'false';
 
-  function _extends$e() { _extends$e = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$e.apply(this, arguments); }
+  function _extends$f() { _extends$f = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$f.apply(this, arguments); }
   var CloseIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$e({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$f({
     width: "16",
     height: "16",
     fill: "none",
@@ -2125,7 +2145,7 @@
     });
   }
 
-  const type$4 = 'taglist';
+  const type$5 = 'taglist';
   function Taglist(props) {
     const {
       disabled,
@@ -2228,7 +2248,7 @@
     };
 
     return e$1("div", {
-      class: formFieldClassesCustom(type$4, hiddenFx, errors),
+      class: formFieldClassesCustom(type$5, hiddenFx, errors),
       children: [e$1(Label$2, {
         label: label,
         id: prefixId(id, formId)
@@ -2294,13 +2314,13 @@
     };
   };
 
-  Taglist.type = type$4;
+  Taglist.type = type$5;
   Taglist.label = 'Taglist';
   Taglist.keyed = true;
   Taglist.emptyValue = [];
   Taglist.hiddenFx = 'false';
 
-  const type$3 = 'text';
+  const type$4 = 'text';
   function Text$1(props) {
     const {
       field
@@ -2310,7 +2330,7 @@
       hiddenFx
     } = field;
     return e$1("div", {
-      class: formFieldClassesCustom(type$3, hiddenFx),
+      class: formFieldClassesCustom(type$4, hiddenFx),
       children: e$1(Markup, {
         markup: safeMarkdown(text),
         trim: false
@@ -2325,12 +2345,75 @@
     };
   };
 
-  Text$1.type = type$3;
+  Text$1.type = type$4;
   Text$1.keyed = false;
   Text$1.hiddenFx = 'false';
 
-  const type$2 = 'textfield';
+  const type$3 = 'textfield';
   function Textfield$1(props) {
+    const {
+      disabled,
+      errors = [],
+      field,
+      value = ''
+    } = props;
+    const {
+      description,
+      id,
+      label,
+      hiddenFx,
+      validate = {}
+    } = field;
+    const {
+      required
+    } = validate;
+
+    const onChange = ({
+      target
+    }) => {
+      props.onChange({
+        field,
+        value: target.value
+      });
+    };
+
+    const {
+      formId
+    } = F$1(FormContext);
+    return e$1("div", {
+      class: formFieldClassesCustom(type$3, hiddenFx, errors),
+      children: [e$1(Label$2, {
+        id: prefixId(id, formId),
+        label: label,
+        required: required
+      }), e$1("input", {
+        class: "fjs-input",
+        disabled: disabled,
+        id: prefixId(id, formId),
+        onInput: onChange,
+        type: "text",
+        value: value
+      }), e$1(Description$2, {
+        description: description
+      }), e$1(Errors, {
+        errors: errors
+      })]
+    });
+  }
+
+  Textfield$1.create = function (options = {}) {
+    return { ...options
+    };
+  };
+
+  Textfield$1.type = type$3;
+  Textfield$1.label = 'Text Field';
+  Textfield$1.keyed = true;
+  Textfield$1.emptyValue = '';
+  Textfield$1.hiddenFx = 'false';
+
+  const type$2 = 'datefield';
+  function Datefield(props) {
     const {
       disabled,
       errors = [],
@@ -2371,69 +2454,6 @@
         disabled: disabled,
         id: prefixId(id, formId),
         onInput: onChange,
-        type: "text",
-        value: value
-      }), e$1(Description$2, {
-        description: description
-      }), e$1(Errors, {
-        errors: errors
-      })]
-    });
-  }
-
-  Textfield$1.create = function (options = {}) {
-    return { ...options
-    };
-  };
-
-  Textfield$1.type = type$2;
-  Textfield$1.label = 'Text Field';
-  Textfield$1.keyed = true;
-  Textfield$1.emptyValue = '';
-  Textfield$1.hiddenFx = 'false';
-
-  const type$1 = 'datefield';
-  function Datefield(props) {
-    const {
-      disabled,
-      errors = [],
-      field,
-      value = ''
-    } = props;
-    const {
-      description,
-      id,
-      label,
-      hiddenFx,
-      validate = {}
-    } = field;
-    const {
-      required
-    } = validate;
-
-    const onChange = ({
-      target
-    }) => {
-      props.onChange({
-        field,
-        value: target.value
-      });
-    };
-
-    const {
-      formId
-    } = F$1(FormContext);
-    return e$1("div", {
-      class: formFieldClassesCustom(type$1, hiddenFx, errors),
-      children: [e$1(Label$2, {
-        id: prefixId(id, formId),
-        label: label,
-        required: required
-      }), e$1("input", {
-        class: "fjs-input",
-        disabled: disabled,
-        id: prefixId(id, formId),
-        onInput: onChange,
         type: "date",
         value: value
       }), e$1(Description$2, {
@@ -2449,13 +2469,13 @@
     };
   };
 
-  Datefield.type = type$1;
+  Datefield.type = type$2;
   Datefield.label = 'Date Field';
   Datefield.keyed = true;
   Datefield.emptyValue = '';
   Datefield.hiddenFx = 'false';
 
-  const type = 'table';
+  const type$1 = 'table';
   function tableClasses(type, hiddenFx, length) {
     let classes = formFieldClassesCustom(type, hiddenFx, []);
     return classes + ' table' + length;
@@ -2549,7 +2569,7 @@
     };
 
     return e$1("div", {
-      class: tableClasses(type, hiddenFx, headersArray.length),
+      class: tableClasses(type$1, hiddenFx, headersArray.length),
       children: [e$1(Label$2, {
         id: prefixId(id, formId),
         label: label,
@@ -2599,13 +2619,100 @@
     };
   };
 
-  Table.type = type;
+  Table.type = type$1;
   Table.label = 'Table';
   Table.keyed = true;
   Table.emptyValue = '';
   Table.hiddenFx = 'false';
 
-  const formFields = [Button, Checkbox$1, Checklist, Default, Number$1, Radio, Select$1, Taglist, Text$1, Textfield$1, Datefield, Table];
+  const type = 'fileUpload';
+  function FileUpload(props) {
+    const {
+      disabled,
+      errors = [],
+      field,
+      value = ''
+    } = props;
+    const {
+      description,
+      id,
+      label,
+      hiddenFx,
+      targetApi,
+      targetApiVerb,
+      validate = {}
+    } = field;
+    const {
+      required
+    } = validate;
+
+    const onChange = ({
+      target
+    }) => {
+      const formData = new FormData();
+      formData.append('File', target.files[0]);
+      const requestOptions = {
+        method: targetApiVerb,
+        body: formData
+      };
+      fetch(targetApi, requestOptions).then(response => {
+        response.ok ? response.json().then(json => {
+          console.log(json);
+          props.onChange({
+            field,
+            value: json
+          });
+        }) : console.log(response);
+      });
+    };
+
+    const {
+      formId
+    } = F$1(FormContext);
+    return e$1("div", {
+      class: formFieldClassesCustom(type, hiddenFx, errors),
+      children: [e$1("label", {
+        class: "fjs-form-field-label",
+        children: [label || '', required && e$1("span", {
+          class: "fjs-asterix",
+          children: "*"
+        })]
+      }), e$1("label", {
+        for: prefixId(id, formId),
+        class: "fjs-form-field-label fjs-file-input",
+        children: ["File Upload", e$1("div", {
+          class: "fjs-file-input-info",
+          children: value.name
+        }), e$1("img", {
+          src: "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACLklEQVRoge2YTS8DQRjHHwfahAYHRycfgAQ3dWlExFGCfgFXX8HBN5AQr9c6e7l7S9TJgYarEFFXkYgqnr/dTadjptul0x0xv+SftLszO792Z+dliRwOh8PhcPxP2jjJuCWiMsTZ4txyPvwUOducTIxeoSQ4G5x3qoirssvpislRS4pzRLXFxRTIoh8B+RNSi75xXjXnduKQldHJX3LGOe3kda0RUt+hWJ8Jnfwpp1NRHiPSsVQ21xRTBVHlA9JS+aJZTTU/lQeYE0pCHYxYCWOmCuqRHw6pXxbq4XOrKVlV4yr5PFXkp8n7h7Oaa0xKdW8M+lYRRR7H9xXXwLh/LdVfN2rtgz56SPXLB11KBOXOpProPgOG3b9YoGjyyKpQXyWPLJtXJ2rh3FM0+RdOf4j8AXnzgjGCkaFHaviJ011DHt9nQuQxI3eYlMfF9wQJsXGsa8Y4cxr52bjlxQe21z92oRCRY4U8WBManPePZf+K/CBVb0awo0r55xY18s+cKRvkwabUcIGq1zaj5K0ecfycs8Tp88/FLg/upMYn6qxnhTzGZLH7lOtsHPJ5+i6PZUeqRr2Gk5QEShT+OkQnj01L0/55kUdJJF2jrHXyIKeQUU33VsqDjEIKfRl3At0JfRrr+StFudjlA/CqQzdZlTXnrJEH2HRgnA9bOgTBssMa+QD8CN2dEIfZFTK8JP4teCbwYD+QJ415AntYbAObspNqJFilNu3tgcPhcNjFJ4udZjdSNDK9AAAAAElFTkSuQmCC",
+          class: "fjs-upload-icon"
+        })]
+      }), e$1("input", {
+        class: "fjs-input-file-hidden",
+        disabled: disabled,
+        id: prefixId(id, formId),
+        onInput: onChange,
+        type: "file"
+      }), e$1(Description$2, {
+        description: description
+      }), e$1(Errors, {
+        errors: errors
+      })]
+    });
+  }
+
+  FileUpload.create = function (options = {}) {
+    return { ...options
+    };
+  };
+
+  FileUpload.type = type;
+  FileUpload.label = 'File Upload';
+  FileUpload.keyed = true;
+  FileUpload.emptyValue = '';
+  FileUpload.hiddenFx = 'false';
+
+  const formFields = [Button, Checkbox$1, Checklist, Default, Number$1, Radio, Select$1, Taglist, Text$1, Textfield$1, Datefield, Table, FileUpload];
 
   class FormFields {
     constructor() {
@@ -4426,11 +4533,11 @@
     return getService(type, strict);
   }
 
-  function _extends$d() { _extends$d = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$d.apply(this, arguments); }
+  function _extends$e() { _extends$e = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$e.apply(this, arguments); }
   var ButtonIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$d({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$e({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4439,11 +4546,11 @@
     d: "M45 17a3 3 0 013 3v14a3 3 0 01-3 3H9a3 3 0 01-3-3V20a3 3 0 013-3h36zm-9 8.889H18v2.222h18V25.89z"
   })));
 
-  function _extends$c() { _extends$c = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$c.apply(this, arguments); }
+  function _extends$d() { _extends$d = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$d.apply(this, arguments); }
   var CheckboxIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$c({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$d({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4451,11 +4558,11 @@
     d: "M34 18H20a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V20a2 2 0 00-2-2zm-9 14l-5-5 1.41-1.41L25 29.17l7.59-7.59L34 23l-9 9z"
   })));
 
-  function _extends$b() { _extends$b = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$b.apply(this, arguments); }
+  function _extends$c() { _extends$c = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$c.apply(this, arguments); }
   var ChecklistIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$b({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$c({
     width: "54",
     height: "54",
     fill: "none",
@@ -4470,11 +4577,11 @@
     fill: "#22242A"
   })));
 
-  function _extends$a() { _extends$a = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$a.apply(this, arguments); }
+  function _extends$b() { _extends$b = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$b.apply(this, arguments); }
   var TaglistIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$a({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$b({
     width: "54",
     height: "54",
     fill: "none",
@@ -4489,11 +4596,11 @@
     fill: "#505562"
   })));
 
-  function _extends$9() { _extends$9 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
+  function _extends$a() { _extends$a = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$a.apply(this, arguments); }
   var FormIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$9({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$a({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4517,11 +4624,11 @@
     rx: "1"
   })));
 
-  function _extends$8() { _extends$8 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
+  function _extends$9() { _extends$9 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
   var ColumnsIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$8({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$9({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4530,11 +4637,11 @@
     d: "M8 33v5a1 1 0 001 1h4v2H9a3 3 0 01-3-3v-5h2zm18 6v2H15v-2h11zm13 0v2H28v-2h11zm9-6v5a3 3 0 01-3 3h-4v-2h4a1 1 0 00.993-.883L46 38v-5h2zM8 22v9H6v-9h2zm40 0v9h-2v-9h2zm-35-9v2H9a1 1 0 00-.993.883L8 16v4H6v-4a3 3 0 013-3h4zm32 0a3 3 0 013 3v4h-2v-4a1 1 0 00-.883-.993L45 15h-4v-2h4zm-6 0v2H28v-2h11zm-13 0v2H15v-2h11z"
   })));
 
-  function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
+  function _extends$8() { _extends$8 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
   var NumberIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$7({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$8({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4543,11 +4650,11 @@
     d: "M45 16a3 3 0 013 3v16a3 3 0 01-3 3H9a3 3 0 01-3-3V19a3 3 0 013-3h36zm0 2H9a1 1 0 00-1 1v16a1 1 0 001 1h36a1 1 0 001-1V19a1 1 0 00-1-1zM35 28.444h7l-3.5 4-3.5-4zM35 26h7l-3.5-4-3.5 4z"
   })));
 
-  function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
+  function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
   var RadioIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$6({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$7({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4555,11 +4662,11 @@
     d: "M27 22c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
   })));
 
-  function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
+  function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
   var SelectIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$5({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$6({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4568,11 +4675,11 @@
     d: "M45 16a3 3 0 013 3v16a3 3 0 01-3 3H9a3 3 0 01-3-3V19a3 3 0 013-3h36zm0 2H9a1 1 0 00-1 1v16a1 1 0 001 1h36a1 1 0 001-1V19a1 1 0 00-1-1zm-12 7h9l-4.5 6-4.5-6z"
   })));
 
-  function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
+  function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
   var TextIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$4({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$5({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4580,11 +4687,11 @@
     d: "M20.58 33.77h-3l-1.18-3.08H11l-1.1 3.08H7l5.27-13.54h2.89zm-5-5.36l-1.86-5-1.83 5zM22 20.23h5.41a15.47 15.47 0 012.4.14 3.42 3.42 0 011.41.55 3.47 3.47 0 011 1.14 3 3 0 01.42 1.58 3.26 3.26 0 01-1.91 2.94 3.63 3.63 0 011.91 1.22 3.28 3.28 0 01.66 2 4 4 0 01-.43 1.8 3.63 3.63 0 01-1.09 1.4 3.89 3.89 0 01-1.83.65q-.69.07-3.3.09H22zm2.73 2.25v3.13h3.8a1.79 1.79 0 001.1-.49 1.41 1.41 0 00.41-1 1.49 1.49 0 00-.35-1 1.54 1.54 0 00-1-.48c-.27 0-1.05-.05-2.34-.05zm0 5.39v3.62h2.57a11.52 11.52 0 001.88-.09 1.65 1.65 0 001-.54 1.6 1.6 0 00.38-1.14 1.75 1.75 0 00-.29-1 1.69 1.69 0 00-.86-.62 9.28 9.28 0 00-2.41-.23zM44.35 28.79l2.65.84a5.94 5.94 0 01-2 3.29A5.74 5.74 0 0141.38 34a5.87 5.87 0 01-4.44-1.84 7.09 7.09 0 01-1.73-5A7.43 7.43 0 0137 21.87 6 6 0 0141.54 20a5.64 5.64 0 014 1.47A5.33 5.33 0 0147 24l-2.7.65a2.8 2.8 0 00-2.86-2.27A3.09 3.09 0 0039 23.42a5.31 5.31 0 00-.93 3.5 5.62 5.62 0 00.93 3.65 3 3 0 002.4 1.09 2.72 2.72 0 001.82-.66 4 4 0 001.13-2.21z"
   })));
 
-  function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
+  function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
   var TextfieldIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$3({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$4({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54"
@@ -4593,11 +4700,11 @@
     d: "M45 16a3 3 0 013 3v16a3 3 0 01-3 3H9a3 3 0 01-3-3V19a3 3 0 013-3h36zm0 2H9a1 1 0 00-1 1v16a1 1 0 001 1h36a1 1 0 001-1V19a1 1 0 00-1-1zm-32 4v10h-2V22h2z"
   })));
 
-  function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
+  function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
   var DateFieldIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$2({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$3({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54",
@@ -4606,17 +4713,28 @@
     d: "M152 64h144V24c0-13.25 10.7-24 24-24s24 10.75 24 24v40h40c35.3 0 64 28.65 64 64v320c0 35.3-28.7 64-64 64H64c-35.35 0-64-28.7-64-64V128c0-35.35 28.65-64 64-64h40V24c0-13.25 10.7-24 24-24s24 10.75 24 24v40zM48 448c0 8.8 7.16 16 16 16h320c8.8 0 16-7.2 16-16V192H48v256z"
   })));
 
-  function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+  function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
   var TableIcon = (({
     styles = {},
     ...props
-  }) => /*#__PURE__*/React.createElement("svg", _extends$1({
+  }) => /*#__PURE__*/React.createElement("svg", _extends$2({
     xmlns: "http://www.w3.org/2000/svg",
     width: "54",
     height: "54",
     viewBox: "0 0 512 512"
   }, props), /*#__PURE__*/React.createElement("path", {
     d: "M448 32c35.3 0 64 28.65 64 64v320c0 35.3-28.7 64-64 64H64c-35.35 0-64-28.7-64-64V96c0-35.35 28.65-64 64-64h384zM224 256v-96H64v96h160zM64 320v96h160v-96H64zm224 96h160v-96H288v96zm160-160v-96H288v96h160z"
+  })));
+
+  function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+  var FileUploadIcon = (({
+    styles = {},
+    ...props
+  }) => /*#__PURE__*/React.createElement("svg", _extends$1({
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 384 512"
+  }, props), /*#__PURE__*/React.createElement("path", {
+    d: "M256 0v128h128L256 0zm-32 128V0H48C21.49 0 0 21.49 0 48v416c0 26.5 21.49 48 48 48h288c26.51 0 48-21.49 48-48V160H256.9c-18.6 0-32.9-14.3-32.9-32zm64.1 216.1c-3.8 5.6-9.9 7.9-16.1 7.9s-12.28-2.344-16.97-7.031L216 305.9V408c0 13.25-10.75 24-24 24s-24-10.75-24-24V305.9l-39.03 39.03c-9.375 9.375-24.56 9.375-33.94 0s-9.375-24.56 0-33.94l80-80c9.375-9.375 24.56-9.375 33.94 0l80 80c9.33 9.41 9.33 24.61-.87 33.11z"
   })));
 
   const iconsByType = {
@@ -4632,6 +4750,7 @@
     textfield: TextfieldIcon,
     datefield: DateFieldIcon,
     table: TableIcon,
+    fileUpload: FileUploadIcon,
     default: FormIcon
   };
 
@@ -4668,6 +4787,9 @@
   }, {
     label: 'Table',
     type: 'table'
+  }, {
+    label: 'FileUpload',
+    type: 'fileUpload'
   }];
   function Palette(props) {
     return e$1("div", {
@@ -4690,7 +4812,7 @@
             class: "fjs-palette-field fjs-drag-copy fjs-no-drop",
             "data-field-type": type,
             title: `Create a ${label} element`,
-            children: [Icon ? Icon.name == "DateFieldIcon" || Icon.name == "TableIcon" ? e$1(Icon, {
+            children: [Icon ? Icon.name == "DateFieldIcon" || Icon.name == "TableIcon" || Icon.name == "FileUploadIcon" ? e$1(Icon, {
               class: "fjs-palette-field-icon",
               width: "36",
               height: "36"
@@ -6347,7 +6469,7 @@
 
     return text;
   }
-  const INPUTS = ['checkbox', 'checklist', 'number', 'radio', 'select', 'taglist', 'textfield', 'datefield', 'table'];
+  const INPUTS = ['checkbox', 'checklist', 'number', 'radio', 'select', 'taglist', 'textfield', 'datefield', 'table', 'fileUpload'];
   const OPTIONS_INPUTS = ['checklist', 'radio', 'select', 'taglist'];
 
   const labelsByType = {
@@ -6363,7 +6485,8 @@
     text: 'TEXT',
     textfield: 'TEXT FIELD',
     datefield: 'DATEFIELD',
-    table: 'TABLE'
+    table: 'TABLE',
+    fileUpload: 'FILE UPLOAD'
   };
   const PropertiesPanelHeaderProvider = {
     getElementLabel: field => {
@@ -7764,7 +7887,7 @@
       type
     } = field;
 
-    if (!OPTIONS_INPUTS.includes(type) && type !== 'button') {
+    if (!OPTIONS_INPUTS.includes(type) && type !== 'button' && type !== 'fileUpload') {
       return null;
     }
 
@@ -7788,7 +7911,7 @@
 
     let entries = [];
 
-    if (type === 'button') {
+    if (type === 'button' || type === 'fileUpload') {
       entries.push({
         id: 'targetApi',
         component: TargetApi,

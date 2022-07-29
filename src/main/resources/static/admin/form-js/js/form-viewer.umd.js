@@ -1745,9 +1745,12 @@
     return getService(type, strict);
   }
 
-  function formFieldClassesCustom(type, hiddenFx, errors = []) {
+  function getDataAsJson() {
     const form = useService('form');
-    let dataStr = JSON.stringify(form._getState().data);
+    return JSON.stringify(form._getState().data);
+  }
+  function formFieldClassesCustom(type, hiddenFx, errors = []) {
+    let dataStr = getDataAsJson();
 
     if (!type) {
       throw new Error('type required');
@@ -1787,7 +1790,7 @@
     return sanitizeHTML(html);
   }
 
-  const type$a = 'button';
+  const type$b = 'button';
   function Button(props) {
     const {
       disabled,
@@ -1800,7 +1803,7 @@
       targetApiVerb
     } = field;
     return e$1("div", {
-      class: formFieldClassesCustom(type$a, hiddenFx),
+      class: formFieldClassesCustom(type$b, hiddenFx),
       children: e$1("button", {
         class: "fjs-button",
         type: action,
@@ -1817,7 +1820,7 @@
     };
   };
 
-  Button.type = type$a;
+  Button.type = type$b;
   Button.label = 'Button';
   Button.keyed = true;
   Button.hiddenFx = 'false';
@@ -1874,7 +1877,7 @@
     });
   }
 
-  const type$9 = 'checkbox';
+  const type$a = 'checkbox';
   function Checkbox(props) {
     const {
       disabled,
@@ -1902,7 +1905,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$9, hiddenFx, errors),
+      class: formFieldClassesCustom(type$a, hiddenFx, errors),
       children: [e$1(Label, {
         id: prefixId(id, formId),
         label: label,
@@ -1928,13 +1931,13 @@
     };
   };
 
-  Checkbox.type = type$9;
+  Checkbox.type = type$a;
   Checkbox.label = 'Checkbox';
   Checkbox.keyed = true;
   Checkbox.emptyValue = false;
   Checkbox.hiddenFx = 'false';
 
-  const type$8 = 'checklist';
+  const type$9 = 'checklist';
   function Checklist(props) {
     const {
       disabled,
@@ -1984,7 +1987,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$8, hiddenFx, errors),
+      class: formFieldClassesCustom(type$9, hiddenFx, errors),
       children: [e$1(Label, {
         label: label
       }), myValues.map((v, index) => {
@@ -2019,7 +2022,7 @@
     };
   };
 
-  Checklist.type = type$8;
+  Checklist.type = type$9;
   Checklist.label = 'Checklist';
   Checklist.keyed = true;
   Checklist.emptyValue = [];
@@ -2233,7 +2236,7 @@
     });
   }
 
-  const type$7 = 'number';
+  const type$8 = 'number';
   function Number$1(props) {
     const {
       disabled,
@@ -2266,7 +2269,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$7, hiddenFx, errors),
+      class: formFieldClassesCustom(type$8, hiddenFx, errors),
       children: [e$1(Label, {
         id: prefixId(id, formId),
         label: label,
@@ -2291,13 +2294,13 @@
     };
   };
 
-  Number$1.type = type$7;
+  Number$1.type = type$8;
   Number$1.keyed = true;
   Number$1.label = 'Number';
   Number$1.emptyValue = null;
   Number$1.hiddenFx = 'false';
 
-  const type$6 = 'radio';
+  const type$7 = 'radio';
   function Radio(props) {
     const {
       disabled,
@@ -2328,7 +2331,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$6, hiddenFx, errors),
+      class: formFieldClassesCustom(type$7, hiddenFx, errors),
       children: [e$1(Label, {
         label: label,
         required: required
@@ -2364,13 +2367,13 @@
     };
   };
 
-  Radio.type = type$6;
+  Radio.type = type$7;
   Radio.label = 'Radio';
   Radio.keyed = true;
   Radio.emptyValue = null;
   Radio.hiddenFx = 'false';
 
-  const type$5 = 'select';
+  const type$6 = 'select';
   function Select(props) {
     const {
       disabled,
@@ -2391,11 +2394,28 @@
       required
     } = validate;
     const [myValues, myValuesSet] = l$1([]);
+    let dataFormStr = getDataAsJson();
+    console.log(dataFormStr);
     const fetchMyAPI = A$1(async () => {
       if (dataSource && dataSource.length > 0) {
-        let response = await fetch(dataSource);
-        response = await response.json();
-        myValuesSet(response);
+        let computedDs = dataSource;
+
+        if (dataSource.includes('${data')) {
+          try {
+            let transform = '"' + dataSource.replace('${', '"+').replace('}', '+"') + '"';
+            computedDs = Function("let data = " + dataFormStr + "; return " + transform + ";").call();
+          } catch (err) {
+            console.log(err);
+          }
+        }
+
+        try {
+          let response = await fetch(computedDs);
+          response = await response.json();
+          myValuesSet(response);
+        } catch (err) {
+          myValuesSet(values);
+        }
       } else {
         myValuesSet(values);
       }
@@ -2418,7 +2438,7 @@
       formId
     } = F$1(FormContext);
     return e$1("div", {
-      class: formFieldClassesCustom(type$5, hiddenFx, errors),
+      class: formFieldClassesCustom(type$6, hiddenFx, errors),
       children: [e$1(Label, {
         id: prefixId(id, formId),
         label: label,
@@ -2455,7 +2475,7 @@
     };
   };
 
-  Select.type = type$5;
+  Select.type = type$6;
   Select.label = 'Select';
   Select.keyed = true;
   Select.emptyValue = null;
@@ -2593,7 +2613,7 @@
     });
   }
 
-  const type$4 = 'taglist';
+  const type$5 = 'taglist';
   function Taglist(props) {
     const {
       disabled,
@@ -2696,7 +2716,7 @@
     };
 
     return e$1("div", {
-      class: formFieldClassesCustom(type$4, hiddenFx, errors),
+      class: formFieldClassesCustom(type$5, hiddenFx, errors),
       children: [e$1(Label, {
         label: label,
         id: prefixId(id, formId)
@@ -2762,13 +2782,13 @@
     };
   };
 
-  Taglist.type = type$4;
+  Taglist.type = type$5;
   Taglist.label = 'Taglist';
   Taglist.keyed = true;
   Taglist.emptyValue = [];
   Taglist.hiddenFx = 'false';
 
-  const type$3 = 'text';
+  const type$4 = 'text';
   function Text(props) {
     const {
       field
@@ -2778,7 +2798,7 @@
       hiddenFx
     } = field;
     return e$1("div", {
-      class: formFieldClassesCustom(type$3, hiddenFx),
+      class: formFieldClassesCustom(type$4, hiddenFx),
       children: e$1(Markup, {
         markup: safeMarkdown(text),
         trim: false
@@ -2793,12 +2813,75 @@
     };
   };
 
-  Text.type = type$3;
+  Text.type = type$4;
   Text.keyed = false;
   Text.hiddenFx = 'false';
 
-  const type$2 = 'textfield';
+  const type$3 = 'textfield';
   function Textfield(props) {
+    const {
+      disabled,
+      errors = [],
+      field,
+      value = ''
+    } = props;
+    const {
+      description,
+      id,
+      label,
+      hiddenFx,
+      validate = {}
+    } = field;
+    const {
+      required
+    } = validate;
+
+    const onChange = ({
+      target
+    }) => {
+      props.onChange({
+        field,
+        value: target.value
+      });
+    };
+
+    const {
+      formId
+    } = F$1(FormContext);
+    return e$1("div", {
+      class: formFieldClassesCustom(type$3, hiddenFx, errors),
+      children: [e$1(Label, {
+        id: prefixId(id, formId),
+        label: label,
+        required: required
+      }), e$1("input", {
+        class: "fjs-input",
+        disabled: disabled,
+        id: prefixId(id, formId),
+        onInput: onChange,
+        type: "text",
+        value: value
+      }), e$1(Description, {
+        description: description
+      }), e$1(Errors, {
+        errors: errors
+      })]
+    });
+  }
+
+  Textfield.create = function (options = {}) {
+    return { ...options
+    };
+  };
+
+  Textfield.type = type$3;
+  Textfield.label = 'Text Field';
+  Textfield.keyed = true;
+  Textfield.emptyValue = '';
+  Textfield.hiddenFx = 'false';
+
+  const type$2 = 'datefield';
+  function Datefield(props) {
     const {
       disabled,
       errors = [],
@@ -2839,69 +2922,6 @@
         disabled: disabled,
         id: prefixId(id, formId),
         onInput: onChange,
-        type: "text",
-        value: value
-      }), e$1(Description, {
-        description: description
-      }), e$1(Errors, {
-        errors: errors
-      })]
-    });
-  }
-
-  Textfield.create = function (options = {}) {
-    return { ...options
-    };
-  };
-
-  Textfield.type = type$2;
-  Textfield.label = 'Text Field';
-  Textfield.keyed = true;
-  Textfield.emptyValue = '';
-  Textfield.hiddenFx = 'false';
-
-  const type$1 = 'datefield';
-  function Datefield(props) {
-    const {
-      disabled,
-      errors = [],
-      field,
-      value = ''
-    } = props;
-    const {
-      description,
-      id,
-      label,
-      hiddenFx,
-      validate = {}
-    } = field;
-    const {
-      required
-    } = validate;
-
-    const onChange = ({
-      target
-    }) => {
-      props.onChange({
-        field,
-        value: target.value
-      });
-    };
-
-    const {
-      formId
-    } = F$1(FormContext);
-    return e$1("div", {
-      class: formFieldClassesCustom(type$1, hiddenFx, errors),
-      children: [e$1(Label, {
-        id: prefixId(id, formId),
-        label: label,
-        required: required
-      }), e$1("input", {
-        class: "fjs-input",
-        disabled: disabled,
-        id: prefixId(id, formId),
-        onInput: onChange,
         type: "date",
         value: value
       }), e$1(Description, {
@@ -2917,13 +2937,13 @@
     };
   };
 
-  Datefield.type = type$1;
+  Datefield.type = type$2;
   Datefield.label = 'Date Field';
   Datefield.keyed = true;
   Datefield.emptyValue = '';
   Datefield.hiddenFx = 'false';
 
-  const type = 'table';
+  const type$1 = 'table';
   function tableClasses(type, hiddenFx, length) {
     let classes = formFieldClassesCustom(type, hiddenFx, []);
     return classes + ' table' + length;
@@ -3017,7 +3037,7 @@
     };
 
     return e$1("div", {
-      class: tableClasses(type, hiddenFx, headersArray.length),
+      class: tableClasses(type$1, hiddenFx, headersArray.length),
       children: [e$1(Label, {
         id: prefixId(id, formId),
         label: label,
@@ -3067,13 +3087,100 @@
     };
   };
 
-  Table.type = type;
+  Table.type = type$1;
   Table.label = 'Table';
   Table.keyed = true;
   Table.emptyValue = '';
   Table.hiddenFx = 'false';
 
-  const formFields = [Button, Checkbox, Checklist, Default, Number$1, Radio, Select, Taglist, Text, Textfield, Datefield, Table];
+  const type = 'fileUpload';
+  function FileUpload(props) {
+    const {
+      disabled,
+      errors = [],
+      field,
+      value = ''
+    } = props;
+    const {
+      description,
+      id,
+      label,
+      hiddenFx,
+      targetApi,
+      targetApiVerb,
+      validate = {}
+    } = field;
+    const {
+      required
+    } = validate;
+
+    const onChange = ({
+      target
+    }) => {
+      const formData = new FormData();
+      formData.append('File', target.files[0]);
+      const requestOptions = {
+        method: targetApiVerb,
+        body: formData
+      };
+      fetch(targetApi, requestOptions).then(response => {
+        response.ok ? response.json().then(json => {
+          console.log(json);
+          props.onChange({
+            field,
+            value: json
+          });
+        }) : console.log(response);
+      });
+    };
+
+    const {
+      formId
+    } = F$1(FormContext);
+    return e$1("div", {
+      class: formFieldClassesCustom(type, hiddenFx, errors),
+      children: [e$1("label", {
+        class: "fjs-form-field-label",
+        children: [label || '', required && e$1("span", {
+          class: "fjs-asterix",
+          children: "*"
+        })]
+      }), e$1("label", {
+        for: prefixId(id, formId),
+        class: "fjs-form-field-label fjs-file-input",
+        children: ["File Upload", e$1("div", {
+          class: "fjs-file-input-info",
+          children: value.name
+        }), e$1("img", {
+          src: "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACLklEQVRoge2YTS8DQRjHHwfahAYHRycfgAQ3dWlExFGCfgFXX8HBN5AQr9c6e7l7S9TJgYarEFFXkYgqnr/dTadjptul0x0xv+SftLszO792Z+dliRwOh8PhcPxP2jjJuCWiMsTZ4txyPvwUOducTIxeoSQ4G5x3qoirssvpislRS4pzRLXFxRTIoh8B+RNSi75xXjXnduKQldHJX3LGOe3kda0RUt+hWJ8Jnfwpp1NRHiPSsVQ21xRTBVHlA9JS+aJZTTU/lQeYE0pCHYxYCWOmCuqRHw6pXxbq4XOrKVlV4yr5PFXkp8n7h7Oaa0xKdW8M+lYRRR7H9xXXwLh/LdVfN2rtgz56SPXLB11KBOXOpProPgOG3b9YoGjyyKpQXyWPLJtXJ2rh3FM0+RdOf4j8AXnzgjGCkaFHaviJ011DHt9nQuQxI3eYlMfF9wQJsXGsa8Y4cxr52bjlxQe21z92oRCRY4U8WBManPePZf+K/CBVb0awo0r55xY18s+cKRvkwabUcIGq1zaj5K0ecfycs8Tp88/FLg/upMYn6qxnhTzGZLH7lOtsHPJ5+i6PZUeqRr2Gk5QEShT+OkQnj01L0/55kUdJJF2jrHXyIKeQUU33VsqDjEIKfRl3At0JfRrr+StFudjlA/CqQzdZlTXnrJEH2HRgnA9bOgTBssMa+QD8CN2dEIfZFTK8JP4teCbwYD+QJ415AntYbAObspNqJFilNu3tgcPhcNjFJ4udZjdSNDK9AAAAAElFTkSuQmCC",
+          class: "fjs-upload-icon"
+        })]
+      }), e$1("input", {
+        class: "fjs-input-file-hidden",
+        disabled: disabled,
+        id: prefixId(id, formId),
+        onInput: onChange,
+        type: "file"
+      }), e$1(Description, {
+        description: description
+      }), e$1(Errors, {
+        errors: errors
+      })]
+    });
+  }
+
+  FileUpload.create = function (options = {}) {
+    return { ...options
+    };
+  };
+
+  FileUpload.type = type;
+  FileUpload.label = 'File Upload';
+  FileUpload.keyed = true;
+  FileUpload.emptyValue = '';
+  FileUpload.hiddenFx = 'false';
+
+  const formFields = [Button, Checkbox, Checklist, Default, Number$1, Radio, Select, Taglist, Text, Textfield, Datefield, Table, FileUpload];
 
   class FormFields {
     constructor() {
