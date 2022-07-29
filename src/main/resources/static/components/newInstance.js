@@ -14,11 +14,20 @@ Vue.component('new-instance',{
 	},
 	methods: {
 		submit() {
-		    axios.post('/process/'+this.$store.process.bpmnProcessId+'/start', this.form._getState().data, this.$store.axiosHeaders).then(response => {
-				this.$store.state='instanceConfirmation';
-			}).catch(error => {
-				alert(error.message); 
-			})
+			this.form.validate();
+			let errors = [];
+			for (const field in this.form._state.errors) {
+			  if (this.form._state.errors[field].length>0) {
+				Array.prototype.push.apply(errors, this.form._state.errors[field]);
+			  }
+			}
+			if (errors.length==0) {
+			    axios.post('/process/'+this.$store.process.bpmnProcessId+'/start', this.form._getState().data, this.$store.axiosHeaders).then(response => {
+					this.$store.state='instanceConfirmation';
+				}).catch(error => {
+					alert(error.message); 
+				})
+			}
 		}
 	},
 	mounted:function() {
