@@ -8,23 +8,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService {
-	
-	@Autowired
-    private UserRepository userRepository;
 
-    public User getByUsernameAndPwd(String username, String pwd) {
-        User user = userRepository.findByUsername(username);        
-        if (user==null) {
-        	throw new UnauthorizedException("User doesn't exist");
-        }
-		return user;
-        /*if (user!=null && user.getPassword() != null) {
-        	
-        	if (!SecurityUtils.matches(pwd, user.getPassword())) {
-        		throw new UnauthorizedException("Invalid credentials");
-        	}
-            return user;
-        }
-        return null;*/
+  @Autowired private UserRepository userRepository;
+
+  public User getByUsernameAndPwd(String username, String pwd) {
+    User user = userRepository.findByUsername(username);
+    if (user == null) {
+      throw new UnauthorizedException("User doesn't exist");
     }
+    return user;
+    /*if (user!=null && user.getPassword() != null) {
+
+    	if (!SecurityUtils.matches(pwd, user.getPassword())) {
+    		throw new UnauthorizedException("Invalid credentials");
+    	}
+        return user;
+    }
+    return null;*/
+  }
 }

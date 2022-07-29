@@ -4,6 +4,5 @@ import org.example.camunda.process.solution.model.User;
 
 public interface UserRepository extends BaseRepository<User> {
 
-	User findByUsername(String username);
-
+  User findByUsername(String username);
 }

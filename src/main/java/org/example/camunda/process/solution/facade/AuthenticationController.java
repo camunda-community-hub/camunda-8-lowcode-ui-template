@@ -11,19 +11,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/authentication")
 public class AuthenticationController {
 
-    private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+  private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public AuthUser login(@RequestBody Authentication auth) {
-        AuthUser loggedUser = new AuthUser();
-        loggedUser.setUsername(auth.getUsername());
-        return loggedUser;
-    }
-
+  @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+  @ResponseStatus(HttpStatus.OK)
+  public AuthUser login(@RequestBody Authentication auth) {
+    AuthUser loggedUser = new AuthUser();
+    loggedUser.setUsername(auth.getUsername());
+    return loggedUser;
+  }
 }

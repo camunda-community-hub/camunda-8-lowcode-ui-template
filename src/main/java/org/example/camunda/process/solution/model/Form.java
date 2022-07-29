@@ -1,55 +1,52 @@
 package org.example.camunda.process.solution.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 @Entity
 public class Form extends BaseEntity {
-	
-    private String name;
 
-    @Lob
-    @Convert(converter = JsonNodeConverter.class)
-    private JsonNode schema;
+  private String name;
 
-    @Lob
-    @Convert(converter = JsonNodeConverter.class)
-    private JsonNode previewData;
+  @Lob
+  @Convert(converter = JsonNodeConverter.class)
+  private JsonNode schema;
 
-	public Form() {
-	}
+  @Lob
+  @Convert(converter = JsonNodeConverter.class)
+  private JsonNode previewData;
 
-	public Form(String name, JsonNode schema) {
-		super();
-		this.name = name;
-		this.schema = schema;
-	}
+  public Form() {}
 
-    public String getName() {
-        return name;
-    }
+  public Form(String name, JsonNode schema) {
+    super();
+    this.name = name;
+    this.schema = schema;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public JsonNode getSchema() {
-        return schema;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setSchema(JsonNode schema) {
-        this.schema = schema;
-    }
+  public JsonNode getSchema() {
+    return schema;
+  }
 
-    public JsonNode getPreviewData() {
-        return previewData;
-    }
+  public void setSchema(JsonNode schema) {
+    this.schema = schema;
+  }
 
-    public void setPreviewData(JsonNode previewData) {
-        this.previewData = previewData;
-    }
-    
+  public JsonNode getPreviewData() {
+    return previewData;
+  }
+
+  public void setPreviewData(JsonNode previewData) {
+    this.previewData = previewData;
+  }
 }

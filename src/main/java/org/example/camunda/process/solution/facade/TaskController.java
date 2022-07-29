@@ -1,8 +1,9 @@
 package org.example.camunda.process.solution.facade;
 
+import io.camunda.tasklist.dto.TaskState;
+import io.camunda.tasklist.exception.TaskListException;
 import java.util.List;
 import java.util.Map;
-
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.model.TaskToken;
 import org.example.camunda.process.solution.service.TaskListService;
@@ -16,67 +17,63 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.camunda.tasklist.dto.TaskState;
-import io.camunda.tasklist.exception.TaskListException;
-
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
 
-    private final static Logger LOG = LoggerFactory.getLogger(TaskController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TaskController.class);
 
-    @Autowired
-    private TaskListService taskListService;
+  @Autowired private TaskListService taskListService;
 
-   
-    @GetMapping()
-    public List<Task> getTasks() throws TaskListException {
-        return taskListService.getTasks(null, null);
-    }
+  @GetMapping()
+  public List<Task> getTasks() throws TaskListException {
+    return taskListService.getTasks(null, null);
+  }
 
-    @GetMapping("/token/{token}")
-    public Task tokenTask(@PathVariable String token) throws TaskListException {
-        TaskToken taskToken = taskListService.retrieveToken(token);
-        
-        return taskListService.getTask(taskToken.getTaskId());
-    }
+  @GetMapping("/token/{token}")
+  public Task tokenTask(@PathVariable String token) throws TaskListException {
+    TaskToken taskToken = taskListService.retrieveToken(token);
 
-    @GetMapping("/unassigned")
-    public List<Task> getUnassignedTasks() throws TaskListException {
-        return taskListService.getTasks(TaskState.CREATED, null);
-    }
+    return taskListService.getTask(taskToken.getTaskId());
+  }
 
-    @GetMapping("/myArchivedTasks/{userId}")
-    public List<Task> getCompletedTasks(@PathVariable String userId) throws TaskListException {
-        return taskListService.getAssigneeTasks(userId, TaskState.COMPLETED, null);
-    }
+  @GetMapping("/unassigned")
+  public List<Task> getUnassignedTasks() throws TaskListException {
+    return taskListService.getTasks(TaskState.CREATED, null);
+  }
 
-    @GetMapping("/myOpenedTasks/{userId}")
-    public List<Task> getOpenedTasks(@PathVariable String userId) throws TaskListException {
-        return taskListService.getAssigneeTasks(userId, TaskState.CREATED, null);
-    }
+  @GetMapping("/myArchivedTasks/{userId}")
+  public List<Task> getCompletedTasks(@PathVariable String userId) throws TaskListException {
+    return taskListService.getAssigneeTasks(userId, TaskState.COMPLETED, null);
+  }
 
-    @GetMapping("/groupTasks/{group}")
-    public List<Task> getGroupTasks(@PathVariable String group) throws TaskListException {
-        return taskListService.getGroupTasks(group, TaskState.CREATED, null);
-    }
+  @GetMapping("/myOpenedTasks/{userId}")
+  public List<Task> getOpenedTasks(@PathVariable String userId) throws TaskListException {
+    return taskListService.getAssigneeTasks(userId, TaskState.CREATED, null);
+  }
 
-    @GetMapping("/{taskId}/claim/{userId}")
-    public Task claimTask(@PathVariable String taskId, @PathVariable String userId) throws TaskListException {
-        return taskListService.claim(taskId, userId);
-    }
+  @GetMapping("/groupTasks/{group}")
+  public List<Task> getGroupTasks(@PathVariable String group) throws TaskListException {
+    return taskListService.getGroupTasks(group, TaskState.CREATED, null);
+  }
 
-    @GetMapping("/{taskId}/unclaim")
-    public Task claimTask(@PathVariable String taskId) throws TaskListException {
-        return taskListService.unclaim(taskId);
-    }
+  @GetMapping("/{taskId}/claim/{userId}")
+  public Task claimTask(@PathVariable String taskId, @PathVariable String userId)
+      throws TaskListException {
+    return taskListService.claim(taskId, userId);
+  }
 
-    @PostMapping("/{taskId}")
-    public void completeTask(@PathVariable String taskId, @RequestBody Map<String, Object> variables) throws TaskListException {
+  @GetMapping("/{taskId}/unclaim")
+  public Task claimTask(@PathVariable String taskId) throws TaskListException {
+    return taskListService.unclaim(taskId);
+  }
 
-        LOG.info("Completing task " + taskId + "` with variables: " + variables);
+  @PostMapping("/{taskId}")
+  public void completeTask(@PathVariable String taskId, @RequestBody Map<String, Object> variables)
+      throws TaskListException {
 
-        taskListService.completeTask(taskId, variables);
-    }
+    LOG.info("Completing task " + taskId + "` with variables: " + variables);
 
+    taskListService.completeTask(taskId, variables);
+  }
 }
