@@ -417,3 +417,32 @@
 .fjs-form-field-table table tfoot {
 	background: lightgray;
 }
+
+.fjs-file-input {
+  border-style: solid;
+  border-width: 1px;
+  padding: 8px;
+  border-radius: 3px;
+  background: lightgrey;
+  position: relative;
+  border-color: var(--color-borders);
+}
+.fjs-file-input img.fjs-upload-icon {
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	right: 7px;
+}
+.fjs-file-input div.fjs-file-input-info {
+	text-align: right;
+	width: calc(100% - 130px);
+	position: absolute;
+	right: 40px;
+	padding: 8px;
+	display: block;
+	background: white;
+	min-height: 100%
+}
+.fjs-input-file-hidden {
+	display: none;
+}
