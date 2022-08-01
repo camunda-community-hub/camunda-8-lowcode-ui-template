@@ -1,6 +1,7 @@
 package org.example.camunda.process.solution.service;
 
 import io.camunda.tasklist.CamundaTaskListClient;
+import io.camunda.tasklist.auth.LocalIdentityAuthentication;
 import io.camunda.tasklist.auth.SaasAuthentication;
 import io.camunda.tasklist.dto.Form;
 import io.camunda.tasklist.dto.TaskState;
@@ -25,17 +26,26 @@ public class TaskListService {
   @Value("${baseUrl}")
   private String baseUrl;
 
-  @Value("${zeebe.client.cloud.client-id}")
+  @Value("${zeebe.client.cloud.client-id:notProvided}")
   private String clientId;
 
-  @Value("${zeebe.client.cloud.client-secret}")
+  @Value("${zeebe.client.cloud.client-secret:notProvided}")
   private String clientSecret;
 
-  @Value("${zeebe.client.cloud.clusterId}")
+  @Value("${zeebe.client.cloud.clusterId:notProvided}")
   private String clusterId;
 
-  @Value("${zeebe.client.cloud.region}")
+  @Value("${zeebe.client.cloud.region:notProvided}")
   private String region;
+
+  @Value("${identity.clientId:notProvided}")
+  private String identityClientId;
+
+  @Value("${identity.clientSecret:notProvided}")
+  private String identityClientSecret;
+
+  @Value("${tasklistUrl:notProvided}")
+  private String tasklistUrl;
 
   private CamundaTaskListClient client;
 
@@ -43,13 +53,26 @@ public class TaskListService {
 
   private CamundaTaskListClient getCamundaTaskListClient() throws TaskListException {
     if (client == null) {
-      SaasAuthentication sa = new SaasAuthentication(clientId, clientSecret);
-      client =
-          new CamundaTaskListClient.Builder()
-              .shouldReturnVariables()
-              .taskListUrl("https://" + region + ".tasklist.camunda.io/" + clusterId)
-              .authentication(sa)
-              .build();
+      if (!"notProvided".equals(clientId)) {
+        SaasAuthentication sa = new SaasAuthentication(clientId, clientSecret);
+        client =
+            new CamundaTaskListClient.Builder()
+                .shouldReturnVariables()
+                .taskListUrl("https://" + region + ".tasklist.camunda.io/" + clusterId)
+                .authentication(sa)
+                .build();
+      } else {
+        LocalIdentityAuthentication la =
+            new LocalIdentityAuthentication()
+                .clientId(identityClientId)
+                .clientSecret(identityClientSecret);
+        client =
+            new CamundaTaskListClient.Builder()
+                .shouldReturnVariables()
+                .taskListUrl(tasklistUrl)
+                .authentication(la)
+                .build();
+      }
     }
     return client;
   }
