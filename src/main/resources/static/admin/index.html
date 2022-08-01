@@ -14,6 +14,9 @@
 	<script src="/assets/js/codemirror-comment.min.js"></script>
 	<script src="/assets/js/codemirror-continuecomment.min.js"></script>
 	<script src="/assets/js/codemirror-javascript.min.js"></script>
+	<script src="/assets/js/codemirror-htmlmixed.js"></script>
+	<script src="/assets/js/codemirror-vbscript.js"></script>
+	<script src="/assets/js/codemirror-xml.js"></script>
 	<link href="/assets/css/codemirror.css" rel="stylesheet">
 	<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/assets/css/bootstrap-icons-1.7.2.css" rel="stylesheet">
@@ -21,13 +24,17 @@
 	<link href="/assets/css/login.css" rel="stylesheet">
 	<script src="/assets/js/axios-0.24.0.min.js"></script>
 	<script src="/components/login.js"></script>
-	<script src="/admin/components/main.js"></script>
+	<script src="/admin/components/form.js"></script>
+	<script src="/admin/components/mail.js"></script>
+	<script src="/admin/components/admin.js"></script>
 	
 </head>
 <body>
 <div id="app">
-	<main-page v-if="authenticated"></main-page>
-	<login v-else></login>
+	<admin-page v-if="authenticated && $store.state=='welcome'"></admin-page>
+	<form-page v-if="authenticated && $store.state=='form'"></form-page>
+	<mail-page v-if="authenticated && $store.state=='mail'"></mail-page>
+	<login v-if="!authenticated"></login>
 	
 </div>
 </body>
@@ -36,6 +43,7 @@
 	auth: false,
 	user: {'name':null, 'token':null, 'organizer': false},
 	axiosHeaders:{'headers': {}},
+	state:'welcome',
 	formEditor: null,
 	defaultForm: {
 		  "components": [],
@@ -49,7 +57,18 @@
 			"version": "5.0.0"
 		  }
 		},
-	form: {'name':'New Form', 'schema':null, 'id':null, 'previewData':'{}'},
+	defaultMail: `<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+	<div class="header"/>
+	<p>Hello <span th:text='\${consultant.name}'>World</span></p>
+	<p>Sent on <span th:text='\${now()}'>2022-07-28 08:45:10</span></p>
+</body>
+</html>`,
+	form: {'name':'New Form', 'schema':null, 'modified':null, 'previewData':'{}'},
+	mail: {'name':'NewMail', 'htmlTemplate':'', 'modified':null},
 	preview:null
   });
   var app = new Vue({

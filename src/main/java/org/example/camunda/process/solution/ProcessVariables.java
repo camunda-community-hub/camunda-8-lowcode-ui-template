@@ -1,55 +1,86 @@
 package org.example.camunda.process.solution;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.builder.MultilineRecursiveToStringStyle;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @JsonInclude(Include.NON_NULL)
 public class ProcessVariables {
 
-  private String texte;
-  private Long number;
-  private String date;
+    private String intialMessage;
+    private String assignee1;
+    private String assignee2;
+    private List<Map<String, String>> comments;
+    private Map<String, Object> file;
+    private String date;
+    
+    public String getIntialMessage() {
+        return intialMessage;
+    }
 
-  public String getTexte() {
-    return texte;
-  }
+    public void setIntialMessage(String intialMessage) {
+        this.intialMessage = intialMessage;
+    }
 
-  public ProcessVariables setTexte(String texte) {
-    this.texte = texte;
-    return this;
-  }
+    public String getAssignee1() {
+        return assignee1;
+    }
 
-  public Long getNumber() {
-    return number;
-  }
+    public ProcessVariables setAssignee1(String assignee1) {
+        this.assignee1 = assignee1;
+        return this;
+    }
 
-  public ProcessVariables setNumber(Long number) {
-    this.number = number;
-    return this;
-  }
+    public String getAssignee2() {
+        return assignee2;
+    }
 
-  public String getDate() {
-    return date;
-  }
+    public ProcessVariables setAssignee2(String assignee2) {
+        this.assignee2 = assignee2;
+        return this;
+    }
 
-  public ProcessVariables setDate(String date) {
-    this.date = date;
-    return this;
-  }
+    public List<Map<String, String>> getComments() {
+        return comments;
+    }
 
-  @Override
-  public String toString() {
-    return ToStringBuilder.reflectionToString(
-        this,
-        new MultilineRecursiveToStringStyle() {
-          public ToStringStyle withShortPrefixes() {
-            this.setUseShortClassName(true);
-            this.setUseIdentityHashCode(false);
-            return this;
-          }
+    public ProcessVariables setComments(List<Map<String, String>> comments) {
+        this.comments = comments;
+        return this;
+    }
+
+    public Map<String, Object> getFile() {
+        return file;
+    }
+
+    public ProcessVariables setFile(Map<String, Object> file) {
+        this.file = file;
+        return this;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public ProcessVariables setDate(String date) {
+        this.date = date;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, new MultilineRecursiveToStringStyle() {
+            public ToStringStyle withShortPrefixes() {
+                this.setUseShortClassName(true);
+                this.setUseIdentityHashCode(false);
+                return this;
+            }
         }.withShortPrefixes());
-  }
+    }
 }
