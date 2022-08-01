@@ -1,7 +1,9 @@
 .navbar {
     height: 76px;
 }
-
+.nav-tabs {
+    background: #eee;
+}
 #sidebar-nav {
     height: calc(100vh - 76px);
     padding: 10px;
@@ -111,4 +113,23 @@ h2 {
 .fjs-form-field-table table td.actions button.btn {
     min-width: 36px;
     font-weight: 900;
+}
+
+.maileditor {
+	height: calc(100vh - 95px);
+}
+
+.maileditor .card {
+	margin: 1.5rem;
+    padding: 0px;
+}
+.maileditor .card .card-title {
+	background: #17428c;
+    color: white;
+    padding: 8px;
+    margin: 0px;
+    border-radius: 5px 5px 0px 0px;
+}
+#mail-preview {
+	padding: 1rem;
 }

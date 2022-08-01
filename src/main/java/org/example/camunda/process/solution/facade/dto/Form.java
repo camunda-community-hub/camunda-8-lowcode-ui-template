@@ -1,21 +1,17 @@
-package org.example.camunda.process.solution.model;
+package org.example.camunda.process.solution.facade.dto;
+
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
 
-@Entity
-public class Form extends BaseEntity {
+public class Form {
 
   private String name;
+  
+  private Date modified;
 
-  @Lob
-  @Convert(converter = JsonNodeConverter.class)
   private JsonNode schema;
 
-  @Lob
-  @Convert(converter = JsonNodeConverter.class)
   private JsonNode previewData;
 
   public Form() {}
@@ -49,4 +45,12 @@ public class Form extends BaseEntity {
   public void setPreviewData(JsonNode previewData) {
     this.previewData = previewData;
   }
+
+public Date getModified() {
+    return modified;
+}
+
+public void setModified(Date modified) {
+    this.modified = modified;
+}
 }

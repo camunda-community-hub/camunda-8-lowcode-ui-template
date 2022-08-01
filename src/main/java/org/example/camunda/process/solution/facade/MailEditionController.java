@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.example.camunda.process.solution.facade.dto.Form;
-import org.example.camunda.process.solution.service.FormService;
+import org.example.camunda.process.solution.facade.dto.MailTemplate;
+import org.example.camunda.process.solution.service.MailTemplateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,38 +24,38 @@ import org.springframework.web.bind.annotation.RestController;
 import io.camunda.tasklist.exception.TaskListException;
 
 @RestController
-@RequestMapping("/edition/forms")
+@RequestMapping("/edition/mails")
 @CrossOrigin(origins = "*")
-public class FormsEditionController extends AbstractController {
+public class MailEditionController extends AbstractController {
 
-  private final Logger logger = LoggerFactory.getLogger(FormsEditionController.class);
+  private final Logger logger = LoggerFactory.getLogger(MailEditionController.class);
 
-  @Autowired private FormService formService;
+  @Autowired private MailTemplateService mailTemplateService;
 
   @PostMapping
-  public ResponseEntity<Form> save(@RequestBody Form form) throws IOException {
-      formService.saveForm(form);
-    return new ResponseEntity<>(form, HttpStatus.CREATED);
+  public ResponseEntity<MailTemplate> save(@RequestBody MailTemplate mailTemplate) throws IOException {
+      mailTemplateService.saveMail(mailTemplate);
+    return new ResponseEntity<>(mailTemplate, HttpStatus.CREATED);
   }
 
-  @GetMapping("/{formKey}")
+  @GetMapping("/{templateName}")
   @ResponseBody
-  public Form getForm(@PathVariable String formKey)
+  public MailTemplate getMailTemplate(@PathVariable String templateName)
       throws TaskListException, IOException {
-    return formService.findByName(formKey);
+    return mailTemplateService.findByName(templateName);
   }
   
-  @DeleteMapping("/{formKey}")
-  public void deleteForm(@PathVariable String formKey)
+  @DeleteMapping("/{templateName}")
+  public void deleteForm(@PathVariable String templateName)
       throws TaskListException, IOException {
-    formService.deleteByName(formKey);
+    mailTemplateService.deleteByName(templateName);
   }
   
   
   @GetMapping(value = "/names")
   @ResponseBody
   public List<String> formNames() {
-    return formService.findNames();
+    return mailTemplateService.findNames();
   }
 
   @Override
