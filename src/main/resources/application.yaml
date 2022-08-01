@@ -1,10 +1,18 @@
 # https://github.com/camunda-community-hub/spring-zeebe#configuring-camunda-platform-8-saas-connection
 # https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
-zeebe.client.cloud:
-  region: bru-2
-  clusterId: XXX
-  clientId: XXX
-  clientSecret: XXX
+# zeebe.client.cloud:
+#   region: bru-2
+#   clusterId: XXX
+#   clientId: XXX
+#   clientSecret: XXX
+zeebe.client:
+  broker.gatewayAddress: 127.0.0.1:26500
+  security.plaintext: true
+  
+identity.clientId: java
+identity.clientSecret: foTPogjlI0hidwbDZcYFWzmU8FOQwLx0
+tasklistUrl: http://localhost:8082/
+operateUrl: http://localhost:8081/
 
 baseUrl: http://localhost:8080
 
