@@ -45,7 +45,16 @@ h2 {
 .mainContent span.input-group-text:first-child {
     width: 106px;
 }
-
+.taskList {
+	width:320px;
+	display:inline-block;
+	vertical-align: top
+}
+.taskListFormContainer {
+	width:calc(100% - 330px);
+	display:inline-block;
+	vertical-align: top
+}
 .taskForm {
 	padding: 8px;
     border-radius: 5px;

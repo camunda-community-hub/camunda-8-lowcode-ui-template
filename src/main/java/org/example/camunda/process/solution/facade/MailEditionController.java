@@ -3,7 +3,6 @@ package org.example.camunda.process.solution.facade;
 import java.io.IOException;
 import java.util.List;
 
-import org.example.camunda.process.solution.facade.dto.Form;
 import org.example.camunda.process.solution.facade.dto.MailTemplate;
 import org.example.camunda.process.solution.service.MailTemplateService;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
 
 Vue.component('mytasks',{
-  template: '<div><div style="width:320px;display:inline-block;vertical-align: top"><task v-for="task in $store.tasks" :task="task"></task></div>'+
- 	 '<div style="width:calc(100% - 320px);display:inline-block;vertical-align: top"><task-form></task-form></div></div>',
+  template: `<div><div class="taskList"><task v-for="task in $store.tasks" :task="task"></task></div>
+ 	 <div class="taskListFormContainer"><task-form></task-form></div></div>`,
   data() {
     return {
       tasks: []
@@ -16,8 +16,8 @@ Vue.component('mytasks',{
   }
 });
 Vue.component('unassignedtasks',{
-  template: '<div><div style="width:320px;display:inline-block;vertical-align: top"><task v-for="task in $store.tasks" :task="task"></task></div>'+
- 	 '<div style="width:calc(100% - 320px);display:inline-block;vertical-align: top"><task-form></task-form></div></div>',
+  template: `<div><div class="taskList"><task v-for="task in $store.tasks" :task="task"></task></div>
+ 	 <div class="taskListFormContainer"><task-form></task-form></div></div>`,
   data() {
     return {
       tasks: []
@@ -32,7 +32,9 @@ Vue.component('unassignedtasks',{
   }
 });
 Vue.component('archivedtasks',{
-  template: '<div><task v-for="task in $store.tasks" :task="task"></task></div>',
+  template: `<div>
+  	<task v-for="task in $store.tasks" :task="task"></task>
+  </div>`,
   data() {
     return {
       tasks: []
@@ -47,12 +49,12 @@ Vue.component('archivedtasks',{
   }
 });
 Vue.component('task',{
-  template: '<div v-if="(!task.assignee && $store.state==\'unassignedtasks\') || (task.assignee && $store.state!=\'unassignedtasks\')" :class="classname" style="width: 18rem;">'+
-  	'<div class="card-body">'+
-    	'<h5 class="card-title">{{ task.name }}</h5><h6 class="card-subtitle mb-2 text-muted">{{ task.processName }}</h6>'+
-    	'<p class="card-text">{{ task.creationTime.slice(0, 19).replace("T"," ") }}</p>'+
-    	'<a v-if="task.taskState!=\'COMPLETED\'" @click="openTask()" class="card-link">{{ $t("message.open") }}</a>'+
-    '</div></div>',
+  template: `<div v-if="(!task.assignee && $store.state=='unassignedtasks') || (task.assignee && $store.state!='unassignedtasks')" :class="classname" style="width: 18rem;">
+  	<div class="card-body">
+    	<h5 class="card-title">{{ task.name }}</h5><h6 class="card-subtitle mb-2 text-muted">{{ task.processName }}</h6>
+    	<p class="card-text">{{ task.creationTime.slice(0, 19).replace("T"," ") }}</p>
+    	<a v-if="task.taskState!='COMPLETED'" @click="openTask()" class="card-link">{{ $t("message.open") }}</a>
+    </div></div>`,
   props:["task"],
   methods: {
 	openTask() {

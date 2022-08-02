@@ -48,11 +48,13 @@ public class ProcessController {
     Set<String> present = new HashSet<>();
     List<ProcessDefinition> result = new ArrayList<>();
     List<ProcessDefinition> processDefs = operateService.getProcessDefinitions();
-    for (ProcessDefinition def : processDefs) {
-      if (!present.contains(def.getBpmnProcessId())) {
-        result.add(def);
-        present.add(def.getBpmnProcessId());
-      }
+    if (processDefs!=null) {
+        for (ProcessDefinition def : processDefs) {
+          if (!present.contains(def.getBpmnProcessId())) {
+            result.add(def);
+            present.add(def.getBpmnProcessId());
+          }
+        }
     }
     return result;
   }

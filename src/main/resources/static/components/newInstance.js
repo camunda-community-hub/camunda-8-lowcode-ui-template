@@ -1,11 +1,11 @@
 
 Vue.component('new-instance',{
-		template: '<div class="card" v-if="$store.process.bpmnProcessId">'+
-			'<div id="instanciation-form"></div>'+
-			'<div class="ms-2 me-2 mb-2 d-flex justify-content-end">'+
-	        '<button type="button" class="btn btn-primary" @click="submit()">{{ $t("message.submit") }}</button>'+
-	        '</div>'+
-			'</div>'
+		template: `<div class="card" v-if="$store.process.bpmnProcessId">
+	  <div id="instanciation-form"></div>
+	  <div class="ms-2 me-2 mb-2 d-flex justify-content-end">
+	    <button type="button" class="btn btn-primary" @click="submit()">{{ $t("message.submit") }}</button>
+	  </div>
+	</div>`
 	,
 	data() {
     	return {
@@ -54,7 +54,7 @@ Vue.component('new-instance',{
 });
 
 Vue.component('instance-confirmation',{
-  template: '<div class="alert alert-success" role="alert">'+
-  'Your request has been taken into account.'+
-'</div>'
+  template: `<div class="alert alert-success" role="alert">
+  Your request has been taken into account.
+</div>`
 });
