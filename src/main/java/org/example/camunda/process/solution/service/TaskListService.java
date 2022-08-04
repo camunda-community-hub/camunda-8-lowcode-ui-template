@@ -134,7 +134,7 @@ public class TaskListService {
 
   public String generateLink(String taskId) {
     String token = generateTaskToken(taskId);
-    return baseUrl + "/tasks.html?token=" + token;
+    return baseUrl + "/direct-task.html?token=" + token;
   }
 
   public String generateTaskToken(String taskId) {
