@@ -124,7 +124,7 @@ Vue.component('forms-list',{
 			this.$store.form = response.data; 
 			this.$store.form.schema.id = "Form_"+Math.floor(1000000 + Math.random() * 9000000);
 			this.$store.form.name='Duplicate '+this.$store.form.name;
-			
+			this.$store.form.previewData = JSON.stringify(this.$store.form.previewData, null, 2);
 			this.$store.state='form';
 		}).catch(error => {
 			alert(error.message); 
