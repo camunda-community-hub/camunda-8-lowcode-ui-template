@@ -2395,7 +2395,6 @@
     } = validate;
     const [myValues, myValuesSet] = l$1([]);
     let dataFormStr = getDataAsJson();
-    console.log(dataFormStr);
     const fetchMyAPI = A$1(async () => {
       if (dataSource && dataSource.length > 0) {
         let computedDs = dataSource;
@@ -3125,7 +3124,6 @@
       };
       fetch(targetApi, requestOptions).then(response => {
         response.ok ? response.json().then(json => {
-          console.log(json);
           props.onChange({
             field,
             value: json
