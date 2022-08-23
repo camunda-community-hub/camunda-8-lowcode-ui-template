@@ -31,3 +31,5 @@ out/
 ### VS Code ###
 .vscode/
 workspace.code-workspace
+
+h2/db.mv.db
