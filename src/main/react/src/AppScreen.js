@@ -2,19 +2,15 @@ import React, { Component } from 'react';
 
 class AppScreen extends Component {
 
-  doLogout = () =>  () => {this.props.onlogout()};
-
-  startProcessInstance = () => {this.props.startProcessInstance()};
-
-  onTaskClick = () => this.props.onTaskClick;
+  doLogout = () => () => {this.props.onlogout()};
 
   render() {
     return (
       <div>
-        <nav className="navbar" role="navigation" aria-label="main navigation">
+        <nav className="navbar is-light" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
             <a className="navbar-item" href="https://docs.camunda.io">
-              <img src="/reactjs/public/Logo_Black.png" height="28px" alt={"logo"}/>
+              <img src="/img/Logo_Black.png" height="28px" alt={"logo"}/>
             </a>
             {// eslint-disable-next-line
             <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"
@@ -48,30 +44,7 @@ class AppScreen extends Component {
             </div>
           </div>
         </nav>
-        <div style={{margin: "0 0 0 10px" }} className={"columns"}>
-          <div className={"column is-2"}>
-            <aside className="menu">
-              <ul className="menu-list">
-                <li><button className={"button"} onClick={this.startProcessInstance}>Start Process Instance</button></li>
-              </ul>
-              <p className="menu-label">
-                Tasks
-              </p>
-              <ul className="menu-list">
-                {this.props.tasks ? this.props.tasks.map((task) =>
-                  <li key={task.id}><a onClick={this.onTaskClick}>{task.processName} - {task.name} [ {task.id} ]</a></li>
-                ) : "(No Tasks Found)"}
-              </ul>
-            </aside>
-          </div>
-          <div className={"column"}>
-            <section className="section">
-              <div className="container">
-                {this.props.children}
-              </div>
-            </section>
-          </div>
-        </div>
+        {this.props.children}
       </div>
     );
   }
