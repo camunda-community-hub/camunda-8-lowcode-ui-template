@@ -8,7 +8,7 @@ const sockUrl = 'ws://localhost:8080/ws';
 let stompClient = null;
 
 const initial = {
-    user: { userId: localStorage.getItem("userId") },
+    user: localStorage.getItem("camundaUser"),
     bpmnForm: null,
     schema: null,
     processVariables: {},
@@ -31,6 +31,18 @@ class App extends Component {
         console.log(msg);
         console.log(this.state);
     }
+
+  onLogin = (result) => {
+    const user = {
+      userName: result.field_username,
+      password: result.field_password
+    }
+    localStorage.setItem("camundaUser", user);
+
+    //this.setState({processVariables: merge(this.state.processVariables, result.data)});
+    //this.setState({user: {userId: }});
+    //this.init();
+  }
 
     wsConnect = () => {
         stompClient = Stomp.client(sockUrl);
@@ -117,13 +129,6 @@ class App extends Component {
         }
     }
 
-    onLogin = (result) => {
-        this.setState({processVariables: merge(this.state.processVariables, result.data)});
-        this.setState({user: {userId: result.data.field_userId}});
-        localStorage.setItem("userId", result.data.field_userId);
-        this.init();
-    }
-
     onLogout = () => {
         stompClient.deactivate();
         this.setState({user: {userId: null}});
@@ -137,7 +142,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.init();
+        //this.init();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -161,7 +166,7 @@ class App extends Component {
 
     render() {
 
-        if(this.state.user.userId) {
+        if(this.state.user && this.state.user.userId) {
             // User is Authenticated
             if(this.state.screen === "waiting") {
 
@@ -219,20 +224,13 @@ class App extends Component {
             }
 
         } else {
-
             // User is not Authenticated
             return (
-              <AppScreen userId={this.state.user.userId}
-                         tasks={this.state.tasks}
-                         onlogout={this.onLogout}
-                         startProcessInstance={this.startProcessInstance}>
-                <Login
-                    data={this.state.processVariables}
-                    onSubmit={this.onLogin}
-                />
-              </AppScreen>
+              <Login
+                data={this.state.processVariables}
+                onSubmit={this.onLogin}
+              />
             )
-
         }
     }
 }
