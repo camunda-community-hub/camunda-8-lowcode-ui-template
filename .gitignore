@@ -33,3 +33,8 @@ out/
 workspace.code-workspace
 
 h2/db.mv.db
+h2/db.trace.db
+
+### React Js ###
+src/main/react/node_modules
+src/main/react/build
