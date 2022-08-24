@@ -51,7 +51,7 @@ public class FormService {
     DocumentBuilder builder = builderFactory.newDocumentBuilder();
     // TODO: this is used by the reactjs app. Need to integrate this
     InputStream bpmnIs =
-        this.getClass().getClassLoader().getResourceAsStream("/models/" + bpmnFileName);
+        this.getClass().getClassLoader().getResourceAsStream("models/" + bpmnFileName);
     Document xmlDocument = builder.parse(bpmnIs);
     XPath xPath = XPathFactory.newInstance().newXPath();
     String expression = "//*[@id=\"" + formId + "\"]";

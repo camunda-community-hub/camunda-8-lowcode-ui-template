@@ -1,56 +1,40 @@
 package org.example.camunda.process.solution;
 
-import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
-import io.camunda.zeebe.spring.test.ZeebeSpringTest;
-import org.example.camunda.process.solution.facade.ProcessController;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import io.camunda.tasklist.dto.TaskState;
+import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.zeebe.client.ZeebeClient;
+import java.io.IOException;
+import java.util.List;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import org.example.camunda.process.solution.facade.dto.Task;
+import org.example.camunda.process.solution.service.TaskListService;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.xml.sax.SAXException;
 
-/**
- * @see
- *     https://docs.camunda.io/docs/components/best-practices/development/testing-process-definitions/#writing-process-tests-in-java
- */
 @SpringBootTest(classes = ProcessApplication.class) // will deploy BPMN & DMN models
-@ZeebeSpringTest
 public class ProcessUnitTest {
 
-  @Autowired private ProcessController processController;
+  @Autowired private ZeebeClient zeebe;
+  @Autowired private TaskListService taskListService;
 
-  @Autowired private ZeebeTestEngine engine;
-
-  // @MockBean private MyService myService;
-
-  /*
   @Test
-  public void testHappyPath() throws Exception {
-    // define mock behavior
-    when(myService.myOperation(anyString())).thenReturn(true);
-
-    // prepare data
-    final ProcessVariables variables = new ProcessVariables().setTexte("23");
-
-    // start a process instance
-    processController.startProcessInstance(variables);
-
-    // wait for process to be started
-    engine.waitForIdleState(Duration.ofSeconds(1));
-    InspectedProcessInstance processInstance =
-        InspectionUtility.findProcessInstances().findLastProcessInstance().get();
-    assertThat(processInstance).isStarted();
-
-    // check that service task has been completed
-    waitForProcessInstanceHasPassedElement(processInstance, "Task_InvokeService");
-    Mockito.verify(myService).myOperation("23");
-
-    // check that process is ended with the right result
-    waitForProcessInstanceCompleted(processInstance);
-    assertThat(processInstance)
-        .isCompleted()
-        .hasPassedElement("Task_InvokeService")
-        .hasVariableWithValue("result", true);
-
-    // ensure no other side effects
-    Mockito.verifyNoMoreInteractions(myService);
+  public void testGetTasks() throws TaskListException {
+    List<Task> tasks = taskListService.getTasks(TaskState.CREATED, 10);
+    assertTrue(tasks.size() > 0);
   }
-  */
+
+  @Test
+  public void testGetTaskNameFromBpmn()
+      throws TaskListException, XPathExpressionException, IOException, ParserConfigurationException,
+          SAXException {
+    String taskName =
+        taskListService.getTaskNameFromBpmn("Process_screenFlow1.bpmn", "Activity_1vqalfh");
+    assertEquals("First Name", taskName);
+  }
 }
