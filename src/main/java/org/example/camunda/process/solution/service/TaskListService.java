@@ -7,11 +7,20 @@ import io.camunda.tasklist.dto.Form;
 import io.camunda.tasklist.dto.TaskState;
 import io.camunda.tasklist.dto.Variable;
 import io.camunda.tasklist.exception.TaskListException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import org.example.camunda.process.solution.dao.TaskTokenRepository;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.model.TaskToken;
@@ -19,6 +28,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 @Service
 public class TaskListService {
@@ -121,6 +133,12 @@ public class TaskListService {
         result.getVariables().put(var.getName(), var.getValue());
       }
     }
+    String formId = task.getFormKey().substring(task.getFormKey().lastIndexOf(":") + 1);
+    try {
+      result.setFormSchema(getForm(task.getProcessDefinitionId(), formId));
+    } catch (TaskListException e) {
+      // unable to set form schema
+    }
     return result;
   }
 
@@ -148,5 +166,25 @@ public class TaskListService {
 
   public TaskToken retrieveToken(String token) {
     return taskTokenRepository.findByToken(token);
+  }
+
+  public String getTaskNameFromBpmn(String bpmnFileName, String activityId)
+      throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+    DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = builderFactory.newDocumentBuilder();
+    // TODO: this is used by the reactjs app. Need to integrate this
+    InputStream bpmnIs =
+        this.getClass().getClassLoader().getResourceAsStream("models/" + bpmnFileName);
+    Document xmlDocument = builder.parse(bpmnIs);
+    XPath xPath = XPathFactory.newInstance().newXPath();
+    String expression = "//*[@id=\"" + activityId + "\"]";
+    NodeList nodeList =
+        (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+    if (nodeList != null && nodeList.getLength() == 1) {
+      return nodeList.item(0).getAttributes().getNamedItem("name").getNodeValue();
+    } else {
+      throw new IllegalStateException(
+          "Unable to find Task Name for Activity with id " + activityId);
+    }
   }
 }
