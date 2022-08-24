@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Form } from '@bpmn-io/form-js-viewer';
 import Login from './Login';
 import AppScreen from './AppScreen';
 import TaskList from './TaskList';
-
-let merge = (a, b) => ({...a,...b});
 
 const rest = require('rest');
 const mime = require('rest/interceptor/mime');
@@ -80,43 +77,14 @@ class App extends Component {
     //this.setState({controlVariables: merge(this.state.controlVariables, processSolutionResponse.result)});
   }
 
-    onFormReady = (message) => {
-        let processSolutionResponse = JSON.parse(message.body);
-        console.log(processSolutionResponse);
-        this.setState({controlVariables: merge(this.state.controlVariables, processSolutionResponse.result)});
-        this.setState({processVariables: merge(this.state.processVariables, processSolutionResponse.variables)});
-        let schema = JSON.parse(processSolutionResponse.result.formSchema);
-        this.setState({schema: schema});
-        this.setState({screen: "loadForm"});
-    }
-
-    doTaskComplete = (e, results) => {
-        this.setState({screen: "waiting"});
-        this.completeTask(this.state.controlVariables.jobKey, results.data);
-    }
+  doTaskComplete = (e, results) => {
+    this.setState({screen: "waiting"});
+    this.completeTask(this.state.controlVariables.jobKey, results.data);
+  }
 
   componentDidMount() {
     this.init();
   }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.state.screen === "loadForm") {
-            this.setState({screen: "form"});
-
-            // Load the form
-            const container = document.querySelector('#form');
-            if(!container.firstChild) {
-                const bpmnForm = new Form({container: container});
-                bpmnForm.on('submit', this.doTaskComplete);
-                bpmnForm.importSchema(this.state.schema, this.state.processVariables).then(
-                  function (result) {
-                      //console.log(result);
-                  });
-
-                this.setState({bpmnForm: bpmnForm});
-            }
-        }
-    }
 
     render() {
       console.log("render...");
