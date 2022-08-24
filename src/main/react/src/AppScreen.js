@@ -6,7 +6,7 @@ class AppScreen extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{height: '100%'}}>
         <nav className="navbar is-light" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
             <a className="navbar-item" href="https://docs.camunda.io">

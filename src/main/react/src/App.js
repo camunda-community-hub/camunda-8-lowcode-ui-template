@@ -2,115 +2,85 @@ import React, { Component } from 'react';
 import { Form } from '@bpmn-io/form-js-viewer';
 import Login from './Login';
 import AppScreen from './AppScreen';
-import {Stomp} from '@stomp/stompjs';
-
-const sockUrl = 'ws://localhost:8080/ws';
-let stompClient = null;
-
-const initial = {
-    user: localStorage.getItem("camundaUser"),
-    bpmnForm: null,
-    schema: null,
-    processVariables: {},
-    controlVariables: {},
-    tasks: [],
-    task: null,
-    screen: "waiting"
-};
+import TaskList from './TaskList';
 
 let merge = (a, b) => ({...a,...b});
 
+const rest = require('rest');
+const mime = require('rest/interceptor/mime');
+const client = rest.wrap(mime);
+
+const baseUrl = 'localhost:8080';
+const restUrl = `http://${baseUrl}`;
+
+const initial = {
+  user: JSON.parse(localStorage.getItem("camundaUser")),
+  processDefs: null,
+  bpmnForm: null,
+  schema: null,
+  processVariables: {},
+  controlVariables: {},
+  tasks: [],
+  task: null,
+  screen: "waiting"
+};
+
 class App extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = initial;
-    }
-
-    debug = (msg) => {
-        console.log(msg);
-        console.log(this.state);
-    }
-
-  onLogin = (result) => {
-    const user = {
-      userName: result.field_username,
-      password: result.field_password
-    }
-    localStorage.setItem("camundaUser", user);
-
-    //this.setState({processVariables: merge(this.state.processVariables, result.data)});
-    //this.setState({user: {userId: }});
-    //this.init();
+  constructor(props) {
+    super(props);
+    this.state = initial;
   }
 
-    wsConnect = () => {
-        stompClient = Stomp.client(sockUrl);
-        let onProcessEvent = this.onProcessEvent.bind(this);
-        let onGetTasks = this.onGetTasks.bind(this);
-        let getTasks = this.getTasks.bind(this);
-        let userId = this.state.user.userId;
-        let onFormReady = this.onFormReady.bind(this);
-        stompClient.onConnect = function(frame){
-            stompClient.subscribe('/topic/process/'+userId, onProcessEvent);
-            stompClient.subscribe('/topic/tasks/'+userId, onGetTasks);
-            stompClient.subscribe('/topic/forms/'+userId, onFormReady);
-            getTasks();
-        };
-
-        stompClient.onStompError =function(frame) {
-            console.log('STOMP error');
-        };
-
-        stompClient.activate();
+  init = () => {
+    if(this.state.user.username) {
+      console.log("init");
+      this.setState({screen: "home"});
     }
+  }
 
-    wsSend = (endpoint, json) => {
-        stompClient.send(endpoint, {}, JSON.stringify(json));
+  onAuthentication = (response) => {
+    console.log(response);
+    let user = response.entity;
+    if(user && user.username) {
+      localStorage.setItem("camundaUser", JSON.stringify(user));
+      this.setState({user: user}, () => this.init());
     }
+  }
 
-    getTasks = () => {
-        this.wsSend("/app/getAssigneeTasks",{
-            "key":"Process_screenFlow1",
-            "processVariables":{
-                "userId": this.state.user.userId
-            }
-        });
-    }
+  doAuthentication = (formData) => {
+    let user = {
+      username: formData.field_username,
+      password: formData.field_password
+    };
+    client({
+      path: `${restUrl}/authentication/login`,
+      headers: {'Content-Type': 'application/json'},
+      entity: user
+    }).then(this.onAuthentication);
+  }
 
-    startProcessInstance = () => {
-        this.wsSend("/app/startProcess",{
-            "key":"Process_screenFlow1",
-            "processVariables":{
-                "userId": this.state.user.userId
-            }
-        });
-    }
+  onLogout = () => {
+    //stompClient.deactivate();
+    this.setState({user: {userId: null}});
+    localStorage.removeItem("camundaUser");
+  }
 
-    completeTask = (jobKey, processVariables) => {
-        this.wsSend("/app/completeTask",{
-            "key": jobKey,
-            "processVariables": processVariables
-        });
-    }
+  completeTask = (jobKey, processVariables) => {
+    this.wsSend("/app/completeTask",{
+      "key": jobKey,
+      "processVariables": processVariables
+    });
+  }
 
-    onProcessEvent = (message) => {
-        this.debug("ON PROCESS EVENT");
-        let processSolutionResponse = JSON.parse(message.body);
-        console.log(processSolutionResponse);
-        this.setState({controlVariables: merge(this.state.controlVariables, processSolutionResponse.result)});
-    }
-
-    onGetTasks = (message) => {
-        this.debug("ON GET TASKS");
-        let processSolutionResponse = JSON.parse(message.body);
-        console.log(processSolutionResponse);
-        this.setState( {tasks: processSolutionResponse.result});
-        //this.setState({controlVariables: merge(this.state.controlVariables, processSolutionResponse.result)});
-    }
+  onGetTasks = (message) => {
+    let processSolutionResponse = JSON.parse(message.body);
+    console.log(processSolutionResponse);
+    this.setState( {tasks: processSolutionResponse.result});
+    //this.setState({controlVariables: merge(this.state.controlVariables, processSolutionResponse.result)});
+  }
 
     onFormReady = (message) => {
-        this.debug("ON FORM READY");
         let processSolutionResponse = JSON.parse(message.body);
         console.log(processSolutionResponse);
         this.setState({controlVariables: merge(this.state.controlVariables, processSolutionResponse.result)});
@@ -120,30 +90,14 @@ class App extends Component {
         this.setState({screen: "loadForm"});
     }
 
-    init = () => {
-        console.log("init");
-        if(this.state.user.userId) {
-            this.wsConnect();
-            this.setState({screen: "home"});
-            //this.startProcess(userId);
-        }
-    }
-
-    onLogout = () => {
-        stompClient.deactivate();
-        this.setState({user: {userId: null}});
-        localStorage.removeItem("userId");
-    }
-
     doTaskComplete = (e, results) => {
-        this.debug("DO TASK COMPLETE");
         this.setState({screen: "waiting"});
         this.completeTask(this.state.controlVariables.jobKey, results.data);
     }
 
-    componentDidMount() {
-        //this.init();
-    }
+  componentDidMount() {
+    this.init();
+  }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(this.state.screen === "loadForm") {
@@ -165,31 +119,30 @@ class App extends Component {
     }
 
     render() {
+      console.log("render...");
+      console.log(this.state);
 
-        if(this.state.user && this.state.user.userId) {
-            // User is Authenticated
-            if(this.state.screen === "waiting") {
+      if(this.state.user && this.state.user.username) {
+        // User is Authenticated
+        if(this.state.screen === "waiting") {
 
-                return (
-                  <AppScreen userId={this.state.user.userId}
-                             tasks={this.state.tasks}
-                             onlogout={this.onLogout}
-                             startProcessInstance={this.startProcessInstance}>
-                      <div>Processing ...</div>
-                  </AppScreen>)
+          return (
+            <AppScreen userId={this.state.user.username}
+                       onlogout={this.onLogout}>
+              <div>Please wait ...</div>
+            </AppScreen>
+          )
 
-            } else if(this.state.screen === "home") {
+        } else if(this.state.screen === "home") {
 
-                return (
-                  <AppScreen userId={this.state.user.userId}
-                             tasks={this.state.tasks}
-                             onlogout={this.onLogout}
-                             startProcessInstance={this.startProcessInstance}>
-                      <div></div>
-                  </AppScreen>
-                );
+          return (
+            <AppScreen userId={this.state.user.username}
+                       onlogout={this.onLogout}>
+              <TaskList user={this.state.user}/>
+            </AppScreen>
+          )
 
-            } else if(this.state.screen === "loadForm" || this.state.screen === "form") {
+        } else if(this.state.screen === "loadForm" || this.state.screen === "form") {
 
                 return (
                   <AppScreen userId={this.state.user.userId}
@@ -228,7 +181,7 @@ class App extends Component {
             return (
               <Login
                 data={this.state.processVariables}
-                onSubmit={this.onLogin}
+                onSubmit={this.doAuthentication}
               />
             )
         }
