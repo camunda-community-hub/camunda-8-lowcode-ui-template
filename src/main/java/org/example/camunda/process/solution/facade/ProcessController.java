@@ -5,6 +5,7 @@ import org.example.camunda.process.solution.ProcessConstants;
 import org.example.camunda.process.solution.ProcessVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,26 @@ public class ProcessController {
         .newCreateInstanceCommand()
         .bpmnProcessId(ProcessConstants.BPMN_PROCESS_ID)
         .latestVersion()
+        .variables(variables)
+        .send();
+  }
+
+  @PostMapping("/message/{messageName}/{correlationKey}")
+  public void publishMessage(
+      @PathVariable String messageName,
+      @PathVariable String correlationKey,
+      @RequestBody ProcessVariables variables) {
+
+    LOG.info(
+        "Publishing message `{}` with correlation key `{}` and variables: {}",
+        messageName,
+        correlationKey,
+        variables);
+
+    zeebe
+        .newPublishMessageCommand()
+        .messageName(messageName)
+        .correlationKey(correlationKey)
         .variables(variables)
         .send();
   }
