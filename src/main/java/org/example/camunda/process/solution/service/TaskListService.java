@@ -61,6 +61,8 @@ public class TaskListService {
 
   private CamundaTaskListClient client;
 
+  @Autowired private FormService formService;
+
   @Autowired private TaskTokenRepository taskTokenRepository;
 
   private CamundaTaskListClient getCamundaTaskListClient() throws TaskListException {
@@ -135,8 +137,9 @@ public class TaskListService {
     }
     String formId = task.getFormKey().substring(task.getFormKey().lastIndexOf(":") + 1);
     try {
-      result.setFormSchema(getForm(task.getProcessDefinitionId(), formId));
-    } catch (TaskListException e) {
+      org.example.camunda.process.solution.facade.dto.Form form = formService.findByName(formId);
+      result.setFormSchema(form.getSchema().toString());
+    } catch (IOException e) {
       // unable to set form schema
     }
     return result;
