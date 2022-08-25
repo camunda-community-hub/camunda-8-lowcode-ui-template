@@ -46,7 +46,7 @@ Vue.component('side-bar',{
   template: `<div id="sidebar" class="border-end">
 		<div id="sidebar-nav" class="list-group bg-secondary border-0 rounded-0 text-sm-start">
 		  <a href="#taskmenu" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-light dropdown-toggle move">
-            <i class="bi bi-list-task"></i> <span class="ms-1 d-none d-sm-inline ">Tasks</span>
+            <i class="bi bi-list-task"></i> <span class="ms-1 d-none d-sm-inline ">{{ $t("message.tasks") }}</span>
           </a>
           <ul class="collapse nav flex-column ms-2 show" id="taskmenu">
             <li><a href="#" class="nav-link px-0 text-light" @click="open(\'mytasks\')"><i class="bi bi-person-check"></i> {{ $t("message.mytasks") }}</a></li>
@@ -54,7 +54,7 @@ Vue.component('side-bar',{
             <li><a href="#" class="nav-link px-0 text-light" @click="open(\'archivedtasks\')"><i class="bi bi-inboxes-fill"></i> {{ $t("message.archivedtasks") }}</a></li>
           </ul>
           <a href="#processmenu" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-light dropdown-toggle move">
-            <i class="bi bi-boxes"></i> <span class="ms-1 d-none d-sm-inline ">Processes</span>
+            <i class="bi bi-boxes"></i> <span class="ms-1 d-none d-sm-inline ">{{ $t("message.processes") }}</span>
           </a>
           <ul class="collapse nav flex-column ms-2 show" id="processmenu">
             <li v-for="proc in processes"><a href="#" class="nav-link px-0 text-light" @click="openProc(proc)">{{ proc.name }}</a></li>
