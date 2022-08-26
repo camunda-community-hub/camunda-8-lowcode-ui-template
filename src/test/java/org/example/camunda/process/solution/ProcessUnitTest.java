@@ -34,7 +34,7 @@ public class ProcessUnitTest {
       throws TaskListException, XPathExpressionException, IOException, ParserConfigurationException,
           SAXException {
     String taskName =
-        taskListService.getTaskNameFromBpmn("Process_screenFlow1.bpmn", "Activity_1vqalfh");
+        taskListService.getTaskNameFromBpmn("simple-screenflow.bpmn", "Activity_1vqalfh");
     assertEquals("First Name", taskName);
   }
 }
