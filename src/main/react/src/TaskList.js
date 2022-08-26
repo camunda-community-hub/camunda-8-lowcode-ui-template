@@ -13,6 +13,23 @@ const sockUrl = `ws://${baseUrl}/ws`;
 
 let merge = (a, b) => ({...a,...b});
 
+let mergeTask = (task, tasks) => {
+  if (tasks) {
+    let found = false;
+    for (let i = 0; i < tasks.length; i++) {
+      if ((task.id === tasks[i].id) || (task.jobKey && task.jobKey === tasks[i].jobKey)) {
+        found = true;
+      }
+    }
+    if (found) {
+      return tasks;
+    } else {
+      tasks.push(task);
+      return tasks;
+    }
+  } else return [task];
+}
+
 class AppScreen extends Component {
 
   constructor(props) {
@@ -20,21 +37,24 @@ class AppScreen extends Component {
     this.state = {
       user: this.props.user,
       selectedTask: null,
+      initialized: false,
       screen: "waiting"
     };
   }
 
   init = () => {
-    if(this.state.user.username) {
+    if(this.state.user.username && !this.state.user.initialized) {
       console.log("init");
       this.getProcesses();
       this.getAssignedTasks();
       this.getUnassignedTasks()
       this.wsConnect();
       this.setState({screen: "home"});
+      this.setState({initialized: true});
       //this.startProcess(userId);
     }
   }
+
   getProcesses = () => {
     client(`${restUrl}/process/definition/latest`).then((response) => {
       //console.log("getProcesses");
@@ -80,9 +100,9 @@ class AppScreen extends Component {
   wsConnect = () => {
     stompClient = Stomp.client(sockUrl);
     let userId = this.state.user.username;
-    let onUserTaskReady = this.onUserTaskReadyWS.bind(this);
+    let onUserTaskReadyWS = this.onUserTaskReadyWS.bind(this);
     stompClient.onConnect = function(frame){
-      stompClient.subscribe("/topic/" + userId + "/userTask", onUserTaskReady);
+      stompClient.subscribe("/topic/" + userId + "/userTask", onUserTaskReadyWS);
     };
 
     stompClient.onStompError =function(frame) {
@@ -97,7 +117,13 @@ class AppScreen extends Component {
   }
 
   onUserTaskReadyWS = (message) => {
+    console.log("TASK ARRIVED!!");
     let task = JSON.parse(message.body);
+    // Update the list of tasks
+    let tasks = mergeTask(task, this.state.assignedTasks);
+    console.log("UPDATED TASKS");
+    console.log(tasks);
+    this.setState({assignedTasks: tasks});
     this.onUserTaskReady(task);
   }
 
@@ -108,6 +134,7 @@ class AppScreen extends Component {
   }
 
   clearSelectedTask = () => {
+
     // remove selected Task
     this.setState({selectedTask: null});
 
@@ -127,20 +154,49 @@ class AppScreen extends Component {
       this.setState({screen: "waiting"});
       // merge variables
       let variables = merge(this.state.selectedTask.variables, results.data);
-      this.completeTask(this.state.selectedTask.id, variables);
+      this.completeTask(variables);
+
+      // remove task from list
+      let tasks = this.state.assignedTasks;
+      let task = this.state.selectedTask;
+      let newTasks = []
+      for (let i = 0; i < tasks.length; i++) {
+        if ((task.id === tasks[i].id) || (task.jobKey && task.jobKey === tasks[i].jobKey)) {
+          // skip
+        } else {
+          newTasks.push(tasks[i]);
+        }
+      }
+      this.setState({assignedTasks: newTasks});
+
       this.clearSelectedTask();
     }
   }
 
-  completeTask = (taskId, variables) => {
-    client({
-      path: `${restUrl}/tasks/${taskId}`,
-      headers: {'Content-Type': 'application/json'},
-      entity: variables
-    }).then((response) => {
-      this.getAssignedTasks();
-      this.getUnassignedTasks();
-    });
+  completeTask = (variables) => {
+    let task = this.state.selectedTask;
+    if(task.jobKey) {
+      // complete using ZeebeClient
+      client({
+        path: `${restUrl}/tasks/withJobKey/${task.jobKey}`,
+        headers: {'Content-Type': 'application/json'},
+        entity: variables
+      }).then((response) => {
+        //this.getAssignedTasks();
+        //this.getUnassignedTasks();
+      });
+    } else {
+      // complete using TaskList Graphql
+      client({
+        path: `${restUrl}/tasks/${task.id}`,
+        headers: {'Content-Type': 'application/json'},
+        entity: variables
+      }).then((response) => {
+        //this.getAssignedTasks();
+        //this.getUnassignedTasks();
+      });
+    }
+
   }
 
   componentDidMount() {
@@ -181,7 +237,8 @@ class AppScreen extends Component {
             <ul className="menu-list">
               {this.state.assignedTasks ? this.state.assignedTasks.map((task) =>
                 <li key={task.id}>
-                  <a id={task.id} onClick={this.onTaskClick(task)}>
+                  <a id={task.id} onClick={this.onTaskClick(task)}
+                     className={this.state.selectedTask && ((task.id === this.state.selectedTask.id) || (task.jobKey && (task.jobKey === this.state.selectedTask.jobKey))) ? "is-active" : ""}>
                     <span className={"is-size-5 has-text-weight-medium"}>{task.name}</span><br/>
                     <span className={"is-size-6 has-text-weight-light"}>{task.processName}</span><br/>
                     <span className={"is-size-7 has-text-weight-light"}>{task.creationTime}</span>

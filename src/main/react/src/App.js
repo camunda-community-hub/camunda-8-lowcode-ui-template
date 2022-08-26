@@ -63,97 +63,53 @@ class App extends Component {
     localStorage.removeItem("camundaUser");
   }
 
-  completeTask = (jobKey, processVariables) => {
-    this.wsSend("/app/completeTask",{
-      "key": jobKey,
-      "processVariables": processVariables
-    });
-  }
-
-  onGetTasks = (message) => {
-    let processSolutionResponse = JSON.parse(message.body);
-    console.log(processSolutionResponse);
-    this.setState( {tasks: processSolutionResponse.result});
-    //this.setState({controlVariables: merge(this.state.controlVariables, processSolutionResponse.result)});
-  }
-
-  doTaskComplete = (e, results) => {
-    this.setState({screen: "waiting"});
-    this.completeTask(this.state.controlVariables.jobKey, results.data);
-  }
-
   componentDidMount() {
     this.init();
   }
 
-    render() {
-      console.log("render...");
-      console.log(this.state);
+  render() {
+    if(this.state.user && this.state.user.username) {
+      // User is Authenticated
+      if(this.state.screen === "waiting") {
 
-      if(this.state.user && this.state.user.username) {
-        // User is Authenticated
-        if(this.state.screen === "waiting") {
+        return (
+          <AppScreen userId={this.state.user.username}
+                     onlogout={this.onLogout}>
+            <div>Please wait ...</div>
+          </AppScreen>
+        )
 
-          return (
-            <AppScreen userId={this.state.user.username}
-                       onlogout={this.onLogout}>
-              <div>Please wait ...</div>
-            </AppScreen>
-          )
+      } else if(this.state.screen === "home") {
 
-        } else if(this.state.screen === "home") {
+        return (
+          <AppScreen userId={this.state.user.username}
+                     onlogout={this.onLogout}>
+            <TaskList user={this.state.user}/>
+          </AppScreen>
+        )
+      } else {
 
-          return (
-            <AppScreen userId={this.state.user.username}
-                       onlogout={this.onLogout}>
-              <TaskList user={this.state.user}/>
-            </AppScreen>
-          )
+        return (
+          <AppScreen userId={this.state.user.userId}
+                     tasks={this.state.tasks}
+                     onlogout={this.onLogout}
+                     startProcessInstance={this.startProcessInstance}>
+            <div>Hmm, not sure what to do?</div>
+          </AppScreen>
+        );
 
-        } else if(this.state.screen === "loadForm" || this.state.screen === "form") {
+      }
 
-                return (
-                  <AppScreen userId={this.state.user.userId}
-                             tasks={this.state.tasks}
-                             onlogout={this.onLogout}
-                             startProcessInstance={this.startProcessInstance}>
-                      <div id={"form"}></div>
-                  </AppScreen>);
-
-            } else if (this.state.screen === "task") {
-
-                return (
-                  <AppScreen userId={this.state.user.userId}
-                             tasks={this.state.tasks}
-                             onlogout={this.onLogout}
-                             startProcessInstance={this.startProcessInstance}>
-                      <div>Loading Task ...</div>
-                  </AppScreen>
-                );
-
-            } else {
-
-                return (
-                  <AppScreen userId={this.state.user.userId}
-                             tasks={this.state.tasks}
-                             onlogout={this.onLogout}
-                             startProcessInstance={this.startProcessInstance}>
-                      <div>Hmm, not sure what to do?</div>
-                  </AppScreen>
-                );
-
-            }
-
-        } else {
-            // User is not Authenticated
-            return (
-              <Login
-                data={this.state.processVariables}
-                onSubmit={this.doAuthentication}
-              />
-            )
-        }
+    } else {
+      // User is not Authenticated
+      return (
+        <Login
+          data={this.state.processVariables}
+          onSubmit={this.doAuthentication}
+        />
+      )
     }
+  }
 }
 
 export default App;
