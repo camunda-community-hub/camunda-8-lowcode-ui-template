@@ -38,7 +38,7 @@ public class FormsEditionController extends AbstractController {
   @GetMapping("/{formKey}")
   @ResponseBody
   public Form getForm(@PathVariable String formKey) throws TaskListException, IOException {
-    return formService.findByName(formKey);
+    return formService.findFormJsonFileByFormKey(formKey);
   }
 
   @DeleteMapping("/{formKey}")
