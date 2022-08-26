@@ -69,7 +69,15 @@ public class TaskController {
       throws TaskListException {
 
     LOG.info("Completing task " + taskId + "` with variables: " + variables);
-
     taskListService.completeTask(taskId, variables);
+  }
+
+  @PostMapping("/withJobKey/{jobKey}")
+  public void completeTaskWithJobKey(
+      @PathVariable Long jobKey, @RequestBody Map<String, Object> variables)
+      throws TaskListException {
+
+    LOG.info("Completing task by job key " + jobKey + "` with variables: " + variables);
+    taskListService.completeTaskWithJobKey(jobKey, variables);
   }
 }

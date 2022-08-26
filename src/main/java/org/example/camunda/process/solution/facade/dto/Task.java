@@ -7,6 +7,8 @@ import java.util.Map;
 public class Task {
   private String id;
 
+  private String jobKey;
+
   private String name;
 
   private String processName;
@@ -133,5 +135,13 @@ public class Task {
 
   public void setFormSchema(String formSchema) {
     this.formSchema = formSchema;
+  }
+
+  public String getJobKey() {
+    return jobKey;
+  }
+
+  public void setJobKey(String jobKey) {
+    this.jobKey = jobKey;
   }
 }

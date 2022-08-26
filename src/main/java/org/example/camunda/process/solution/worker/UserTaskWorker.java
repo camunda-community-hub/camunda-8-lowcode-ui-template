@@ -9,6 +9,7 @@ import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import org.example.camunda.process.solution.facade.dto.Form;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.service.FormService;
 import org.example.camunda.process.solution.service.TaskListService;
@@ -56,11 +57,18 @@ public class UserTaskWorker {
 
       // Note: Job Key != Task Id :-(
       String jobKey = Long.toString(job.getKey());
-      // task.setId(jobKey);
 
-      // But good news, job.getElementInstanceKey() is the "taskId" that is expected by task list graphql
+      // But good news, job.getElementInstanceKey() is the "taskId" that is expected by task list
+      // graphql
       String taskId = Long.toString(job.getElementInstanceKey());
       task.setId(taskId);
+
+      // BUT!!! It's possible to send request to task list graphql to complete a request before the
+      // graphql knows about the task (because the exporter still hasn't finished). So, it's better
+      // to
+      // use zeebe client to complete the tasks.
+      // And if we're using zeebe client, we need to use job key
+      task.setJobKey(jobKey);
 
       String bpmnProcessId = job.getBpmnProcessId();
       task.setProcessName(bpmnProcessId);
@@ -72,8 +80,15 @@ public class UserTaskWorker {
           taskListService.getTaskNameFromBpmn(bpmnProcessId + ".bpmn", taskActivityId);
       task.setName(taskName);
 
-      String formId = formService.parseFormIdFromKey(formKey);
-      String schema = formService.getFormSchemaFromBpmn(bpmnProcessId + ".bpmn", formId);
+      String schema = null;
+      if (formKey.startsWith("camunda-forms:bpmn:")) {
+        String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
+        Form form = formService.findFormFromBpmnFile(bpmnProcessId + ".bpmn", formId);
+        schema = form.getSchema().toString();
+      } else {
+        Form form = formService.findFormJsonFileByFormKey(formKey);
+        schema = form.getSchema().toString();
+      }
       task.setFormSchema(schema);
 
       String assignee = headers.get("io.camunda.zeebe:assignee");

@@ -1,7 +1,5 @@
 package org.example.camunda.process.solution.service;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.parsers.DocumentBuilder;
@@ -35,15 +31,6 @@ public class FormService {
 
   @Value("${workspace:workspace}")
   private String workspace;
-
-  public String parseFormIdFromKey(String formKey) {
-    Pattern pattern = Pattern.compile("[^:]+:[^:]+:(.*)");
-    Matcher matcher = pattern.matcher(formKey);
-    while (matcher.find()) {
-      return matcher.group(1);
-    }
-    return null;
-  }
 
   public String getFormSchemaFromBpmn(String bpmnFileName, String formId)
       throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
@@ -74,8 +61,17 @@ public class FormService {
         .collect(Collectors.toList());
   }
 
-  public Form findByName(String name) throws StreamReadException, DatabindException, IOException {
-    return JsonUtils.fromJsonFile(resolveForm(name), Form.class);
+  public Form findFormJsonFileByFormKey(String formKey) throws IOException {
+    return JsonUtils.fromJsonFile(resolveForm(formKey), Form.class);
+  }
+
+  public Form findFormFromBpmnFile(String bpmnFileName, String formKey)
+      throws XPathExpressionException, IOException, ParserConfigurationException, SAXException {
+    Form form = new Form();
+    form.setName(formKey);
+    String schema = getFormSchemaFromBpmn(bpmnFileName, formKey);
+    form.setSchema(JsonUtils.toJsonNode(schema));
+    return form;
   }
 
   public Form saveForm(Form form) throws IOException {
