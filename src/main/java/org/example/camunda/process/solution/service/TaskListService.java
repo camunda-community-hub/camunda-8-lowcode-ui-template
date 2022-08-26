@@ -7,6 +7,7 @@ import io.camunda.tasklist.dto.Form;
 import io.camunda.tasklist.dto.TaskState;
 import io.camunda.tasklist.dto.Variable;
 import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.zeebe.client.ZeebeClient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -60,6 +61,8 @@ public class TaskListService {
   private String tasklistUrl;
 
   private CamundaTaskListClient client;
+
+  @Autowired private ZeebeClient zeebeClient;
 
   @Autowired private FormService formService;
 
@@ -121,6 +124,10 @@ public class TaskListService {
     getCamundaTaskListClient().completeTask(taskId, variables);
   }
 
+  public void completeTaskWithJobKey(Long jobKey, Map<String, Object> variables) {
+    zeebeClient.newCompleteCommand(jobKey).variables(variables).send();
+  }
+
   public String getForm(String processDefinitionId, String formId) throws TaskListException {
     Form form = getCamundaTaskListClient().getForm(formId, processDefinitionId);
     return form.getSchema();
@@ -135,13 +142,26 @@ public class TaskListService {
         result.getVariables().put(var.getName(), var.getValue());
       }
     }
-    String formId = task.getFormKey().substring(task.getFormKey().lastIndexOf(":") + 1);
+
+    String schema = null;
+    String formKey = task.getFormKey();
     try {
-      org.example.camunda.process.solution.facade.dto.Form form = formService.findByName(formId);
-      result.setFormSchema(form.getSchema().toString());
-    } catch (IOException e) {
-      // unable to set form schema
+      if (formKey.startsWith("camunda-forms:bpmn:")) {
+        String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
+        // TODO: anyway to get process id from task??
+        String bpmnProcessId = task.getProcessName();
+        org.example.camunda.process.solution.facade.dto.Form form = null;
+        form = formService.findFormFromBpmnFile(bpmnProcessId + ".bpmn", formId);
+        schema = form.getSchema().toString();
+      } else {
+        org.example.camunda.process.solution.facade.dto.Form form =
+            formService.findFormJsonFileByFormKey(formKey);
+        schema = form.getSchema().toString();
+      }
+    } catch (Exception e) {
+      // can't find schema??
     }
+    result.setFormSchema(schema);
     return result;
   }
 
