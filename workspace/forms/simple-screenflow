@@ -1,0 +1,1 @@
+{"name":"simple-screenflow","modified":1659366218781,"schema":{"components":[{"label":"Initial mesage","type":"textfield","id":"Field_1bwxjh7","key":"intialMessage"}],"schemaVersion":4,"type":"default","id":"Form_5535780","executionPlatform":"Camunda Cloud","executionPlatformVersion":"1.1","exporter":{"name":"Camunda Modeler","version":"5.0.0"}},"previewData":{"toto":"pouet"}}
