@@ -50,7 +50,7 @@ public class ProcessController {
   public void publishMessage(
       @PathVariable String messageName,
       @PathVariable String correlationKey,
-      @RequestBody ProcessVariables variables) {
+      @RequestBody Map<String, Object> variables) {
 
     LOG.info(
         "Publishing message `{}` with correlation key `{}` and variables: {}",
