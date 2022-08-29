@@ -7,65 +7,65 @@ import javax.persistence.Entity;
 @Entity
 public class User extends BaseEntity {
 
-    private String username;
-    @JsonProperty(access = Access.WRITE_ONLY)
-    private String password;
-    private String firstname;
-    private String lastname;
-    private String email;
+  private String username;
 
-    public User() {
-    }
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String password;
 
-    public User(String username, String password) {
-        super();
-        this.username = username;
-        this.password = password;
-    }
+  private String firstname;
+  private String lastname;
+  private String email;
 
-    public String getPassword() {
-        return password;
-    }
+  public User() {}
 
-    public User setPassword(String password) {
-        this.password = password;
-        return this;
-    }
+  public User(String username, String password) {
+    super();
+    this.username = username;
+    this.password = password;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public User setUsername(String username) {
-        this.username = username;
-        return this;
-    }
+  public User setPassword(String password) {
+    this.password = password;
+    return this;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public User setEmail(String email) {
-        this.email = email;
-        return this;
-    }
+  public User setUsername(String username) {
+    this.username = username;
+    return this;
+  }
 
-    public String getFirstname() {
-        return firstname;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public User setFirstname(String firstname) {
-        this.firstname = firstname;
-        return this;
-    }
+  public User setEmail(String email) {
+    this.email = email;
+    return this;
+  }
 
-    public String getLastname() {
-        return lastname;
-    }
+  public String getFirstname() {
+    return firstname;
+  }
 
-    public User setLastname(String lastname) {
-        this.lastname = lastname;
-        return this;
-    }
+  public User setFirstname(String firstname) {
+    this.firstname = firstname;
+    return this;
+  }
 
+  public String getLastname() {
+    return lastname;
+  }
+
+  public User setLastname(String lastname) {
+    this.lastname = lastname;
+    return this;
+  }
 }

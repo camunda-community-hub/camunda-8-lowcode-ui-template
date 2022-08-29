@@ -5,7 +5,7 @@ import java.util.Date;
 public class MailTemplate {
 
   private String name;
-  
+
   private Date modified;
 
   private String htmlTemplate;
@@ -25,23 +25,20 @@ public class MailTemplate {
   public void setName(String name) {
     this.name = name;
   }
-  
-  
 
-
-public String getHtmlTemplate() {
+  public String getHtmlTemplate() {
     return htmlTemplate;
-}
+  }
 
-public void setHtmlTemplate(String htmlTemplate) {
+  public void setHtmlTemplate(String htmlTemplate) {
     this.htmlTemplate = htmlTemplate;
-}
+  }
 
-public Date getModified() {
+  public Date getModified() {
     return modified;
-}
+  }
 
-public void setModified(Date modified) {
+  public void setModified(Date modified) {
     this.modified = modified;
-}
+  }
 }
