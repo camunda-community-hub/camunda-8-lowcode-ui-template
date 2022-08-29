@@ -1,9 +1,9 @@
 package org.example.camunda.process.solution;
 
+import org.example.camunda.process.solution.facade.ProcessController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
 import io.camunda.zeebe.spring.test.ZeebeSpringTest;
 
@@ -15,7 +15,7 @@ import io.camunda.zeebe.spring.test.ZeebeSpringTest;
 @ZeebeSpringTest
 public class ProcessUnitTest {
 
-  @Autowired private ZeebeClient zeebe;
+  @Autowired private ProcessController processController;
 
   @Autowired private ZeebeTestEngine engine;
 
@@ -31,17 +31,12 @@ public class ProcessUnitTest {
     final ProcessVariables variables = new ProcessVariables().setTexte("23");
 
     // start a process instance
-    ProcessInstanceEvent processInstance =
-        zeebe
-            .newCreateInstanceCommand()
-            .bpmnProcessId(ProcessConstants.BPMN_PROCESS_ID)
-            .latestVersion()
-            .variables(variables)
-            .send()
-            .join();
+    processController.startProcessInstance(variables);
 
     // wait for process to be started
     engine.waitForIdleState(Duration.ofSeconds(1));
+    InspectedProcessInstance processInstance =
+        InspectionUtility.findProcessInstances().findLastProcessInstance().get();
     assertThat(processInstance).isStarted();
 
     // check that service task has been completed

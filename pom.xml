@@ -1,123 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<name>Camunda Process Solution</name>
-	<description>A process solution for Camunda Platform 8</description>
-	<groupId>org.example.camunda.process.solution</groupId>
-	<artifactId>camunda-lowcode-ui-solution</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+  <name>Camunda Process Solution</name>
+  <description>A process solution for Camunda Platform 8</description>
+  <groupId>org.example.camunda.process.solution</groupId>
+  <artifactId>camunda-lowcode-ui-solution</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.7</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.7.3</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
 
-	<properties>
-		<java.version>8</java.version>
-		<spring-zeebe.version>8.0.4</spring-zeebe.version>
-		<zeebe.version>8.0.1</zeebe.version>
-	</properties>
+  <properties>
+    <java.version>8</java.version>
+    <spring-zeebe.version>8.0.7</spring-zeebe.version>
+    <zeebe.version>8.0.5</zeebe.version>
+  </properties>
 
-	<dependencies>
+  <dependencies>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>io.camunda</groupId>
-			<artifactId>zeebe-client-java</artifactId>
-			<version>${zeebe.version}</version>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>io.camunda</groupId>
-			<artifactId>spring-zeebe-starter</artifactId>
-			<version>${spring-zeebe.version}</version>
-		</dependency>
+    <dependency>
+      <groupId>io.camunda</groupId>
+      <artifactId>zeebe-client-java</artifactId>
+      <version>${zeebe.version}</version>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.4</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>io.camunda</groupId>
-			<artifactId>camunda-tasklist-client-java</artifactId>
-			<version>1.4.2</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.squareup.okhttp3</groupId>
-		    <artifactId>okhttp</artifactId>
-		    <version>4.9.3</version>
-		</dependency>
+    <dependency>
+      <groupId>io.camunda</groupId>
+      <artifactId>spring-zeebe-starter</artifactId>
+      <version>${spring-zeebe.version}</version>
+    </dependency>
 
-		<dependency>
-			<groupId>io.camunda</groupId>
-			<artifactId>camunda-operate-client-java</artifactId>
-			<version>1.2.2</version>
-		</dependency>
-		
-		<!-- gmail, drive, thymeleaf & feel -->
-		<dependency>
-			<groupId>io.camunda</groupId>
-			<artifactId>camunda-google-ws-java</artifactId>
-			<version>1.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.mail</groupId>
-			<artifactId>jakarta.mail</artifactId>
-			<version>1.6.7</version>
-		</dependency>
-	    
-		<!-- h2 runtime -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>1.6.11</version>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+      <groupId>io.camunda</groupId>
+      <artifactId>camunda-tasklist-client-java</artifactId>
+      <version>1.4.2</version>
+    </dependency>
 
-		<dependency>
-			<groupId>io.camunda</groupId>
-			<artifactId>spring-zeebe-test-testcontainer</artifactId>
-			<version>${spring-zeebe.version}</version>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.9.3</version>
+    </dependency>
 
-		<dependency>
-			<!-- see: https://docs.camunda.io/docs/components/best-practices/development/testing-process-definitions/#writing-process-tests-in-java -->
-			<groupId>io.camunda</groupId>
-			<artifactId>zeebe-process-test-extension-testcontainer</artifactId>
-			<version>${zeebe.version}</version>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+      <groupId>io.camunda</groupId>
+      <artifactId>camunda-operate-client-java</artifactId>
+      <version>1.2.2</version>
+    </dependency>
 
-	</dependencies>
-	
-	<build>
+    <!-- gmail, drive, thymeleaf & feel -->
+    <dependency>
+      <groupId>io.camunda</groupId>
+      <artifactId>camunda-google-ws-java</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>jakarta.mail</artifactId>
+      <version>1.6.7</version>
+    </dependency>
+
+    <!-- h2 runtime -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.camunda</groupId>
+      <artifactId>spring-zeebe-test-testcontainer</artifactId>
+      <version>${spring-zeebe.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <!-- see: https://docs.camunda.io/docs/components/best-practices/development/testing-process-definitions/#writing-process-tests-in-java -->
+      <groupId>io.camunda</groupId>
+      <artifactId>zeebe-process-test-extension-testcontainer</artifactId>
+      <version>${zeebe.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
