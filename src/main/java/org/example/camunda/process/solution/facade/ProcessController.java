@@ -31,10 +31,9 @@ public class ProcessController {
     this.operateService = operateService;
   }
 
-
   @PostMapping("/{bpmnProcessId}/start")
   public void startProcessInstance(
-    @PathVariable String bpmnProcessId, @RequestBody Map<String, Object> variables) {
+      @PathVariable String bpmnProcessId, @RequestBody Map<String, Object> variables) {
 
     LOG.info("Starting process `" + bpmnProcessId + "` with variables: " + variables);
 
@@ -71,13 +70,13 @@ public class ProcessController {
     Set<String> present = new HashSet<>();
     List<ProcessDefinition> result = new ArrayList<>();
     List<ProcessDefinition> processDefs = operateService.getProcessDefinitions();
-    if (processDefs!=null) {
-        for (ProcessDefinition def : processDefs) {
-          if (!present.contains(def.getBpmnProcessId())) {
-            result.add(def);
-            present.add(def.getBpmnProcessId());
-          }
+    if (processDefs != null) {
+      for (ProcessDefinition def : processDefs) {
+        if (!present.contains(def.getBpmnProcessId())) {
+          result.add(def);
+          present.add(def.getBpmnProcessId());
         }
+      }
     }
     return result;
   }

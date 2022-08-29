@@ -1,8 +1,8 @@
 package org.example.camunda.process.solution.facade;
 
+import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
 import java.util.List;
-
 import org.example.camunda.process.solution.facade.dto.Form;
 import org.example.camunda.process.solution.service.FormService;
 import org.slf4j.Logger;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.camunda.tasklist.exception.TaskListException;
-
 @RestController
 @RequestMapping("/edition/forms")
 @CrossOrigin(origins = "*")
@@ -33,24 +31,21 @@ public class FormsEditionController extends AbstractController {
 
   @PostMapping
   public ResponseEntity<Form> save(@RequestBody Form form) throws IOException {
-      formService.saveForm(form);
+    formService.saveForm(form);
     return new ResponseEntity<>(form, HttpStatus.CREATED);
   }
 
   @GetMapping("/{formKey}")
   @ResponseBody
-  public Form getForm(@PathVariable String formKey)
-      throws TaskListException, IOException {
+  public Form getForm(@PathVariable String formKey) throws TaskListException, IOException {
     return formService.findByName(formKey);
   }
-  
+
   @DeleteMapping("/{formKey}")
-  public void deleteForm(@PathVariable String formKey)
-      throws TaskListException, IOException {
+  public void deleteForm(@PathVariable String formKey) throws TaskListException, IOException {
     formService.deleteByName(formKey);
   }
-  
-  
+
   @GetMapping(value = "/names")
   @ResponseBody
   public List<String> formNames() {

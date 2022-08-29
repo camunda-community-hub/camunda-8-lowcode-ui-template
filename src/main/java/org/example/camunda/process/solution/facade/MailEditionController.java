@@ -1,8 +1,8 @@
 package org.example.camunda.process.solution.facade;
 
+import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
 import java.util.List;
-
 import org.example.camunda.process.solution.facade.dto.MailTemplate;
 import org.example.camunda.process.solution.service.MailTemplateService;
 import org.slf4j.Logger;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.camunda.tasklist.exception.TaskListException;
-
 @RestController
 @RequestMapping("/edition/mails")
 @CrossOrigin(origins = "*")
@@ -32,8 +30,9 @@ public class MailEditionController extends AbstractController {
   @Autowired private MailTemplateService mailTemplateService;
 
   @PostMapping
-  public ResponseEntity<MailTemplate> save(@RequestBody MailTemplate mailTemplate) throws IOException {
-      mailTemplateService.saveMail(mailTemplate);
+  public ResponseEntity<MailTemplate> save(@RequestBody MailTemplate mailTemplate)
+      throws IOException {
+    mailTemplateService.saveMail(mailTemplate);
     return new ResponseEntity<>(mailTemplate, HttpStatus.CREATED);
   }
 
@@ -43,14 +42,12 @@ public class MailEditionController extends AbstractController {
       throws TaskListException, IOException {
     return mailTemplateService.findByName(templateName);
   }
-  
+
   @DeleteMapping("/{templateName}")
-  public void deleteForm(@PathVariable String templateName)
-      throws TaskListException, IOException {
+  public void deleteForm(@PathVariable String templateName) throws TaskListException, IOException {
     mailTemplateService.deleteByName(templateName);
   }
-  
-  
+
   @GetMapping(value = "/names")
   @ResponseBody
   public List<String> formNames() {

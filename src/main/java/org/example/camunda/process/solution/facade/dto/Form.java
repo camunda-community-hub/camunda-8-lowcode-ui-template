@@ -1,13 +1,12 @@
 package org.example.camunda.process.solution.facade.dto;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Date;
 
 public class Form {
 
   private String name;
-  
+
   private Date modified;
 
   private JsonNode schema;
@@ -46,11 +45,11 @@ public class Form {
     this.previewData = previewData;
   }
 
-public Date getModified() {
+  public Date getModified() {
     return modified;
-}
+  }
 
-public void setModified(Date modified) {
+  public void setModified(Date modified) {
     this.modified = modified;
-}
+  }
 }
