@@ -24,12 +24,6 @@ public class ProcessUnitTest {
   @Autowired private TaskListService taskListService;
 
   @Test
-  public void testGetTasks() throws TaskListException {
-    List<Task> tasks = taskListService.getTasks(TaskState.CREATED, 10);
-    assertTrue(tasks.size() > 0);
-  }
-
-  @Test
   public void testGetTaskNameFromBpmn()
       throws TaskListException, XPathExpressionException, IOException, ParserConfigurationException,
           SAXException {
