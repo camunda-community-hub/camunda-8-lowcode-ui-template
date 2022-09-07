@@ -1,5 +1,6 @@
 package org.example.camunda.process.solution.worker;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.camunda.tasklist.dto.TaskState;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
@@ -8,11 +9,13 @@ import io.camunda.zeebe.spring.client.annotation.ZeebeVariablesAsType;
 import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Form;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.service.FormService;
 import org.example.camunda.process.solution.service.TaskListService;
+import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +34,7 @@ public class UserTaskWorker {
   @Autowired private TaskListService taskListService;
 
   @ZeebeWorker(type = "io.camunda.zeebe:userTask", timeout = 2592000000L) // set timeout to 30 days
-  public void completeUserTask(
+  public void listenUserTask(
       final JobClient client,
       final ActivatedJob job,
       @ZeebeVariablesAsType Map<String, Object> variables,
@@ -91,29 +94,24 @@ public class UserTaskWorker {
       }
       task.setFormSchema(schema);
 
-      String assignee = headers.get("io.camunda.zeebe:assignee");
-      task.setAssignee(assignee);
+      if (!job.getCustomHeaders().isEmpty()) {
+        if (job.getCustomHeaders().containsKey("io.camunda.zeebe:assignee")) {
+          task.setAssignee(job.getCustomHeaders().get("io.camunda.zeebe:assignee"));
+        }
+        if (job.getCustomHeaders().containsKey("io.camunda.zeebe:candidateGroups")) {
+          String groups = job.getCustomHeaders().get("io.camunda.zeebe:candidateGroups");
+          task.setCandidateGroups(
+              JsonUtils.toParametrizedObject(groups, new TypeReference<List<String>>() {}));
+        }
+      }
 
       TaskState taskState = TaskState.CREATED;
       task.setTaskState(taskState);
-
-      // Do we need processInstanceKey ?
-      // String processInstanceKey = Long.toString(job.getProcessInstanceKey());
-
-      // TODO: implement candidate groups
-      // I'm not sure this is the correct header?
-      // String candidateGroups = headers.get("io.camunda.zeebe:candidateGroups");
-      // Need to convert comma delimited string to a list
-      // task.setCandidateGroups(candidateGroups);
-
-      // Do we need sort Values? What is it used for?
-      // List<String> sortValues = null; // what is this used for?
-
-      // Do we need isFirst? What is it used for?
-      // Boolean isFirst = true;
-
-      simpMessagingTemplate.convertAndSend("/topic/" + assignee + "/userTask", task);
-
+      if (task.getAssignee() != null) {
+        simpMessagingTemplate.convertAndSend("/topic/" + task.getAssignee() + "/userTask", task);
+      } else {
+        simpMessagingTemplate.convertAndSend("/topic/userTask", task);
+      }
     } catch (Exception e) {
       client.newFailCommand(job.getKey()).retries(0).send();
     }
