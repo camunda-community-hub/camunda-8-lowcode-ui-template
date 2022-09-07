@@ -2,9 +2,11 @@ package org.example.camunda.process.solution.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import org.springframework.data.annotation.Id;
+
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "USERS")
 public class User extends BaseEntity {
 
   private String username;
