@@ -24,6 +24,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.example.camunda.process.solution.dao.TaskTokenRepository;
 import org.example.camunda.process.solution.facade.dto.Task;
+import org.example.camunda.process.solution.facade.dto.TaskSearch;
 import org.example.camunda.process.solution.model.TaskToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,23 @@ public class TaskListService {
 
   public Task getTask(String taskId) throws TaskListException {
     return convert(getCamundaTaskListClient().getTask(taskId));
+  }
+
+  public List<Task> getTasks(TaskSearch taskSearch) throws TaskListException {
+    if (taskSearch.getAssignee() != null) {
+      return convert(
+          getCamundaTaskListClient()
+              .getAssigneeTasks(
+                  taskSearch.getAssignee(), taskSearch.getState(), taskSearch.getPageSize()));
+    }
+    if (taskSearch.getGroup() != null) {
+      return convert(
+          getCamundaTaskListClient()
+              .getGroupTasks(
+                  taskSearch.getGroup(), taskSearch.getState(), taskSearch.getPageSize()));
+    }
+    return convert(
+        getCamundaTaskListClient().getTasks(null, taskSearch.getState(), taskSearch.getPageSize()));
   }
 
   public List<Task> getGroupTasks(String group, TaskState state, Integer pageSize)

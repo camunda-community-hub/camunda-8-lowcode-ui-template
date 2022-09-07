@@ -35,5 +35,6 @@ workspace.code-workspace
 h2/db.mv.db
 
 ### React Js ###
-src/main/react/node_modules
-src/main/react/build
+src/main/react/tasklist/.vs
+src/main/react/tasklist/node_modules
+src/main/react/tasklist/build
