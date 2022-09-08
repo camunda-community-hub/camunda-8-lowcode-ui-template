@@ -11,10 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.example.camunda.process.solution.facade.dto.Form;
 import org.example.camunda.process.solution.facade.dto.Task;
-import org.example.camunda.process.solution.service.FormService;
-import org.example.camunda.process.solution.service.TaskListService;
+import org.example.camunda.process.solution.utils.BpmnUtils;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +25,7 @@ public class UserTaskWorker {
 
   private static final Logger LOG = LoggerFactory.getLogger(UserTaskWorker.class);
 
-  @Autowired private FormService formService;
-
   @Autowired private SimpMessagingTemplate simpMessagingTemplate;
-
-  @Autowired private TaskListService taskListService;
 
   @ZeebeWorker(type = "io.camunda.zeebe:userTask", timeout = 2592000000L) // set timeout to 30 days
   public void listenUserTask(
@@ -74,25 +68,13 @@ public class UserTaskWorker {
       task.setJobKey(jobKey);
 
       String bpmnProcessId = job.getBpmnProcessId();
-      task.setProcessName(bpmnProcessId);
+      task.setProcessName(BpmnUtils.getProcessName(bpmnProcessId + ".bpmn", bpmnProcessId));
 
       String taskActivityId = job.getElementId();
       // !!! The name of the bpmn file in the "src/main/resources/models" directory must match the
       // process id in order for this to work!
-      String taskName =
-          taskListService.getTaskNameFromBpmn(bpmnProcessId + ".bpmn", taskActivityId);
+      String taskName = BpmnUtils.getTaskNameFromBpmn(bpmnProcessId + ".bpmn", taskActivityId);
       task.setName(taskName);
-
-      String schema = null;
-      if (formKey.startsWith("camunda-forms:bpmn:")) {
-        String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
-        Form form = formService.findFormFromBpmnFile(bpmnProcessId + ".bpmn", formId);
-        schema = form.getSchema().toString();
-      } else {
-        Form form = formService.findFormJsonFileByFormKey(formKey);
-        schema = form.getSchema().toString();
-      }
-      task.setFormSchema(schema);
 
       if (!job.getCustomHeaders().isEmpty()) {
         if (job.getCustomHeaders().containsKey("io.camunda.zeebe:assignee")) {

@@ -15,7 +15,7 @@ export class TaskService {
   }
   setTask = (task: ITask | null): AppThunk => async dispatch => {
     if (task) {
-      let url = '/forms/' + task.processDefinitionId + '/' + task.formKey;
+      let url = '/forms/' + task.processName + '/' + task.processDefinitionId + '/' + task.formKey;
       api.get(url).then(response => {
         dispatch(setFormSchema(response.data));
       }).catch(error => {
@@ -31,7 +31,7 @@ export class TaskService {
   }
 
   fetchTasks = (): AppThunk => async dispatch => {
-    if (this.lastFetchTasks < Date.now() - 2000) { 
+    if (this.lastFetchTasks < Date.now() - 1000) { 
       try {
         dispatch(remoteLoading());
         const { data } = await api.post<ITask[]>('/tasks/search', store.getState().process.taskSearch);
@@ -88,6 +88,7 @@ export class TaskService {
       }
     }
     if (shouldInsert) {
+      this.lastFetchTasks = Date.now();
       dispatch(prependTaskIntoList(task));
     }
 
