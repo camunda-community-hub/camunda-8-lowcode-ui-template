@@ -53,7 +53,7 @@ h2 {
 	vertical-align: top
 }
 .taskListFormContainer {
-	width:calc(100% - 330px);
+	width:100%;
 	display:inline-block;
 	vertical-align: top
 }

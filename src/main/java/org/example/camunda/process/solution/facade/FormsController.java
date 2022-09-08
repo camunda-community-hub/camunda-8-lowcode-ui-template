@@ -5,7 +5,6 @@ import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
 import org.example.camunda.process.solution.facade.dto.Form;
 import org.example.camunda.process.solution.service.FormService;
-import org.example.camunda.process.solution.service.TaskListService;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,21 +25,30 @@ public class FormsController extends AbstractController {
 
   @Autowired private FormService formService;
 
-  @Autowired private TaskListService taskListService;
-
   @GetMapping("/{processDefinitionId}/{formKey}")
   @ResponseBody
   public JsonNode getFormSchema(
       @PathVariable String processDefinitionId, @PathVariable String formKey)
       throws TaskListException, IOException {
 
+    return getFormSchema(null, processDefinitionId, formKey);
+  }
+
+  @GetMapping("/{processName}/{processDefinitionId}/{formKey}")
+  @ResponseBody
+  public JsonNode getFormSchema(
+      @PathVariable String processName,
+      @PathVariable String processDefinitionId,
+      @PathVariable String formKey)
+      throws TaskListException, IOException {
+
     if (formKey.startsWith("camunda-forms:bpmn:")) {
       String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
-      String schema = taskListService.getForm(processDefinitionId, formId);
+      String schema = formService.getEmbeddedFormSchema(processName, processDefinitionId, formId);
       return JsonUtils.toJsonNode(schema);
     }
 
-    Form form = formService.findFormJsonFileByFormKey(formKey);
+    Form form = formService.findByName(formKey);
     return form.getSchema();
   }
 
@@ -48,7 +56,7 @@ public class FormsController extends AbstractController {
   @ResponseBody
   public JsonNode getInstanciationFormSchema(@PathVariable String bpmnProcessId)
       throws IOException {
-    Form form = formService.findFormJsonFileByFormKey(bpmnProcessId);
+    Form form = formService.findByName(bpmnProcessId);
     return form.getSchema();
   }
 

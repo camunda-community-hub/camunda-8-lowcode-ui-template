@@ -54,7 +54,9 @@ const serverListSlice = createSlice({
       state: ProcessListState,
       action: PayloadAction<ITask>,
     ) => {
-      state.tasks.unshift(action.payload);
+      state.tasks = [action.payload, ...state.tasks];
+      //state.tasks.splice(0, 0, action.payload);
+      //state.tasks.unshift(action.payload);
     },
     setTaskSearch: (
       state: ProcessListState,

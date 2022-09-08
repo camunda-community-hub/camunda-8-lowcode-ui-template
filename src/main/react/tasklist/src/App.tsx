@@ -17,42 +17,41 @@ import taskService from './service/TaskService';
 import { Stomp, CompatClient } from '@stomp/stompjs';
 import { env } from './env';
 
+const connectStompClient = () => {
+  let myStompClient = Stomp.client(`ws://${env.backend}/ws`);
+  console.log(myStompClient);
+
+  myStompClient.onStompError = function (frame) {
+    console.log('STOMP error');
+  };
+
+  return myStompClient;
+}
+
+const stompClient = connectStompClient();
+
 function App() {
 
   const dispatch = useDispatch();
 
-  const sockUrl = `ws://${env.backend}/ws`;
-  console.log(sockUrl);
-  let stompClient: CompatClient | null = null;
-  let init = 0;
 
   const onUserTaskReadyWS = (message: any) => {
-    console.log("TASK ARRIVED!!");
-    console.log(message);
     let task = JSON.parse(message.body);
     // Update the list of tasks
     dispatch(taskService.insertNewTask(task));
   }
-  const wsConnect = () => {
-    if (init++==1 && !stompClient) {
-      stompClient = Stomp.client(sockUrl);
 
-      stompClient.onConnect = function (frame) {
-        stompClient!.subscribe("/topic/" + authService.getUser()!.username + "/userTask", onUserTaskReadyWS);
-        stompClient!.subscribe("/topic/userTask", onUserTaskReadyWS);
-      };
-
-      stompClient.onStompError = function (frame) {
-        console.log('STOMP error');
-      };
-
-      stompClient.activate();
-    }
+  const connectStomp = () => {
+    stompClient.onConnect = function (frame) {
+      stompClient!.subscribe("/topic/" + authService.getUser()!.username + "/userTask", onUserTaskReadyWS);
+      stompClient!.subscribe("/topic/userTask", onUserTaskReadyWS);
+    };
+    stompClient.activate();
   }
 
   useEffect(() => {
     dispatch(authService.recoverFromStorage());
-    wsConnect();
+    connectStomp();
   });
 
   return (

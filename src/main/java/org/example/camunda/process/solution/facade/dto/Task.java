@@ -29,8 +29,6 @@ public class Task {
 
   private String formKey;
 
-  private String formSchema;
-
   private String processDefinitionId;
 
   public String getId() {
@@ -127,14 +125,6 @@ public class Task {
 
   public void setProcessDefinitionId(String processDefinitionId) {
     this.processDefinitionId = processDefinitionId;
-  }
-
-  public String getFormSchema() {
-    return formSchema;
-  }
-
-  public void setFormSchema(String formSchema) {
-    this.formSchema = formSchema;
   }
 
   public String getJobKey() {
