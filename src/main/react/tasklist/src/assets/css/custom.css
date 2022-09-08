@@ -1,0 +1,155 @@
+.navbar {
+    height: 76px;
+}
+.nav-tabs {
+    background: #eee;
+}
+#sidebar-nav {
+  height: calc(100vh - 76px);
+  padding: 10px;
+  width: 330px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.btn-primary:hover {
+    background-color: #17428c;
+    border-color: #17428c;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #17428c;
+    border-color: #17428c;
+}
+
+a, .text-primary {
+    color: #17428c!important;
+}
+
+main {
+    height: calc(100vh - 76px);
+    box-shadow: 6px 6px 14px #ddd inset;
+    overflow: auto;
+}
+
+h2 {
+    display: inline-block;
+    font-size: .9rem;
+    position: relative;
+    line-height: 1.5;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    color: #17428c;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.mainContent span.input-group-text:first-child {
+    width: 106px;
+}
+.taskList {
+	width:320px;
+	display:inline-block;
+	vertical-align: top
+}
+.taskListFormContainer {
+	width:100%;
+	display:inline-block;
+	vertical-align: top
+}
+.taskForm {
+	padding: 8px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #aaa;
+}
+span.assignedTo {
+  font-size: smaller;
+}
+.btnClaimUnClaim {
+  width:100px;
+  position: absolute;
+  right: 15px;
+  height: 36px;
+}
+.card.current {
+  background: rgba(224,224,255,0.8);
+}
+
+.logout {
+    font-size: 16px;
+    font-weight: 700;
+    border-left: 1px solid #17428c;
+    padding-left: 10px;
+    margin-left: 10px;
+}
+.logout::before {
+    font-size: 20px;
+    font-weight: 400!important;
+}
+
+.card {
+	margin-bottom: 5px;
+}
+.card-title {
+	font-size: 1.1rem;
+    color: #17428c;
+}
+.card.taskform .card-title {
+	background: #17428c;
+    color: white;
+    padding: 8px;
+    margin-top: -1px;
+    border-radius: 5px 5px 0px 0px;
+}
+.card-subtitle {
+    font-size: 0.9rem;
+}
+.card-text {
+	float: left;
+    font-size: 12px;
+    margin-bottom: 0!important;
+    margin-block-start: 0;
+}
+.card-link {
+	float: right;
+}
+
+.localeDropdown {
+	display:inline-block;
+}
+.localeDropdown > button {
+	font-size: 1.1rem;
+    color: #17428c;
+    border:0px;
+    background:white;
+}
+.dropdown-menu {
+	box-shadow: -2px 2px 3px #666;
+}
+.dropdown-toggle.move[aria-expanded="false"]::after {
+    transform: rotate(-90deg);
+    transition: transform 0.35s ease;
+}
+.fjs-form-field-table table td.actions button.btn {
+    min-width: 36px;
+    font-weight: 900;
+}
+
+.maileditor {
+	height: calc(100vh - 95px);
+}
+
+.maileditor .card {
+	margin: 1.5rem;
+    padding: 0px;
+}
+.maileditor .card .card-title {
+	background: #17428c;
+    color: white;
+    padding: 8px;
+    margin: 0px;
+    border-radius: 5px 5px 0px 0px;
+}
+#mail-preview {
+	padding: 1rem;
+}
