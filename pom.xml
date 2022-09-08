@@ -58,21 +58,6 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>io.camunda</groupId>
-      <artifactId>spring-zeebe-test-testcontainer</artifactId>
-      <version>${spring-zeebe.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <!-- see: https://docs.camunda.io/docs/components/best-practices/development/testing-process-definitions/#writing-process-tests-in-java -->
-      <groupId>io.camunda</groupId>
-      <artifactId>zeebe-process-test-extension-testcontainer</artifactId>
-      <version>${zeebe.version}</version>
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
   
   <build>
@@ -97,4 +82,52 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <!-- use Java 17 dependencies if available -->
+      <id>jdk17+</id>
+      <activation>
+          <jdk>[17,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <!-- see: https://docs.camunda.io/docs/components/best-practices/development/testing-process-definitions/#writing-process-tests-in-java -->
+          <groupId>io.camunda</groupId>
+          <artifactId>zeebe-process-test-extension</artifactId>
+          <version>${zeebe.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <!-- see: https://github.com/camunda-community-hub/spring-zeebe#writing-test-cases -->
+          <groupId>io.camunda</groupId>
+          <artifactId>spring-zeebe-test</artifactId>
+          <version>${spring-zeebe.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <!-- use alternative dependencies if Java 17 is not available -->
+      <id>jdk8-16</id>
+      <activation>
+          <jdk>[8,17)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <!-- see: https://github.com/camunda/zeebe-process-test#testcontainers-jdk-8 -->
+          <groupId>io.camunda</groupId>
+          <artifactId>zeebe-process-test-extension-testcontainer</artifactId>
+          <version>${zeebe.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <!-- see: https://github.com/camunda-community-hub/spring-zeebe#writing-test-cases -->
+          <groupId>io.camunda</groupId>
+          <artifactId>spring-zeebe-test-testcontainer</artifactId>
+          <version>${spring-zeebe.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>
