@@ -1,18 +1,11 @@
 package org.example.camunda.process.solution.service;
 
-import io.camunda.tasklist.CamundaTaskListClient;
-import io.camunda.tasklist.auth.LocalIdentityAuthentication;
-import io.camunda.tasklist.auth.SaasAuthentication;
-import io.camunda.tasklist.dto.Form;
-import io.camunda.tasklist.dto.TaskState;
-import io.camunda.tasklist.dto.Variable;
-import io.camunda.tasklist.exception.TaskListException;
-import io.camunda.zeebe.client.ZeebeClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import org.example.camunda.process.solution.dao.TaskTokenRepository;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.facade.dto.TaskSearch;
@@ -21,6 +14,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import io.camunda.tasklist.CamundaTaskListClient;
+import io.camunda.tasklist.auth.SaasAuthentication;
+import io.camunda.tasklist.auth.SelfManagedAuthentication;
+import io.camunda.tasklist.dto.Form;
+import io.camunda.tasklist.dto.TaskState;
+import io.camunda.tasklist.dto.Variable;
+import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.zeebe.client.ZeebeClient;
 
 @Service
 public class TaskListService {
@@ -48,6 +50,9 @@ public class TaskListService {
 
   @Value("${tasklistUrl:notProvided}")
   private String tasklistUrl;
+  
+  @Value("${keycloakUrl}")
+  private String keycloakUrl;
 
   private CamundaTaskListClient client;
 
@@ -66,15 +71,16 @@ public class TaskListService {
                 .authentication(sa)
                 .build();
       } else {
-        LocalIdentityAuthentication la =
-            new LocalIdentityAuthentication()
+          SelfManagedAuthentication sma =
+            new SelfManagedAuthentication()
                 .clientId(identityClientId)
-                .clientSecret(identityClientSecret);
+                .clientSecret(identityClientSecret)
+                .keycloakUrl(keycloakUrl);
         client =
             new CamundaTaskListClient.Builder()
                 .shouldReturnVariables()
                 .taskListUrl(tasklistUrl)
-                .authentication(la)
+                .authentication(sma)
                 .build();
       }
     }

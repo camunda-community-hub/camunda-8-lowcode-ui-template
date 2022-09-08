@@ -7,6 +7,7 @@ zeebe.client:
   
 identity.clientId: java
 identity.clientSecret: e5xL9drBtKGEWF2bPiosjQGkVBTc4o0b
+keycloakUrl: http://localhost:18080
 tasklistUrl: http://localhost:8082/
 operateUrl: http://localhost:8081/
 

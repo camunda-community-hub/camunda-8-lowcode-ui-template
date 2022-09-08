@@ -1,17 +1,19 @@
 package org.example.camunda.process.solution.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import io.camunda.operate.CamundaOperateClient;
-import io.camunda.operate.auth.LocalIdentityAuthentication;
 import io.camunda.operate.auth.SaasAuthentication;
+import io.camunda.operate.auth.SelfManagedAuthentication;
 import io.camunda.operate.dto.ProcessDefinition;
 import io.camunda.operate.exception.OperateException;
 import io.camunda.operate.search.ProcessDefinitionFilter;
 import io.camunda.operate.search.SearchQuery;
 import io.camunda.operate.search.Sort;
 import io.camunda.operate.search.SortOrder;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 @Service
 public class OperateService {
@@ -36,6 +38,9 @@ public class OperateService {
 
   @Value("${operateUrl:notProvided}")
   private String operateUrl;
+  
+  @Value("${keycloakUrl}")
+  private String keycloakUrl;
 
   private CamundaOperateClient client;
 
@@ -49,10 +54,11 @@ public class OperateService {
                 .authentication(sa)
                 .build();
       } else {
-        LocalIdentityAuthentication la =
-            new LocalIdentityAuthentication()
+          SelfManagedAuthentication la =
+            new SelfManagedAuthentication()
                 .clientId(identityClientId)
-                .clientSecret(identityClientSecret);
+                .clientSecret(identityClientSecret)
+                .keycloakUrl(keycloakUrl);
         client =
             new CamundaOperateClient.Builder().operateUrl(operateUrl).authentication(la).build();
       }
