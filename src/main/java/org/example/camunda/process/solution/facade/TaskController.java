@@ -5,11 +5,13 @@ import io.camunda.tasklist.exception.TaskListException;
 import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Task;
+import org.example.camunda.process.solution.facade.dto.TaskSearch;
 import org.example.camunda.process.solution.model.TaskToken;
 import org.example.camunda.process.solution.service.TaskListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -35,6 +38,11 @@ public class TaskController {
     TaskToken taskToken = taskListService.retrieveToken(token);
 
     return taskListService.getTask(taskToken.getTaskId());
+  }
+
+  @PostMapping("/search")
+  public List<Task> searchTasks(@RequestBody TaskSearch taskSearch) throws TaskListException {
+    return taskListService.getTasks(taskSearch);
   }
 
   @GetMapping("/unassigned")
@@ -73,7 +81,15 @@ public class TaskController {
       throws TaskListException {
 
     LOG.info("Completing task " + taskId + "` with variables: " + variables);
-
     taskListService.completeTask(taskId, variables);
+  }
+
+  @PostMapping("/withJobKey/{jobKey}")
+  public void completeTaskWithJobKey(
+      @PathVariable Long jobKey, @RequestBody Map<String, Object> variables)
+      throws TaskListException {
+
+    LOG.info("Completing task by job key " + jobKey + "` with variables: " + variables);
+    taskListService.completeTaskWithJobKey(jobKey, variables);
   }
 }

@@ -71,30 +71,10 @@ public class InitService {
   private void initUsers() {
     if (checkEmpty()) {
       userService.create(
-          new User("christophe", "pwd")
-              .setFirstname("Christophe")
-              .setLastname("Dame")
+          new User("demo", "demo")
+              .setFirstname("De")
+              .setLastname("Mo")
               .setEmail("christophe.dame@camunda.com"));
-      userService.create(
-          new User("falko", "pwd")
-              .setFirstname("Falko")
-              .setLastname("Menge")
-              .setEmail("falko.menge@camunda.com"));
-      userService.create(
-          new User("marco", "pwd")
-              .setFirstname("Marco")
-              .setLastname("Dame")
-              .setEmail("marco.lopes@camunda.com"));
-      userService.create(
-          new User("thomas", "pwd")
-              .setFirstname("Thomas")
-              .setLastname("Gütt")
-              .setEmail("thomas.gutt@camunda.com"));
-      userService.create(
-          new User("fatma", "pwd")
-              .setFirstname("Fatma")
-              .setLastname("Cheour")
-              .setEmail("fatma.cheour@camunda.com"));
     }
   }
 

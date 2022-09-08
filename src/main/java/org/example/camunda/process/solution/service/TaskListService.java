@@ -7,6 +7,7 @@ import io.camunda.tasklist.dto.Form;
 import io.camunda.tasklist.dto.TaskState;
 import io.camunda.tasklist.dto.Variable;
 import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.zeebe.client.ZeebeClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.example.camunda.process.solution.dao.TaskTokenRepository;
 import org.example.camunda.process.solution.facade.dto.Task;
+import org.example.camunda.process.solution.facade.dto.TaskSearch;
 import org.example.camunda.process.solution.model.TaskToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,8 @@ public class TaskListService {
   private String tasklistUrl;
 
   private CamundaTaskListClient client;
+
+  @Autowired private ZeebeClient zeebeClient;
 
   @Autowired private TaskTokenRepository taskTokenRepository;
 
@@ -89,6 +93,23 @@ public class TaskListService {
     return convert(getCamundaTaskListClient().getTask(taskId));
   }
 
+  public List<Task> getTasks(TaskSearch taskSearch) throws TaskListException {
+    if (taskSearch.getAssignee() != null) {
+      return convert(
+          getCamundaTaskListClient()
+              .getAssigneeTasks(
+                  taskSearch.getAssignee(), taskSearch.getState(), taskSearch.getPageSize()));
+    }
+    if (taskSearch.getGroup() != null) {
+      return convert(
+          getCamundaTaskListClient()
+              .getGroupTasks(
+                  taskSearch.getGroup(), taskSearch.getState(), taskSearch.getPageSize()));
+    }
+    return convert(
+        getCamundaTaskListClient().getTasks(null, taskSearch.getState(), taskSearch.getPageSize()));
+  }
+
   public List<Task> getGroupTasks(String group, TaskState state, Integer pageSize)
       throws TaskListException {
     return convert(getCamundaTaskListClient().getGroupTasks(group, state, pageSize));
@@ -105,6 +126,10 @@ public class TaskListService {
 
   public void completeTask(String taskId, Map<String, Object> variables) throws TaskListException {
     getCamundaTaskListClient().completeTask(taskId, variables);
+  }
+
+  public void completeTaskWithJobKey(Long jobKey, Map<String, Object> variables) {
+    zeebeClient.newCompleteCommand(jobKey).variables(variables).send();
   }
 
   public String getForm(String processDefinitionId, String formId) throws TaskListException {
