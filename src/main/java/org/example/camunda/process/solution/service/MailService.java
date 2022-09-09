@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
 
-  @Autowired private UserService userService;
+  @Autowired private OrganizationService userService;
 
   private String getEmail(String username) {
     if (username == null) {

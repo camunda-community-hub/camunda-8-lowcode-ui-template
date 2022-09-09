@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import org.example.camunda.process.solution.exception.TechnicalException;
 
@@ -47,7 +48,10 @@ public class JsonUtils {
   }
 
   public static void toJsonFile(Path path, Object object) throws IOException {
-    getObjectMapper().writeValue(path.toFile(), object);
+    if (!Files.exists(path.getParent())) {
+      Files.createDirectories(path.getParent());
+    }
+    getObjectMapper().writerWithDefaultPrettyPrinter().writeValue(path.toFile(), object);
   }
 
   public static <T> T fromJsonFile(Path path, Class<T> type)
