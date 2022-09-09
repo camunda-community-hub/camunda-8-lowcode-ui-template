@@ -1,6 +1,5 @@
 package org.example.camunda.process.solution.service;
 
-import org.example.camunda.process.solution.dao.UserRepository;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
 import org.example.camunda.process.solution.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
-  @Autowired private UserRepository userRepository;
+  @Autowired private OrganizationService organizationService;
 
   public User getByUsernameAndPwd(String username, String pwd) {
-    User user = userRepository.findByUsername(username);
+    User user = organizationService.getUserByUsername(username);
     if (user == null) {
       throw new UnauthorizedException("User doesn't exist");
     }

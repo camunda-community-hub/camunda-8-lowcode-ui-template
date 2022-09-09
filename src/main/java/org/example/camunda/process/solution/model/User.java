@@ -1,11 +1,11 @@
 package org.example.camunda.process.solution.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import javax.persistence.Entity;
+import java.util.Objects;
 
-@Entity(name = "USERS")
-public class User extends BaseEntity {
+public class User {
 
   private String username;
 
@@ -15,6 +15,8 @@ public class User extends BaseEntity {
   private String firstname;
   private String lastname;
   private String email;
+
+  @JsonIgnore private Organization org;
 
   public User() {}
 
@@ -67,5 +69,27 @@ public class User extends BaseEntity {
   public User setLastname(String lastname) {
     this.lastname = lastname;
     return this;
+  }
+
+  public Organization getOrg() {
+    return org;
+  }
+
+  public void setOrg(Organization org) {
+    this.org = org;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(username);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
+    User other = (User) obj;
+    return Objects.equals(username, other.username);
   }
 }
