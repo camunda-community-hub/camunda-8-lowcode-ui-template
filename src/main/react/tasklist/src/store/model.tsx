@@ -43,12 +43,6 @@ export interface ITaskSearch {
   pageSize: number | null;
 }
 
-export interface ITaskContainer {
-  task: ITask;
-}
-export interface ITaskListContainer {
-  tasks: ITask[];
-}
 export interface IFormViewer {
   schema: string;
   variables: IVariable[] | undefined;

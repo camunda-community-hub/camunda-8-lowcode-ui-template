@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Task from './Task';
-import { ITask, ITaskListContainer } from '../store/model';
+import { ITask } from '../store/model';
 import Sidebar from './Sidebar';
 import TaskForm from './TaskForm';
 

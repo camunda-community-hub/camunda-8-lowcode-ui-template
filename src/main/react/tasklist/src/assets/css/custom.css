@@ -152,3 +152,8 @@ span.assignedTo {
 #mail-preview {
 	padding: 1rem;
 }
+.addOrg {
+  position: absolute;
+  right: 10px;
+  margin-top:2px;
+}
