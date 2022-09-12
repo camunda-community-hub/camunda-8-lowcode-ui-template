@@ -16,14 +16,12 @@ function Navbar() {
       <div className="container-fluid">
         <img width="140" src={logo} className="custom-logo" alt="Camunda" />
         <div>
-        <div className="input-group mb-3">
-          <Link className="btn btn-outline-secondary" to="/tasklist/home">Tasks</Link>
-          <Link className="btn btn-outline-secondary" to="/tasklist/processes">Processes</Link>
-        </div>
+
+          <div className="input-group mb-3">
+            <Link className="btn btn-outline-secondary" to="/tasklist/tasks">Tasks</Link>
+            <Link className="btn btn-outline-secondary" to="/tasklist/processes">Processes</Link>
+            <a className="btn btn-outline-secondary" onClick={logout}>{authService.getUser()!.username} <i className="bi bi-box-arrow-left"></i></a>
           </div>
-        <div>
-          <span className="text-primary">Hello {authService.getUser()!.username}</span>
-          <a className="logout bi bi-box-arrow-left" onClick={logout}></a>
         </div>
       </div>
     </nav>

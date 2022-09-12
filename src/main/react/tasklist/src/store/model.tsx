@@ -1,11 +1,12 @@
 
 
 export interface IUser {
-  id: number;
   name: string;
   username: string;
   password?: string;
   token?: string;
+  profile: string;
+  groups: string[];
 }
 
 export interface ITask {
@@ -52,4 +53,20 @@ export interface IFormViewer {
   schema: string;
   variables: IVariable[] | undefined;
   disabled: boolean;
+}
+
+export interface Organization {
+
+  name: string;
+  modified: string;
+  active: boolean;
+  users: IUser;
+  groups: string[];
+  userMemberships: UserMemberships[];
+}
+
+export interface UserMemberships {
+  username: string;
+  profile: string;
+  groups: string[];
 }

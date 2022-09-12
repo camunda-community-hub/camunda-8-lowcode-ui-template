@@ -135,6 +135,7 @@
         <version>2.19</version>
         <executions>
           <execution>
+            <?m2e execute onConfiguration,onIncremental?>
             <goals>
               <goal>format</goal>
             </goals>

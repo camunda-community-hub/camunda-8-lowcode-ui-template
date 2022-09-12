@@ -1,0 +1,45 @@
+.welcome {
+  background: #fff url(../img/background.jfif) no-repeat center bottom fixed;
+  background-size: cover;
+  height:100vh;
+  padding-top: 100px;
+}
+
+h1, .h1, h2, .h2 {
+  font-weight: 300;
+}
+
+.welcome-header, .card-pf {
+  border-top: 1px solid rgba(3, 3, 3, 0.1);
+  box-shadow: 0 1px 1px rgb(3 3 3 / 28%);
+  background: rgba(255,255,255,0.9);
+  margin: 0 -10px 20px;
+  padding: 0 20px;
+}
+
+.welcome-header {
+  margin-top: 10px;
+  margin-bottom: 50px;
+  padding: 10px 20px;
+}
+
+.h-l {
+  min-height: 370px;
+  padding: 10px 20px 10px;
+  overflow: hidden;
+}
+
+.h-m {
+  height: 110px;
+  padding-top: 23px;
+}
+
+h3, .h3 {
+  font-size: 16px;
+}
+
+  h3 a:link, h3 a:visited {
+    color: #333;
+    font-weight: 550;
+    text-decoration: none;
+  }

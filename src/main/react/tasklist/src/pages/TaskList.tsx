@@ -8,7 +8,7 @@ import TasksFilter from '../components/TasksFilter';
 import Task from '../components/Task';
 import taskService from '../service/TaskService';
 
-function Tasks() {
+function TaskList() {
 
   const dispatch = useDispatch();
   const tasks = useSelector((state: any) => state.process.tasks)
@@ -36,4 +36,4 @@ function Tasks() {
   );
 }
 
-export default Tasks;
+export default TaskList;
