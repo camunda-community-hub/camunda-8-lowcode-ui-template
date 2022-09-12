@@ -24,7 +24,7 @@ public class AssigneeWorker {
   public ProcessVariables selectAssignee(@ZeebeVariablesAsType ProcessVariables variables) {
     LOG.info("Invoking myService with variables: " + variables);
 
-    Collection<User> users = organizationService.all();
+    Collection<User> users = organizationService.allUsers();
     int idx = (int) Math.floor(Math.random() * users.size());
     List<User> usersList = new ArrayList<User>(users);
     return new ProcessVariables().setAssignee1(usersList.get(idx).getUsername());

@@ -24,7 +24,7 @@ public class SimulationController {
   @GetMapping("/users")
   public List<FormJsListValue> users() throws TaskListException, IOException {
 
-    Collection<User> users = organizationService.all();
+    Collection<User> users = organizationService.allUsers();
     List<FormJsListValue> result = new ArrayList<>();
     for (User u : users) {
       result.add(new FormJsListValue(u.getUsername(), u.getFirstname() + " " + u.getLastname()));

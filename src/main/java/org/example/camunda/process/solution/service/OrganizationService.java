@@ -1,6 +1,7 @@
 package org.example.camunda.process.solution.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,11 +51,15 @@ public class OrganizationService {
   }
 
   public Organization findByName(String orgName) throws IOException {
-    Organization org = JsonUtils.fromJsonFile(resolveOrganization(orgName), Organization.class);
-    for (User u : org.getUsers()) {
-      u.setOrg(org);
+    try {
+      Organization org = JsonUtils.fromJsonFile(resolveOrganization(orgName), Organization.class);
+      for (User u : org.getUsers()) {
+        u.setOrg(org);
+      }
+      return org;
+    } catch (FileNotFoundException e) {
+      return null;
     }
-    return org;
   }
 
   public Organization saveOrganization(Organization org) throws IOException {
@@ -146,18 +151,26 @@ public class OrganizationService {
               .setFirstname("De")
               .setLastname("Mo")
               .setEmail("christophe.dame@camunda.com");
-      Organization org =
-          new Organization()
-              .setName("ACME")
-              .setActive(true)
-              .addUser(demo)
-              .addGroups("HR", "IT", "Finance", "Sales");
-      org.addUserMembership(new UserMemberships("demo").setProfile("Admin").addGroups("HR", "IT"));
-      saveOrganization(org);
+      createOrgnization("ACME", demo);
     }
   }
 
-  public Collection<User> all() {
+  public Organization createOrgnization(String name, User... admins) throws IOException {
+    Organization org =
+        new Organization().setName(name).setActive(true).addGroups("HR", "IT", "Finance", "Sales");
+    for (User user : admins) {
+      org.addUser(user);
+      org.addUserMembership(
+          new UserMemberships(user.getUsername()).setProfile("Admin").addGroups("HR", "IT"));
+    }
+    return saveOrganization(org);
+  }
+
+  public Collection<Organization> all() {
+    return organizations.values();
+  }
+
+  public Collection<User> allUsers() {
     return users.values();
   }
 
