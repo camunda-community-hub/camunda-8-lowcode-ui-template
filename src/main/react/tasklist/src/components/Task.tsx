@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ITaskContainer } from '../store/model';
+import { ITask } from '../store/model';
 import taskService from '../service/TaskService';
 
-function TaskList(taskParam: ITaskContainer) {
+function TaskList(taskParam: { task: ITask }) {
   const dispatch = useDispatch();
   const currentTask = useSelector((state: any) => state.process.currentTask)
   const task = taskParam.task;
