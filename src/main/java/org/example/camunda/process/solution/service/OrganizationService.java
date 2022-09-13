@@ -13,16 +13,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
-import org.example.camunda.process.solution.exception.TechnicalException;
-import org.example.camunda.process.solution.exception.UnauthorizedException;
 import org.example.camunda.process.solution.model.Organization;
 import org.example.camunda.process.solution.model.User;
-import org.example.camunda.process.solution.model.UserMemberships;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,13 +29,14 @@ public class OrganizationService {
 
   public static final String ORGS = "organizations";
 
-  Map<String, Organization> organizations = new HashMap<>();
+  private Organization activeOrg = null;
 
-  Map<String, User> users = new HashMap<>();
-  Map<String, UserMemberships> usersMemberships = new HashMap<>();
+  Map<String, Organization> organizations = new HashMap<>();
 
   @Value("${workspace:workspace}")
   private String workspace;
+
+  private static BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
   public Path resolveOrganization(String name) {
     return Path.of(workspace).resolve(ORGS).resolve(name);
@@ -53,9 +51,7 @@ public class OrganizationService {
   public Organization findByName(String orgName) throws IOException {
     try {
       Organization org = JsonUtils.fromJsonFile(resolveOrganization(orgName), Organization.class);
-      for (User u : org.getUsers()) {
-        u.setOrg(org);
-      }
+
       return org;
     } catch (FileNotFoundException e) {
       return null;
@@ -64,8 +60,19 @@ public class OrganizationService {
 
   public Organization saveOrganization(Organization org) throws IOException {
     org.setModified(new Date());
+    if (org.isCryptPassword()) {
+      for (User user : org.getUsers()) {
+        if (!user.getPassword().isEncrypted()) {
+          user.getPassword().setValue(bCryptPasswordEncoder.encode(user.getPassword().getValue()));
+          user.getPassword().setEncrypted(true);
+        }
+      }
+    }
     JsonUtils.toJsonFile(resolveOrganization(org.getName()), org);
     organizations.put(org.getName(), org);
+    if (org.isActive()) {
+      activeOrg = org;
+    }
     return org;
   }
 
@@ -80,33 +87,29 @@ public class OrganizationService {
     organizations.remove(name);
   }
 
+  public Organization rename(String oldName, String newName) throws IOException {
+    Organization org = organizations.get(oldName);
+    org.setName(newName);
+    deleteByName(oldName);
+    return saveOrganization(org);
+  }
+
+  public User getUserByUsernameAndPassword(String username, String password) {
+    User user = activeOrg.getUser(username);
+    if (user != null) {
+      if (!activeOrg.isCryptPassword() && user.getPassword().getValue().equals(password)) {
+        return user;
+      }
+      if (activeOrg.isCryptPassword()
+          && bCryptPasswordEncoder.matches(password, user.getPassword().getValue())) {
+        return user;
+      }
+    }
+    return null;
+  }
+
   public User getUserByUsername(String username) {
-    return users.get(username);
-  }
-
-  public User create(User user) {
-    if (getUserByUsername(user.getUsername()) != null) {
-      throw new UnauthorizedException("User already exists");
-    }
-    if (user.getOrg() == null) {
-      throw new TechnicalException("User should be part of an Organization");
-    }
-    // user.setPassword(SecurityUtils.cryptPwd(user.getPassword()));
-    user.getOrg().getUsers().add(user);
-
-    users.put(user.getUsername(), user);
-    return user;
-  }
-
-  public User update(User user) {
-    User original = getUserByUsername(user.getUsername());
-    if (original == null) {
-      throw new UnauthorizedException("Account doesn't exists");
-    }
-    // user.setPassword(SecurityUtils.cryptPwd(user.getPassword()));
-    BeanUtils.copyProperties(user, original, "org");
-
-    return original;
+    return activeOrg.getUser(username);
   }
 
   @PostConstruct
@@ -121,27 +124,27 @@ public class OrganizationService {
         }
       }
     }
-    if (users.isEmpty()) {
+    if (organizations.isEmpty()) {
       User demo =
           new User("demo", "demo")
               .setFirstname("De")
               .setLastname("Mo")
-              .setEmail("christophe.dame@camunda.com");
-      createOrgnization("ACME", true, demo);
+              .setEmail("christophe.dame@camunda.com")
+              .setProfile("Admin")
+              .addGroups("HR", "IT");
+      activeOrg = createOrgnization("ACME", true, demo);
     }
   }
 
-  public Organization createOrgnization(String name, boolean active, User... admins)
+  public Organization createOrgnization(String name, boolean active, User... users)
       throws IOException {
     Organization org =
         new Organization()
             .setName(name)
             .setActive(active)
             .addGroups("HR", "IT", "Finance", "Sales");
-    for (User user : admins) {
+    for (User user : users) {
       org.addUser(user);
-      org.addUserMembership(
-          new UserMemberships(user.getUsername()).setProfile("Admin").addGroups("HR", "IT"));
     }
     return saveOrganization(org);
   }
@@ -151,41 +154,20 @@ public class OrganizationService {
   }
 
   public Collection<User> allUsers() {
-    return users.values();
-  }
-
-  public UserMemberships getUserMemberships(User user) {
-    return usersMemberships.get(user.getUsername());
-  }
-
-  public void saveUserMemberships(UserMemberships userMemberships) {
-    User u = users.get(userMemberships.getUsername());
-    Organization org = u.getOrg();
-    org.getUserMemberships().add(userMemberships);
-    usersMemberships.put(u.getUsername(), userMemberships);
+    return activeOrg.getUsers();
   }
 
   public Organization activate(String orgName, boolean persist) throws IOException {
-    Organization orga = null;
-    users.clear();
-    usersMemberships.clear();
+    activeOrg = organizations.get(orgName);
+
     for (Organization org : organizations.values()) {
       org.setActive(false);
-      if (org.getName().equals(orgName)) {
-        orga = org;
-        org.setActive(true);
-      }
     }
-    for (User u : orga.getUsers()) {
-      u.setOrg(orga);
-      users.put(u.getUsername(), u);
-    }
-    for (UserMemberships membership : orga.getUserMemberships()) {
-      usersMemberships.put(membership.getUsername(), membership);
-    }
+    activeOrg.setActive(true);
+
     if (persist) {
       saveOrganizations();
     }
-    return orga;
+    return activeOrg;
   }
 }

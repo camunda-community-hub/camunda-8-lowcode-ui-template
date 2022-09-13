@@ -157,3 +157,6 @@ span.assignedTo {
   right: 10px;
   margin-top:2px;
 }
+.userGroupList {
+  flex: 1 1;
+}
