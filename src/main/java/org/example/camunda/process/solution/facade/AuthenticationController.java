@@ -1,10 +1,9 @@
 package org.example.camunda.process.solution.facade;
 
+import org.example.camunda.process.solution.exception.UnauthorizedException;
 import org.example.camunda.process.solution.facade.dto.AuthUser;
 import org.example.camunda.process.solution.facade.dto.Authentication;
 import org.example.camunda.process.solution.model.User;
-import org.example.camunda.process.solution.model.UserMemberships;
-import org.example.camunda.process.solution.service.AuthenticationService;
 import org.example.camunda.process.solution.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +24,16 @@ public class AuthenticationController {
 
   private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
-  @Autowired private AuthenticationService authenticationService;
   @Autowired private OrganizationService organizationService;
 
   @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
   public AuthUser login(@RequestBody Authentication auth) {
-    User user = authenticationService.getByUsernameAndPwd(auth.getUsername(), auth.getPassword());
-
+    User user =
+        organizationService.getUserByUsernameAndPassword(auth.getUsername(), auth.getPassword());
+    if (user == null) {
+      throw new UnauthorizedException("Credentials not recognized");
+    }
     return getAuthUser(user);
   }
 
@@ -40,9 +41,6 @@ public class AuthenticationController {
     AuthUser authUser = new AuthUser();
     BeanUtils.copyProperties(user, authUser);
 
-    UserMemberships memberships = organizationService.getUserMemberships(user);
-    authUser.setProfile(memberships.getProfile());
-    authUser.setGroups(memberships.getGroups());
     // authUser.setToken(SecurityUtils.getJWTToken(user));
     return authUser;
   }

@@ -1,36 +1,34 @@
 package org.example.camunda.process.solution.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class User {
 
   private String username;
-
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String password;
-
+  private Password password;
   private String firstname;
   private String lastname;
   private String email;
 
-  @JsonIgnore private Organization org;
+  private String profile;
+
+  private Set<String> groups = new HashSet<>();
 
   public User() {}
 
   public User(String username, String password) {
     super();
     this.username = username;
-    this.password = password;
+    this.password = new Password(password);
   }
 
-  public String getPassword() {
+  public Password getPassword() {
     return password;
   }
 
-  public User setPassword(String password) {
+  public User setPassword(Password password) {
     this.password = password;
     return this;
   }
@@ -71,12 +69,34 @@ public class User {
     return this;
   }
 
-  public Organization getOrg() {
-    return org;
+  public String getProfile() {
+    return profile;
   }
 
-  public void setOrg(Organization org) {
-    this.org = org;
+  public User setProfile(String profile) {
+    this.profile = profile;
+    return this;
+  }
+
+  public Set<String> getGroups() {
+    return groups;
+  }
+
+  public User setGroups(Set<String> groups) {
+    this.groups = groups;
+    return this;
+  }
+
+  public User addGroup(String group) {
+    this.groups.add(group);
+    return this;
+  }
+
+  public User addGroups(String... groups) {
+    for (String group : groups) {
+      this.groups.add(group);
+    }
+    return this;
   }
 
   @Override

@@ -55,7 +55,9 @@ public class OrgnizationController {
     if (organizationService.findByName(orgName) == null) {
       throw new TechnicalException("Orgnization doesn't exist.");
     }
-    organizationService.deleteByName(orgName);
+    if (orgName.equals(org.getName())) {
+      organizationService.rename(orgName, org.getName());
+    }
     return organizationService.saveOrganization(org);
   }
 }

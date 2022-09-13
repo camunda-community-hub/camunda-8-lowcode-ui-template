@@ -1,7 +1,10 @@
 package org.example.camunda.process.solution.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Organization {
@@ -12,11 +15,13 @@ public class Organization {
 
   private boolean active;
 
+  private boolean cryptPassword = true;
+
   private Set<User> users = new HashSet<>();
 
   private Set<String> groups = new HashSet<>();
 
-  private Set<UserMemberships> userMemberships = new HashSet<>();
+  @JsonIgnore Map<String, User> userMap = new HashMap<>();
 
   public String getName() {
     return name;
@@ -42,13 +47,20 @@ public class Organization {
 
   public Organization setUsers(Set<User> users) {
     this.users = users;
+    for (User user : users) {
+      this.userMap.put(user.getUsername(), user);
+    }
     return this;
   }
 
   public Organization addUser(User user) {
     this.users.add(user);
-    user.setOrg(this);
+    this.userMap.put(user.getUsername(), user);
     return this;
+  }
+
+  public User getUser(String username) {
+    return this.userMap.get(username);
   }
 
   public Set<String> getGroups() {
@@ -72,15 +84,6 @@ public class Organization {
     return this;
   }
 
-  public Set<UserMemberships> getUserMemberships() {
-    return userMemberships;
-  }
-
-  public Organization setUserMemberships(Set<UserMemberships> userMemberships) {
-    this.userMemberships = userMemberships;
-    return this;
-  }
-
   public Date getModified() {
     return modified;
   }
@@ -90,8 +93,11 @@ public class Organization {
     return this;
   }
 
-  public Organization addUserMembership(UserMemberships memberships) {
-    this.userMemberships.add(memberships);
-    return this;
+  public boolean isCryptPassword() {
+    return cryptPassword;
+  }
+
+  public void setCryptPassword(boolean cryptPassword) {
+    this.cryptPassword = cryptPassword;
   }
 }
