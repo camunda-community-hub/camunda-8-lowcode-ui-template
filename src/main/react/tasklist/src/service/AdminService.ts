@@ -1,8 +1,7 @@
 import store, { AppThunk } from '../store';
-import { loadStart, loadSuccess, addOrganization, fail, silentfail } from '../store/features/admin/slice';
+import { loadStart, loadSuccess, addOrganization, updateOrganization, fail, silentfail } from '../store/features/admin/slice';
 import { Organization } from '../store/model';
 import api from './api';
-import taskService from './TaskService';
 
 export class AdminService {
   lastFetch: number = 0;
@@ -33,6 +32,16 @@ export class AdminService {
     const { data } = await api.post<Organization>('/organization');
     dispatch(addOrganization(data));
     this.lastFetch = Date.now();
+  }
+  setActive = (org: Organization): AppThunk => async dispatch => {
+    dispatch(loadStart());
+    const { data } = await api.post<Organization>('/organization/active/' + org.oldname);
+    dispatch(this.getOrganizations());
+  }
+  save = (org: Organization): AppThunk => async dispatch => {
+    dispatch(loadStart());
+    const { data } = await api.put<Organization>('/organization/' + org.oldname, org);
+    dispatch(this.getOrganizations());
   }
 }
 
