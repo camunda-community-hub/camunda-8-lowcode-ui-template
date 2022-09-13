@@ -2,13 +2,17 @@ package org.example.camunda.process.solution.facade;
 
 import java.io.IOException;
 import java.util.Collection;
+import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.model.Organization;
 import org.example.camunda.process.solution.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,6 +41,21 @@ public class OrgnizationController {
     while (organizationService.findByName(name) != null) {
       name = "ACME" + i++;
     }
-    return organizationService.createOrgnization(name);
+    return organizationService.createOrgnization(name, false);
+  }
+
+  @PostMapping("/active/{orgName}")
+  public Organization setActive(@PathVariable String orgName) throws IOException {
+    return organizationService.activate(orgName, true);
+  }
+
+  @PutMapping("/{orgName}")
+  public Organization updateOrganization(
+      @PathVariable String orgName, @RequestBody Organization org) throws IOException {
+    if (organizationService.findByName(orgName) == null) {
+      throw new TechnicalException("Orgnization doesn't exist.");
+    }
+    organizationService.deleteByName(orgName);
+    return organizationService.saveOrganization(org);
   }
 }

@@ -66,20 +66,6 @@ public class OrganizationService {
     org.setModified(new Date());
     JsonUtils.toJsonFile(resolveOrganization(org.getName()), org);
     organizations.put(org.getName(), org);
-    if (org.isActive()) {
-      for (User u : org.getUsers()) {
-        u.setOrg(org);
-        users.put(u.getUsername(), u);
-      }
-      for (UserMemberships membership : org.getUserMemberships()) {
-        usersMemberships.put(membership.getUsername(), membership);
-      }
-    } else {
-      for (User u : org.getUsers()) {
-        users.remove(u.getUsername());
-        usersMemberships.remove(u.getUsername());
-      }
-    }
     return org;
   }
 
@@ -91,6 +77,7 @@ public class OrganizationService {
 
   public void deleteByName(String name) throws IOException {
     Files.delete(resolveOrganization(name));
+    organizations.remove(name);
   }
 
   public User getUserByUsername(String username) {
@@ -130,18 +117,7 @@ public class OrganizationService {
         Organization org = JsonUtils.fromJsonFile(file.toPath(), Organization.class);
         organizations.put(org.getName(), org);
         if (org.isActive()) {
-          for (User u : org.getUsers()) {
-            if (users.containsKey(u.getUsername())) {
-              LOG.warn(
-                  u.getUsername()
-                      + " is present in multiple organizations. This could have side effects.");
-            }
-            u.setOrg(org);
-            users.put(u.getUsername(), u);
-          }
-          for (UserMemberships membership : org.getUserMemberships()) {
-            usersMemberships.put(membership.getUsername(), membership);
-          }
+          activate(org.getName(), true);
         }
       }
     }
@@ -151,13 +127,17 @@ public class OrganizationService {
               .setFirstname("De")
               .setLastname("Mo")
               .setEmail("christophe.dame@camunda.com");
-      createOrgnization("ACME", demo);
+      createOrgnization("ACME", true, demo);
     }
   }
 
-  public Organization createOrgnization(String name, User... admins) throws IOException {
+  public Organization createOrgnization(String name, boolean active, User... admins)
+      throws IOException {
     Organization org =
-        new Organization().setName(name).setActive(true).addGroups("HR", "IT", "Finance", "Sales");
+        new Organization()
+            .setName(name)
+            .setActive(active)
+            .addGroups("HR", "IT", "Finance", "Sales");
     for (User user : admins) {
       org.addUser(user);
       org.addUserMembership(
@@ -183,5 +163,29 @@ public class OrganizationService {
     Organization org = u.getOrg();
     org.getUserMemberships().add(userMemberships);
     usersMemberships.put(u.getUsername(), userMemberships);
+  }
+
+  public Organization activate(String orgName, boolean persist) throws IOException {
+    Organization orga = null;
+    users.clear();
+    usersMemberships.clear();
+    for (Organization org : organizations.values()) {
+      org.setActive(false);
+      if (org.getName().equals(orgName)) {
+        orga = org;
+        org.setActive(true);
+      }
+    }
+    for (User u : orga.getUsers()) {
+      u.setOrg(orga);
+      users.put(u.getUsername(), u);
+    }
+    for (UserMemberships membership : orga.getUserMemberships()) {
+      usersMemberships.put(membership.getUsername(), membership);
+    }
+    if (persist) {
+      saveOrganizations();
+    }
+    return orga;
   }
 }

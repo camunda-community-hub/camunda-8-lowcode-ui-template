@@ -50,7 +50,7 @@ export interface IFormViewer {
 }
 
 export interface Organization {
-
+  oldname: string;
   name: string;
   modified: string;
   active: boolean;

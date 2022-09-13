@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import adminService from '../service/AdminService';
 import { Organization } from '../store/model';
-import OrganizationComp from '../components/OrganizationComp'
+import AdminOrganization from '../components/AdminOrganization'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Button from 'react-bootstrap/Button';
@@ -27,9 +27,9 @@ function AdminUsers() {
       <Tabs
         id="orgTabs"
         className="mb-3">
-        {organizations ? organizations.map((org: Organization) =>  
-          <Tab eventKey={org.name} title={org.name}>
-            <OrganizationComp organization={org} />
+        {organizations ? organizations.map((org: Organization, index:number) =>
+          <Tab key={index} eventKey={index} title={org.oldname} tabClassName={org.active ? 'bi bi-check-lg' : ''}>
+            <AdminOrganization organization={org} />
           </Tab>
         ) : <></>}
       </Tabs>

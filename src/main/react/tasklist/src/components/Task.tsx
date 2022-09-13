@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ITask } from '../store/model';
 import taskService from '../service/TaskService';
 
-function TaskList(taskParam: { task: ITask }) {
+function Task(taskParam: { task: ITask }) {
   const dispatch = useDispatch();
   const currentTask = useSelector((state: any) => state.process.currentTask)
   const task = taskParam.task;
@@ -31,4 +31,4 @@ function TaskList(taskParam: { task: ITask }) {
   );
 }
 
-export default TaskList
+export default Task
