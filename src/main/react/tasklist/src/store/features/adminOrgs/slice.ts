@@ -1,33 +1,33 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Organization} from '../../model';
 
-interface AdminState {
+interface AdminOrgState {
   organizations: Organization[] | null;
   loading: boolean;
   error: string | null;
 }
 
-const initialState: AdminState = {
+const initialState: AdminOrgState = {
   organizations: null,
   loading: false,
   error: null,
 };
 
-const adminSlice = createSlice({
-  name: 'admin',
+const adminOrgSlice = createSlice({
+  name: 'adminOrg',
   initialState,
   reducers: {
-    loadStart: (state: AdminState) => {
+    loadStart: (state: AdminOrgState) => {
       state.loading = true;
     },
-    fail: (state: AdminState, action: PayloadAction<string>) => {
+    fail: (state: AdminOrgState, action: PayloadAction<string>) => {
       state.loading = false;
       state.error = action.payload;
     },
-    silentfail: (state: AdminState) => {
+    silentfail: (state: AdminOrgState) => {
       state.loading = false;
     },
-    loadSuccess: (state: AdminState, action: PayloadAction<Organization[]>) => {
+    loadSuccess: (state: AdminOrgState, action: PayloadAction<Organization[]>) => {
       state.loading = false;
       state.organizations = action.payload;
       for (let i = 0; i < state.organizations.length; i++) {
@@ -35,15 +35,15 @@ const adminSlice = createSlice({
       }
 
     },
-    addOrganization: (state: AdminState, action: PayloadAction<Organization>) => {
+    addOrganization: (state: AdminOrgState, action: PayloadAction<Organization>) => {
       state.loading = false;
       action.payload.oldname = action.payload.name;
       state.organizations!.push(action.payload);
     },
-    updateOrganization: (state: AdminState, action: PayloadAction<Organization>) => {
+    updateOrganization: (state: AdminOrgState, action: PayloadAction<Organization>) => {
       state.loading = false;
       for (let i = 0; i < state.organizations!.length; i++) {
-        if (state.organizations![i].oldname == action.payload.oldname) {
+        if (state.organizations![i].oldname === action.payload.oldname) {
           state.organizations![i] = action.payload;
           break;
         }
@@ -59,6 +59,6 @@ export const {
   updateOrganization,
   fail,
   silentfail
-} = adminSlice.actions;
+} = adminOrgSlice.actions;
 
-export default adminSlice.reducer;
+export default adminOrgSlice.reducer;

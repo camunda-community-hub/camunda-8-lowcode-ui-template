@@ -18,6 +18,9 @@ import './assets/css/bootstrap-icons-1.7.2.css';
 import './assets/css/custom.css';
 import './assets/css/login.css';
 import '@camunda-community/form-js/dist/assets/form-js.css';
+import '@camunda-community/form-js/dist/assets/form-js-editor.css';
+import '@camunda-community/form-js/dist/assets/dragula.css';
+import '@camunda-community/form-js/dist/assets/properties-panel.css';
 import authService from './service/AuthService'
 
 function App() {

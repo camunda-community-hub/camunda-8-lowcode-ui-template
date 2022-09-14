@@ -2,12 +2,14 @@ import {combineReducers} from '@reduxjs/toolkit';
 
 import authReducer from './features/auth/slice';
 import processReducer from './features/processes/slice';
-import adminReducer from './features/admin/slice';
+import adminOrgReducer from './features/adminOrgs/slice';
+import adminFormsReducer from './features/adminForms/slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   process: processReducer,
-  admin: adminReducer
+  adminOrg: adminOrgReducer,
+  adminForms: adminFormsReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -98,7 +98,7 @@ const serverListSlice = createSlice({
     ) => {
       let i = 0;
       for (; i < state.tasks.length; i++) {
-        if (state.tasks[i].id == state.currentTask!.id) {
+        if (state.tasks[i].id === state.currentTask!.id) {
           state.tasks.splice(i, 1);
           break;
         }

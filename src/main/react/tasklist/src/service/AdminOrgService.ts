@@ -1,9 +1,9 @@
 import store, { AppThunk } from '../store';
-import { loadStart, loadSuccess, addOrganization, updateOrganization, fail, silentfail } from '../store/features/admin/slice';
+import { loadStart, loadSuccess, addOrganization, updateOrganization, fail, silentfail } from '../store/features/adminOrgs/slice';
 import { Organization } from '../store/model';
 import api from './api';
 
-export class AdminService {
+export class AdminOrgService {
   lastFetch: number = 0;
   getOrganizations = (): AppThunk => async dispatch => {
     if (this.lastFetch < Date.now() - 5000) { 
@@ -45,6 +45,6 @@ export class AdminService {
   }
 }
 
-const adminService = new AdminService();
+const adminOrgService = new AdminOrgService();
 
-export default adminService;
+export default adminOrgService;

@@ -2,12 +2,11 @@ import store, { AppThunk } from '../store';
 import { remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, prependTaskIntoList, setTask, setFormSchema, removeCurrentTask, setTaskSearch } from '../store/features/processes/slice';
 import { ITask, ITaskSearch } from '../store/model';
 import api from './api';
-import { Stomp, CompatClient, StompSubscription } from '@stomp/stompjs';
+import { Stomp, StompSubscription } from '@stomp/stompjs';
 import { env } from '../env';
 
 const connectStompClient = () => {
   let myStompClient = Stomp.client(`ws://${env.backend}/ws`);
-  console.log(myStompClient);
 
   myStompClient.onStompError = function (frame) {
     console.log('STOMP error');
@@ -113,12 +112,12 @@ export class TaskService {
     const taskSearch = store.getState().process.taskSearch;
     let shouldInsert = true;
     if (taskSearch.assignee != null) {
-      if (taskSearch.assignee != task.assignee) {
+      if (taskSearch.assignee !== task.assignee) {
         shouldInsert = false;
       }
     }
     if (taskSearch.taskState != null) {
-      if (taskSearch.taskState != task.taskState) {
+      if (taskSearch.taskState !== task.taskState) {
         shouldInsert = false;
       }
     }
