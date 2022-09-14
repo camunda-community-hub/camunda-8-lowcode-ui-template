@@ -3,9 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import adminFormService from '../service/AdminFormService';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import Modal from 'react-bootstrap/Modal';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Form from 'react-bootstrap/Form';
 import api from '../service/api';
 
 function AdminFormList() {
+  const [showFormUpload, setShowFormUpload] = useState(false);
+  const [uploadedData, setUploadedData] = useState<string|null>(null);
+  const handleClose = () => setShowFormUpload(false);
+  const handleShow = () => setShowFormUpload(true);
   const dispatch = useDispatch();
 
   const forms = useSelector((state: any) => state.adminForms.forms)
@@ -37,12 +44,31 @@ function AdminFormList() {
     })
   }
 
+  const prepareLoad = (evt:any) => {
+    var file = evt.target.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.readAsText(file);
+ 
+      reader.onload = function (e) {
+        setUploadedData(e.target!.result as string);
+      };
+    }
+  }
+
+  const uploadForm = () => {
+    let schema = JSON.parse(uploadedData!);
+    let form = { name: schema.id, schema: schema, previewData:'{}' };
+    setShowFormUpload(false);
+    dispatch(adminFormService.setForm(form));
+  }
+
 
   return (
     <div>
       <br />
       <Button variant="primary" onClick={() => dispatch(adminFormService.newForm())}><i className="bi bi-plus-square"></i> New Form</Button>
-      <Button variant="primary" ><i className="bi bi-box-arrow-in-up"></i> Load from file</Button>
+      <Button variant="primary" onClick={handleShow}><i className="bi bi-box-arrow-in-up"></i> Load from file</Button>
    
       <Table striped bordered hover>
 		<thead>
@@ -65,6 +91,22 @@ function AdminFormList() {
           : <></>}
 		</tbody>
       </Table>
+
+      <Modal show={showFormUpload} onHide={handleClose} >
+        <Modal.Header closeButton>
+          <Modal.Title>Upload a form file</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InputGroup className="mb-3">
+            <InputGroup.Text>Form file</InputGroup.Text>
+            <Form.Control aria-label="file" type="file" id="uploadFormFileControl" onChange={prepareLoad}/>
+          </InputGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" disabled={uploadedData==null} onClick={uploadForm}>Load</Button>
+          <Button variant="secondary" onClick={handleClose}> Close</Button>
+        </Modal.Footer>
+      </Modal>
   </div >
   );
 }
