@@ -1,5 +1,5 @@
 import store, { AppThunk } from '../store';
-import { loadStart, loadSuccess, setCurrentForm, setCurrentFormEditor, fail, silentfail } from '../store/features/adminForms/slice';
+import { loadStart, loadSuccess, setCurrentForm, setCurrentFormEditor, setCurrentFormPreview, fail, silentfail } from '../store/features/adminForms/slice';
 import { FormEditor } from '@camunda-community/form-js-editor';
 import api from './api';
 
@@ -77,6 +77,9 @@ export class AdminFormService {
       alert(error.message);
     })
     //this.$store.form.previewData = JSON.stringify(this.$store.form.previewData, null, 2);
+  }
+  setFormPreview = (data: string): AppThunk => async dispatch => {
+    dispatch(setCurrentFormPreview(data));
   }
   getCurrentForm = (): any => {
     return store.getState().adminForms.currentForm;

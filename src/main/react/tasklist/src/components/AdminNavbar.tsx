@@ -9,6 +9,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import DataPreviewEditor from './DataPreviewEditor';
+import FormPreview from './FormPreview';
+
 
 function AdminNavbar() {
   const user = useSelector((state: any) => state.auth.data)
@@ -48,22 +50,26 @@ function AdminNavbar() {
         </div>
       </div>
       </nav>
-      <Modal show={showPreview} onHide={handleClose} fullscreen>
-        <Modal.Header closeButton>
-          <Modal.Title>Preview form</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="row">
-            <div className="card col"><DataPreviewEditor/></div>
-            <div className="card col"><div id="task-form-preview"></div></div>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {form ?
+        <Modal show={showPreview} onHide={handleClose} animation={false} fullscreen>
+          <Modal.Header closeButton>
+            <Modal.Title>Preview form</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="row">
+              <div className="card col"><DataPreviewEditor /></div>
+              <div className="card col"><FormPreview schema={form.schema} variables={[]} disabled={false} /></div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        :
+        <></>
+      }
       </>
   );
 }
