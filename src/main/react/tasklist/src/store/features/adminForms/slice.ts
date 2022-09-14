@@ -44,6 +44,9 @@ const adminFormsSlice = createSlice({
         state.previewData = action.payload.previewData;
       }
     },
+    setFormName: (state: AdminFormsState, action: PayloadAction<string>) => {
+      state.currentForm.name = action.payload;
+    },
     setCurrentFormPreview: (state: AdminFormsState, action: PayloadAction<string>) => {
       state.currentForm.previewData = action.payload;
       state.previewData = action.payload;
@@ -58,6 +61,7 @@ export const {
   loadStart,
   loadSuccess,
   setCurrentForm,
+  setFormName,
   setCurrentFormEditor,
   setCurrentFormPreview,
   fail,

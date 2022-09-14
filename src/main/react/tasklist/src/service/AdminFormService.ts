@@ -1,5 +1,5 @@
 import store, { AppThunk } from '../store';
-import { loadStart, loadSuccess, setCurrentForm, setCurrentFormEditor, setCurrentFormPreview, fail, silentfail } from '../store/features/adminForms/slice';
+import { loadStart, loadSuccess, setCurrentForm, setFormName, setCurrentFormEditor, setCurrentFormPreview, fail, silentfail } from '../store/features/adminForms/slice';
 import { FormEditor } from '@camunda-community/form-js-editor';
 import api from './api';
 
@@ -7,16 +7,20 @@ export class AdminFormService {
   lastFetch: number = 0;
   getDefaultForm = ():any => {
     return {
-      components: [],
-      schemaVersion: 4,
-      type: "default",
-      id: "Form_" + Math.floor(1000000 + Math.random() * 9000000),
-      executionPlatform: "Camunda Cloud",
-      executionPlatformVersion: "1.1",
-      exporter: {
-        name: "Camunda Modeler",
-        version: "5.0.0"
-      }
+      name: 'New Form',
+      schema: {
+        components: [],
+        schemaVersion: 4,
+        type: "default",
+        id: "Form_" + Math.floor(1000000 + Math.random() * 9000000),
+        executionPlatform: "Camunda Cloud",
+        executionPlatformVersion: "1.1",
+        exporter: {
+          name: "Camunda Modeler",
+          version: "5.0.0"
+        }
+      },
+      previewData: '{}'
     }
   }
   geForms = (): AppThunk => async dispatch => {
@@ -42,7 +46,7 @@ export class AdminFormService {
     }
   }
   newForm = (): AppThunk => async dispatch => {
-    setCurrentForm(this.getDefaultForm());
+    dispatch(setCurrentForm(this.getDefaultForm()));
   }
   openForm = (name:string): AppThunk => async dispatch => {
     api.get('/edition/forms/' + name).then(response => {
@@ -63,6 +67,9 @@ export class AdminFormService {
   }
   setForm = (form: any): AppThunk => async dispatch => {
     dispatch(setCurrentForm(form));
+  }
+  setFormName = (formName: string): AppThunk => async dispatch => {
+    dispatch(setFormName(formName));
   }
   setFormEditor = (formEditor: FormEditor): AppThunk => async dispatch => {
     dispatch(setCurrentFormEditor(formEditor));
