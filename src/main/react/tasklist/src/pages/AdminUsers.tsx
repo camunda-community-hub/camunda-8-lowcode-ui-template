@@ -1,7 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import adminService from '../service/AdminService';
+import adminOrgService from '../service/AdminOrgService';
 import { Organization } from '../store/model';
 import AdminOrganization from '../components/AdminOrganization'
 import Tab from 'react-bootstrap/Tab';
@@ -11,14 +10,14 @@ import Button from 'react-bootstrap/Button';
 function AdminUsers() {
 
   const dispatch = useDispatch();
-  const organizations = useSelector((state: any) => state.admin.organizations)
+  const organizations = useSelector((state: any) => state.adminOrg.organizations)
 
   useEffect(() => {
-    dispatch(adminService.getOrganizations());
+    dispatch(adminOrgService.getOrganizations());
   });
 
   const addOrg = () => {
-    dispatch(adminService.addOrganization());
+    dispatch(adminOrgService.addOrganization());
   }
 
   return (

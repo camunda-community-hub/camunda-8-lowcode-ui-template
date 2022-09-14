@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Organization } from '../store/model';
-import adminService from '../service/AdminService';
+import adminOrgService from '../service/AdminOrgService';
 import AdminGroups from './AdminGroups'
 import AdminUsers from './AdminUsers'
 import Form from 'react-bootstrap/Form';
@@ -17,10 +17,10 @@ function AdminOrganization(orgParam: { organization: Organization }) {
   const org = JSON.parse(JSON.stringify(orgParam.organization));
 
   const setActive = () => {
-    dispatch(adminService.setActive(org));
+    dispatch(adminOrgService.setActive(org));
   }
   const save = () => {
-    dispatch(adminService.save(org));
+    dispatch(adminOrgService.save(org));
   }
 
   const changeName = (value: string) => {
