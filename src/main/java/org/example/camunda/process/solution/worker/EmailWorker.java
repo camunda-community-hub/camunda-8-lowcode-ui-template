@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Map;
 import javax.mail.MessagingException;
 import org.example.camunda.process.solution.ProcessVariables;
-import org.example.camunda.process.solution.model.User;
+import org.example.camunda.process.solution.jsonmodel.User;
 import org.example.camunda.process.solution.service.MailService;
 import org.example.camunda.process.solution.service.OrganizationService;
 import org.slf4j.Logger;

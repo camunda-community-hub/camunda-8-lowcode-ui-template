@@ -16,13 +16,14 @@ import FormPreview from './FormPreview';
 function AdminNavbar() {
   const user = useSelector((state: any) => state.auth.data)
   const form = useSelector((state: any) => state.adminForms.currentForm)
+  const formEditor = useSelector((state: any) => state.adminForms.formEditor)
   const mail = useSelector((state: any) => state.adminMails.currentMail)
 
   const dispatch = useDispatch();
   const [showPreview, setShowPreview] = useState(false);
 
   const handleClose = () => setShowPreview(false);
-  const handleShow = () => setShowPreview(true);
+  const handleShow = () =>  setShowPreview(true);
 
   const logout = (event: any) => {
     dispatch(authService.signOut());
@@ -51,14 +52,14 @@ function AdminNavbar() {
                 <div className="input-group mb-3 ">
                   <Link className="btn btn-outline-light" to="/admin/forms">Forms</Link>
                   <Link className="btn btn-outline-light" to="/admin/mails">Emails</Link>
-                  {user!.profile == 'Admin' ? <Link className="btn btn-outline-light" to="/admin/users">Users</Link> : <></>}
+                  {user!.profile === 'Admin' ? <Link className="btn btn-outline-light" to="/admin/users">Users</Link> : <></>}
                   <a className="btn btn-outline-light" onClick={logout}>{authService.getUser()!.username} <i className="bi bi-box-arrow-left"></i></a>
                 </div>
           }
         </div>
       </div>
       </nav>
-      {form ?
+      {form && formEditor ?
         <Modal show={showPreview} onHide={handleClose} animation={false} fullscreen>
           <Modal.Header closeButton>
             <Modal.Title>Preview form</Modal.Title>
@@ -66,7 +67,7 @@ function AdminNavbar() {
           <Modal.Body>
             <div className="row">
               <div className="card col"><DataPreviewEditor /></div>
-              <div className="card col"><FormPreview schema={form.schema} variables={[]} disabled={false} /></div>
+              <div className="card col"><FormPreview schema={formEditor.getSchema()} variables={[]} disabled={false} /></div>
             </div>
           </Modal.Body>
           <Modal.Footer>

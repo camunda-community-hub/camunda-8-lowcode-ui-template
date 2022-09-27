@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.example.camunda.process.solution.ProcessVariables;
-import org.example.camunda.process.solution.model.User;
+import org.example.camunda.process.solution.jsonmodel.User;
 import org.example.camunda.process.solution.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

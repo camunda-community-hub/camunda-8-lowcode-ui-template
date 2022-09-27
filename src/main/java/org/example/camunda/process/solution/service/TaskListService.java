@@ -98,20 +98,28 @@ public class TaskListService {
   }
 
   public List<Task> getTasks(TaskSearch taskSearch) throws TaskListException {
-    if (taskSearch.getAssignee() != null) {
+    if (Boolean.TRUE.equals(taskSearch.getAssigned()) && taskSearch.getAssignee() != null) {
       return convert(
           getCamundaTaskListClient()
               .getAssigneeTasks(
-                  taskSearch.getAssignee(), taskSearch.getState(), taskSearch.getPageSize()));
+                  taskSearch.getAssignee(),
+                  TaskState.fromJson(taskSearch.getState()),
+                  taskSearch.getPageSize()));
     }
     if (taskSearch.getGroup() != null) {
       return convert(
           getCamundaTaskListClient()
               .getGroupTasks(
-                  taskSearch.getGroup(), taskSearch.getState(), taskSearch.getPageSize()));
+                  taskSearch.getGroup(),
+                  TaskState.fromJson(taskSearch.getState()),
+                  taskSearch.getPageSize()));
     }
     return convert(
-        getCamundaTaskListClient().getTasks(null, taskSearch.getState(), taskSearch.getPageSize()));
+        getCamundaTaskListClient()
+            .getTasks(
+                taskSearch.getAssigned(),
+                TaskState.fromJson(taskSearch.getState()),
+                taskSearch.getPageSize()));
   }
 
   public List<Task> getGroupTasks(String group, TaskState state, Integer pageSize)

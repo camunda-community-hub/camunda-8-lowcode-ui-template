@@ -3,7 +3,8 @@ package org.example.camunda.process.solution.facade;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
 import org.example.camunda.process.solution.facade.dto.AuthUser;
 import org.example.camunda.process.solution.facade.dto.Authentication;
-import org.example.camunda.process.solution.model.User;
+import org.example.camunda.process.solution.jsonmodel.User;
+import org.example.camunda.process.solution.security.SecurityUtils;
 import org.example.camunda.process.solution.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class AuthenticationController {
     AuthUser authUser = new AuthUser();
     BeanUtils.copyProperties(user, authUser);
 
-    // authUser.setToken(SecurityUtils.getJWTToken(user));
+    authUser.setToken(SecurityUtils.getJWTToken(user));
     return authUser;
   }
 }

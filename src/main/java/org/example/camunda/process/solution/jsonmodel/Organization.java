@@ -1,4 +1,4 @@
-package org.example.camunda.process.solution.model;
+package org.example.camunda.process.solution.jsonmodel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
