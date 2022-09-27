@@ -3,7 +3,8 @@ package org.example.camunda.process.solution.facade;
 import java.io.IOException;
 import java.util.Collection;
 import org.example.camunda.process.solution.exception.TechnicalException;
-import org.example.camunda.process.solution.model.Organization;
+import org.example.camunda.process.solution.jsonmodel.Organization;
+import org.example.camunda.process.solution.security.annontation.IsAdmin;
 import org.example.camunda.process.solution.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +30,13 @@ public class OrgnizationController {
     this.organizationService = organizationService;
   }
 
+  @IsAdmin
   @GetMapping
   public Collection<Organization> listOrganizations() {
     return organizationService.all();
   }
 
+  @IsAdmin
   @PostMapping
   public Organization createOrganization() throws IOException {
     String name = "ACME";
@@ -44,11 +47,13 @@ public class OrgnizationController {
     return organizationService.createOrgnization(name, false);
   }
 
+  @IsAdmin
   @PostMapping("/active/{orgName}")
   public Organization setActive(@PathVariable String orgName) throws IOException {
     return organizationService.activate(orgName, true);
   }
 
+  @IsAdmin
   @PutMapping("/{orgName}")
   public Organization updateOrganization(
       @PathVariable String orgName, @RequestBody Organization org) throws IOException {

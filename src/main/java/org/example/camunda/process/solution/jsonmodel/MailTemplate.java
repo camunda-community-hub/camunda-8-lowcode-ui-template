@@ -1,4 +1,4 @@
-package org.example.camunda.process.solution.facade.dto;
+package org.example.camunda.process.solution.jsonmodel;
 
 import java.util.Date;
 

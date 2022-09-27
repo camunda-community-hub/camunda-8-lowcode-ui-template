@@ -18,6 +18,7 @@ export class AuthService {
         let user: IUser = JSON.parse(storedUser);
 
         if (user) {
+          api.defaults.headers.common['Authorization'] = 'Bearer ' + user.token;
           dispatch(signInSuccess(user));
         }
       }
@@ -29,7 +30,7 @@ export class AuthService {
       dispatch(authStart());
           
       const { data } = await api.post<IUser>('/authentication/login', { 'username': username, 'password': password });
-      console.log(data);
+
       api.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
       localStorage.setItem('camundaTasklistUser', JSON.stringify(data));
       dispatch(signInSuccess(data));

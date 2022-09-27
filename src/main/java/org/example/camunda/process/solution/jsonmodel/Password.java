@@ -1,4 +1,4 @@
-package org.example.camunda.process.solution.model;
+package org.example.camunda.process.solution.jsonmodel;
 
 public class Password {
   private String value;

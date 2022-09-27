@@ -3,7 +3,8 @@ package org.example.camunda.process.solution.facade;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
-import org.example.camunda.process.solution.facade.dto.Form;
+import org.example.camunda.process.solution.jsonmodel.Form;
+import org.example.camunda.process.solution.security.annontation.IsAuthenticated;
 import org.example.camunda.process.solution.service.FormService;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ public class FormsController extends AbstractController {
 
   @Autowired private FormService formService;
 
+  @IsAuthenticated
   @GetMapping("/{processDefinitionId}/{formKey}")
   @ResponseBody
   public JsonNode getFormSchema(
@@ -34,6 +36,7 @@ public class FormsController extends AbstractController {
     return getFormSchema(null, processDefinitionId, formKey);
   }
 
+  @IsAuthenticated
   @GetMapping("/{processName}/{processDefinitionId}/{formKey}")
   @ResponseBody
   public JsonNode getFormSchema(
@@ -52,6 +55,7 @@ public class FormsController extends AbstractController {
     return form.getSchema();
   }
 
+  @IsAuthenticated
   @GetMapping("/instanciation/{bpmnProcessId}")
   @ResponseBody
   public JsonNode getInstanciationFormSchema(@PathVariable String bpmnProcessId)

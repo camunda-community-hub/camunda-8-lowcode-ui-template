@@ -116,8 +116,8 @@ export class TaskService {
         shouldInsert = false;
       }
     }
-    if (taskSearch.taskState != null) {
-      if (taskSearch.taskState !== task.taskState) {
+    if (taskSearch.state != null) {
+      if (taskSearch.state !== task.taskState) {
         shouldInsert = false;
       }
     }

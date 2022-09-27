@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.example.camunda.process.solution.facade.dto.FormJsListValue;
-import org.example.camunda.process.solution.model.User;
+import org.example.camunda.process.solution.jsonmodel.User;
 import org.example.camunda.process.solution.service.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

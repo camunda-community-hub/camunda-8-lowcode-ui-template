@@ -43,10 +43,11 @@ export interface IProcess {
 }
 
 export interface ITaskSearch {
-  assignee: string | null;
-  group: string | null;
-  taskState: string | null;
-  pageSize: number | null;
+  assigned: boolean | undefined;
+  assignee: string | undefined;
+  group: string | undefined;
+  state: string;
+  pageSize: number | undefined;
 }
 
 export interface IFormViewer {
