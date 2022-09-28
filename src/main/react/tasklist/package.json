@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@camunda-community/form-js": "^0.7.4",
+    "@camunda-community/form-js": "^0.7.6",
     "@codemirror/lang-html": "^6.1.1",
     "@codemirror/lang-json": "^6.0.0",
     "@reduxjs/toolkit": "^1.8.5",
