@@ -11,7 +11,7 @@
     <bpmn:sequenceFlow id="Flow_1uw23im" sourceRef="Task_InvokeService" targetRef="Event_1spy7qp" />
     <bpmn:serviceTask id="Task_InvokeService" name="Invoke service">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="my-service" />
+        <zeebe:taskDefinition type="invokeMyService" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0h8v107</bpmn:incoming>
       <bpmn:outgoing>Flow_1uw23im</bpmn:outgoing>
