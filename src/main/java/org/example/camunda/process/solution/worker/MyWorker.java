@@ -19,7 +19,7 @@ public class MyWorker {
     this.myService = myService;
   }
 
-  @ZeebeWorker(type = "my-service", autoComplete = true)
+  @ZeebeWorker(type = "invokeMyService", autoComplete = true)
   public ProcessVariables invokeMyService(@ZeebeVariablesAsType ProcessVariables variables) {
     LOG.info("Invoking myService with variables: " + variables);
 
