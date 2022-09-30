@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.example.camunda.process.solution.facade.dto.MailTemplate;
+import org.example.camunda.process.solution.jsonmodel.MailTemplate;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

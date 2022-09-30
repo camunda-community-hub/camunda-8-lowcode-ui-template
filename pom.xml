@@ -43,7 +43,18 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
 
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.9.1</version>
+    </dependency>
+		
     <dependency>
       <groupId>io.camunda</groupId>
       <artifactId>zeebe-client-java</artifactId>
@@ -135,6 +146,7 @@
         <version>2.19</version>
         <executions>
           <execution>
+            <?m2e execute onConfiguration,onIncremental?>
             <goals>
               <goal>format</goal>
             </goals>
@@ -198,20 +210,11 @@
             <configuration>
               <outputDirectory>${project.build.directory}</outputDirectory>
               <resources>
-                <!-- Copy static assets -->
-                <resource>
-                  <directory>${basedir}/src/main/react/tasklist/build/static</directory>
-                  <targetPath>${basedir}/target/classes/static/static</targetPath>
-                  <filtering>false</filtering>
-                </resource>
+               
                 <!-- Copy React index file and manifest-->
                 <resource>
                   <directory>${basedir}/src/main/react/tasklist/build</directory>
-                  <targetPath>${basedir}/target/classes/static/tasklist</targetPath>
-                  <includes>
-                    <include>index.html</include>
-                    <include>manifest.json</include>
-                  </includes>
+                  <targetPath>${basedir}/target/classes/static/</targetPath>
                   <filtering>false</filtering>
                 </resource>
               </resources>

@@ -1,20 +1,5 @@
 package org.example.camunda.process.solution.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.example.camunda.process.solution.dao.TaskTokenRepository;
-import org.example.camunda.process.solution.facade.dto.Task;
-import org.example.camunda.process.solution.facade.dto.TaskSearch;
-import org.example.camunda.process.solution.model.TaskToken;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import io.camunda.tasklist.CamundaTaskListClient;
 import io.camunda.tasklist.auth.SaasAuthentication;
 import io.camunda.tasklist.auth.SelfManagedAuthentication;
@@ -23,6 +8,19 @@ import io.camunda.tasklist.dto.TaskState;
 import io.camunda.tasklist.dto.Variable;
 import io.camunda.tasklist.exception.TaskListException;
 import io.camunda.zeebe.client.ZeebeClient;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import org.example.camunda.process.solution.dao.TaskTokenRepository;
+import org.example.camunda.process.solution.facade.dto.Task;
+import org.example.camunda.process.solution.facade.dto.TaskSearch;
+import org.example.camunda.process.solution.model.TaskToken;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TaskListService {
@@ -50,7 +48,7 @@ public class TaskListService {
 
   @Value("${tasklistUrl:notProvided}")
   private String tasklistUrl;
-  
+
   @Value("${keycloakUrl}")
   private String keycloakUrl;
 
@@ -71,7 +69,7 @@ public class TaskListService {
                 .authentication(sa)
                 .build();
       } else {
-          SelfManagedAuthentication sma =
+        SelfManagedAuthentication sma =
             new SelfManagedAuthentication()
                 .clientId(identityClientId)
                 .clientSecret(identityClientSecret)
@@ -100,20 +98,28 @@ public class TaskListService {
   }
 
   public List<Task> getTasks(TaskSearch taskSearch) throws TaskListException {
-    if (taskSearch.getAssignee() != null) {
+    if (Boolean.TRUE.equals(taskSearch.getAssigned()) && taskSearch.getAssignee() != null) {
       return convert(
           getCamundaTaskListClient()
               .getAssigneeTasks(
-                  taskSearch.getAssignee(), taskSearch.getState(), taskSearch.getPageSize()));
+                  taskSearch.getAssignee(),
+                  TaskState.fromJson(taskSearch.getState()),
+                  taskSearch.getPageSize()));
     }
     if (taskSearch.getGroup() != null) {
       return convert(
           getCamundaTaskListClient()
               .getGroupTasks(
-                  taskSearch.getGroup(), taskSearch.getState(), taskSearch.getPageSize()));
+                  taskSearch.getGroup(),
+                  TaskState.fromJson(taskSearch.getState()),
+                  taskSearch.getPageSize()));
     }
     return convert(
-        getCamundaTaskListClient().getTasks(null, taskSearch.getState(), taskSearch.getPageSize()));
+        getCamundaTaskListClient()
+            .getTasks(
+                taskSearch.getAssigned(),
+                TaskState.fromJson(taskSearch.getState()),
+                taskSearch.getPageSize()));
   }
 
   public List<Task> getGroupTasks(String group, TaskState state, Integer pageSize)

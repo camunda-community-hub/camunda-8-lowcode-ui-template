@@ -1,18 +1,13 @@
 package org.example.camunda.process.solution.facade.dto;
 
+import java.util.Set;
+
 public class AuthUser {
-  private Long id;
   private String username;
   private String email;
   private String token;
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
+  private String profile;
+  private Set<String> groups;
 
   public String getUsername() {
     return username;
@@ -36,5 +31,21 @@ public class AuthUser {
 
   public void setToken(String token) {
     this.token = token;
+  }
+
+  public String getProfile() {
+    return profile;
+  }
+
+  public void setProfile(String profile) {
+    this.profile = profile;
+  }
+
+  public Set<String> getGroups() {
+    return groups;
+  }
+
+  public void setGroups(Set<String> groups) {
+    this.groups = groups;
   }
 }

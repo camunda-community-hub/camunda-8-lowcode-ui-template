@@ -1,9 +1,7 @@
 import store, { AppThunk } from '../store';
-import { remoteLoading, remoteProcessesLoadingSuccess, remoteTasksLoadingSuccess, remoteLoadingFail, setTask, setFormSchema, setProcess } from '../store/features/processes/slice';
+import { remoteLoading, remoteProcessesLoadingSuccess, remoteLoadingFail, setFormSchema, setProcess } from '../store/features/processes/slice';
 import { IProcess } from '../store/model';
 import api from './api';
-import { env } from '../env';
-import authService from './AuthService';
 
 export class ProcessService {
 

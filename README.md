@@ -2,7 +2,7 @@
 ![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
 [![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
 
-# Process Solution Template for Camunda Platform 8 using Java and Spring Boot
+# Low-code Solution Template for Camunda Platform 8 using Reatc, Java and Spring Boot
 
 This repository contains a Java application template for Camunda Platform 8 using Spring Boot
 and a [docker-compose.yaml](docker-compose.yaml) file for local development. For production setups we recommend to use our [helm charts](https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/).
@@ -14,6 +14,10 @@ and a [docker-compose.yaml](docker-compose.yaml) file for local development. For
 - [Helm Charts](https://helm.camunda.io/)
 - [Zeebe Workflow Engine](https://github.com/camunda/zeebe)
 - [Contact](https://docs.camunda.io/contact/)
+
+It also contains a [React front-end](src/main/react/tasklist/) that you can execute indepandtely (npm run start). This front-end rely on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js). The first time you use the project, you should be able to connect with demo/demo to create new forms, mail templates and manage your user organization.
+
+> :information_source: If you want to send email or play with Drive, you should have a client_secret_google_api.json file in your resources.
 
 ## Using the Spring Boot application
 
@@ -84,7 +88,7 @@ Feedback and updates are welcome!
 
 ## Using this template
 
-Fork [this repository](https://github.com/camunda-community-hub/camunda-process-solution-template) on GitHub
+Fork [this repository](https://github.com/camunda-community-hub/camunda-8-lowcode-ui-template) on GitHub
 and rename/refactor the following artifacts:
 
 * `groupId`, `artifactId`, `name`, and `description` in [pom.xml](pom.xml)
@@ -95,7 +99,7 @@ and rename/refactor the following artifacts:
 By forking this project, you can stay connected to improvements that we do to this template and simply pull updates into your fork, e.g. by using GitHub's Web UI or the following commands:
 
 ```sh
-git remote add upstream git@github.com:camunda-community-hub/camunda-8-process-solution-template.git
+git remote add upstream git@github.com:camunda-community-hub/camunda-8-lowcode-ui-template.git
 git pull upstream main
 git push
 ```

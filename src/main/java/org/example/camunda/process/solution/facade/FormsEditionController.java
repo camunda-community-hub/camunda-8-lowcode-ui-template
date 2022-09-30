@@ -3,7 +3,8 @@ package org.example.camunda.process.solution.facade;
 import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
 import java.util.List;
-import org.example.camunda.process.solution.facade.dto.Form;
+import org.example.camunda.process.solution.jsonmodel.Form;
+import org.example.camunda.process.solution.security.annontation.IsEditor;
 import org.example.camunda.process.solution.service.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,23 +30,27 @@ public class FormsEditionController extends AbstractController {
 
   @Autowired private FormService formService;
 
+  @IsEditor
   @PostMapping
   public ResponseEntity<Form> save(@RequestBody Form form) throws IOException {
     formService.saveForm(form);
     return new ResponseEntity<>(form, HttpStatus.CREATED);
   }
 
+  @IsEditor
   @GetMapping("/{formKey}")
   @ResponseBody
   public Form getForm(@PathVariable String formKey) throws TaskListException, IOException {
     return formService.findByName(formKey);
   }
 
+  @IsEditor
   @DeleteMapping("/{formKey}")
   public void deleteForm(@PathVariable String formKey) throws TaskListException, IOException {
     formService.deleteByName(formKey);
   }
 
+  @IsEditor
   @GetMapping(value = "/names")
   @ResponseBody
   public List<String> formNames() {

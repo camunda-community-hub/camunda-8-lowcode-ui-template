@@ -3,7 +3,8 @@ package org.example.camunda.process.solution.facade;
 import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
 import java.util.List;
-import org.example.camunda.process.solution.facade.dto.MailTemplate;
+import org.example.camunda.process.solution.jsonmodel.MailTemplate;
+import org.example.camunda.process.solution.security.annontation.IsEditor;
 import org.example.camunda.process.solution.service.MailTemplateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ public class MailEditionController extends AbstractController {
 
   @Autowired private MailTemplateService mailTemplateService;
 
+  @IsEditor
   @PostMapping
   public ResponseEntity<MailTemplate> save(@RequestBody MailTemplate mailTemplate)
       throws IOException {
@@ -36,6 +38,7 @@ public class MailEditionController extends AbstractController {
     return new ResponseEntity<>(mailTemplate, HttpStatus.CREATED);
   }
 
+  @IsEditor
   @GetMapping("/{templateName}")
   @ResponseBody
   public MailTemplate getMailTemplate(@PathVariable String templateName)
@@ -43,11 +46,13 @@ public class MailEditionController extends AbstractController {
     return mailTemplateService.findByName(templateName);
   }
 
+  @IsEditor
   @DeleteMapping("/{templateName}")
   public void deleteForm(@PathVariable String templateName) throws TaskListException, IOException {
     mailTemplateService.deleteByName(templateName);
   }
 
+  @IsEditor
   @GetMapping(value = "/names")
   @ResponseBody
   public List<String> formNames() {

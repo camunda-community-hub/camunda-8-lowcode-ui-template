@@ -1,9 +1,10 @@
 package org.example.camunda.process.solution.facade.dto;
 
-import io.camunda.tasklist.dto.TaskState;
-
 public class TaskSearch {
-  private TaskState state;
+
+  private Boolean assigned;
+
+  private String state;
 
   private String assignee;
 
@@ -11,11 +12,11 @@ public class TaskSearch {
 
   private String group;
 
-  public TaskState getState() {
+  public String getState() {
     return state;
   }
 
-  public void setState(TaskState state) {
+  public void setState(String state) {
     this.state = state;
   }
 
@@ -41,5 +42,13 @@ public class TaskSearch {
 
   public void setGroup(String group) {
     this.group = group;
+  }
+
+  public Boolean getAssigned() {
+    return assigned;
+  }
+
+  public void setAssigned(Boolean assigned) {
+    this.assigned = assigned;
   }
 }
