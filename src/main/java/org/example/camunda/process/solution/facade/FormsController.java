@@ -1,6 +1,7 @@
 package org.example.camunda.process.solution.facade;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.camunda.operate.exception.OperateException;
 import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
 import org.example.camunda.process.solution.jsonmodel.Form;
@@ -31,7 +32,7 @@ public class FormsController extends AbstractController {
   @ResponseBody
   public JsonNode getFormSchema(
       @PathVariable String processDefinitionId, @PathVariable String formKey)
-      throws TaskListException, IOException {
+      throws TaskListException, IOException, NumberFormatException, OperateException {
 
     return getFormSchema(null, processDefinitionId, formKey);
   }
@@ -43,7 +44,7 @@ public class FormsController extends AbstractController {
       @PathVariable String processName,
       @PathVariable String processDefinitionId,
       @PathVariable String formKey)
-      throws TaskListException, IOException {
+      throws TaskListException, IOException, NumberFormatException, OperateException {
 
     if (formKey.startsWith("camunda-forms:bpmn:")) {
       String formId = formKey.substring(formKey.lastIndexOf(":") + 1);

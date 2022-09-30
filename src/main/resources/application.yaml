@@ -5,8 +5,8 @@ zeebe.client:
   broker.gatewayAddress: 127.0.0.1:26500
   security.plaintext: true
   
-identity.clientId: java
-identity.clientSecret: e5xL9drBtKGEWF2bPiosjQGkVBTc4o0b
+identity.clientId: mydemoapplication
+identity.clientSecret: rYb6aYOpo2qEipcoJgOxzL2RacbEbAga
 keycloakUrl: http://localhost:18080
 tasklistUrl: http://localhost:8082/
 operateUrl: http://localhost:8081/
