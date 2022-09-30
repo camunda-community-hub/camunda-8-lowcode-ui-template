@@ -6,8 +6,6 @@ import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.jsonmodel.Organization;
 import org.example.camunda.process.solution.security.annontation.IsAdmin;
 import org.example.camunda.process.solution.service.OrganizationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/organization")
 public class OrgnizationController {
-
-  private static final Logger LOG = LoggerFactory.getLogger(OrgnizationController.class);
 
   private final OrganizationService organizationService;
 

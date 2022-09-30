@@ -6,8 +6,6 @@ import org.example.camunda.process.solution.facade.dto.Authentication;
 import org.example.camunda.process.solution.jsonmodel.User;
 import org.example.camunda.process.solution.security.SecurityUtils;
 import org.example.camunda.process.solution.service.OrganizationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/authentication")
 public class AuthenticationController {
-
-  private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
   @Autowired private OrganizationService organizationService;
 
