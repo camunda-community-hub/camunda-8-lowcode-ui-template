@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.example.camunda.process.solution.facade.dto.Form;
+import org.example.camunda.process.solution.jsonmodel.Form;
 import org.example.camunda.process.solution.utils.BpmnUtils;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;

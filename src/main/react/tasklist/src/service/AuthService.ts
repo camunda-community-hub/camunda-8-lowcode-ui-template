@@ -1,29 +1,26 @@
-import { useSelector } from 'react-redux';
+
 import store, { AppThunk } from '../store';
-import { RootState } from '../store/rootReducer';
 import { authStart, signInSuccess, signOutSuccess, fail, silentfail } from '../store/features/auth/slice';
 import { IUser } from '../store/model';
 import api from './api';
+import taskService from './TaskService';
 
 export class AuthService {
 
-  isAuthenticated = (): boolean => useSelector(
-    (state: RootState) => state.auth.data ? true : false,
-  );
   getUser = (): IUser | null => {
     return store.getState().auth.data;
   }
-  getUserId = ():number|null => {
-    return store.getState().auth.data!.id;
-  }
   recoverFromStorage = (): AppThunk => async dispatch => {
-    let storedUser = localStorage.getItem('camundaUser');
-    if (storedUser) {
+    if (!store.getState().auth.data) {
+      let storedUser = localStorage.getItem('camundaTasklistUser');
+      if (storedUser) {
 
-      let user:IUser = JSON.parse(storedUser);
-      
-      if (user) {
-        dispatch(signInSuccess(user));
+        let user: IUser = JSON.parse(storedUser);
+
+        if (user) {
+          api.defaults.headers.common['Authorization'] = 'Bearer ' + user.token;
+          dispatch(signInSuccess(user));
+        }
       }
     }
   }
@@ -33,9 +30,11 @@ export class AuthService {
       dispatch(authStart());
           
       const { data } = await api.post<IUser>('/authentication/login', { 'username': username, 'password': password });
+
       api.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
-      localStorage.setItem('camundaUser', JSON.stringify(data));
+      localStorage.setItem('camundaTasklistUser', JSON.stringify(data));
       dispatch(signInSuccess(data));
+      //taskService.connectToWebSockets(data.username);
     } catch (error:any) {
       if (error.response) {
         // The request was made. server responded out of range of 2xx
@@ -54,7 +53,8 @@ export class AuthService {
   signOut = (): AppThunk => async dispatch => {
     try {
       api.defaults.headers.common['Authorization'] = '';
-      localStorage.removeItem('camundaUser');
+      localStorage.removeItem('camundaTasklistUser');
+      taskService.disconnectFromWebScokets();
       dispatch(signOutSuccess());
     } catch (err:any) {
       dispatch(fail(err.toString()));

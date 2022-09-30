@@ -37,4 +37,5 @@ form.signin:hover {
 .mainSignin {
 	background: url(../img/background.jfif) no-repeat top;
     background-size: cover;
+    background-position-x: 50%;
 }

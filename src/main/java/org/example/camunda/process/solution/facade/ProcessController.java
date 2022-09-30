@@ -8,10 +8,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.example.camunda.process.solution.security.annontation.IsAuthenticated;
 import org.example.camunda.process.solution.service.OperateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
@@ -27,6 +34,7 @@ public class ProcessController {
     this.operateService = operateService;
   }
 
+  @IsAuthenticated
   @PostMapping("/{bpmnProcessId}/start")
   public void startProcessInstance(
       @PathVariable String bpmnProcessId, @RequestBody Map<String, Object> variables) {
@@ -41,6 +49,7 @@ public class ProcessController {
         .send();
   }
 
+  @IsAuthenticated
   @PostMapping("/message/{messageName}/{correlationKey}")
   public void publishMessage(
       @PathVariable String messageName,
@@ -61,6 +70,7 @@ public class ProcessController {
         .send();
   }
 
+  @IsAuthenticated
   @GetMapping("/definition/latest")
   public List<ProcessDefinition> latestDefinitions() throws OperateException {
     Set<String> present = new HashSet<>();

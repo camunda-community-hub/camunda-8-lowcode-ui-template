@@ -2,10 +2,49 @@ import store, { AppThunk } from '../store';
 import { remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, prependTaskIntoList, setTask, setFormSchema, removeCurrentTask, setTaskSearch } from '../store/features/processes/slice';
 import { ITask, ITaskSearch } from '../store/model';
 import api from './api';
+import { Stomp, StompSubscription } from '@stomp/stompjs';
+import { env } from '../env';
+
+const connectStompClient = () => {
+  let myStompClient = Stomp.client(`ws://${env.backend}/ws`);
+
+  myStompClient.onStompError = function (frame) {
+    console.log('STOMP error');
+  };
+
+  return myStompClient;
+}
+
+const stompClient = connectStompClient();
 
 export class TaskService {
 
   lastFetchTasks: number = 0;
+  stompSubscriptions: StompSubscription[] = [];
+
+  onUserTaskReadyWS = (message: any): AppThunk => async dispatch => {
+    let task = JSON.parse(message.body);
+    // Update the list of tasks
+    dispatch(this.insertNewTask(task));
+  }
+
+  connectToWebSockets = (username: string) => {
+    const callback = this.onUserTaskReadyWS;
+    const subs = this.stompSubscriptions;
+    stompClient.onConnect = function (frame) {
+      subs.push(stompClient!.subscribe("/topic/" + username + "/userTask", callback));
+      subs.push(stompClient!.subscribe("/topic/userTask", callback));
+    };
+    stompClient.activate();
+  }
+
+  disconnectFromWebScokets = () => {
+    stompClient.deactivate();
+    for (let i = 0; i < this.stompSubscriptions.length; i++) {
+      stompClient.unsubscribe(this.stompSubscriptions[i].id);
+    }
+    this.stompSubscriptions = [];
+  }
 
   getTasks = (): ITask[] => {
     return store.getState().process.tasks;
@@ -73,12 +112,12 @@ export class TaskService {
     const taskSearch = store.getState().process.taskSearch;
     let shouldInsert = true;
     if (taskSearch.assignee != null) {
-      if (taskSearch.assignee != task.assignee) {
+      if (taskSearch.assignee !== task.assignee) {
         shouldInsert = false;
       }
     }
-    if (taskSearch.taskState != null) {
-      if (taskSearch.taskState != task.taskState) {
+    if (taskSearch.state != null) {
+      if (taskSearch.state !== task.taskState) {
         shouldInsert = false;
       }
     }

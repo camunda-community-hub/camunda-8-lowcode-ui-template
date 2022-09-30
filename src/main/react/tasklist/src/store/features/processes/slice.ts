@@ -16,7 +16,7 @@ export const initialState: ProcessListState = {
   processes:[],
   tasks: [],
   taskSearch: {
-    assignee: null, group: null, taskState: 'CREATED', pageSize: null
+    assigned: undefined, assignee: undefined, group: undefined, state: 'CREATED', pageSize: undefined
   },
   currentTask: null,
   currentProcess: null,
@@ -62,6 +62,7 @@ const serverListSlice = createSlice({
       state: ProcessListState,
       action: PayloadAction<ITaskSearch>,
     ) => {
+      console.log(action.payload);
       state.taskSearch = action.payload;
     },
     setTask: (
@@ -98,7 +99,7 @@ const serverListSlice = createSlice({
     ) => {
       let i = 0;
       for (; i < state.tasks.length; i++) {
-        if (state.tasks[i].id == state.currentTask!.id) {
+        if (state.tasks[i].id === state.currentTask!.id) {
           state.tasks.splice(i, 1);
           break;
         }

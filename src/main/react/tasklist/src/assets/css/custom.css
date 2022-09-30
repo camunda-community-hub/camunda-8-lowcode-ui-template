@@ -22,8 +22,7 @@
     background-color: #17428c;
     border-color: #17428c;
 }
-
-a, .text-primary {
+.text-primary {
     color: #17428c!important;
 }
 
@@ -152,4 +151,12 @@ span.assignedTo {
 }
 #mail-preview {
 	padding: 1rem;
+}
+.addOrg {
+  position: absolute;
+  right: 10px;
+  margin-top:2px;
+}
+.userGroupList {
+  flex: 1 1;
 }

@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.Map;
 import javax.mail.MessagingException;
 import org.example.camunda.process.solution.ProcessVariables;
-import org.example.camunda.process.solution.model.User;
+import org.example.camunda.process.solution.jsonmodel.User;
 import org.example.camunda.process.solution.service.MailService;
-import org.example.camunda.process.solution.service.UserService;
+import org.example.camunda.process.solution.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class EmailWorker {
 
   private static final Logger LOG = LoggerFactory.getLogger(EmailWorker.class);
 
-  @Autowired private UserService userService;
+  @Autowired private OrganizationService userService;
 
   @Autowired private MailService mailService;
 
