@@ -1,10 +1,10 @@
 package org.example.camunda.process.solution.service;
 
 import io.camunda.google.GoogleAuthUtils;
+import io.camunda.google.MailBuilderUtils;
 import io.camunda.google.config.GoogleWsConfig;
-import io.camunda.google.config.ThymeleafConfig;
-import io.camunda.google.thymeleaf.ITemplateResolver;
-import io.camunda.google.thymeleaf.MailBuilderUtils;
+import io.camunda.thymeleaf.feel.ICustomTemplateResolver;
+import io.camunda.thymeleaf.feel.config.ThymeleafConfig;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -46,7 +46,7 @@ public class InitService {
   public void initThymeleaf() {
     ThymeleafConfig config = new ThymeleafConfig();
     config.setCustomTemplateResolver(
-        new ITemplateResolver() {
+        new ICustomTemplateResolver() {
 
           @Override
           public String getTemplateContent(String templateName) {

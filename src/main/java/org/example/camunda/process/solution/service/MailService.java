@@ -1,8 +1,8 @@
 package org.example.camunda.process.solution.service;
 
 import io.camunda.google.GmailUtils;
+import io.camunda.google.MailBuilderUtils;
 import io.camunda.google.model.Mail;
-import io.camunda.google.thymeleaf.MailBuilderUtils;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
