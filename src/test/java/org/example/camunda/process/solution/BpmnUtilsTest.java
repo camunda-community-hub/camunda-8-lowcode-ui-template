@@ -14,6 +14,8 @@ public class BpmnUtilsTest {
 
   private String XML;
 
+  private BpmnUtils bpmnUtils;
+
   /**
    * @throws IOException
    */
@@ -22,23 +24,25 @@ public class BpmnUtilsTest {
     ClassLoader classLoader = getClass().getClassLoader();
     File file = new File(classLoader.getResource("models/simple-screenflow.bpmn").getFile());
     XML = FileUtils.readFileToString(file, "UTF-8");
+
+    bpmnUtils = new BpmnUtils();
   }
 
   @Test
   public void testGetTaskNameFromBpmn() {
-    String taskName = BpmnUtils.getTaskNameFromBpmn(XML, "Activity_1vqalfh");
+    String taskName = bpmnUtils.getTaskNameFromBpmn(XML, "Activity_1vqalfh");
     assertEquals("First Name", taskName);
   }
 
   @Test
   public void testGetFormSchemaFromBpmnFile() {
-    String schema = BpmnUtils.getFormSchemaFromBpmnFile(XML, "userTaskForm_userTask1");
+    String schema = bpmnUtils.getFormSchemaFromBpmnFile(XML, "userTaskForm_userTask1");
     assertNotNull(schema);
   }
 
   @Test
   public void testGetProcessName() {
-    String processName = BpmnUtils.getProcessName(XML, "simple-screenflow");
+    String processName = bpmnUtils.getProcessName(XML, "simple-screenflow");
     assertEquals("simple-screenflow", processName);
   }
 }

@@ -22,6 +22,8 @@ public class FormService {
 
   public static final String FORMS = "forms";
 
+  @Autowired private BpmnUtils bpmnUtils;
+
   /**
    * If true, we are getting the schema from TaskList. if false, we try to read the schema from the
    * local BPMN file.
@@ -54,7 +56,7 @@ public class FormService {
       throws TaskListException, NumberFormatException, OperateException {
     if (!loadEmbeddedFormsFromTasklist && processName != null) {
       String xml = operateService.getProcessDefinitionXmlByKey(Long.valueOf(processDefinitionId));
-      String schema = BpmnUtils.getFormSchemaFromBpmnFile(xml, formId);
+      String schema = bpmnUtils.getFormSchemaFromBpmnFile(xml, formId);
 
       if (schema != null) {
         return schema;
