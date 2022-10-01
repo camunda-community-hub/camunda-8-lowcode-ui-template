@@ -9,10 +9,9 @@ import io.camunda.operate.search.ProcessDefinitionFilter;
 import io.camunda.operate.search.SearchQuery;
 import io.camunda.operate.search.Sort;
 import io.camunda.operate.search.SortOrder;
-import java.util.AbstractMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
@@ -21,6 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 @EnableCaching
 public class OperateService {
+
+  private static final Logger LOG = LoggerFactory.getLogger(OperateService.class);
 
   @Value("${zeebe.client.cloud.client-id:notProvided}")
   private String clientId;
@@ -96,30 +97,7 @@ public class OperateService {
 
   @Cacheable("processXmls")
   public String getProcessDefinitionXmlByKey(Long key) throws OperateException {
-    System.out.println("Entering getProcessDefinitionXmlByKey for key " + key);
-    List<ProcessDefinition> processDefs = getProcessDefinitions();
-    Map<Object, Object> processXmls;
-    processXmls =
-        processDefs.stream()
-            .map(
-                processDef -> {
-                  try {
-                    AbstractMap.SimpleEntry<Long, String> entry =
-                        new AbstractMap.SimpleEntry<>(
-                            processDef.getKey(),
-                            getCamundaOperateClient().getProcessDefinitionXml(processDef.getKey()));
-                    return entry;
-
-                  } catch (OperateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    return new AbstractMap.SimpleEntry<>(key, "NOT FOUND");
-                  }
-                })
-            .collect(
-                Collectors.toMap(
-                    AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-
-    return processXmls.get(key).toString();
+    LOG.info("Entering getProcessDefinitionXmlByKey for key " + key);
+    return getCamundaOperateClient().getProcessDefinitionXml(key);
   }
 }
