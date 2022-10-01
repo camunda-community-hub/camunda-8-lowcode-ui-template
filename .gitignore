@@ -38,3 +38,16 @@ h2/db.mv.db
 src/main/react/tasklist/.vs
 src/main/react/tasklist/node_modules
 src/main/react/tasklist/build
+src/main/resources/.DS_Store
+
+workspace/organizations/*
+
+workspace/forms/*
+!workspace/forms/camunda-process
+!workspace/forms/simple-screenflow
+!workspace/forms/task1
+!workspace/forms/task2
+
+workspace/mails/*
+!workspace/mails/firstMail-en
+!workspace/mails/secondEmail-en
