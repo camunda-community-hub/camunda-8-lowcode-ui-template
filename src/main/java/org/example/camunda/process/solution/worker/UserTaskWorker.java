@@ -30,6 +30,8 @@ public class UserTaskWorker {
 
   @Autowired private OperateService operateService;
 
+  @Autowired private BpmnUtils bpmnUtils;
+
   @ZeebeWorker(type = "io.camunda.zeebe:userTask", timeout = 2592000000L) // set timeout to 30 days
   public void listenUserTask(
       final JobClient client,
@@ -73,12 +75,12 @@ public class UserTaskWorker {
       String bpmnProcessId = job.getBpmnProcessId();
 
       String xml = operateService.getProcessDefinitionXmlByKey(job.getProcessDefinitionKey());
-      task.setProcessName(BpmnUtils.getProcessName(xml, bpmnProcessId));
+      task.setProcessName(bpmnUtils.getProcessName(xml, bpmnProcessId));
 
       String taskActivityId = job.getElementId();
       // !!! The name of the bpmn file in the "src/main/resources/models" directory must match the
       // process id in order for this to work!
-      String taskName = BpmnUtils.getTaskNameFromBpmn(xml, taskActivityId);
+      String taskName = bpmnUtils.getTaskNameFromBpmn(xml, taskActivityId);
       task.setName(taskName);
 
       if (!job.getCustomHeaders().isEmpty()) {
