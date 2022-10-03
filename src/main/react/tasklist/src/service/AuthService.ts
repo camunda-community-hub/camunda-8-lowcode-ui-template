@@ -19,6 +19,7 @@ export class AuthService {
 
         if (user) {
           api.defaults.headers.common['Authorization'] = 'Bearer ' + user.token;
+          dispatch(taskService.connectToWebSockets(user.username));
           dispatch(signInSuccess(user));
         }
       }
@@ -33,8 +34,8 @@ export class AuthService {
 
       api.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
       localStorage.setItem('camundaTasklistUser', JSON.stringify(data));
+      dispatch(taskService.connectToWebSockets(data.username));
       dispatch(signInSuccess(data));
-      //taskService.connectToWebSockets(data.username);
     } catch (error:any) {
       if (error.response) {
         // The request was made. server responded out of range of 2xx

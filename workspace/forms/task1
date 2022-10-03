@@ -1,6 +1,6 @@
 {
   "name" : "task1",
-  "modified" : 1664798162504,
+  "modified" : 1664805515167,
   "schema" : {
     "components" : [ {
       "label" : "Initial mesage",
@@ -17,7 +17,7 @@
       "label" : "Attachment",
       "type" : "fileUpload",
       "id" : "Field_0gbo3d6",
-      "key" : "file",
+      "key" : "myFile",
       "validate" : {
         "required" : true
       },
