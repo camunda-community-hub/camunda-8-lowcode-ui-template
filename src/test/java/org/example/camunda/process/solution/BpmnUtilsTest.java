@@ -10,20 +10,20 @@ public class BpmnUtilsTest {
 
   @Test
   public void testGetTaskNameFromBpmn() {
-    String taskName = BpmnUtils.getTaskNameFromBpmn("simple-screenflow.bpmn", "Activity_1vqalfh");
-    assertEquals("First Name", taskName);
+    String taskName = BpmnUtils.getTaskNameFromBpmn("camunda-process.bpmn", "task1");
+    assertEquals("Task One", taskName);
   }
 
   @Test
   public void testGetFormSchemaFromBpmnFile() {
     String schema =
-        BpmnUtils.getFormSchemaFromBpmnFile("simple-screenflow.bpmn", "userTaskForm_userTask1");
+        BpmnUtils.getFormSchemaFromBpmnFile("camunda-process.bpmn", "userTaskForm_3cosl6j");
     assertNotNull(schema);
   }
 
   @Test
   public void testGetProcessName() {
-    String processName = BpmnUtils.getProcessName("simple-screenflow.bpmn", "simple-screenflow");
-    assertEquals("simple-screenflow", processName);
+    String processName = BpmnUtils.getProcessName("camunda-process.bpmn", "camunda-process");
+    assertEquals("camunda-process", processName);
   }
 }

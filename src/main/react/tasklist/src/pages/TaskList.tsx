@@ -97,7 +97,7 @@ function TaskList() {
                 <Form.Select aria-label="group" value={taskSearch.group} onChange={(evt) => changeFilter('group', evt.target.value)}>
                   <option value="">Any group</option>
                   {authService.getUser()?.groups.map((group: string, index: number) =>
-                    <option value={group}>{group}</option>
+                    <option key={group} value={group}>{group}</option>
                   )}
                 </Form.Select>
               </InputGroup>

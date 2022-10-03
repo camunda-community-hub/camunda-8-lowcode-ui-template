@@ -1,4 +1,5 @@
 import store, { AppThunk } from '../store';
+import { useDispatch } from 'react-redux';
 import { remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, prependTaskIntoList, setTask, setFormSchema, removeCurrentTask, setTaskSearch } from '../store/features/processes/slice';
 import { ITask, ITaskSearch } from '../store/model';
 import api from './api';
@@ -22,14 +23,12 @@ export class TaskService {
   lastFetchTasks: number = 0;
   stompSubscriptions: StompSubscription[] = [];
 
-  onUserTaskReadyWS = (message: any): AppThunk => async dispatch => {
-    let task = JSON.parse(message.body);
-    // Update the list of tasks
-    dispatch(this.insertNewTask(task));
-  }
-
-  connectToWebSockets = (username: string) => {
-    const callback = this.onUserTaskReadyWS;
+  connectToWebSockets = (username: string): AppThunk => async dispatch => {
+    const callback = (message: any) => {
+      let task = JSON.parse(message.body);
+      // Update the list of tasks
+      dispatch(this.insertNewTask(task));
+    }
     const subs = this.stompSubscriptions;
     stompClient.onConnect = function (frame) {
       subs.push(stompClient!.subscribe("/topic/" + username + "/userTask", callback));
@@ -83,7 +82,7 @@ export class TaskService {
   }
   
   claim = (): AppThunk => async dispatch => {
-    let url = '/tasks/' + store.getState().process.currentTask!.id + '/claim/' + store.getState().auth.data!.username;
+    let url = '/tasks/' + store.getState().process.currentTask!.id + '/claim/';
     api.get(url).then(response => {
       dispatch(assignTask(store.getState().auth.data!.username));
     }).catch(error => {
