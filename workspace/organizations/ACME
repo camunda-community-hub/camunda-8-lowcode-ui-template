@@ -1,0 +1,19 @@
+{
+  "name" : "ACME",
+  "modified" : 1664803024800,
+  "active" : true,
+  "cryptPassword" : true,
+  "users" : [ {
+    "username" : "demo",
+    "password" : {
+      "value" : "$2a$10$Car0YwUe13mXBgCXQSdQ7OzcVQemactINCHZG6RtwV5hGNxmNbJbO",
+      "encrypted" : true
+    },
+    "firstname" : "De",
+    "lastname" : "Mo",
+    "email" : "christophe.dame@camunda.com",
+    "profile" : "Admin",
+    "groups" : [ "HR", "IT" ]
+  } ],
+  "groups" : [ "Sales", "Finance", "HR", "IT" ]
+}
