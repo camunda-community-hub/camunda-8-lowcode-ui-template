@@ -1,1 +1,49 @@
-{"name":"camunda-process","modified":1659366218781,"schema":{"components":[{"label":"Initial mesage","type":"textfield","id":"Field_1bwxjh7","key":"intialMessage"}],"schemaVersion":4,"type":"default","id":"Form_5535780","executionPlatform":"Camunda Cloud","executionPlatformVersion":"1.1","exporter":{"name":"Camunda Modeler","version":"5.0.0"}},"previewData":{"toto":"pouet"}}
+{
+  "name" : "camunda-process",
+  "modified" : 1664798148989,
+  "schema" : {
+    "components" : [ {
+      "label" : "Initial mesage",
+      "type" : "textfield",
+      "id" : "Field_1bwxjh7",
+      "key" : "intialMessage"
+    }, {
+      "label" : "Table",
+      "type" : "table",
+      "id" : "Field_0qusmd2",
+      "key" : "mygrid",
+      "headers" : "col1,col2",
+      "headersNames" : "col1,col2",
+      "editableColumns" : "col1,col2",
+      "dynamicRows" : true
+    }, {
+      "label" : "My File",
+      "type" : "fileUpload",
+      "id" : "Field_1db662y",
+      "key" : "myFile",
+      "targetApi" : "/file/upload",
+      "targetApiVerb" : "POST",
+      "displayFileUpload" : true,
+      "displayFileViewer" : true,
+      "fileSource" : "'/file/serve/'+value.reference",
+      "viewerBackdrop" : "modal-backdrop",
+      "viewerClass" : "modal-dialog",
+      "viewerHeaderClass" : "modal-header",
+      "viewerHeaderTitle" : "File viewer",
+      "iFrameClass" : "modal-body"
+    } ],
+    "schemaVersion" : 4,
+    "type" : "default",
+    "id" : "Form_5535780",
+    "executionPlatform" : "Camunda Cloud",
+    "executionPlatformVersion" : "1.1",
+    "exporter" : {
+      "name" : "Camunda Modeler",
+      "version" : "5.0.0"
+    }
+  },
+  "previewData" : {
+    "toto" : "pouet",
+    "mygrid" : [ ]
+  }
+}
