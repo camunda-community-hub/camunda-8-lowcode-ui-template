@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/organization")
+@RequestMapping("/api/organization")
 public class OrgnizationController {
 
   private final OrganizationService organizationService;

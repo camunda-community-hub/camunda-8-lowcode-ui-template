@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/edition/forms")
+@RequestMapping("/api/edition/forms")
 public class FormsEditionController extends AbstractController {
 
   private final Logger logger = LoggerFactory.getLogger(FormsEditionController.class);

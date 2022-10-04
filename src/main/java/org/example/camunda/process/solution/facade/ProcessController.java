@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/process")
+@RequestMapping("/api/process")
 public class ProcessController {
 
   private static final Logger LOG = LoggerFactory.getLogger(ProcessController.class);
