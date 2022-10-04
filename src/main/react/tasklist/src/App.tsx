@@ -15,12 +15,12 @@ import AdminEmails from "./pages/AdminEmails";
 import AdminForms from "./pages/AdminForms";
 import './assets/css/bootstrap.min.css';
 import './assets/css/bootstrap-icons-1.7.2.css';
-import './assets/css/custom.css';
-import './assets/css/login.css';
 import '@camunda-community/form-js/dist/assets/form-js.css';
 import '@camunda-community/form-js/dist/assets/form-js-editor.css';
 import '@camunda-community/form-js/dist/assets/dragula.css';
 import '@camunda-community/form-js/dist/assets/properties-panel.css';
+import './assets/css/custom.css';
+import './assets/css/login.css';
 import authService from './service/AuthService'
 
 function App() {
@@ -34,12 +34,12 @@ function App() {
 
   return (
     user && (user!.profile == 'Admin' || user!.profile == 'Editor') ?
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SimpleLayout />}>
-          <Route index element={<Welcome />} />
-          <Route path="*" element={<Undefined />} />
-        </Route>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SimpleLayout />}>
+            <Route index element={<Welcome />} />
+            <Route path="*" element={<Undefined />} />
+          </Route>
           <Route path="tasklist" element={<TasklistLayout />}>
             <Route index element={<TaskList />} />
             <Route path="tasks" element={<TaskList />} />

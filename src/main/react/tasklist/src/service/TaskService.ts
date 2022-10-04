@@ -38,11 +38,11 @@ export class TaskService {
   }
 
   disconnectFromWebScokets = () => {
-    stompClient.deactivate();
     for (let i = 0; i < this.stompSubscriptions.length; i++) {
       stompClient.unsubscribe(this.stompSubscriptions[i].id);
     }
     this.stompSubscriptions = [];
+    stompClient.deactivate();
   }
 
   getTasks = (): ITask[] => {

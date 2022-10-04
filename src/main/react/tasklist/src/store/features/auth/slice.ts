@@ -13,8 +13,8 @@ const initialState: AuthState = {
   error: null,
 };
 
-const counterSlice = createSlice({
-  name: 'counter',
+const authSlice = createSlice({
+  name: 'authent',
   initialState,
   reducers: {
     authStart: (state: AuthState) => {
@@ -43,6 +43,6 @@ export const {
   signOutSuccess,
   fail,
   silentfail
-} = counterSlice.actions;
+} = authSlice.actions;
 
-export default counterSlice.reducer;
+export default authSlice.reducer;
