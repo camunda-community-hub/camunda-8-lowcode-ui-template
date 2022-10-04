@@ -82,10 +82,12 @@ function TaskList() {
                 </Form.Select>
               </InputGroup>
             </Col>
+          </Row>
+          <Row>
             <Col>
               <InputGroup className="mb-3">
-                <InputGroup.Text>Assignee to :</InputGroup.Text>
-                <Form.Select aria-label="assignee" value={taskSearch.assignee} onChange={(evt) => changeFilter('assignee', evt.target.value)}>
+                <InputGroup.Text>Assignee :</InputGroup.Text>
+                <Form.Select disabled={"true"!=taskSearch.assigned} aria-label="assignee" value={taskSearch.assignee} onChange={(evt) => changeFilter('assignee', evt.target.value)}>
                   <option value="">Any user</option>
                   <option value={authService.getUser()?.username}>Me</option>
                 </Form.Select>
@@ -94,7 +96,7 @@ function TaskList() {
             <Col>
               <InputGroup className="mb-3">
                 <InputGroup.Text>Group :</InputGroup.Text>
-                <Form.Select aria-label="group" value={taskSearch.group} onChange={(evt) => changeFilter('group', evt.target.value)}>
+                <Form.Select disabled={"true" != taskSearch.assigned} aria-label="group" value={taskSearch.group} onChange={(evt) => changeFilter('group', evt.target.value)}>
                   <option value="">Any group</option>
                   {authService.getUser()?.groups.map((group: string, index: number) =>
                     <option key={group} value={group}>{group}</option>

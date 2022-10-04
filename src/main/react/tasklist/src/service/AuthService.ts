@@ -57,7 +57,7 @@ export class AuthService {
       localStorage.removeItem('camundaTasklistUser');
       taskService.disconnectFromWebScokets();
       dispatch(signOutSuccess());
-    } catch (err:any) {
+    } catch (err: any) {
       dispatch(fail(err.toString()));
     }
   };
