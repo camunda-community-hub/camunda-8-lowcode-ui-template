@@ -2,7 +2,15 @@
 ![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
 [![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
 
-# Low-code Solution Template for Camunda Platform 8 using Reatc, Java and Spring Boot
+# Low-code Solution Template for Camunda Platform 8 using React, Java and Spring Boot
+
+We've had some customers who would like to offer some "citizen dev tools" to their business users :
+- build Forms using drag'n drop tools like [form-js](https://bpmn.io/toolkit/form-js/) but with more components.
+- build/adapt mail templates
+
+The goal of this project is to show how to build such a solution with [React](https://reactjs.org/), an [extended form-js](https://github.com/camunda-community-hub/extended-form-js), [Spring-Boot](https://spring.io/projects/spring-boot), [spring-zeebe](https://github.com/camunda-community-hub/spring-zeebe), [tasklist-client](https://github.com/camunda-community-hub/camunda-tasklist-client-java) and [operate-client](https://github.com/camunda-community-hub/camunda-operate-client-java)
+
+## Repository content
 
 This repository contains a Java application template for Camunda Platform 8 using Spring Boot
 and a [docker-compose.yaml](docker-compose.yaml) file for local development. For production setups we recommend to use our [helm charts](https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/).
@@ -15,16 +23,14 @@ and a [docker-compose.yaml](docker-compose.yaml) file for local development. For
 - [Zeebe Workflow Engine](https://github.com/camunda/zeebe)
 - [Contact](https://docs.camunda.io/contact/)
 
-It also contains a [React front-end](src/main/react/tasklist/) that you can execute indepandtely (npm run start). This front-end rely on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js). The first time you use the project, you should be able to connect with demo/demo to create new forms, mail templates and manage your user organization.
+It also contains a [React front-end](src/main/react/tasklist/) that you can execute independently (npm run start). This front-end rely on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js). The first time you use the project, you should be able to connect with demo/demo to create new forms, mail templates and manage your user organization.
 
-> :information_source: If you want to send email or play with Drive, you should have a client_secret_google_api.json file in your resources.
+## Google integration
+If you want to send emails through gmail (what is coded for now), you will need to download a [client_secret_google_api.json from your google console] (https://console.cloud.google.com/) and put it in your resources folder.
 
-## Using the Spring Boot application
+## First steps with the application
 
-The application requires a running Zeebe engine.
-You can run Zeebe locally using the instructions below for Docker Compose
-or have a look at our
-[recommended deployment options for Camunda Platform](https://docs.camunda.io/docs/self-managed/platform-deployment/#deployment-recommendation.).
+The application requires a running Zeebe engine. You can run Zeebe locally using the instructions below for Docker Compose or have a look at our [recommended deployment options for Camunda Platform](https://docs.camunda.io/docs/self-managed/platform-deployment/#deployment-recommendation.).
 
 Run the application via
 ```
@@ -32,6 +38,12 @@ Run the application via
 ```
 
 Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
+When you start the application for the first time, an "ACME" organization is created for you with a single user demo/demo with admin rights. When you access the landing page, you'll be able to access the "admin" section where you can [manage forms](https://github.com/camunda-community-hub/extended-form-js), [mail templates](https://github.com/camunda-community-hub/thymeleaf-feel) and your organization.
+
+You can also access the Tasklist section from the welcome page. You'll notice that in processes are listed the latest versions of your deployed processes. In Tasks, you'll find tasks that you can filter (assigned, assignee, group, state). When a new task is available, the Spring Boot backend will push the information to the front-end (ws). To work on a task you should first claim it. If task is assign to someone else, you'll need to unclaim and claim it.
+
+> :information_source: In the application.yml, you'll notice some "exotic" properties that could modify to change application behavior.
 
 ## Using docker-compose
 
