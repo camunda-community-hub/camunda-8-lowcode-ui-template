@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/simul")
+@RequestMapping("/api/simul")
 public class SimulationController {
 
   @Autowired private OrganizationService organizationService;

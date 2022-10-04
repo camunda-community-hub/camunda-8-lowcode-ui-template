@@ -21,11 +21,11 @@
       "validate" : {
         "required" : true
       },
-      "targetApi" : "/file/upload",
+      "targetApi" : "/api/file/upload",
       "targetApiVerb" : "POST",
       "displayFileUpload" : false,
       "displayFileViewer" : true,
-      "fileSource" : "'/file/serve/'+value.reference",
+      "fileSource" : "'/api/file/serve/'+value.reference",
       "viewerBackdrop" : "modal-backdrop",
       "viewerClass" : "modal-dialog",
       "viewerHeaderClass" : "modal-header",
@@ -40,7 +40,7 @@
       "type" : "select",
       "id" : "Field_012s3gz",
       "key" : "assignee2",
-      "dataSource" : "/simul/users"
+      "dataSource" : "/api/simul/users"
     } ],
     "schemaVersion" : 4,
     "type" : "default",
@@ -53,6 +53,6 @@
     }
   },
   "previewData" : {
-    "toto" : "pouet"
+    "intialMessage" : "pouet"
   }
 }

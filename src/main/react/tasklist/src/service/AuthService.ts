@@ -30,7 +30,7 @@ export class AuthService {
     try {
       dispatch(authStart());
           
-      const { data } = await api.post<IUser>('/authentication/login', { 'username': username, 'password': password });
+      const { data } = await api.post<IUser>('/auth/login', { 'username': username, 'password': password });
 
       api.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
       localStorage.setItem('camundaTasklistUser', JSON.stringify(data));
