@@ -6,8 +6,10 @@ import processService from '../service/ProcessService';
 import { Form } from '@camunda-community/form-js-viewer';
 import { IFormViewer } from '../store/model';
 
+import { useTranslation } from "react-i18next";
 
 function FormViewer(formViewer: IFormViewer) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const container = document.querySelector('#task-form');
   let errors:string[] = [];
@@ -46,7 +48,7 @@ function FormViewer(formViewer: IFormViewer) {
     <div>
 	  <div id="task-form"></div>
 	  <div className="ms-2 me-2 mb-2 d-flex justify-content-between">
-		<button disabled={formViewer.disabled} type="button" className="btn btn-primary" onClick={ submit }>Submit</button>
+        <button disabled={formViewer.disabled} type="button" className="btn btn-primary" onClick={submit}><i className="bi bi-send"></i> {t("Submit")}</button>
 	  </div>
 	</div>
   )

@@ -11,8 +11,10 @@ import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Button from 'react-bootstrap/Button';
+import { useTranslation } from "react-i18next";
 
 function AdminOrganization(orgParam: { organization: Organization }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const org = JSON.parse(JSON.stringify(orgParam.organization));
 
@@ -29,21 +31,27 @@ function AdminOrganization(orgParam: { organization: Organization }) {
 
   return (
     <>
-      {org.active ? <></> : <Button variant="primary" onClick={setActive}><i className="bi bi-check-lg"></i> Set as active</Button>}
-      <Button variant="primary" onClick={save}><i className="bi bi-hdd"></i> Save</Button>
-      <InputGroup className="mb-3">
-        <InputGroup.Text>Orgnization name</InputGroup.Text>
-        <Form.Control aria-label="Orgnization name" defaultValue={org.name} onChange={event => changeName(event.target.value)} />
-      </InputGroup>
+      <Row>
+        <Col>
+          <InputGroup className="mb-3">
+            <InputGroup.Text>{t("Organization name")}</InputGroup.Text>
+            <Form.Control aria-label="Orgnization name" defaultValue={org.name} onChange={event => changeName(event.target.value)} />
+          </InputGroup>
+        </Col>
+        <Col>
+          {org.active ? <></> : <Button variant="primary" onClick={setActive}><i className="bi bi-check-lg"></i> {t("Set as active")}</Button>}
+          <Button variant="primary" onClick={save}><i className="bi bi-hdd"></i> {t("Save")}</Button>
+        </Col>
+      </Row>
       <Tab.Container id="left-tabs-example" defaultActiveKey="users">
         <Row>
           <Col sm={3}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item>
-                <Nav.Link eventKey="users">Users</Nav.Link>
+                <Nav.Link eventKey="users">{t("Users")}</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="groups">Groups</Nav.Link>
+                <Nav.Link eventKey="groups">{t("Groups")}</Nav.Link>
               </Nav.Item>
             </Nav>
           </Col>

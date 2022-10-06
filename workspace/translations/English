@@ -1,0 +1,17 @@
+{
+  "name" : "English",
+  "code" : "en",
+  "modified" : 1665064242886,
+  "translations" : {
+    "Delete" : "Delete",
+    "Processes" : "Processes",
+    "Tasks" : "Tasks",
+    "Save" : "Save",
+    "New Form" : "New Form",
+    "Download" : "Download",
+    "open" : "Open",
+    "Duplicate" : "Duplicate",
+    "Back" : "Back",
+    "Close" : "Close"
+  }
+}

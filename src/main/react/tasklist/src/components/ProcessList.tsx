@@ -20,7 +20,7 @@ function ProcessList() {
       {processes.map((process: IProcess) =>
         <div className="card" key={process.key}>
           <div className="card-body" key={process.key} onClick={() => openProcess(process)}>
-          <h5 className="card-title">{process.name}</h5>
+            <h5 className="card-title text-primary">{process.name}</h5>
           <h6 className="card-subtitle mb-2 text-muted">version {process.version}</h6>
           </div>
         </div>)}

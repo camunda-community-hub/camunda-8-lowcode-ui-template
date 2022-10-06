@@ -11,7 +11,7 @@ function InstantiationForm(props: any) {
   return (
 	currentProcess ?
 	  <div className="card taskform">
-		<h5 className="card-title" > {currentProcess.name}</h5>
+		<h5 className="card-title bg-primary text-light" > {currentProcess.name}</h5>
 		<FormViewer schema={currentSchema} variables={undefined} disabled={false}></FormViewer>
 	  </div> : <div />
   )

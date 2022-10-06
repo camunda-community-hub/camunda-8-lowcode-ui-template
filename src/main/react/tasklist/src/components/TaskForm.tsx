@@ -5,8 +5,10 @@ import authService from '../service/AuthService';
 import taskService from '../service/TaskService';
 import FormViewer from './FormViewer';
 
+import { useTranslation } from "react-i18next";
 
 function TaskForm(props: any) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentTask = useSelector((state: any) => state.process.currentTask)
   const currentSchema = useSelector((state: any) => state.process.currentFormSchema)
@@ -23,9 +25,9 @@ function TaskForm(props: any) {
 	  <div className="card taskform">
         <h5 className="card-title bg-primary text-light" > {currentTask.name} {currentTask.assignee ? <span className="assignedTo"> (assigned to {currentTask.assignee})</span> : <span></span>}</h5>
         {currentTask.assignee ?
-          <button disabled={disabled} type="button" className="btn btn-dark btnClaimUnClaim" onClick={unclaim}> Unclaim</button>
+          <button disabled={disabled} type="button" className="btn btn-dark btnClaimUnClaim" onClick={unclaim}> {t("Unclaim")}</button>
         :
-          <button type="button" className="btn btn-dark btnClaimUnClaim" onClick={claim}>Claim</button>
+          <button type="button" className="btn btn-dark btnClaimUnClaim" onClick={claim}>{t("Claim")}</button>
 		}
 		<FormViewer schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormViewer>
 	  </div> : <div />

@@ -50,7 +50,7 @@ public class ThemeController extends AbstractController {
 
   @IsEditor
   @DeleteMapping("/{templateName}")
-  public void deleteForm(@PathVariable String templateName) throws TaskListException, IOException {
+  public void delete(@PathVariable String templateName) throws TaskListException, IOException {
     themeService.deleteByName(templateName);
   }
 
