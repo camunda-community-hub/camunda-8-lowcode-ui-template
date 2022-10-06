@@ -1,0 +1,37 @@
+${btn}, ${btn}:disabled, ${btn}.disabled {
+	color: ${textColor};
+	background-color: ${color};
+	border-color:${color};
+}
+.btn-check:active+${btn}, .btn-check:checked+${btn}, ${btn}.active, ${btn}:active, .show>${btn}.dropdown-toggle {
+	color: ${textColor};
+	background-color: ${activeBackgroundColor};
+	border-color: ${activeBorderColor};
+}
+${btn}:hover, .btn-check:focus+${btn}, ${btn}:focus {
+	color: ${textColor};
+	background-color: ${hoverFocusBackgroundColor};
+    border-color: ${hoverFocusBorderColor};
+}
+${btn}:focus, .btn-check:focus+${btn},
+.btn-check:active+${btn}:focus, .btn-check:checked+${btn}:focus, 
+${btn}.active:focus, ${btn}:active:focus, .show>${btn}.dropdown-toggle:focus {
+	box-shadow: 0 0 0 0.25rem rgb(${focusShadow} / 50%);
+}
+
+${btnOutline} {
+    color: ${color};
+    border-color: ${color};
+}
+${btnOutline}:hover,
+.btn-check:active+${btnOutline}, .btn-check:checked+${btnOutline}, ${btnOutline}.active, ${btnOutline}.dropdown-toggle.show, ${btnOutline}:active {
+    color: ${textColor};
+    background-color: ${color};
+    border-color: ${color};
+}
+.btn-check:focus+${btnOutline}, ${btnOutline}:focus,
+.btn-check:active+${btnOutline}:focus, .btn-check:checked+${btnOutline}:focus, 
+${btnOutline}.active:focus, ${btnOutline}.dropdown-toggle.show:focus, 
+${btnOutline}:active:focus {
+    box-shadow: 0 0 0 0.25rem rgb(${focusShadow} / 50%);
+}

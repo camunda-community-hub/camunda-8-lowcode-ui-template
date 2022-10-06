@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import authService from '../service/AuthService';
 import adminFormService from '../service/AdminFormService';
 import adminMailService from '../service/AdminMailService';
+import adminThemeService from '../service/AdminThemeService';
 import logo from '../assets/img/logo.svg'
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
@@ -18,6 +19,7 @@ function AdminNavbar() {
   const form = useSelector((state: any) => state.adminForms.currentForm)
   const formEditor = useSelector((state: any) => state.adminForms.formEditor)
   const mail = useSelector((state: any) => state.adminMails.currentMail)
+  const theme = useSelector((state: any) => state.adminThemes.currentTheme)
 
   const dispatch = useDispatch();
   const [showPreview, setShowPreview] = useState(false);
@@ -49,12 +51,20 @@ function AdminNavbar() {
                   <Button variant="secondary" onClick={() => dispatch(adminMailService.setMail(null))}><i className="bi bi-arrow-return-left"></i> Back</Button>
                 </InputGroup>
                 :
-                <div className="input-group mb-3 ">
-                  <Link className="btn btn-outline-light" to="/admin/forms">Forms</Link>
-                  <Link className="btn btn-outline-light" to="/admin/mails">Emails</Link>
-                  {user!.profile === 'Admin' ? <Link className="btn btn-outline-light" to="/admin/users">Users</Link> : <></>}
-                  <a className="btn btn-outline-light" onClick={logout}>{authService.getUser()!.username} <i className="bi bi-box-arrow-left"></i></a>
-                </div>
+                theme ?
+                  <InputGroup className="mb-3">
+                    <Form.Control aria-label="Theme name" placeholder="Theme name" value={theme.name} onChange={(evt) => dispatch(adminThemeService.setThemeName(evt.target.value))} />
+                    <Button variant="primary" onClick={() => dispatch(adminThemeService.saveCurrentTheme())}>Save</Button>
+                    <Button variant="secondary" onClick={() => dispatch(adminThemeService.setTheme(null))}><i className="bi bi-arrow-return-left"></i> Back</Button>
+                  </InputGroup>
+                  :
+                  <div className="input-group mb-3 ">
+                    <Link className="btn btn-outline-secondary" to="/admin/forms">Forms</Link>
+                    <Link className="btn btn-outline-secondary" to="/admin/mails">Emails</Link>
+                    {user!.profile === 'Admin' ? <Link className="btn btn-outline-secondary" to="/admin/users">Users</Link> : <></>}
+                    <Link className="btn btn-outline-secondary" to="/admin/theme">Theming</Link>
+                    <a className="btn btn-outline-secondary" onClick={logout}>{authService.getUser()!.username} <i className="bi bi-box-arrow-left"></i></a>
+                  </div>
           }
         </div>
       </div>

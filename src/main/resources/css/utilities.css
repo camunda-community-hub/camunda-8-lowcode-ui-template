@@ -1,0 +1,17 @@
+.bg-${variant} {
+    background-color: ${color}!important;
+}
+.text-${variant} {
+    color: ${color}!important;
+}
+.link-${variant} {
+    color: ${color};
+}
+.link-${variant}:focus, .link-${variant}:hover {
+    color: ${darkerColor};
+}
+.alert-${variant} {
+    color: ${darker40Color};
+    background-color: ${brigther80Color};
+    border-color: ${brigther70Color};
+}

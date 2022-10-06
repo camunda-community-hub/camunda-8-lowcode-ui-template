@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/organization")
-public class OrgnizationController {
+public class OrganizationController {
 
   private final OrganizationService organizationService;
 
-  public OrgnizationController(OrganizationService organizationService) {
+  public OrganizationController(OrganizationService organizationService) {
     this.organizationService = organizationService;
   }
 
@@ -40,7 +40,7 @@ public class OrgnizationController {
     while (organizationService.findByName(name) != null) {
       name = "ACME" + i++;
     }
-    return organizationService.createOrgnization(name, false);
+    return organizationService.createOrganization(name, false);
   }
 
   @IsAdmin

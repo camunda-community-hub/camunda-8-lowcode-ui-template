@@ -12,20 +12,6 @@
   overflow-x: hidden;
 }
 
-.btn-primary:hover {
-    background-color: #17428c;
-    border-color: #17428c;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #17428c;
-    border-color: #17428c;
-}
-.text-primary {
-    color: #17428c!important;
-}
-
 main {
     height: calc(100vh - 76px);
     box-shadow: 6px 6px 14px #ddd inset;
@@ -39,7 +25,6 @@ h2 {
     line-height: 1.5;
     letter-spacing: .1rem;
     text-transform: uppercase;
-    color: #17428c;
     font-weight: 600;
     margin-bottom: 20px;
 }
@@ -91,11 +76,8 @@ span.assignedTo {
 }
 .card-title {
 	font-size: 1.1rem;
-    color: #17428c;
 }
 .card.taskform .card-title {
-	background: #17428c;
-    color: white;
     padding: 8px;
     margin-top: -1px;
     border-radius: 5px 5px 0px 0px;
@@ -118,9 +100,7 @@ span.assignedTo {
 }
 .localeDropdown > button {
 	font-size: 1.1rem;
-    color: #17428c;
     border:0px;
-    background:white;
 }
 .dropdown-menu {
 	box-shadow: -2px 2px 3px #666;
@@ -143,8 +123,6 @@ span.assignedTo {
     padding: 0px;
 }
 .maileditor .card .card-title {
-	background: #17428c;
-    color: white;
     padding: 8px;
     margin: 0px;
     border-radius: 5px 5px 0px 0px;

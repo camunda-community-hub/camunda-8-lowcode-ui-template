@@ -21,7 +21,7 @@ function TaskForm(props: any) {
   return (
 	currentTask ?
 	  <div className="card taskform">
-        <h5 className="card-title" > {currentTask.name} {currentTask.assignee ? <span className="assignedTo"> (assigned to {currentTask.assignee})</span> : <span></span>}</h5>
+        <h5 className="card-title bg-primary text-light" > {currentTask.name} {currentTask.assignee ? <span className="assignedTo"> (assigned to {currentTask.assignee})</span> : <span></span>}</h5>
         {currentTask.assignee ?
           <button disabled={disabled} type="button" className="btn btn-dark btnClaimUnClaim" onClick={unclaim}> Unclaim</button>
         :

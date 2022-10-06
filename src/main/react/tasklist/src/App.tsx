@@ -13,6 +13,7 @@ import Processes from "./pages/Processes";
 import AdminUsers from "./pages/AdminUsers";
 import AdminEmails from "./pages/AdminEmails";
 import AdminForms from "./pages/AdminForms";
+import AdminThemes from './pages/AdminThemes';
 import './assets/css/bootstrap.min.css';
 import './assets/css/bootstrap-icons-1.7.2.css';
 import '@camunda-community/form-js/dist/assets/form-js.css';
@@ -50,6 +51,7 @@ function App() {
             <Route index element={<AdminForms />} />
             <Route path="forms" element={<AdminForms />} />
             <Route path="mails" element={<AdminEmails />} />
+            <Route path="theme" element={<AdminThemes />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="*" element={<Undefined />} />
           </Route>
