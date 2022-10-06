@@ -43,7 +43,7 @@ function TaskList() {
     <div>
       <div className="row flex-nowrap">
         <Sidebar>
-          <h2>Tasks
+          <h2 className="text-primary">Tasks
             <Button variant="primary" onClick={handleShow}><i className="bi bi-funnel"></i></Button>
           </h2>
           <div className="taskList">

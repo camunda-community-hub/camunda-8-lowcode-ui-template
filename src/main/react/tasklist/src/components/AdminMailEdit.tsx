@@ -18,14 +18,14 @@ function AdminMailEdit() {
   return (
     <Row className="maileditor">
       <Col className="card">
-        <h5 className="card-title">Mail editor</h5>
+        <h5 className="card-title bg-primary text-light">Mail editor</h5>
         <CodeMirror
           value={mail.htmlTemplate}
           extensions={[html()]}
           onChange={onChange}/>
       </Col>
       <Col className="card">
-        <h5 className="card-title">Mail preview</h5>
+        <h5 className="card-title bg-primary text-light">Mail preview</h5>
         <div dangerouslySetInnerHTML={{ __html: mail.htmlTemplate }}></div>
       </Col>
     </Row>

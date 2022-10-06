@@ -132,11 +132,11 @@ public class OrganizationService {
               .setEmail("christophe.dame@camunda.com")
               .setProfile("Admin")
               .addGroups("HR", "IT");
-      activeOrg = createOrgnization("ACME", true, demo);
+      activeOrg = createOrganization("ACME", true, demo);
     }
   }
 
-  public Organization createOrgnization(String name, boolean active, User... users)
+  public Organization createOrganization(String name, boolean active, User... users)
       throws IOException {
     Organization org =
         new Organization()

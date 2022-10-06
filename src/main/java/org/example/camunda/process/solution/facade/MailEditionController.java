@@ -55,7 +55,7 @@ public class MailEditionController extends AbstractController {
   @IsEditor
   @GetMapping(value = "/names")
   @ResponseBody
-  public List<String> formNames() {
+  public List<String> mailNames() {
     return mailTemplateService.findNames();
   }
 

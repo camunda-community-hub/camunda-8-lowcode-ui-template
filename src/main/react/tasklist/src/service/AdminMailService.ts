@@ -74,7 +74,6 @@ export class AdminMailService {
     }).catch(error => {
       alert(error.message);
     })
-    //this.$store.form.previewData = JSON.stringify(this.$store.form.previewData, null, 2);
   }
   getCurrentMail = (): any => {
     return store.getState().adminMails.currentMail;
