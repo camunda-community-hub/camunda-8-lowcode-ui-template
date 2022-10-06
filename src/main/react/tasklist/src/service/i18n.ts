@@ -3,15 +3,21 @@ import { initReactI18next } from "react-i18next";
 import Backend from "i18next-http-backend";
 import { env } from '../env';
 
+
+
 const createI18n = (): i18nInstance => {
   const i18n = i18next.createInstance().use(initReactI18next);
-
+  let language = localStorage.getItem('camundLocale');
+  if (!language) {
+    language = "en";
+    localStorage.setItem('camundLocale', language);
+  }
   i18n
     .use(initReactI18next)
     .use(Backend)
     .init({
-    lng: "en",
-    fallbackLng: "en",
+      lng: language,
+      fallbackLng: "en",
     backend: {
       loadPath: 'http://' + env.backend + '/api/i18n/{{lng}}/{{ns}}.json'
     }

@@ -3,7 +3,7 @@
   "modified" : 1664805515167,
   "schema" : {
     "components" : [ {
-      "label" : "Initial mesage",
+      "label" : "Initial message",
       "type" : "textfield",
       "id" : "Field_1bwxjh7",
       "key" : "intialMessage"

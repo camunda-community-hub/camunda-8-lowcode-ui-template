@@ -12,6 +12,7 @@ function LanguageSelector() {
 
   const changeLanguage = (language: string) => () => {
     i18n.changeLanguage(language);
+    localStorage.setItem('camundLocale', language);
   };
 
   useEffect(() => {
