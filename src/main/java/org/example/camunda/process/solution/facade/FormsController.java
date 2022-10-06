@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.example.camunda.process.solution.jsonmodel.Form;
 import org.example.camunda.process.solution.security.annontation.IsAuthenticated;
 import org.example.camunda.process.solution.service.FormService;
+import org.example.camunda.process.solution.service.InternationalizationService;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ public class FormsController extends AbstractController {
   private final Logger logger = LoggerFactory.getLogger(FormsController.class);
 
   @Autowired private FormService formService;
+  @Autowired private InternationalizationService internationalizationService;
 
   @IsAuthenticated
   @GetMapping("/{processDefinitionId}/{formKey}")
@@ -45,14 +47,35 @@ public class FormsController extends AbstractController {
       @PathVariable String formKey)
       throws TaskListException, IOException {
 
+    return getFormSchema(null, processDefinitionId, formKey, null);
+  }
+
+  @IsAuthenticated
+  @GetMapping("/{processName}/{processDefinitionId}/{formKey}/{locale}")
+  @ResponseBody
+  public JsonNode getFormSchema(
+      @PathVariable String processName,
+      @PathVariable String processDefinitionId,
+      @PathVariable String formKey,
+      @PathVariable String locale)
+      throws TaskListException, IOException {
+
     if (formKey.startsWith("camunda-forms:bpmn:")) {
       String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
       String schema = formService.getEmbeddedFormSchema(processName, processDefinitionId, formId);
-      return JsonUtils.toJsonNode(schema);
+      JsonNode formSchema = JsonUtils.toJsonNode(schema);
+      if (locale != null) {
+        internationalizationService.translateFormSchema(formSchema, locale);
+      }
+      return formSchema;
     }
 
     Form form = formService.findByName(formKey);
-    return form.getSchema();
+    JsonNode schema = form.getSchema();
+    if (locale != null) {
+      internationalizationService.translateFormSchema(schema, locale);
+    }
+    return schema;
   }
 
   @IsAuthenticated

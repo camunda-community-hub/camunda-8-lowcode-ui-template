@@ -53,7 +53,8 @@ export class TaskService {
   }
   setTask = (task: ITask | null): AppThunk => async dispatch => {
     if (task) {
-      let url = '/forms/' + task.processName + '/' + task.processDefinitionId + '/' + task.formKey;
+      let ln = localStorage.getItem('camundLocale');
+      let url = '/forms/' + task.processName + '/' + task.processDefinitionId + '/' + task.formKey + '/' + ln;
       api.get(url).then(response => {
         dispatch(setFormSchema(response.data));
       }).catch(error => {

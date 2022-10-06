@@ -2,6 +2,8 @@ package org.example.camunda.process.solution.service;
 
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -61,6 +63,21 @@ public class InternationalizationService {
 
   public void deleteByName(String name) throws IOException {
     Files.delete(resolveTranslation(name));
+  }
+
+  public JsonNode translateFormSchema(JsonNode schema, String locale) {
+    Translation t = codeTranslationMap.get(locale);
+    if (t == null) {
+      return schema;
+    }
+    JsonNode components = schema.get("components");
+    for (JsonNode node : components) {
+      String label = node.get("label").asText();
+      if (t.getTranslations().containsKey(label)) {
+        ((ObjectNode) node).put("label", t.getTranslations().get(label));
+      }
+    }
+    return schema;
   }
 
   @PostConstruct
