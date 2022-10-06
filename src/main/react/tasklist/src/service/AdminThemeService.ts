@@ -50,18 +50,18 @@ export class AdminThemeService {
       alert(error.message);
     })
   }
-  setTheme = (Theme: any): AppThunk => async dispatch => {
-    dispatch(setCurrentTheme(Theme));
+  setTheme = (theme: any): AppThunk => async dispatch => {
+    dispatch(setCurrentTheme(theme));
   }
-  setContent = (Content: string): AppThunk => async dispatch => {
-    dispatch(setContent(Content));
+  setContent = (content: string): AppThunk => async dispatch => {
+    dispatch(setContent(content));
   }
-  setThemeName = (ThemeName: string): AppThunk => async dispatch => {
-    dispatch(setThemeName(ThemeName));
+  setThemeName = (themeName: string): AppThunk => async dispatch => {
+    dispatch(setThemeName(themeName));
   }
   saveCurrentTheme = (): AppThunk => async dispatch => {
-    let Theme = Object.assign({}, store.getState().adminThemes.currentTheme);
-    api.post('/themes', Theme).then(response => {
+    let theme = Object.assign({}, store.getState().adminThemes.currentTheme);
+    api.post('/themes', theme).then(response => {
       dispatch(setCurrentTheme(response.data));
     }).catch(error => {
       alert(error.message);

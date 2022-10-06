@@ -222,7 +222,6 @@ public class ThemeService {
       activeTheme = new Theme("defaultTheme", generateCss(variables));
       activeTheme.setVariables(variables);
       activeTheme.setActive(true);
-      themes.put(activeTheme.getName(), activeTheme);
       saveTheme(activeTheme);
     }
   }

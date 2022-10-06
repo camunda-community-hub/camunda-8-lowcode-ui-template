@@ -6,6 +6,7 @@ import adminOrgReducer from './features/adminOrgs/slice';
 import adminFormsReducer from './features/adminForms/slice';
 import adminMailsReducer from './features/adminMails/slice';
 import adminThemesReducer from './features/adminThemes/slice';
+import translationsReducer from './features/translations/slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   adminOrg: adminOrgReducer,
   adminForms: adminFormsReducer,
   adminMails: adminMailsReducer,
-  adminThemes: adminThemesReducer
+  adminThemes: adminThemesReducer,
+  translations: translationsReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -14,13 +14,16 @@ import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
+import { useTranslation } from "react-i18next";
+
 function TaskList() {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [showTaskFilter, setShowTaskFilter] = useState(false);
 
   const handleClose = () => setShowTaskFilter(false);
   const handleShow = () => setShowTaskFilter(true);
 
-  const dispatch = useDispatch();
   const tasks = useSelector((state: any) => state.process.tasks)
   const taskSearch = useSelector((state: any) => state.process.taskSearch)
   type ObjectKey = keyof typeof taskSearch;
@@ -43,7 +46,7 @@ function TaskList() {
     <div>
       <div className="row flex-nowrap">
         <Sidebar>
-          <h2 className="text-primary">Tasks
+          <h2 className="text-primary">{t("Tasks")}
             <Button variant="primary" onClick={handleShow}><i className="bi bi-funnel"></i></Button>
           </h2>
           <div className="taskList">
@@ -58,27 +61,27 @@ function TaskList() {
       </div>
       <Modal show={showTaskFilter} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Task Filters</Modal.Title>
+          <Modal.Title>{t("Tasks filters")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
             <Col>
               <InputGroup className="mb-3">
-                <InputGroup.Text>State</InputGroup.Text>
+                <InputGroup.Text>{t("State")}</InputGroup.Text>
                 <Form.Select aria-label="state" value={taskSearch.state} onChange={(evt) => changeFilter('state', evt.target.value)}>
-                  <option value="CREATED" >Created</option>
-                  <option value="COMPLETED">Completed</option>
-                  <option value="CANCELED">Canceled</option>
+                  <option value="CREATED" >{t("Created")}</option>
+                  <option value="COMPLETED">{t("Completed")}</option>
+                  <option value="CANCELED">{t("Canceled")}</option>
                 </Form.Select>
               </InputGroup>
             </Col>
             <Col>
               <InputGroup className="mb-3">
-                <InputGroup.Text>Assigned</InputGroup.Text>
+                <InputGroup.Text>{t("Assigned")}</InputGroup.Text>
                 <Form.Select aria-label="assigned" value={taskSearch.assigned} onChange={(evt) => changeFilter('assigned', evt.target.value)}>
-                  <option value="">Any</option>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
+                  <option value="">{t("Any")}</option>
+                  <option value="true">{t("Yes")}</option>
+                  <option value="false">{t("No")}</option>
                 </Form.Select>
               </InputGroup>
             </Col>
@@ -86,18 +89,18 @@ function TaskList() {
           <Row>
             <Col>
               <InputGroup className="mb-3">
-                <InputGroup.Text>Assignee :</InputGroup.Text>
+                <InputGroup.Text>{t("Assignee")} :</InputGroup.Text>
                 <Form.Select disabled={"true"!=taskSearch.assigned} aria-label="assignee" value={taskSearch.assignee} onChange={(evt) => changeFilter('assignee', evt.target.value)}>
-                  <option value="">Any user</option>
-                  <option value={authService.getUser()?.username}>Me</option>
+                  <option value="">{t("Any user")}</option>
+                  <option value={authService.getUser()?.username}>{t("Me")}</option>
                 </Form.Select>
               </InputGroup>
             </Col>
             <Col>
               <InputGroup className="mb-3">
-                <InputGroup.Text>Group :</InputGroup.Text>
+                <InputGroup.Text>{t("Group")} :</InputGroup.Text>
                 <Form.Select disabled={"true" != taskSearch.assigned} aria-label="group" value={taskSearch.group} onChange={(evt) => changeFilter('group', evt.target.value)}>
-                  <option value="">Any group</option>
+                  <option value="">{t("Any group")}</option>
                   {authService.getUser()?.groups.map((group: string, index: number) =>
                     <option key={group} value={group}>{group}</option>
                   )}
