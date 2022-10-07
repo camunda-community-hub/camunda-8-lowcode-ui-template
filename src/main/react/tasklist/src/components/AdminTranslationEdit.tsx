@@ -7,6 +7,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import { useTranslation } from "react-i18next";
 
 function AdminTranslationEdit() {
@@ -14,37 +16,56 @@ function AdminTranslationEdit() {
   const { t } = useTranslation();
 
   const language = adminTranslationService.getCurrentLanguage();
-  const [translations, setTranslations] = useState<{ key: string; value: string }[]>([]);
+  const [siteTranslations, setSiteTranslations] = useState<{ key: string; value: string }[]>([]);
+  const [formsTranslations, setFormsTranslations] = useState<{ key: string; value: string }[]>([]);
 
   useEffect(() => {
     let transArray: { key: string; value: string }[] = [];
     let i = 0;
-    for (let prop in language.translations) {
-      transArray[i++] = { key: prop, value: language.translations[prop] };
+    for (let prop in language.siteTranslations) {
+      transArray[i++] = { key: prop, value: language.siteTranslations[prop] };
     }
-    setTranslations(transArray);
+    setSiteTranslations(transArray);
+
+    transArray = [];
+    i = 0;
+    for (let prop in language.formsTranslations) {
+      transArray[i++] = { key: prop, value: language.formsTranslations[prop] };
+    }
+    setFormsTranslations(transArray);
   }, []);
 
-  const setTransKey = (index: number, value: string) => {
-    translations[index].key = value;
+  const setSiteTransKey = (index: number, value: string) => {
+    siteTranslations[index].key = value;
   }
-  const setTransValue = (index: number, value: string) => {
-    translations[index].value = value;
+  const setSiteTransValue = (index: number, value: string) => {
+    siteTranslations[index].value = value;
   }
-  const deleteTrans = (index: number) => {
-    translations.splice(index, 1);
-    setTranslations(Object.assign([], translations));
+  const setFormsTransKey = (index: number, value: string) => {
+    formsTranslations[index].key = value;
   }
-  const addTrans = () => {
-    translations.push({key: "key", value: "value"});
-    setTranslations(Object.assign([], translations));
+  const setFormsTransValue = (index: number, value: string) => {
+    formsTranslations[index].value = value;
+  }
+  const deleteFormsTrans = (index: number) => {
+    formsTranslations.splice(index, 1);
+    setFormsTranslations(Object.assign([], formsTranslations));
+  }
+  const addFormsTrans = () => {
+    formsTranslations.push({key: "key", value: "value"});
+    setFormsTranslations(Object.assign([], formsTranslations));
   }
   const saveLanguage = () => {
-    let objTrans: any = {};
-    for (let i = 0; i < translations.length; i++) {
-      objTrans[translations[i].key] = translations[i].value;
+    let objSiteTrans: any = {};
+    for (let i = 0; i < siteTranslations.length; i++) {
+      objSiteTrans[siteTranslations[i].key] = siteTranslations[i].value;
     }
-    dispatch(adminTranslationService.setTranslations(objTrans));
+    let objFormsTrans: any = {};
+    for (let i = 0; i < formsTranslations.length; i++) {
+      objFormsTrans[formsTranslations[i].key] = formsTranslations[i].value;
+    }
+    dispatch(adminTranslationService.setSiteTranslations(objSiteTrans));
+    dispatch(adminTranslationService.setFormsTranslations(objFormsTrans));
     dispatch(adminTranslationService.saveCurrentLanguage());
   }
 
@@ -67,41 +88,80 @@ function AdminTranslationEdit() {
         </Col>
       </Row>
       <h2 className="text-primary">{t("Dictionnary")}</h2>
-      <Table striped bordered hover>
-        <thead className="bg-primary">
-          <tr>
-        <th className="text-light">
-          Key
-          </th>
-          <th className="text-light">
-          Value
-          </th>
-            <th></th>
-            </tr>
-        </thead>
-        <tbody>
-      {translations ? translations.map((trans:any, index:number) => 
-        <tr key={trans.key+index}>
-          <td>
-            <Form.Control aria-label="Key" placeholder="key" defaultValue={trans.key} onChange={(evt) => setTransKey(index, evt.target.value)} />
-          </td>
-          <td>
-            <Form.Control aria-label="Value" placeholder="value" defaultValue={trans.value} onChange={(evt) => setTransValue(index, evt.target.value)} />
-          </td>
-          <td>
-            <Button variant="danger" onClick={() => deleteTrans(index)}><i className="bi bi-trash"></i></Button>
-          </td>
-      </tr>
-          ) : <></>}
-          </tbody>
-        <tfoot className="bg-primary">
-          <tr>
-        <td></td>
-          <td></td>
-          <td><Button variant="success" onClick={() => addTrans()}><i className="bi bi-plus"></i></Button></td>
-            </tr>
-        </tfoot>
-      </Table>
+      <Tabs
+        defaultActiveKey="site"
+        className="mb-3"
+      >
+        <Tab eventKey="site" title="Site">
+          <Table striped bordered hover>
+            <thead className="bg-primary">
+              <tr>
+                <th className="text-light">
+                  Key
+                </th>
+                <th className="text-light">
+                  Value
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {siteTranslations ? siteTranslations.map((trans: any, index: number) =>
+                <tr key={trans.key + index}>
+                  <td>
+                    {trans.key}
+                  </td>
+                  <td>
+                    <Form.Control aria-label="Value" placeholder="value" defaultValue={trans.value} onChange={(evt) => setSiteTransValue(index, evt.target.value)} />
+                  </td>
+                </tr>
+              ) : <></>}
+            </tbody>
+            <tfoot className="bg-primary">
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </Table>
+        </Tab>
+        <Tab eventKey="forms" title="Forms">
+          <Table striped bordered hover>
+            <thead className="bg-primary">
+              <tr>
+                <th className="text-light">
+                  Key
+                </th>
+                <th className="text-light">
+                  Value
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {formsTranslations ? formsTranslations.map((trans: any, index: number) =>
+                <tr key={trans.key + index}>
+                  <td>
+                    <Form.Control aria-label="Key" placeholder="key" defaultValue={trans.key} onChange={(evt) => setFormsTransKey(index, evt.target.value)} />
+                  </td>
+                  <td>
+                    <Form.Control aria-label="Value" placeholder="value" defaultValue={trans.value} onChange={(evt) => setFormsTransValue(index, evt.target.value)} />
+                  </td>
+                  <td>
+                    <Button variant="danger" onClick={() => deleteFormsTrans(index)}><i className="bi bi-trash"></i></Button>
+                  </td>
+                </tr>
+              ) : <></>}
+            </tbody>
+            <tfoot className="bg-primary">
+              <tr>
+                <td></td>
+                <td></td>
+                <td><Button variant="success" onClick={() => addFormsTrans()}><i className="bi bi-plus"></i></Button></td>
+              </tr>
+            </tfoot>
+          </Table>
+        </Tab>
+      </Tabs>
       </div>
   );
 }

@@ -1,5 +1,5 @@
 import store, { AppThunk } from '../store';
-import { loadStart, loadSuccess, setCurrentLanguage, setLanguageCode, setTranslations, setLanguageName, fail, silentfail } from '../store/features/translations/slice';
+import { loadStart, loadSuccess, setCurrentLanguage, setLanguageCode, setSiteTranslations, setFormsTranslations, setLanguageName, fail, silentfail } from '../store/features/translations/slice';
 import api from './api';
 
 export class AdminTranslationService {
@@ -8,8 +8,45 @@ export class AdminTranslationService {
     return {
       name: 'Language',
       code: 'code',
-      translations: { tasks: "Tasks", processes: "Processes", open: "Open" },
-      Content: ''
+      siteTranslations: {
+        "Delete": "Delete",
+        "Processes": "Processes",
+        "Tasks": "Tasks",
+        "Save": "Save",
+        "New Form": "New Form",
+        "Download": "Download",
+        "Open": "Open",
+        "Duplicate": "Duplicate",
+        "Back": "Back",
+        "Close": "Close",
+        "Dictionnary": "Dictionnary",
+        "Language name": "Langue name",
+        "Language code": "Language code",
+        "Name": "Name",
+        "Organization name": "Organization name",
+        "Internationalization": "Internationalization",
+        "Users": "Users",
+        "Groups": "Groups",
+        "Claim": "Claim",
+        "Unclaim": "Unclaim",
+        "Submit": "Submit",
+        "Group": "Group",
+        "Assignee": "Assignee",
+        "Assigned": "Assigned",
+        "State": "State",
+        "Completed": "Completed",
+        "Created": "Created",
+        "Canceled": "Canceled",
+        "Any": "Any",
+        "Yes": "Yes",
+        "No": "No",
+        "Me": "Me",
+        "Any user": "Any users",
+        "Any group": "Any group",
+        "Tasks filters": "Tasks filters",
+        "My processes": "My processes"
+      },
+      formsTranslations: {}
     }
   }
   getLanguages = (): AppThunk => async dispatch => {
@@ -54,8 +91,11 @@ export class AdminTranslationService {
   setLanguage = (language: any): AppThunk => async dispatch => {
     dispatch(setCurrentLanguage(language));
   }
-  setTranslations = (translations: any): AppThunk => async dispatch => {
-    dispatch(setTranslations(translations));
+  setSiteTranslations = (translations: any): AppThunk => async dispatch => {
+    dispatch(setSiteTranslations(translations));
+  }
+  setFormsTranslations = (translations: any): AppThunk => async dispatch => {
+    dispatch(setFormsTranslations(translations));
   }
   setLanguageName = (languageName: string): AppThunk => async dispatch => {
     dispatch(setLanguageName(languageName));

@@ -73,8 +73,8 @@ public class InternationalizationService {
     JsonNode components = schema.get("components");
     for (JsonNode node : components) {
       String label = node.get("label").asText();
-      if (t.getTranslations().containsKey(label)) {
-        ((ObjectNode) node).put("label", t.getTranslations().get(label));
+      if (t.getFormsTranslations().containsKey(label)) {
+        ((ObjectNode) node).put("label", t.getFormsTranslations().get(label));
       }
     }
     return schema;
@@ -109,29 +109,7 @@ public class InternationalizationService {
               "Save",
               "Save");
       Translation translation = new Translation("English", "en");
-      translation.setTranslations(variables);
-      saveTranslation(translation);
-
-      variables =
-          Map.of(
-              "Tasks",
-              "Tâches",
-              "Processes",
-              "Processus",
-              "Open",
-              "Ouvrir",
-              "New Form",
-              "Nouveau formulaire",
-              "Duplicate",
-              "Dupliquer",
-              "Download",
-              "Télécharger",
-              "Delete",
-              "Supprimer",
-              "Save",
-              "Enregistrer");
-      translation = new Translation("Français", "fr");
-      translation.setTranslations(variables);
+      translation.setSiteTranslations(variables);
       saveTranslation(translation);
     }
   }

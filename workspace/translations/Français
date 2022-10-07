@@ -1,8 +1,8 @@
 {
   "name" : "Français",
   "code" : "fr",
-  "modified" : 1665065554859,
-  "translations" : {
+  "modified" : 1665132499517,
+  "siteTranslations" : {
     "Delete" : "Supprimer",
     "Processes" : "Processus",
     "Tasks" : "Tâches",
@@ -36,10 +36,11 @@
     "No" : "Non",
     "Me" : "Moi",
     "Any user" : "Tous les utilisateurs",
-    "key" : "value",
     "Any group" : "Tous les groupes",
     "Tasks filters" : "Filtrer les tâches",
-    "My processes" : "Processus déployés",
+    "My processes" : "Processus déployés"
+  },
+  "formsTranslations" : {
     "Attachment" : "Pièce jointe"
   }
 }

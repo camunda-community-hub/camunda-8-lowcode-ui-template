@@ -2,7 +2,7 @@
   "name" : "English",
   "code" : "en",
   "modified" : 1665064242886,
-  "translations" : {
+  "siteTranslations" : {
     "Delete" : "Delete",
     "Processes" : "Processes",
     "Tasks" : "Tasks",
@@ -13,5 +13,6 @@
     "Duplicate" : "Duplicate",
     "Back" : "Back",
     "Close" : "Close"
-  }
+  },
+  "formsTranslations" : {}
 }
