@@ -68,6 +68,6 @@ public class InternationalizationController {
   @GetMapping("/{ln}/{ns}.json")
   public Map<String, String> translation(@PathVariable String ln)
       throws StreamReadException, DatabindException, IOException {
-    return intlService.findByCode(ln).getTranslations();
+    return intlService.findByCode(ln).getSiteTranslations();
   }
 }

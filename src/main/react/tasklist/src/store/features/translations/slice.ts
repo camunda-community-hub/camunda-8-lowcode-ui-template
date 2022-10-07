@@ -45,8 +45,11 @@ const translationsSlice = createSlice({
     setLanguageCode: (state: TranslationsState, action: PayloadAction<string>) => {
       state.currentLanguage.code = action.payload;
     },
-    setTranslations: (state: TranslationsState, action: PayloadAction<any>) => {
-      state.currentLanguage.translations = action.payload;
+    setSiteTranslations: (state: TranslationsState, action: PayloadAction<any>) => {
+      state.currentLanguage.siteTranslations = action.payload;
+    },
+    setFormsTranslations: (state: TranslationsState, action: PayloadAction<any>) => {
+      state.currentLanguage.formsTranslations = action.payload;
     }
   },
 });
@@ -57,7 +60,8 @@ export const {
   setCurrentLanguage,
   setLanguageName,
   setLanguageCode,
-  setTranslations,
+  setSiteTranslations,
+  setFormsTranslations,
   fail,
   silentfail
 } = translationsSlice.actions;
