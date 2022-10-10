@@ -11,7 +11,7 @@ public class BpmnUtilsTest {
   @Test
   public void testGetTaskNameFromBpmn() {
     String taskName = BpmnUtils.getTaskNameFromBpmn("camunda-process.bpmn", "task1");
-    assertEquals("Task One", taskName);
+    assertEquals("Task with extended FormJs", taskName);
   }
 
   @Test
