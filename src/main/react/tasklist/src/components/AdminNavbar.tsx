@@ -89,7 +89,7 @@ function AdminNavbar() {
           <Modal.Body>
             <div className="row">
               <div className="card col"><DataPreviewEditor /></div>
-              <div className="card col"><FormPreview schema={formEditor.getSchema()} variables={[]} disabled={false} /></div>
+              <div className="card col"><FormPreview formKey={null} schema={formEditor.getSchema()} variables={[]} disabled={false} /></div>
             </div>
           </Modal.Body>
           <Modal.Footer>

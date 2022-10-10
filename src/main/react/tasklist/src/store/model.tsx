@@ -51,7 +51,8 @@ export interface ITaskSearch {
 }
 
 export interface IFormViewer {
-  schema: string;
+  formKey: string | null;
+  schema: string | null;
   variables: IVariable[] | undefined;
   disabled: boolean;
 }

@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import type {} from 'redux-thunk/extend-redux';
 import authService from '../service/AuthService';
 import taskService from '../service/TaskService';
-import FormViewer from './FormViewer';
+import FormResolver from './FormResolver';
 
 import { useTranslation } from "react-i18next";
 
@@ -29,7 +29,7 @@ function TaskForm(props: any) {
         :
           <button type="button" className="btn btn-dark btnClaimUnClaim" onClick={claim}>{t("Claim")}</button>
 		}
-		<FormViewer schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormViewer>
+        <FormResolver formKey={currentTask.formKey} schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormResolver>
 	  </div> : <div />
   )
   

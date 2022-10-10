@@ -1,5 +1,5 @@
 import store, { AppThunk } from '../store';
-import { useDispatch } from 'react-redux';
+import formService from './FormService';
 import { remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, prependTaskIntoList, setTask, setFormSchema, removeCurrentTask, setTaskSearch } from '../store/features/processes/slice';
 import { ITask, ITaskSearch } from '../store/model';
 import api from './api';
@@ -52,7 +52,10 @@ export class TaskService {
     dispatch(setTaskSearch(taskSearch));
   }
   setTask = (task: ITask | null): AppThunk => async dispatch => {
-    if (task) {
+    console.log(task!.formKey);
+    console.log(formService.customFormExists(task!.formKey));
+    
+    if (task && !formService.customFormExists(task.formKey)) {
       let ln = localStorage.getItem('camundLocale');
       let url = '/forms/' + task.processName + '/' + task.processDefinitionId + '/' + task.formKey + '/' + ln;
       api.get(url).then(response => {

@@ -8,7 +8,7 @@ import { IFormViewer } from '../store/model';
 
 import { useTranslation } from "react-i18next";
 
-function FormViewer(formViewer: IFormViewer) {
+function FormJsViewer(formViewer: IFormViewer) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const container = document.querySelector('#task-form');
@@ -55,4 +55,4 @@ function FormViewer(formViewer: IFormViewer) {
   
 }
 
-export default FormViewer;
+export default FormJsViewer;

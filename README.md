@@ -45,6 +45,15 @@ You can also access the Tasklist section from the welcome page. You'll notice th
 
 > :information_source: In the application.yml, you'll notice some "exotic" properties that could modify to change application behavior.
 
+## Forms
+You can create forms with 3 different approaches :
+- Embedded forms into your process definition (classic approach)
+- Create Extended Forms from the admin application. Form name should match the formKey. Forms will be stored in the workspace/forms folder.
+- Create custom react forms. From the react application, in the forms folder, create your custom forms. You should then reference them in the customForms map in the forms/index.ts file.
+
+Translations will be managed from the backend in the 2 first approaches. Input labels should be references in the Forms translations.
+In the 3rd case, translation will be managed from the front-end and translations should be added in the "siteTranslations".
+
 ## Using docker-compose
 
 > :information_source: The docker-compose file in this repository uses the latest [compose specification](https://docs.docker.com/compose/compose-file/), which was introduced with docker-compose version 1.27.0+. Please make sure to use an up-to-date docker-compose version.
