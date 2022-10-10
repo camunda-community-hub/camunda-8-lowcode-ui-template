@@ -157,3 +157,10 @@ span.assignedTo {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
+
+/** icon showing the assignee */
+.taskAssigneeIcon {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+}

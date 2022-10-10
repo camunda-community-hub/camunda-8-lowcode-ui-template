@@ -18,7 +18,10 @@ function FormJsViewer(formViewer: IFormViewer) {
 	if (container && formViewer.schema) {
 	  container.innerHTML = '';
 
-	  bpmnForm = new Form({ container: container });
+      bpmnForm = new Form({ container: container });
+      if (formViewer.disabled) {
+        bpmnForm.setProperty('readOnly', true);
+      }
 	  bpmnForm.importSchema(formViewer.schema, formViewer.variables).then(
 		function (result: any) {
 		  console.log(result);
