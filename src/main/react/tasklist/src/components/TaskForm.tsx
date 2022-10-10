@@ -12,7 +12,7 @@ function TaskForm(props: any) {
   const dispatch = useDispatch();
   const currentTask = useSelector((state: any) => state.process.currentTask)
   const currentSchema = useSelector((state: any) => state.process.currentFormSchema)
-  const disabled = currentTask && currentTask.assignee && currentTask.assignee != authService.getUser()!.username;
+  const disabled = !currentTask || !currentTask.assignee || currentTask.assignee != authService.getUser()!.username;
 
   const claim = () => {
 	dispatch(taskService.claim());
