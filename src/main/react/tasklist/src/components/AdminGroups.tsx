@@ -3,8 +3,10 @@ import { Organization } from '../store/model';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useTranslation } from "react-i18next";
 
 function AdminGroups(orgParam: { organization: Organization }) {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState<string[]>(orgParam.organization.groups);
 
   const changeGroupName = (index: number, value: string) => {
@@ -23,7 +25,7 @@ function AdminGroups(orgParam: { organization: Organization }) {
       <thead>
         <tr>
           <th>#</th>
-          <th>Group Name</th>
+          <th>{t("Group name")}</th>
           <th><Button variant="success" onClick={addGroup}><i className="bi bi-plus-circle"></i></Button></th>
         </tr>
       </thead>

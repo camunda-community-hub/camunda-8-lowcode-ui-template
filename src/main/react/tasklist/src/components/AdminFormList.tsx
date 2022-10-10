@@ -7,8 +7,10 @@ import Modal from 'react-bootstrap/Modal';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import api from '../service/api';
+import { useTranslation } from "react-i18next";
 
 function AdminFormList() {
+  const { t } = useTranslation();
   const [showFormUpload, setShowFormUpload] = useState(false);
   const [uploadedData, setUploadedData] = useState<string|null>(null);
   const handleClose = () => setShowFormUpload(false);
@@ -67,14 +69,14 @@ function AdminFormList() {
   return (
     <div>
       <br />
-      <Button variant="primary" onClick={() => dispatch(adminFormService.newForm())}><i className="bi bi-plus-square"></i> New Form</Button>
-      <Button variant="primary" onClick={handleShow}><i className="bi bi-box-arrow-in-up"></i> Load from file</Button>
+      <Button variant="primary" onClick={() => dispatch(adminFormService.newForm())}><i className="bi bi-plus-square"></i> {t("New form")}</Button>
+      <Button variant="primary" onClick={handleShow}><i className="bi bi-box-arrow-in-up"></i> {t("Load from a file")}</Button>
    
       <Table striped bordered hover>
 		<thead>
 		  <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Actions</th>
+            <th scope="col">{t("Name")}</th>
+            <th scope="col">{t("Actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -82,10 +84,10 @@ function AdminFormList() {
             <tr key={name}>
               <td>{name}</td>
               <td>
-                <Button variant="primary" onClick={() => dispatch(adminFormService.openForm(name))}><i className="bi bi-pencil"></i> Open</Button>
-                <Button variant="warning" onClick={() => duplicate(name)}><i className="bi bi-files"></i> Duplicate</Button>
-                <Button variant="secondary" onClick={() => download(name)}><i className="bi bi-box-arrow-down"></i> Download</Button>
-                <Button variant="danger" onClick={() => dispatch(adminFormService.deleteForm(name))}><i className="bi bi-trash"></i> Delete</Button>
+                <Button variant="primary" onClick={() => dispatch(adminFormService.openForm(name))}><i className="bi bi-pencil"></i> {t("Open")}</Button>
+                <Button variant="warning" onClick={() => duplicate(name)}><i className="bi bi-files"></i> {t("Duplicate")}</Button>
+                <Button variant="secondary" onClick={() => download(name)}><i className="bi bi-box-arrow-down"></i> {t("Download")}</Button>
+                <Button variant="danger" onClick={() => dispatch(adminFormService.deleteForm(name))}><i className="bi bi-trash"></i> {t("Delete")}</Button>
               </td>
             </tr>)
           : <></>}
