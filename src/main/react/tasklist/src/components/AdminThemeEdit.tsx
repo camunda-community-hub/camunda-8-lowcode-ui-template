@@ -9,8 +9,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
+import { useTranslation } from "react-i18next";
 
 function AdminThemeEdit() {
+  const { t } = useTranslation();
   const [showThemeGenerator, setShowThemeGenerator] = useState(false);
 
 
@@ -41,12 +43,12 @@ function AdminThemeEdit() {
 
   return (
     <>
-      {theme.active ? <></> : <Button variant="primary" onClick={setActive}><i className="bi bi-check-lg"></i> Set as active</Button>}
+      {theme.active ? <></> : <Button variant="primary" onClick={setActive}><i className="bi bi-check-lg"></i> {t("Set as active")}</Button>}
       &nbsp;
-      <Button variant="primary" onClick={handleShow}>Generate from variables</Button>
+      <Button variant="primary" onClick={handleShow}>{t("Generate from variables")}</Button>
       <Row className="maileditor">
         <Col className="card">
-          <h5 className="card-title bg-primary text-light">Theme editor</h5>
+          <h5 className="card-title bg-primary text-light"> {t("Theme editor")}</h5>
           <CodeMirror
             value={theme.content}
             extensions={[css()]}
@@ -92,10 +94,10 @@ function AdminThemeEdit() {
           </Modal.Body>
           <Modal.Footer>
               <Button variant="primary" onClick={generateCss}>
-                Generate
+              {t("Generate")}
               </Button>
               <Button variant="secondary" onClick={handleClose}>
-                Close
+              {t("Close")}
               </Button>
           </Modal.Footer>
         </Modal>
