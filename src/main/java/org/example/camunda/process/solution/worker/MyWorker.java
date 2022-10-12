@@ -1,7 +1,7 @@
 package org.example.camunda.process.solution.worker;
 
-import io.camunda.zeebe.spring.client.annotation.ZeebeVariablesAsType;
-import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
+import io.camunda.zeebe.spring.client.annotation.JobWorker;
+import io.camunda.zeebe.spring.client.annotation.VariablesAsType;
 import org.example.camunda.process.solution.ProcessVariables;
 import org.example.camunda.process.solution.service.MyService;
 import org.slf4j.Logger;
@@ -19,8 +19,8 @@ public class MyWorker {
     this.myService = myService;
   }
 
-  @ZeebeWorker(type = "invokeMyService", autoComplete = true)
-  public ProcessVariables invokeMyService(@ZeebeVariablesAsType ProcessVariables variables) {
+  @JobWorker
+  public ProcessVariables invokeMyService(@VariablesAsType ProcessVariables variables) {
     LOG.info("Invoking myService with variables: " + variables);
 
     boolean result = myService.myOperation(variables.getBusinessKey());
