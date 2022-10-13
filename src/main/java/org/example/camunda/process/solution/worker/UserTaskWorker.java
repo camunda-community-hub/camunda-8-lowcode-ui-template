@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Task;
-import org.example.camunda.process.solution.utils.BpmnUtils;
+import org.example.camunda.process.solution.service.BpmnService;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +26,8 @@ public class UserTaskWorker {
   private static final Logger LOG = LoggerFactory.getLogger(UserTaskWorker.class);
 
   @Autowired private SimpMessagingTemplate simpMessagingTemplate;
+
+  @Autowired private BpmnService bpmnService;
 
   @ZeebeWorker(type = "io.camunda.zeebe:userTask", timeout = 2592000000L) // set timeout to 30 days
   public void listenUserTask(
@@ -68,12 +70,14 @@ public class UserTaskWorker {
       task.setJobKey(jobKey);
 
       String bpmnProcessId = job.getBpmnProcessId();
-      task.setProcessName(BpmnUtils.getProcessName(bpmnProcessId + ".bpmn", bpmnProcessId));
+
+      task.setProcessName(bpmnService.getProcessName(bpmnProcessId, processDefinitionKey));
 
       String taskActivityId = job.getElementId();
       // !!! The name of the bpmn file in the "src/main/resources/models" directory must match the
       // process id in order for this to work!
-      String taskName = BpmnUtils.getTaskNameFromBpmn(bpmnProcessId + ".bpmn", taskActivityId);
+      String taskName =
+          bpmnService.getTaskName(bpmnProcessId, processDefinitionKey, taskActivityId);
       task.setName(taskName);
 
       if (!job.getCustomHeaders().isEmpty()) {
@@ -95,7 +99,12 @@ public class UserTaskWorker {
         simpMessagingTemplate.convertAndSend("/topic/userTask", task);
       }
     } catch (Exception e) {
-      client.newFailCommand(job.getKey()).retries(0).send();
+      LOG.error("Exception occured in UserTaskWorker", e);
+      client
+          .newFailCommand(job.getKey())
+          .retries(0)
+          .errorMessage("Exception occured in UserTaskWorker - " + e.getMessage())
+          .send();
     }
   }
 }
