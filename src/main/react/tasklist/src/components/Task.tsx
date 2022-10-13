@@ -38,7 +38,7 @@ function Task(taskParam: { task: ITask }) {
       delay={{ show: 250, hide: 400 }}
           overlay={renderAssigneeTooltip}
         >
-          <i className="taskAssigneeIcon bi bi-person-circle"></i>
+          <i className="taskAssigneeIcon bi bi-person-circle text-secondary"></i>
     </OverlayTrigger> : <></>}
         <h6 className="card-subtitle mb-2 text-muted">{ task.processName }</h6>
         <p className="card-text">{ task.creationTime.slice(0, 19).replace("T", " ") }</p>
