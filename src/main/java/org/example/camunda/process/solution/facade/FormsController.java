@@ -1,10 +1,12 @@
 package org.example.camunda.process.solution.facade;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.camunda.operate.exception.OperateException;
 import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
 import org.example.camunda.process.solution.jsonmodel.Form;
 import org.example.camunda.process.solution.security.annontation.IsAuthenticated;
+import org.example.camunda.process.solution.service.BpmnService;
 import org.example.camunda.process.solution.service.FormService;
 import org.example.camunda.process.solution.service.InternationalizationService;
 import org.example.camunda.process.solution.utils.JsonUtils;
@@ -26,6 +28,7 @@ public class FormsController extends AbstractController {
   private final Logger logger = LoggerFactory.getLogger(FormsController.class);
 
   @Autowired private FormService formService;
+  @Autowired private BpmnService bpmnService;
   @Autowired private InternationalizationService internationalizationService;
 
   @IsAuthenticated
@@ -33,7 +36,7 @@ public class FormsController extends AbstractController {
   @ResponseBody
   public JsonNode getFormSchema(
       @PathVariable String processDefinitionId, @PathVariable String formKey)
-      throws TaskListException, IOException {
+      throws TaskListException, IOException, NumberFormatException, OperateException {
 
     return getFormSchema(null, processDefinitionId, formKey);
   }
@@ -45,7 +48,7 @@ public class FormsController extends AbstractController {
       @PathVariable String processName,
       @PathVariable String processDefinitionId,
       @PathVariable String formKey)
-      throws TaskListException, IOException {
+      throws TaskListException, IOException, NumberFormatException, OperateException {
 
     return getFormSchema(null, processDefinitionId, formKey, null);
   }
@@ -58,11 +61,11 @@ public class FormsController extends AbstractController {
       @PathVariable String processDefinitionId,
       @PathVariable String formKey,
       @PathVariable String locale)
-      throws TaskListException, IOException {
+      throws TaskListException, IOException, NumberFormatException, OperateException {
 
     if (formKey.startsWith("camunda-forms:bpmn:")) {
       String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
-      String schema = formService.getEmbeddedFormSchema(processName, processDefinitionId, formId);
+      String schema = bpmnService.getEmbeddedFormSchema(processName, processDefinitionId, formId);
       JsonNode formSchema = JsonUtils.toJsonNode(schema);
       if (locale != null) {
         internationalizationService.translateFormSchema(formSchema, locale);
