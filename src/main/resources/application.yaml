@@ -18,8 +18,8 @@ baseUrl: http://localhost:8080
 websocket:
   allowedOrigin: "*"
 
-# if set to true, process embedded forms will be pulled from tasklist. If false, forms will be pulled from the local process definitions available in resources.
-embeddedForms.fromTasklist: false
+# if set to true, process embedded forms will be pulled from local resources BPMN files. If false, forms will be pulled from Operate process definitions.
+embeddedForms.fromLocalResources: false
 
 spring:
   servlet.multipart:
