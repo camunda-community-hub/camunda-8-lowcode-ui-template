@@ -15,7 +15,7 @@ public class ReactAppController {
     return "/index.html";
   }
 
-  @GetMapping("")
+  @GetMapping(value = {"", "/sso/login"})
   public RedirectView redirectWithUsingRedirectView(RedirectAttributes attributes) {
     return new RedirectView("/home");
   }

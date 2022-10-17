@@ -1,10 +1,7 @@
 package org.example.camunda.process.solution.facade;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.example.camunda.process.solution.exception.TechnicalException;
@@ -12,7 +9,7 @@ import org.example.camunda.process.solution.exception.UnauthorizedException;
 import org.example.camunda.process.solution.facade.dto.AuthUser;
 import org.example.camunda.process.solution.security.SecurityUtils;
 import org.example.camunda.process.solution.security.UserPrincipal;
-import org.keycloak.KeycloakSecurityContext;
+import org.example.camunda.process.solution.service.KeycloakService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +26,8 @@ public abstract class AbstractController {
   private String keycloakEnabled;
 
   @Autowired private HttpServletRequest request;
+
+  @Autowired private KeycloakService keycloakService;
 
   public abstract Logger getLogger();
 
@@ -84,33 +83,16 @@ public abstract class AbstractController {
     return Boolean.valueOf(keycloakEnabled);
   }
 
-  protected KeycloakSecurityContext getKeycloakSecurityContext() {
-    return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-  }
-
   protected AuthUser getAuthenticatedUser() {
-    AuthUser user = new AuthUser();
+
     if (isKeycloakAuth()) {
-      KeycloakSecurityContext context = getKeycloakSecurityContext();
-      Set<String> roles = context.getToken().getRealmAccess().getRoles();
-      user.setUsername(context.getIdToken().getGivenName());
-      user.setEmail(context.getIdToken().getEmail());
-      user.setProfile("User");
-      if (roles.contains("Admin")) {
-        user.setProfile("Admin");
-      } else if (roles.contains("Editor")) {
-        user.setProfile("Editor");
-      }
-      Map<String, Object> otherClaims = context.getIdToken().getOtherClaims();
-      if (otherClaims.containsKey("groups")) {
-        List<String> groups = (List<String>) otherClaims.get("groups");
-        user.setGroups(new HashSet<>(groups));
-      }
-    } else {
-      UserPrincipal jwtUser = SecurityUtils.getConnectedUser();
-      user.setUsername(jwtUser.getUsername());
-      user.setEmail(jwtUser.getEmail());
+      return keycloakService.getUser(request);
     }
+    AuthUser user = new AuthUser();
+    UserPrincipal jwtUser = SecurityUtils.getConnectedUser();
+    user.setUsername(jwtUser.getUsername());
+    user.setEmail(jwtUser.getEmail());
+
     return user;
   }
 }
