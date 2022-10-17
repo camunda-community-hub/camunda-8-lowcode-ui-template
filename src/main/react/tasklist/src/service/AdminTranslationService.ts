@@ -56,6 +56,7 @@ export class AdminTranslationService {
         "Tasks filters": "Tasks filters",
         "Theme editor": "Theme editor",
         "Unclaim": "Unclaim",
+        "Unsufficient privileges": "Unsufficient privileges",
         "Users": "Users",
         "Yes": "Yes"
       },
