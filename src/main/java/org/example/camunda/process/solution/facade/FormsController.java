@@ -5,7 +5,7 @@ import io.camunda.operate.exception.OperateException;
 import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
 import org.example.camunda.process.solution.jsonmodel.Form;
-import org.example.camunda.process.solution.security.annontation.IsAuthenticated;
+import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.example.camunda.process.solution.service.BpmnService;
 import org.example.camunda.process.solution.service.FormService;
 import org.example.camunda.process.solution.service.InternationalizationService;

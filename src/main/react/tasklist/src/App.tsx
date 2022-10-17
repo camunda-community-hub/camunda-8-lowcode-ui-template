@@ -31,7 +31,7 @@ function App() {
   const user = useSelector((state: any) => state.auth.data)
 
   useEffect(() => {
-    dispatch(authService.recoverFromStorage());
+    dispatch(authService.retrieveConnectedUser());
   });
 
   return (
@@ -40,6 +40,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SimpleLayout />}>
             <Route index element={<Welcome />} />
+            <Route path="home" element={<Welcome />} />
             <Route path="*" element={<Undefined />} />
           </Route>
           <Route path="tasklist" element={<TasklistLayout />}>
@@ -65,6 +66,7 @@ function App() {
           <Routes>
             <Route path="/" element={<SimpleLayout />}>
               <Route index element={<Welcome />} />
+              <Route path="home" element={<Welcome />} />
               <Route path="*" element={<Undefined />} />
             </Route>
             <Route path="tasklist" element={<TasklistLayout />}>
@@ -84,6 +86,7 @@ function App() {
           <Routes>
             <Route path="/" element={<SimpleLayout />}>
               <Route index element={<Welcome />} />
+              <Route path="home" element={<Welcome />} />
               <Route path="*" element={<Undefined />} />
             </Route>
             <Route path="tasklist" element={<SimpleLayout />}>

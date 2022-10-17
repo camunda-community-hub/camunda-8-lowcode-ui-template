@@ -4,7 +4,7 @@ import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
 import java.util.List;
 import org.example.camunda.process.solution.jsonmodel.Form;
-import org.example.camunda.process.solution.security.annontation.IsEditor;
+import org.example.camunda.process.solution.security.annotation.IsEditor;
 import org.example.camunda.process.solution.service.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
