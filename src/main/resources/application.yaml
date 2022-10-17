@@ -2,12 +2,12 @@
 # https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
 
 keycloak:
-  enabled: true
-  auth-server-url: http://localhost:18080/auth
-  realm: camunda-platform
-  resource: CustomTasklist
-  public-client: true
-  principal-attribute: preferred_username
+  enabled: false
+#  auth-server-url: http://localhost:18080/auth
+#  realm: camunda-platform
+#  resource: CustomTasklist
+#  public-client: true
+#  principal-attribute: preferred_username
   
 
 zeebe.client:
