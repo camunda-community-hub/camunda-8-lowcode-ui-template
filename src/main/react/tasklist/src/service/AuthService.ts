@@ -92,8 +92,9 @@ export class AuthService {
       await api.get<IUser>('/auth/logout');
       api.defaults.headers.common['Authorization'] = '';
       localStorage.removeItem('camundaTasklistUser');
-      taskService.disconnectFromWebScokets();
-      dispatch(signOutSuccess());
+      //taskService.disconnectFromWebScokets();
+      console.log('disconnected');
+      window.location.reload();
     } catch (err: any) {
       dispatch(fail(err.toString()));
     }

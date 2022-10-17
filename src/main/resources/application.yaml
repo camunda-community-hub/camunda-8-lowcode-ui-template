@@ -2,7 +2,7 @@
 # https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
 
 keycloak:
-  enabled: false
+  enabled: true
   auth-server-url: http://localhost:18080/auth
   realm: camunda-platform
   resource: CustomTasklist

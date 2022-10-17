@@ -8,7 +8,6 @@ import org.example.camunda.process.solution.security.SecurityUtils;
 import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.example.camunda.process.solution.service.KeycloakService;
 import org.example.camunda.process.solution.service.OrganizationService;
-import org.keycloak.adapters.RefreshableKeycloakSecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -57,9 +56,7 @@ public class AuthenticationController extends AbstractController {
   @GetMapping("/logout")
   public void logout() {
     if (isKeycloakAuth()) {
-      RefreshableKeycloakSecurityContext ksc =
-          ((RefreshableKeycloakSecurityContext) getKeycloakSecurityContext());
-      keycloakService.logout(ksc.getRefreshToken());
+      keycloakService.logout(getRequest());
     }
   }
 

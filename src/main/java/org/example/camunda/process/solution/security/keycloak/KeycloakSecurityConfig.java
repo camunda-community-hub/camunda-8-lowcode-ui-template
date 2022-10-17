@@ -46,12 +46,10 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
   protected void configure(HttpSecurity http) throws Exception {
     super.configure(http);
     http.authorizeRequests()
-        .antMatchers("/home")
+        .antMatchers("/home", "/tasklist/**")
         .authenticated()
-        .antMatchers("/admin*")
-        .hasAnyRole("Admin", "Editor")
-        .antMatchers("/takslist*")
-        .authenticated();
+        .antMatchers("/admin/**")
+        .hasAnyRole("Admin", "Editor");
     http.cors();
     http.csrf().disable();
     http.headers().frameOptions().disable();
