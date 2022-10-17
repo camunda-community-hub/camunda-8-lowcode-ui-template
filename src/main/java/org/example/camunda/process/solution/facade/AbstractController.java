@@ -1,12 +1,21 @@
 package org.example.camunda.process.solution.facade;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
+import org.example.camunda.process.solution.facade.dto.AuthUser;
+import org.example.camunda.process.solution.security.SecurityUtils;
+import org.example.camunda.process.solution.security.UserPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -15,6 +24,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 public abstract class AbstractController {
+
+  @Value("${keycloak.enabled:false}")
+  private String keycloakEnabled;
+
+  @Autowired private HttpServletRequest request;
 
   public abstract Logger getLogger();
 
@@ -52,23 +66,51 @@ public abstract class AbstractController {
   }
 
   protected String getServerHost() {
-    HttpServletRequest request = getHttpServletRequest();
     return request
         .getRequestURL()
         .substring(0, request.getRequestURL().length() - request.getRequestURI().length());
   }
 
-  protected HttpServletRequest getHttpServletRequest() {
-    return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-        .getRequest();
-  }
-
-  protected void allowFrames() {
-    // getHttpServletResponse().setHeader("X-Frame-Options", "SAMEORIGIN");
+  protected HttpServletRequest getRequest() {
+    return request;
   }
 
   protected HttpServletResponse getHttpServletResponse() {
     return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
         .getResponse();
+  }
+
+  protected boolean isKeycloakAuth() {
+    return Boolean.valueOf(keycloakEnabled);
+  }
+
+  protected KeycloakSecurityContext getKeycloakSecurityContext() {
+    return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+  }
+
+  protected AuthUser getAuthenticatedUser() {
+    AuthUser user = new AuthUser();
+    if (isKeycloakAuth()) {
+      KeycloakSecurityContext context = getKeycloakSecurityContext();
+      Set<String> roles = context.getToken().getRealmAccess().getRoles();
+      user.setUsername(context.getIdToken().getGivenName());
+      user.setEmail(context.getIdToken().getEmail());
+      user.setProfile("User");
+      if (roles.contains("Admin")) {
+        user.setProfile("Admin");
+      } else if (roles.contains("Editor")) {
+        user.setProfile("Editor");
+      }
+      Map<String, Object> otherClaims = context.getIdToken().getOtherClaims();
+      if (otherClaims.containsKey("groups")) {
+        List<String> groups = (List<String>) otherClaims.get("groups");
+        user.setGroups(new HashSet<>(groups));
+      }
+    } else {
+      UserPrincipal jwtUser = SecurityUtils.getConnectedUser();
+      user.setUsername(jwtUser.getUsername());
+      user.setEmail(jwtUser.getEmail());
+    }
+    return user;
   }
 }

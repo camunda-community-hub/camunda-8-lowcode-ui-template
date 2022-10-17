@@ -54,6 +54,7 @@ public final class SecurityUtils {
     LinkedHashMap<String, Object> principalUser =
         (LinkedHashMap<String, Object>) authentication.getPrincipal();
     String username = (String) principalUser.get("username");
-    return new UserPrincipal(username);
+    String email = (String) principalUser.get("email");
+    return new UserPrincipal(username, email);
   }
 }

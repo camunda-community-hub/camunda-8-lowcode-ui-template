@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.jsonmodel.Organization;
-import org.example.camunda.process.solution.security.annontation.IsAdmin;
+import org.example.camunda.process.solution.security.annotation.IsAdmin;
 import org.example.camunda.process.solution.service.OrganizationService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
