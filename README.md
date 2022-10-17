@@ -25,6 +25,30 @@ and a [docker-compose.yaml](docker-compose.yaml) file for local development. For
 
 It also contains a [React front-end](src/main/react/tasklist/) that you can execute independently (npm run start). This front-end rely on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js). The first time you use the project, you should be able to connect with demo/demo to create new forms, mail templates and manage your user organization.
 
+## Secure the app with keycloak
+If you want to secure your app with keycloak, you can set the keycloak.enabled to true and uncomment the properties in the application.yaml file
+
+```yaml
+keycloak:
+  enabled: true
+  auth-server-url: http://localhost:18080/auth
+  realm: camunda-platform
+  resource: CustomTasklist
+  public-client: true
+  principal-attribute: preferred_username
+```
+
+This application relies on 3 kind of users :
+- Admin : has a role Admin
+- Editor : has a role Editor
+- User : is connected without Admin or Editor roles.
+
+> :information_source: To use the application with Keycloak, create the Admin role and assign it to (at least) one user.
+
+> :information_source: The application also relies on groups. So you should add a custom mapper into your keycloak client with :
+- Type : Group Membership
+- Token Claim Name : groups
+
 ## Google integration
 If you want to send emails through gmail (what is coded for now), you will need to download a [client_secret_google_api.json from your google console] (https://console.cloud.google.com/) and put it in your resources folder.
 
