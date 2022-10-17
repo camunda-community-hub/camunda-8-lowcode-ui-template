@@ -50,6 +50,7 @@
     "Tasks filters" : "Filtrer les tâches",
     "Theme editor" : "Editeur de thème",
     "Unclaim" : "Libérer",
+    "Unsufficient privileges": "Privilèges insuffisants. Merci de vous reconnecter.",
     "Users" : "Utilisateurs",
     "Yes" : "Oui"
   },

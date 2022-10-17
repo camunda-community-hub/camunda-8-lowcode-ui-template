@@ -9,6 +9,7 @@ import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 import TaskList from "./pages/TaskList";
 import Undefined from "./pages/Undefined";
+import Restricted from "./pages/Restricted";
 import Processes from "./pages/Processes";
 import AdminUsers from "./pages/AdminUsers";
 import AdminTranslations from "./pages/AdminTranslations";
@@ -76,8 +77,8 @@ function App() {
               <Route path="*" element={<Undefined />} />
             </Route>
             <Route path="admin" element={<SimpleLayout />}>
-              <Route index element={<Login />} />
-              <Route path="*" element={<Login />} />
+              <Route index element={<Restricted />} />
+              <Route path="*" element={<Restricted />} />
             </Route>
           </Routes>
         </BrowserRouter>
