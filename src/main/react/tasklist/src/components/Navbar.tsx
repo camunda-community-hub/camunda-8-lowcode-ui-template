@@ -22,12 +22,15 @@ function Navbar() {
         <div>
 
           <div className="input-group mb-3">
-            <Link className="btn btn-outline-secondary" to="/tasklist/tasks">{t("Tasks")}</Link>
-            <Link className="btn btn-outline-secondary" to="/tasklist/processes">{t("Processes")}</Link>
+            
             <LanguageSelector></LanguageSelector>
             <a className="btn btn-outline-secondary" onClick={logout}>{authService.getUser()!.username} <i className="bi bi-box-arrow-left"></i></a>
           </div>
         </div>
+      </div>
+      <div className="bg-primary menu">
+        <Link className="text-light menu-item" to="/tasklist/tasks">{t("Tasks")}</Link>
+        <Link className="text-light menu-item" to="/tasklist/processes">{t("Processes")}</Link>
       </div>
     </nav>
   );
