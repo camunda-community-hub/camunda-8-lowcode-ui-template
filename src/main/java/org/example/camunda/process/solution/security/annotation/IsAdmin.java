@@ -1,4 +1,4 @@
-package org.example.camunda.process.solution.security.annontation;
+package org.example.camunda.process.solution.security.annotation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -8,8 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(security = {@SecurityRequirement(name = "authorization")})
-@PreAuthorize("isAuthenticated()")
-public @interface IsAuthenticated {}
+@PreAuthorize("hasRole('Admin')")
+public @interface IsAdmin {}

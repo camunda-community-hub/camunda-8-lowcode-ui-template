@@ -6,7 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
+import org.example.camunda.process.solution.security.SecurityUtils;
+import org.example.camunda.process.solution.security.UserPrincipal;
+import org.example.camunda.process.solution.service.KeycloakService;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -15,6 +20,13 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 public abstract class AbstractController {
+
+  @Value("${keycloak.enabled:false}")
+  private String keycloakEnabled;
+
+  @Autowired private HttpServletRequest request;
+
+  @Autowired private KeycloakService keycloakService;
 
   public abstract Logger getLogger();
 
@@ -52,23 +64,29 @@ public abstract class AbstractController {
   }
 
   protected String getServerHost() {
-    HttpServletRequest request = getHttpServletRequest();
     return request
         .getRequestURL()
         .substring(0, request.getRequestURL().length() - request.getRequestURI().length());
   }
 
-  protected HttpServletRequest getHttpServletRequest() {
-    return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-        .getRequest();
-  }
-
-  protected void allowFrames() {
-    // getHttpServletResponse().setHeader("X-Frame-Options", "SAMEORIGIN");
+  protected HttpServletRequest getRequest() {
+    return request;
   }
 
   protected HttpServletResponse getHttpServletResponse() {
     return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
         .getResponse();
+  }
+
+  protected boolean isKeycloakAuth() {
+    return Boolean.valueOf(keycloakEnabled);
+  }
+
+  protected String getAuthenticatedUsername() {
+    if (isKeycloakAuth()) {
+      return keycloakService.getUsername(request);
+    }
+    UserPrincipal jwtUser = SecurityUtils.getConnectedUser();
+    return jwtUser.getUsername();
   }
 }

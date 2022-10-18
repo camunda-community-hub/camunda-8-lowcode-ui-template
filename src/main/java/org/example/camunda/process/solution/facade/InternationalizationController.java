@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Language;
 import org.example.camunda.process.solution.jsonmodel.Translation;
-import org.example.camunda.process.solution.security.annontation.IsEditor;
+import org.example.camunda.process.solution.security.annotation.IsEditor;
 import org.example.camunda.process.solution.service.InternationalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

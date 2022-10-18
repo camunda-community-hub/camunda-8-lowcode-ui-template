@@ -6,8 +6,7 @@ import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.facade.dto.TaskSearch;
 import org.example.camunda.process.solution.model.TaskToken;
-import org.example.camunda.process.solution.security.SecurityUtils;
-import org.example.camunda.process.solution.security.annontation.IsAuthenticated;
+import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.example.camunda.process.solution.service.TaskListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/tasks")
-public class TaskController {
+public class TaskController extends AbstractController {
 
   private static final Logger LOG = LoggerFactory.getLogger(TaskController.class);
 
@@ -52,7 +51,7 @@ public class TaskController {
   @IsAuthenticated
   @GetMapping("/{taskId}/claim")
   public Task claimTask(@PathVariable String taskId) throws TaskListException {
-    String username = SecurityUtils.getConnectedUser().getUsername();
+    String username = getAuthenticatedUsername();
     return taskListService.claim(taskId, username);
   }
 
@@ -79,5 +78,10 @@ public class TaskController {
 
     LOG.info("Completing task by job key " + jobKey + "` with variables: " + variables);
     taskListService.completeTaskWithJobKey(jobKey, variables);
+  }
+
+  @Override
+  public Logger getLogger() {
+    return LOG;
   }
 }

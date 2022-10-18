@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.example.camunda.process.solution.security.annontation.IsAuthenticated;
+import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.example.camunda.process.solution.service.OperateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
