@@ -11,7 +11,6 @@ export class AuthService {
     return store.getState().auth.data;
   }
   retrieveConnectedUser = (): AppThunk => async dispatch => {
-    console.log("retrieveConnectedUser");
     if (!store.getState().auth.data) {
       dispatch(this.isAlreadyAuthenticated());
     }

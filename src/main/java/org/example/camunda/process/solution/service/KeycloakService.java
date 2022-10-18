@@ -31,6 +31,11 @@ public class KeycloakService {
     return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
   }
 
+  public String getUsername(HttpServletRequest request) {
+    KeycloakSecurityContext context = getKeycloakSecurityContext(request);
+    return context.getIdToken().getGivenName();
+  }
+
   public AuthUser getUser(HttpServletRequest request) {
     AuthUser user = new AuthUser();
     KeycloakSecurityContext context = getKeycloakSecurityContext(request);

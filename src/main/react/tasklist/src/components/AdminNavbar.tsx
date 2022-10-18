@@ -5,6 +5,7 @@ import authService from '../service/AuthService';
 import adminFormService from '../service/AdminFormService';
 import adminMailService from '../service/AdminMailService';
 import adminThemeService from '../service/AdminThemeService';
+import adminOrgService from '../service/AdminOrgService';
 import adminTranslationService from '../service/AdminTranslationService';
 import logo from '../assets/img/logo.svg'
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -24,62 +25,65 @@ function AdminNavbar() {
   const mail = useSelector((state: any) => state.adminMails.currentMail)
   const theme = useSelector((state: any) => state.adminThemes.currentTheme)
   const language = useSelector((state: any) => state.translations.currentLanguage)
+  const orgEnabled = useSelector((state: any) => state.adminOrg.enabled)
 
   const dispatch = useDispatch();
   const [showPreview, setShowPreview] = useState(false);
 
   const handleClose = () => setShowPreview(false);
   const handleShow = () =>  setShowPreview(true);
-
+  useEffect(() => {
+    dispatch(adminOrgService.checkIfEnabled());
+  }, []);
   const logout = (event: any) => {
     dispatch(authService.signOut());
   };
   return (
     <>
-    <nav className="navbar navbar-dark bg-dark">
-      <div className="container-fluid">
-        <img width="140" src={logo} className="custom-logo" alt="Camunda" />
-        <div>
-          {form ?
-            <InputGroup className="mb-3">
-              <Button variant="primary" onClick={handleShow}><i className="bi bi-eye"></i></Button>
-                <Form.Control aria-label="Form name" placeholder="Form name" value={form.name} onChange={(evt) => dispatch(adminFormService.setFormName(evt.target.value))} />
-                <Button variant="primary" onClick={() => adminFormService.saveCurrentForm()}>{t("Save")}</Button>
-                <Button variant="secondary" onClick={() => dispatch(adminFormService.setForm(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>
-            </InputGroup>
-              :
-              mail ?
-                <InputGroup className="mb-3">
-                  <Form.Control aria-label="Mail template name" placeholder="Mail template name" value={mail.name} onChange={(evt) => dispatch(adminMailService.setMailName(evt.target.value))} />
-                  <Button variant="primary" onClick={() => dispatch(adminMailService.saveCurrentMail())}>{t("Save")}</Button>
-                  <Button variant="secondary" onClick={() => dispatch(adminMailService.setMail(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>
-                </InputGroup>
+      <nav className="navbar navbar-dark bg-dark">
+        <div className="container-fluid">
+          <Link to="/home"><img width="140" src={logo} className="custom-logo" alt="Camunda" /></Link>
+          <div>
+            {form ?
+              <InputGroup className="mb-3">
+                <Button variant="primary" onClick={handleShow}><i className="bi bi-eye"></i></Button>
+                  <Form.Control aria-label="Form name" placeholder="Form name" value={form.name} onChange={(evt) => dispatch(adminFormService.setFormName(evt.target.value))} />
+                  <Button variant="primary" onClick={() => adminFormService.saveCurrentForm()}>{t("Save")}</Button>
+                  <Button variant="secondary" onClick={() => dispatch(adminFormService.setForm(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>
+              </InputGroup>
                 :
-                theme ?
+                mail ?
                   <InputGroup className="mb-3">
-                    <Form.Control aria-label="Theme name" placeholder="Theme name" value={theme.name} onChange={(evt) => dispatch(adminThemeService.setThemeName(evt.target.value))} />
-                    <Button variant="primary" onClick={() => dispatch(adminThemeService.saveCurrentTheme())}>{t("Save")}</Button>
-                    <Button variant="secondary" onClick={() => dispatch(adminThemeService.setTheme(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>
+                    <Form.Control aria-label="Mail template name" placeholder="Mail template name" value={mail.name} onChange={(evt) => dispatch(adminMailService.setMailName(evt.target.value))} />
+                    <Button variant="primary" onClick={() => dispatch(adminMailService.saveCurrentMail())}>{t("Save")}</Button>
+                    <Button variant="secondary" onClick={() => dispatch(adminMailService.setMail(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>
                   </InputGroup>
                   :
-                  language ?
+                  theme ?
                     <InputGroup className="mb-3">
-                      <Form.Control aria-label="Language name" placeholder="Language name" value={language.name} disabled/>
-                      <Button variant="secondary" onClick={() => dispatch(adminTranslationService.setLanguage(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>
+                      <Form.Control aria-label="Theme name" placeholder="Theme name" value={theme.name} onChange={(evt) => dispatch(adminThemeService.setThemeName(evt.target.value))} />
+                      <Button variant="primary" onClick={() => dispatch(adminThemeService.saveCurrentTheme())}>{t("Save")}</Button>
+                      <Button variant="secondary" onClick={() => dispatch(adminThemeService.setTheme(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>
                     </InputGroup>
                     :
-                  <div className="input-group mb-3 ">
-                      <Link className="btn btn-outline-secondary" to="/admin/forms">{t("Forms")}</Link>
-                      <Link className="btn btn-outline-secondary" to="/admin/mails">{t("Emails")}</Link>
-                      {user!.profile === 'Admin' ? <Link className="btn btn-outline-secondary" to="/admin/users">{t("Users")}</Link> : <></>}
-                      <Link className="btn btn-outline-secondary" to="/admin/theme">{t("Theming")}</Link>
-                      <Link className="btn btn-outline-secondary" to="/admin/translations">{t("Internationalization")}</Link>
-                    <LanguageSelector></LanguageSelector>
-                    <a className="btn btn-outline-secondary" onClick={logout}>{authService.getUser()!.username} <i className="bi bi-box-arrow-left"></i></a>
-                  </div>
-          }
+                    language ?
+                      <InputGroup className="mb-3">
+                        <Form.Control aria-label="Language name" placeholder="Language name" value={language.name} disabled/>
+                        <Button variant="secondary" onClick={() => dispatch(adminTranslationService.setLanguage(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>
+                      </InputGroup>
+                      :
+                    <div className="input-group mb-3 ">
+                        <Link className="btn btn-outline-secondary" to="/admin/forms">{t("Forms")}</Link>
+                        <Link className="btn btn-outline-secondary" to="/admin/mails">{t("Emails")}</Link>
+                        {orgEnabled && user!.profile === 'Admin' ? <Link className="btn btn-outline-secondary" to="/admin/users">{t("Users")}</Link> : <></>}
+                        <Link className="btn btn-outline-secondary" to="/admin/theme">{t("Theming")}</Link>
+                        <Link className="btn btn-outline-secondary" to="/admin/translations">{t("Internationalization")}</Link>
+                      <LanguageSelector></LanguageSelector>
+                      <a className="btn btn-outline-secondary" onClick={logout}>{authService.getUser()!.username} <i className="bi bi-box-arrow-left"></i></a>
+                    </div>
+            }
+          </div>
         </div>
-      </div>
       </nav>
       {form && formEditor ?
         <Modal show={showPreview} onHide={handleClose} animation={false} fullscreen>

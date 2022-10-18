@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
-import org.example.camunda.process.solution.facade.dto.AuthUser;
 import org.example.camunda.process.solution.security.SecurityUtils;
 import org.example.camunda.process.solution.security.UserPrincipal;
 import org.example.camunda.process.solution.service.KeycloakService;
@@ -83,16 +82,11 @@ public abstract class AbstractController {
     return Boolean.valueOf(keycloakEnabled);
   }
 
-  protected AuthUser getAuthenticatedUser() {
-
+  protected String getAuthenticatedUsername() {
     if (isKeycloakAuth()) {
-      return keycloakService.getUser(request);
+      return keycloakService.getUsername(request);
     }
-    AuthUser user = new AuthUser();
     UserPrincipal jwtUser = SecurityUtils.getConnectedUser();
-    user.setUsername(jwtUser.getUsername());
-    user.setEmail(jwtUser.getEmail());
-
-    return user;
+    return jwtUser.getUsername();
   }
 }

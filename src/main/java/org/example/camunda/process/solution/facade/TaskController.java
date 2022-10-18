@@ -51,7 +51,7 @@ public class TaskController extends AbstractController {
   @IsAuthenticated
   @GetMapping("/{taskId}/claim")
   public Task claimTask(@PathVariable String taskId) throws TaskListException {
-    String username = getAuthenticatedUser().getUsername();
+    String username = getAuthenticatedUsername();
     return taskListService.claim(taskId, username);
   }
 
