@@ -1,5 +1,6 @@
 package org.example.camunda.process.solution.facade;
 
+import javax.servlet.http.HttpSession;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
 import org.example.camunda.process.solution.facade.dto.AuthUser;
 import org.example.camunda.process.solution.facade.dto.Authentication;
@@ -50,13 +51,22 @@ public class AuthenticationController extends AbstractController {
   @IsAuthenticated
   @GetMapping("/user")
   public AuthUser getUser() {
-    return getAuthenticatedUser();
+    if (isKeycloakAuth()) {
+      return keycloakService.getUser(getRequest());
+    }
+    User user = organizationService.getUserByUsername(getAuthenticatedUsername());
+    return getAuthUser(user);
   }
 
   @GetMapping("/logout")
   public void logout() {
     if (isKeycloakAuth()) {
       keycloakService.logout(getRequest());
+    } else {
+      HttpSession session = getRequest().getSession(false);
+      if (session != null) {
+        session.invalidate();
+      }
     }
   }
 

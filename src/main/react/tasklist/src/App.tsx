@@ -62,7 +62,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       :
-      user ?
+      user && user!.profile ?
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<SimpleLayout />}>
