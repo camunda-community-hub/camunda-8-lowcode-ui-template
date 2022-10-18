@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.example.camunda.process.solution.jsonmodel.Theme;
-import org.example.camunda.process.solution.security.annontation.IsEditor;
+import org.example.camunda.process.solution.security.annotation.IsEditor;
 import org.example.camunda.process.solution.service.ThemeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

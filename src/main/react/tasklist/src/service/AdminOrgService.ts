@@ -1,10 +1,17 @@
 import store, { AppThunk } from '../store';
-import { loadStart, loadSuccess, addOrganization, updateOrganization, fail, silentfail } from '../store/features/adminOrgs/slice';
+import { loadStart, loadSuccess, addOrganization, enabled, fail } from '../store/features/adminOrgs/slice';
 import { Organization } from '../store/model';
 import api from './api';
 
 export class AdminOrgService {
   lastFetch: number = 0;
+  checkIfEnabled = (): AppThunk => async dispatch => {
+    if (store.getState().adminOrg.enabled == null) {
+      dispatch(loadStart());
+      const { data } = await api.get<any>('/organization/enabled');
+      dispatch(enabled(data));
+    }
+  }
   getOrganizations = (): AppThunk => async dispatch => {
     if (this.lastFetch < Date.now() - 5000) { 
       try {

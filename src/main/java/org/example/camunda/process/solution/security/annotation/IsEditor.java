@@ -1,4 +1,4 @@
-package org.example.camunda.process.solution.security.annontation;
+package org.example.camunda.process.solution.security.annotation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

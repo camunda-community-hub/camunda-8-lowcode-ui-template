@@ -2,12 +2,14 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Organization} from '../../model';
 
 interface AdminOrgState {
+  enabled: boolean | null,
   organizations: Organization[] | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AdminOrgState = {
+  enabled: null,
   organizations: null,
   loading: false,
   error: null,
@@ -26,6 +28,10 @@ const adminOrgSlice = createSlice({
     },
     silentfail: (state: AdminOrgState) => {
       state.loading = false;
+    },
+    enabled: (state: AdminOrgState, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.enabled = action.payload.enabled;
     },
     loadSuccess: (state: AdminOrgState, action: PayloadAction<Organization[]>) => {
       state.loading = false;
@@ -57,6 +63,7 @@ export const {
   loadSuccess,
   addOrganization,
   updateOrganization,
+  enabled,
   fail,
   silentfail
 } = adminOrgSlice.actions;
