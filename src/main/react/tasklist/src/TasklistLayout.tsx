@@ -8,7 +8,7 @@ const TasklistLayout = () => {
   return (
     <>
       <Navbar />
-      <div className="container-fluid bg-light">
+      <div className="main container-fluid bg-light">
         <Outlet />
       </div>
       <link rel="stylesheet" type="text/css" href={"http://localhost:8080/api/themes/current?v=" + lastUpdate} />

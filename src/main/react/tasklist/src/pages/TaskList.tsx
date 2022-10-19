@@ -13,6 +13,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Table from 'react-bootstrap/Table';
 
 import { useTranslation } from "react-i18next";
 
@@ -43,22 +44,28 @@ function TaskList() {
   });
 
   return (
-    <div>
       <div className="row flex-nowrap">
-        <Sidebar>
+        <Col className="tasklist">
           <h2 className="text-primary">{t("Tasks")}
             <Button variant="primary" onClick={handleShow}><i className="bi bi-funnel"></i></Button>
           </h2>
-          <div className="taskList">
-            {tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>)}
-          </div>
-        </Sidebar>
-        <main className="mainContent col ps-md-2 pt-2">
-          <div className="taskListFormContainer">
-            <TaskForm />
-          </div>
-        </main>
-      </div>
+          <Table striped hover variant="light" className="taskListContainer">
+            <thead >
+              <tr >
+                <th className="bg-primary text-light"></th>
+                <th className="bg-primary text-light">Task Name</th>
+                <th className="bg-primary text-light">Process Name</th>
+                <th className="bg-primary text-light">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>)}
+            </tbody>
+          </Table>
+        </Col>
+        <Col className="mainContent ps-md-2 pt-2">
+          <TaskForm />
+        </Col>
       <Modal show={showTaskFilter} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{t("Tasks filters")}</Modal.Title>
@@ -115,7 +122,7 @@ function TaskList() {
           </Button>
         </Modal.Footer>
       </Modal>
-      </div>
+    </div>
   );
 }
 

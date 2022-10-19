@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import authService from '../service/AuthService';
 import adminFormService from '../service/AdminFormService';
@@ -40,9 +40,9 @@ function AdminNavbar() {
   };
   return (
     <>
-      <nav className="navbar navbar-dark bg-dark">
+      <nav className={form || mail || theme || language ? "navbar reduced navbar-light bg-dark" : "navbar navbar-light bg-light"} >
         <div className="container-fluid">
-          <Link to="/home"><img width="140" src={logo} className="custom-logo" alt="Camunda" /></Link>
+          <Link to="/home"><img width="120" src={logo} className="custom-logo" alt="Camunda" /></Link>
           <div>
             {form ?
               <InputGroup className="mb-3">
@@ -73,17 +73,32 @@ function AdminNavbar() {
                       </InputGroup>
                       :
                     <div className="input-group mb-3 ">
-                        <Link className="btn btn-outline-secondary" to="/admin/forms">{t("Forms")}</Link>
-                        <Link className="btn btn-outline-secondary" to="/admin/mails">{t("Emails")}</Link>
-                        {orgEnabled && user!.profile === 'Admin' ? <Link className="btn btn-outline-secondary" to="/admin/users">{t("Users")}</Link> : <></>}
-                        <Link className="btn btn-outline-secondary" to="/admin/theme">{t("Theming")}</Link>
-                        <Link className="btn btn-outline-secondary" to="/admin/translations">{t("Internationalization")}</Link>
                       <LanguageSelector></LanguageSelector>
                       <a className="btn btn-outline-secondary" onClick={logout}>{authService.getUser()!.username} <i className="bi bi-box-arrow-left"></i></a>
                     </div>
             }
           </div>
         </div>
+        {!form && !mail && !theme && !language ?
+          <div className="bg-primary menu">
+            <NavLink className={({ isActive }) =>
+              isActive ? "text-light menu-item selected" : "text-light menu-item"
+            } to="/admin/forms">{t("Forms")}</NavLink>
+            <NavLink className={({ isActive }) =>
+              isActive ? "text-light menu-item selected" : "text-light menu-item"
+            } to="/admin/mails">{t("Emails")}</NavLink>
+            {orgEnabled && user!.profile === 'Admin' ?
+              <NavLink className={({ isActive }) =>
+                isActive ? "text-light menu-item selected" : "text-light menu-item"
+              } to="/admin/users">{t("Users")}</NavLink> : <></>}
+            <NavLink className={({ isActive }) =>
+              isActive ? "text-light menu-item selected" : "text-light menu-item"
+            } to="/admin/theme">{t("Theming")}</NavLink>
+            <NavLink className={({ isActive }) =>
+              isActive ? "text-light menu-item selected" : "text-light menu-item"
+            } to="/admin/translations">{t("Internationalization")}</NavLink>
+          </div>
+          : <></>}
       </nav>
       {form && formEditor ?
         <Modal show={showPreview} onHide={handleClose} animation={false} fullscreen>

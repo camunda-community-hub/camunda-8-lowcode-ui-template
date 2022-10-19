@@ -4,7 +4,6 @@ import { ITask } from '../store/model';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import taskService from '../service/TaskService';
-import Button from 'react-bootstrap/Button';
 
 import { useTranslation } from "react-i18next";
 
@@ -16,9 +15,9 @@ function Task(taskParam: { task: ITask }) {
 
   const getClassName = () => {
     if (currentTask != null && task.id == currentTask!.id) {
-      return "card current";
+      return 'current';
     }
-    return 'card';
+    return '';
   }
 
   const openTask = (event: any) => {
@@ -30,21 +29,18 @@ function Task(taskParam: { task: ITask }) {
     </Tooltip>
   );
   return (
-    <div className={getClassName()} style={{ width: '18rem' }} >
-      <div className="card-body">
-        <h5 className="card-title text-primary">{task.name} </h5>
-        {task.assignee ? <OverlayTrigger
-      placement="right"
-      delay={{ show: 250, hide: 400 }}
-          overlay={renderAssigneeTooltip}
-        >
-          <i className="taskAssigneeIcon bi bi-person-circle text-secondary"></i>
-    </OverlayTrigger> : <></>}
-        <h6 className="card-subtitle mb-2 text-muted">{ task.processName }</h6>
-        <p className="card-text">{ task.creationTime.slice(0, 19).replace("T", " ") }</p>
-        <a v-if="task.taskState!='COMPLETED'" onClick={openTask} className="card-link">{t("Open")}</a>
-      </div>
-    </div>
+    <tr className={getClassName()} onClick={openTask}>
+      <td>{task.assignee ? <OverlayTrigger
+        placement="right"
+        delay={{ show: 250, hide: 400 }}
+        overlay={renderAssigneeTooltip}
+      >
+        <i className="bi bi-person-circle text-secondary"></i>
+      </OverlayTrigger> : <></>}</td>
+      <td>{task.name}</td>
+      <td>{task.processName}</td>
+      <td>{task.creationTime.slice(0, 16).replace("T", " ")}</td>
+    </tr>
   );
 }
 
