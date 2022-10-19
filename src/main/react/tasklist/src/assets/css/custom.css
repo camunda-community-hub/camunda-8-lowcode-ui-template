@@ -3,17 +3,21 @@ body {
 }
 .main {
   overflow: auto;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 95px);
 }
 .navbar {
-  height: 100px;
+  height: 95px;
+}
+.navbar.reduced {
+  height: 65px;
 }
 .nav-tabs {
     background: #eee;
 }
 .menu {
   width: 100vw;
-  height: 32px;
+  height: 33px;
+  padding-left:10px;
 }
 a.text-light.menu-item {
   padding: 0px 10px;
@@ -21,8 +25,12 @@ a.text-light.menu-item {
   border-right: 1px solid;
   line-height: 32px;
 }
+a.text-light.menu-item.selected {
+  background-color: rgba(255,255,255,0.4);
+  box-shadow: 0 0 0 0.25rem rgba(255,255,255,0.2);
+}
 #sidebar-nav {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 95px);
   padding: 10px;
   width: 330px;
   overflow-y: auto;
@@ -30,9 +38,15 @@ a.text-light.menu-item {
 }
 
 main {
-    height: calc(100vh - 100px);
-    box-shadow: 6px 6px 14px #ddd inset;
-    overflow: auto;
+  height: calc(100vh - 95px);
+  box-shadow: 6px 6px 14px #ddd inset;
+  overflow: auto;
+}
+
+.organizationContainer {
+  height: calc(100vh - 155px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 h2 {
