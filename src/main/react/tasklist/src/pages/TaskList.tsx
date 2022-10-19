@@ -14,6 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
+import Card from 'react-bootstrap/Card';
 
 import { useTranslation } from "react-i18next";
 
@@ -44,28 +45,28 @@ function TaskList() {
   });
 
   return (
-      <div className="row flex-nowrap">
-        <Col className="tasklist">
-          <h2 className="text-primary">{t("Tasks")}
-            <Button variant="primary" onClick={handleShow}><i className="bi bi-funnel"></i></Button>
-          </h2>
-          <Table striped hover variant="light" className="taskListContainer">
-            <thead >
-              <tr >
-                <th className="bg-primary text-light"></th>
-                <th className="bg-primary text-light">Task Name</th>
-                <th className="bg-primary text-light">Process Name</th>
-                <th className="bg-primary text-light">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>)}
-            </tbody>
-          </Table>
-        </Col>
-        <Col className="mainContent ps-md-2 pt-2">
-          <TaskForm />
-        </Col>
+    <div className="row flex-nowrap">
+      <Col className="tasklist ps-md-2 pt-2">
+        <div className="taskListTitle bg-primary text-light">{t("Tasks")}
+          <Button variant="primary" onClick={handleShow}><i className="bi bi-funnel"></i></Button>
+        </div>
+        <Table striped hover variant="light" className="taskListContainer">
+          <thead >
+            <tr >
+              <th className="bg-primary text-light"></th>
+              <th className="bg-primary text-light">Task Name</th>
+              <th className="bg-primary text-light">Process Name</th>
+              <th className="bg-primary text-light">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>)}
+          </tbody>
+        </Table>
+      </Col>
+      <Col className="ps-md-2 pt-2">
+        <TaskForm />
+      </Col>
       <Modal show={showTaskFilter} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{t("Tasks filters")}</Modal.Title>
