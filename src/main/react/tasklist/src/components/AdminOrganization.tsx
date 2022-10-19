@@ -30,7 +30,7 @@ function AdminOrganization(orgParam: { organization: Organization }) {
   }
 
   return (
-    <>
+    <div className="organizationContainer">
       <Row>
         <Col>
           <InputGroup className="mb-3">
@@ -67,7 +67,7 @@ function AdminOrganization(orgParam: { organization: Organization }) {
           </Col>
         </Row>
       </Tab.Container>
-    </>
+    </div>
   );
 }
 

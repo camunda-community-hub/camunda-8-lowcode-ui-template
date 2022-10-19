@@ -1,11 +1,36 @@
+body {
+  overflow: hidden;
+}
+.main {
+  overflow: auto;
+  height: calc(100vh - 95px);
+}
 .navbar {
-    height: 76px;
+  height: 95px;
+}
+.navbar.reduced {
+  height: 65px;
 }
 .nav-tabs {
     background: #eee;
 }
+.menu {
+  width: 100vw;
+  height: 33px;
+  padding-left:10px;
+}
+a.text-light.menu-item {
+  padding: 0px 10px;
+  text-decoration: none;
+  border-right: 1px solid;
+  line-height: 32px;
+}
+a.text-light.menu-item.selected {
+  background-color: rgba(255,255,255,0.4);
+  box-shadow: 0 0 0 0.25rem rgba(255,255,255,0.2);
+}
 #sidebar-nav {
-  height: calc(100vh - 76px);
+  height: calc(100vh - 95px);
   padding: 10px;
   width: 330px;
   overflow-y: auto;
@@ -13,9 +38,15 @@
 }
 
 main {
-    height: calc(100vh - 76px);
-    box-shadow: 6px 6px 14px #ddd inset;
-    overflow: auto;
+  height: calc(100vh - 95px);
+  box-shadow: 6px 6px 14px #ddd inset;
+  overflow: auto;
+}
+
+.organizationContainer {
+  height: calc(100vh - 155px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 h2 {
@@ -31,29 +62,54 @@ h2 {
 .mainContent span.input-group-text:first-child {
     width: 106px;
 }
-.taskList {
-	width:320px;
-	display:inline-block;
-	vertical-align: top
+table th {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+table.taskListContainer.table th:first-child {
+  border-radius: .25rem 0 0 0;
+}
+table.taskListContainer.table th:last-child {
+  border-radius: 0 .25rem 0 0;
+}
+.tasklist {
+  overflow: auto;
+  height: calc(100vh - 100px);
 }
 .taskListFormContainer {
 	width:100%;
 	display:inline-block;
 	vertical-align: top
 }
-.taskForm {
-	padding: 8px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px #aaa;
+.taskListFormContainer.enlarged {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.7);
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
-span.assignedTo {
+
+.taskListFormContainer.enlarged > .taskform {
+  width: 90vw;
+  left: 5vw;
+  top: 5vh;
+  z-index: 10;
+  border: 1px solid #333;
+  box-shadow: 0 5px 15px #000;
+}
+span .assignedTo {
   font-size: smaller;
 }
 .btnClaimUnClaim {
-  width:100px;
+  width: 200px;
   position: absolute;
   right: 15px;
-  height: 36px;
+  text-align: right;
+}
+.btnClaimUnClaim button {
+    height: 35px;
 }
 .card.current {
   background: rgba(224,224,255,0.8);
@@ -78,9 +134,9 @@ span.assignedTo {
 	font-size: 1.1rem;
 }
 .card.taskform .card-title {
-    padding: 8px;
-    margin-top: -1px;
-    border-radius: 5px 5px 0px 0px;
+  padding: 8px;
+  margin-top: -1px;
+  border-radius: .25rem .25rem 0 0;
 }
 .card-subtitle {
     font-size: 0.9rem;
@@ -152,8 +208,6 @@ span.assignedTo {
 }
 /**language dropdown*/
 .input-group > .dropdown > .btn {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
