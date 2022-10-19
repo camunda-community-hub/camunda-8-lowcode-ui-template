@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import authService from '../service/AuthService';
 import logo from '../assets/img/logo.svg'
@@ -18,7 +18,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-light">
       <div className="container-fluid">
-        <Link to="/home"><img width="140" src={logo} className="custom-logo" alt="Camunda" /></Link>
+        <Link to="/home"><img width="120" src={logo} className="custom-logo" alt="Camunda" /></Link>
         <div>
 
           <div className="input-group mb-3">
@@ -29,8 +29,12 @@ function Navbar() {
         </div>
       </div>
       <div className="bg-primary menu">
-        <Link className="text-light menu-item" to="/tasklist/tasks">{t("Tasks")}</Link>
-        <Link className="text-light menu-item" to="/tasklist/processes">{t("Processes")}</Link>
+        <NavLink to="/tasklist/tasks" className={({ isActive }) =>
+          isActive ? "text-light menu-item selected" : "text-light menu-item"
+        } >{t("Tasks")}</NavLink>
+        <NavLink className={({ isActive }) =>
+          isActive ? "text-light menu-item selected" : "text-light menu-item"
+        } to="/tasklist/processes">{t("Processes")}</NavLink>
       </div>
     </nav>
   );
