@@ -1,7 +1,7 @@
 package org.example.camunda.process.solution;
 
 import io.camunda.zeebe.spring.client.EnableZeebeClient;
-import io.camunda.zeebe.spring.client.annotation.ZeebeDeployment;
+import io.camunda.zeebe.spring.client.annotation.Deployment;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @EnableZeebeClient
-@ZeebeDeployment(resources = "classpath*:/models/*.*")
+@Deployment(resources = "classpath*:/models/*.*")
 public class ProcessApplication {
 
   public static void main(String[] args) {

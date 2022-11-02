@@ -49,7 +49,7 @@ public class TaskListService {
   @Value("${tasklistUrl:notProvided}")
   private String tasklistUrl;
 
-  @Value("${keycloakUrl}")
+  @Value("${keycloakUrl:notProvided}")
   private String keycloakUrl;
 
   private CamundaTaskListClient client;

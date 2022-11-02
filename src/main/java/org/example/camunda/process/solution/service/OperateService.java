@@ -44,7 +44,7 @@ public class OperateService {
   @Value("${operateUrl:notProvided}")
   private String operateUrl;
 
-  @Value("${keycloakUrl}")
+  @Value("${keycloakUrl:notProvided}")
   private String keycloakUrl;
 
   private CamundaOperateClient client;
