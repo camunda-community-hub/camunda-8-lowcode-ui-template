@@ -25,6 +25,7 @@ export class AdminTranslationService {
         "Download": "Download",
         "Duplicate": "Duplicate",
         "Emails": "Emails",
+        "Feel Tester": "Feel Tester",
         "Forms": "Forms",
         "Generate": "Generate",
         "Generate from variables": "Generate from variables",

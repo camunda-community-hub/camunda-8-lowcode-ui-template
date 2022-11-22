@@ -16,6 +16,7 @@ import AdminTranslations from "./pages/AdminTranslations";
 import AdminEmails from "./pages/AdminEmails";
 import AdminForms from "./pages/AdminForms";
 import AdminThemes from './pages/AdminThemes';
+import FeelTester from './pages/FeelTester';
 import './assets/css/bootstrap.min.css';
 import './assets/css/bootstrap-icons-1.7.2.css';
 import '@camunda-community/form-js/dist/assets/form-js.css';
@@ -57,6 +58,7 @@ function App() {
             <Route path="theme" element={<AdminThemes />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="translations" element={<AdminTranslations />} />
+            <Route path="feel" element={<FeelTester />} />
             <Route path="*" element={<Undefined />} />
           </Route>
         </Routes>

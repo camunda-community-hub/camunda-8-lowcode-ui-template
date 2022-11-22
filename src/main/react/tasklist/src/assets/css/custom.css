@@ -228,3 +228,30 @@ span .assignedTo {
   right: 10px;
   top: 15px;
 }
+
+.feelExpression {
+  resize: vertical;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #999;
+  position: relative;
+  min-height: 30px;
+  margin-bottom: 4px;
+}
+.feelExpIcon {
+  position: absolute;
+  background-color: #CCC;
+  border-right: 0px;
+  border-radius: 0px;
+  z-index: 1;
+  height: 100%;
+  width: 2em;
+  text-align: center;
+  padding: 2px 6px;
+    margin-bottom: 4px;
+
+}
+#feeleditor, .result {
+  min-height: 100%;
+  padding-left: 2.4em;
+}
