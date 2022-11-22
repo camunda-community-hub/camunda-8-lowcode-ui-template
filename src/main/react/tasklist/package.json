@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@bpmn-io/feel-editor": "^0.6.0",
     "@camunda-community/form-js": "^0.7.8",
     "@codemirror/lang-html": "^6.1.1",
     "@codemirror/lang-json": "^6.0.0",
