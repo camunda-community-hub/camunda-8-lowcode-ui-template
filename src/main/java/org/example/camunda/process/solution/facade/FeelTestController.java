@@ -1,8 +1,15 @@
 package org.example.camunda.process.solution.facade;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 import java.util.Map;
 import org.camunda.feel.FeelEngine;
+import org.camunda.feel.FeelEngine.Failure;
 import org.camunda.feel.impl.SpiServiceLoader;
+import org.camunda.feel.syntaxtree.ParsedExpression;
+import org.camunda.feel.syntaxtree.Val;
+import org.camunda.feel.valuemapper.ValueMapper;
 import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,17 +33,41 @@ public class FeelTestController extends AbstractController {
           .functionProvider(SpiServiceLoader.loadFunctionProvider())
           .build();
 
+  private ObjectMapper scalaMapper;
+
+  private ValueMapper getValueMapper() {
+    return feelEngine.defaultValueMapper();
+  }
+
+  private ObjectMapper getScalaMapper() {
+    if (scalaMapper == null) {
+      scalaMapper = new ObjectMapper();
+      scalaMapper.registerModule(new DefaultScalaModule());
+    }
+    return scalaMapper;
+  }
+
+  private String getJsonValue(Val val) throws JsonProcessingException {
+    return getScalaMapper().writeValueAsString(getValueMapper().unpackVal(val));
+  }
+
   @IsAuthenticated
   @PostMapping("/test")
-  public Object feelTest(@RequestBody Map<String, Object> feelTest) {
-
-    final Either<FeelEngine.Failure, Object> result =
-        feelEngine.evalExpression(
-            (String) feelTest.get("expression"), (Map<String, Object>) feelTest.get("context"));
-    if (result.isRight()) {
-      return result.right().get();
+  public String feelTest(@RequestBody Map<String, Object> feelTest) throws JsonProcessingException {
+    final Either<Failure, ParsedExpression> parseResult =
+        feelEngine.parseExpression((String) feelTest.get("expression"));
+    if (parseResult.isLeft()) {
+      Failure failure = parseResult.left().get();
+      return failure.message();
     } else {
-      return result.left().get().message();
+      ParsedExpression parsedExpression = parseResult.right().get();
+      Either<Failure, Object> evalResult =
+          feelEngine.eval(parsedExpression, (Map<String, Object>) feelTest.get("context"));
+      if (evalResult.isRight()) {
+        return getJsonValue((Val) evalResult.right().get());
+      } else {
+        return evalResult.left().get().message();
+      }
     }
   }
 

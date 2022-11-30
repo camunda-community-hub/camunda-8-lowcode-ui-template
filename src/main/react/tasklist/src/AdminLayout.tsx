@@ -9,7 +9,7 @@ const AdminLayout = () => {
   return (
     <>
       <AdminNavbar />
-      <div className="container-fluid bg-light">
+      <div className="container-fluid bg-light main">
         <Outlet />
       </div>
       <link rel="stylesheet" type="text/css" href={"http://localhost:8080/api/themes/current?v="+lastUpdate} />

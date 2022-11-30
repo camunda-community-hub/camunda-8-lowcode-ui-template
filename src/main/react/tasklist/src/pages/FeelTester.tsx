@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import CodeMirror from '@uiw/react-codemirror';
 import { json } from '@codemirror/lang-json';
@@ -10,14 +8,14 @@ import api from '../service/api';
 function FeelTester() {
 
   const [contextData, setContextData] = useState<any>({"attribute":0});
-  const [feelExpression, setFeelExpression] = useState('');
-  const [result, setResult] = useState('');
+  const [feelExpression, setFeelExpression] = useState<string>('');
+  const [result, setResult] = useState<any>(null);
 
 
   useEffect(() => {
     let div = document.querySelector('#feeleditor');
     div!.innerHTML = '';
-    let editor = new FeelEditor({
+    new FeelEditor({
       container: div,
       onChange: onFeelChange,
       variables: getVariables(),
@@ -58,8 +56,7 @@ function FeelTester() {
   };
 
   return (
-    <Row>
-      <Col>
+    <>
         <span className="form-label">Feel expression</span>
         <div className="feelExpression">
           <div className="feelExpIcon">=</div>
@@ -75,11 +72,11 @@ function FeelTester() {
         <Button variant="primary" onClick={checkExpression}><i className="bi bi-bug"></i> test</Button>
         <hr/>
         <span className="form-label">Result</span>
-        <div className="feelExpression">
-          {result}
-        </div>
-      </Col>
-    </Row>
+        <CodeMirror
+          value={JSON.stringify(result, null, 2)}
+          extensions={[json()]}
+        />
+      </>
   );
 }
 
