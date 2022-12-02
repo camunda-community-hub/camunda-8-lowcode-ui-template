@@ -23,7 +23,9 @@ and a [docker-compose.yaml](docker-compose.yaml) file for local development. For
 - [Zeebe Workflow Engine](https://github.com/camunda/zeebe)
 - [Contact](https://docs.camunda.io/contact/)
 
-It also contains a [React front-end](src/main/react/tasklist/) that you can execute independently (npm run start). This front-end rely on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js). The first time you use the project, you should be able to connect with demo/demo to create new forms, mail templates and manage your user organization.
+It also contains a [React front-end](src/main/react/tasklist/) that you can execute independently (npm run start). This front-end rely on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js). If you want to have it served by your spring boot application, you should run a `mvnw package` at the project root.
+
+The first time you use the project, you should be able to connect with demo/demo to create new forms, mail templates and manage your user organization.
 
 ## Secure the app with keycloak
 If you want to secure your app with keycloak, you can set the keycloak.enabled to true and uncomment the properties in the application.yaml file
