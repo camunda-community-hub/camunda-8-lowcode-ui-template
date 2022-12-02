@@ -12,7 +12,7 @@
 services:
 
   zeebe: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#zeebe
-    image: camunda/zeebe:${CAMUNDA_PLATFORM_VERSION:-8.0.5}
+    image: camunda/zeebe:${CAMUNDA_PLATFORM_VERSION:-8.1.1}
     container_name: zeebe
     ports:
       - "26500:26500"
@@ -34,7 +34,7 @@ services:
       - elasticsearch
 
   operate: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#operate
-    image: camunda/operate:${CAMUNDA_PLATFORM_VERSION:-8.0.5}
+    image: camunda/operate:${CAMUNDA_PLATFORM_VERSION:-8.1.1}
     container_name: operate
     ports:
       - "8081:8080"
@@ -61,7 +61,7 @@ services:
       - elasticsearch
 
   tasklist: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#tasklist
-    image: camunda/tasklist:${CAMUNDA_PLATFORM_VERSION:-8.0.5}
+    image: camunda/tasklist:${CAMUNDA_PLATFORM_VERSION:-8.1.1}
     container_name: tasklist
     ports:
       - "8082:8080"
@@ -87,8 +87,20 @@ services:
       - identity
       - elasticsearch
 
+  connectors: # https://docs.camunda.io/docs/components/integration-framework/connectors/out-of-the-box-connectors/available-connectors-overview/
+    image: camunda/connectors-bundle:${CAMUNDA_CONNECTORS_VERSION:-0.1.2}
+    container_name: connectors
+    environment:
+      - ZEEBE_ADDRESS=zeebe:26500
+      - ZEEBE_INSECURE=true
+    env_file: connector-secrets.txt
+    networks:
+      - camunda-platform
+    depends_on:
+      - zeebe
+
   optimize: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#optimize
-    image: camunda/optimize:${CAMUNDA_OPTIMIZE_VERSION:-3.8.5}
+    image: camunda/optimize:${CAMUNDA_OPTIMIZE_VERSION:-3.9.1}
     container_name: optimize
     ports:
       - "8083:8090"
@@ -117,7 +129,7 @@ services:
 
   identity: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#identity
     container_name: identity
-    image: camunda/identity:${CAMUNDA_PLATFORM_VERSION:-8.0.5}
+    image: camunda/identity:${CAMUNDA_PLATFORM_VERSION:-8.1.1}
     ports:
       - "8084:8084"
     environment: # https://docs.camunda.io/docs/self-managed/identity/deployment/configuration-variables/
@@ -131,18 +143,30 @@ services:
       KEYCLOAK_INIT_TASKLIST_ROOT_URL: http://localhost:8082
       KEYCLOAK_INIT_OPTIMIZE_SECRET: XALaRPl5qwTEItdwCMiPS62nVpKs7dL7
       KEYCLOAK_INIT_OPTIMIZE_ROOT_URL: http://localhost:8083
+      KEYCLOAK_INIT_WEBMODELER_ROOT_URL: http://localhost:8070   
       KEYCLOAK_USERS_0_USERNAME: "demo"
       KEYCLOAK_USERS_0_PASSWORD: "demo"
       KEYCLOAK_USERS_0_FIRST_NAME: "demo"
+      KEYCLOAK_USERS_0_EMAIL: "demo@acme.com"
       KEYCLOAK_USERS_0_ROLES_0: "Identity"
       KEYCLOAK_USERS_0_ROLES_1: "Optimize"
       KEYCLOAK_USERS_0_ROLES_2: "Operate"
       KEYCLOAK_USERS_0_ROLES_3: "Tasklist"
+      KEYCLOAK_USERS_0_ROLES_4: "Web Modeler"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8084/actuator/health" ]
+      interval: 5s
+      timeout: 15s
+      retries: 30
+      start_period: 60s      
     restart: on-failure
+    volumes:
+      - keycloak-theme:/app/keycloak-theme
     networks:
       - identity-network
     depends_on:
-      - keycloak
+      keycloak:
+        condition: service_healthy
 
   postgres: # https://hub.docker.com/_/postgres
     container_name: postgres
@@ -153,12 +177,12 @@ services:
       POSTGRES_PASSWORD: "#3]O?4RGj)DE7Z!9SA5"
     restart: on-failure
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
     volumes:
-      - postgres:/usr/local/postgres/data
+      - postgres:/var/lib/postgresql/data
     networks:
       - identity-network
 
@@ -166,7 +190,7 @@ services:
     container_name: keycloak
     image: bitnami/keycloak:${KEYCLOAK_SERVER_VERSION:-16.1.1}
     volumes:
-      - ./.keycloak/themes/identity:/opt/bitnami/keycloak/themes/identity
+      - keycloak-theme:/opt/bitnami/keycloak/themes/identity
     ports:
       - "18080:8080"
     environment:
@@ -187,7 +211,7 @@ services:
       - postgres
 
   elasticsearch: # https://hub.docker.com/_/elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION:-7.17.0}
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION:-7.17.5}
     container_name: elasticsearch
     ports:
       - "9200:9200"
@@ -214,10 +238,26 @@ services:
     networks:
       - camunda-platform
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION:-7.17.0}
+    container_name: kibana
+    ports:
+      - 5601:5601
+    volumes:
+      - kibana:/usr/share/kibana/data
+    networks:
+      - camunda-platform
+    depends_on:
+      - elasticsearch
+    profiles:
+      - kibana
+
 volumes:
   zeebe:
   elastic:
   postgres:
+  keycloak-theme:
+  kibana:
 
 networks:
   # Note there are two bridge networks: One for Camunda Platform and one for Identity.
