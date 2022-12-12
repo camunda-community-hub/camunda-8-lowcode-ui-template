@@ -105,7 +105,17 @@ function AdminDmnEdit() {
       clone.definition = data.xml;
       adminDmnService.save(clone);
     });
-   
+  }
+
+  const deployDmn = () => {
+    let clone = Object.assign({}, dmn);
+    editor.saveXML({ format: true }).then((data: any) => {
+      clone.name = name;
+      clone.decisionId = decisionId;
+      clone.contextData = contextData;
+      clone.definition = data.xml;
+      adminDmnService.deploy(clone);
+    });
   }
 
   return (
@@ -120,8 +130,9 @@ function AdminDmnEdit() {
         <Button variant="primary" onClick={handleShow}><i className="bi bi-bug"></i> test</Button>
         <div>
         <InputGroup className="mb-3">
-            <Form.Control aria-label="DMN name" placeholder="DMN name" value={name} onChange={(evt) => setName(evt.target.value)} />
+          <Form.Control aria-label="DMN name" placeholder="DMN name" value={name} onChange={(evt) => setName(evt.target.value)} />
           <Button variant="primary" onClick={() => saveDmn()}>{t("Save")}</Button>
+          <Button variant="primary" onClick={() => deployDmn()}>{t("Deploy")}</Button>
         </InputGroup>
           </div>
         <Button variant="secondary" onClick={() => dispatch(adminDmnService.setDmn(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>
