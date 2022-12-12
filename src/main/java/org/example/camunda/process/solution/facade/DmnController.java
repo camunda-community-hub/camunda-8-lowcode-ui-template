@@ -3,6 +3,8 @@ package org.example.camunda.process.solution.facade;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.api.response.DeploymentEvent;
 import io.camunda.zeebe.dmn.DecisionContext;
 import io.camunda.zeebe.dmn.DecisionEvaluationResult;
 import io.camunda.zeebe.dmn.ParsedDecisionRequirementsGraph;
@@ -15,6 +17,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.jsonmodel.Dmn;
+import org.example.camunda.process.solution.security.annotation.IsAdmin;
 import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.example.camunda.process.solution.security.annotation.IsEditor;
 import org.example.camunda.process.solution.service.DmnService;
@@ -43,6 +46,7 @@ public class DmnController extends AbstractController {
   private DmnScalaDecisionEngine dmnEngine = new DmnScalaDecisionEngine();
 
   @Autowired private DmnService dmnService;
+  @Autowired private ZeebeClient zeebe;
 
   @IsEditor
   @PostMapping
@@ -87,6 +91,20 @@ public class DmnController extends AbstractController {
       return result.getFailureMessage();
     }
     return MsgPackConverter.convertToJson(result.getOutput());
+  }
+
+  @IsAdmin
+  @PostMapping("/deploy")
+  public Long deploy(@RequestBody Dmn dmn) throws IOException {
+
+    InputStream inputStream = new ByteArrayInputStream(dmn.getDefinition().getBytes());
+    DeploymentEvent event =
+        zeebe
+            .newDeployResourceCommand()
+            .addResourceStream(inputStream, dmn.getName() + ".dmn")
+            .send()
+            .join();
+    return event.getKey();
   }
 
   @Override

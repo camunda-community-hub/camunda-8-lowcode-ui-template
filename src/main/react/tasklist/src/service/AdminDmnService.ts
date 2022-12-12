@@ -84,6 +84,15 @@ export class AdminDmnService {
     })
   }
 
+  deploy = (dmn:any) => {
+    api.post('/dmn/deploy', dmn).then(response => {
+      dmn.deploymentKey = response.data;
+      alert('Deployment OK :' + dmn.deploymentKey);
+    }).catch(error => {
+      alert(error.message);
+    })
+  }
+
   getCurrentDmn = (): any => {
     return store.getState().adminDmns.currentDmn;
   }
