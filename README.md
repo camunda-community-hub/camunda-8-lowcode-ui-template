@@ -33,7 +33,7 @@ git pull upstream main
 git push
 ```
 
-## Using the Spring Boot application
+## First steps with the application
 
 The application requires a running Zeebe engine.
 You can run Zeebe locally using the instructions below for Docker Compose
