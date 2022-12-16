@@ -15,7 +15,7 @@ For more information about Self-Managed, including additional [development insta
 
 For production setups we recommend using [Helm charts](https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/) which can be found at [helm.camunda.io](https://helm.camunda.io/).
 
-## Using the Spring Boot application
+## First steps with the application
 
 The application requires a running Zeebe engine.
 You can run Zeebe locally using the instructions below for Docker Compose
