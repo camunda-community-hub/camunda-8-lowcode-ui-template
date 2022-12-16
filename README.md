@@ -25,7 +25,51 @@ and a [docker-compose.yaml](docker-compose.yaml) file for local development. For
 
 It also contains a [React front-end](src/main/react/tasklist/) that you can execute independently (npm run start). This front-end rely on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js). If you want to have it served by your spring boot application, you should run a `mvnw package` at the project root.
 
+## Using this template
+
+Fork [this repository](https://github.com/camunda-community-hub/camunda-8-lowcode-ui-template) on GitHub
+and rename/refactor the following artifacts:
+
+* `groupId`, `artifactId`, `name`, and `description` in [pom.xml](pom.xml)
+* `process/@id` and `process/@name` in [src/main/resources/models/camunda-process.bpmn](src/main/resources/models/camunda-process.bpmn)
+* `ProcessConstansts#BPMN_PROCESS_ID` in [src/main/java/org/example/camunda/process/solution/ProcessConstants.java](src/main/java/org/example/camunda/process/solution/ProcessConstants.java)
+* Java package name, e.g. `org.example.camunda.process.solution.*`
+
+By forking this project, you can stay connected to improvements that we do to this template and simply pull updates into your fork, e.g. by using GitHub's Web UI or the following commands:
+
+```sh
+git remote add upstream git@github.com:camunda-community-hub/camunda-8-lowcode-ui-template.git
+git pull upstream main
+git push
+```
+
+## First steps with the application
+
+The application requires a running Zeebe engine.
+You can run Zeebe locally using the instructions below for Docker Compose
+or have a look at our
+[recommended deployment options for Camunda Platform](https://docs.camunda.io/docs/self-managed/platform-deployment/#deployment-recommendation.).
+
+Run the application via
+```
+./mvnw spring-boot:run
+```
+
+UI [http://localhost:8080/](http://localhost:8080/)
+Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
 The first time you use the project, you should be able to connect with demo/demo to create new forms, mail templates and manage your user organization.
+
+When you start the application for the first time, an "ACME" organization is created for you with a single user demo/demo with admin rights. When you access the landing page, you'll be able to access the "admin" section where you can [manage forms](https://github.com/camunda-community-hub/extended-form-js), [mail templates](https://github.com/camunda-community-hub/thymeleaf-feel) and your organization.
+
+## Forms
+You can create forms with 3 different approaches :
+- Embedded forms into your process definition (classic approach)
+- Create Extended Forms from the admin application. Form name should match the formKey. Forms will be stored in the workspace/forms folder.
+- Create custom react forms. From the react application, in the forms folder, create your custom forms. You should then reference them in the customForms map in the forms/index.ts file.
+
+Translations will be managed from the backend in the 2 first approaches. Input labels should be references in the Forms translations.
+In the 3rd case, translation will be managed from the front-end and translations should be added in the "siteTranslations".
 
 ## Secure the app with keycloak
 If you want to secure your app with keycloak, you can set the keycloak.enabled to true and uncomment the properties in the application.yaml file
@@ -52,33 +96,7 @@ This application relies on 3 kind of users :
 - Token Claim Name : groups
 
 ## Google integration
-If you want to send emails through gmail (what is coded for now), you will need to download a [client_secret_google_api.json from your google console] (https://console.cloud.google.com/) and put it in your resources folder.
-
-## First steps with the application
-
-The application requires a running Zeebe engine. You can run Zeebe locally using the instructions below for Docker Compose or have a look at our [recommended deployment options for Camunda Platform](https://docs.camunda.io/docs/self-managed/platform-deployment/#deployment-recommendation.).
-
-Run the application via
-```
-./mvnw spring-boot:run
-```
-
-Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-
-When you start the application for the first time, an "ACME" organization is created for you with a single user demo/demo with admin rights. When you access the landing page, you'll be able to access the "admin" section where you can [manage forms](https://github.com/camunda-community-hub/extended-form-js), [mail templates](https://github.com/camunda-community-hub/thymeleaf-feel) and your organization.
-
-You can also access the Tasklist section from the welcome page. You'll notice that in processes are listed the latest versions of your deployed processes. In Tasks, you'll find tasks that you can filter (assigned, assignee, group, state). When a new task is available, the Spring Boot backend will push the information to the front-end (ws). To work on a task you should first claim it. If task is assign to someone else, you'll need to unclaim and claim it.
-
-> :information_source: In the application.yml, you'll notice some "exotic" properties that could modify to change application behavior.
-
-## Forms
-You can create forms with 3 different approaches :
-- Embedded forms into your process definition (classic approach)
-- Create Extended Forms from the admin application. Form name should match the formKey. Forms will be stored in the workspace/forms folder.
-- Create custom react forms. From the react application, in the forms folder, create your custom forms. You should then reference them in the customForms map in the forms/index.ts file.
-
-Translations will be managed from the backend in the 2 first approaches. Input labels should be references in the Forms translations.
-In the 3rd case, translation will be managed from the front-end and translations should be added in the "siteTranslations".
+If you want to send emails through Gmail (what is coded for now), you will need to download a [client_secret_google_api.json from your Google console] (https://console.cloud.google.com/) and put it in your resources folder.
 
 ## Using docker-compose
 
@@ -92,10 +110,11 @@ The full enviornment contains these components:
 - Zeebe
 - Operate
 - Tasklist
+- Connectors
 - Optimize
 - Identity
 - Elasticsearch
-- KeyCloak
+- Keycloak
 
 Clone this repo and issue the following command to start your environment:
 
@@ -111,7 +130,9 @@ Now you can navigate to the different web apps and log in with the user `demo` a
 - Optimize: [http://localhost:8083](http://localhost:8083)
 - Identity: [http://localhost:8084](http://localhost:8084)
 - Elasticsearch: [http://localhost:9200](http://localhost:9200)
-- KeyCloak: [http://localhost:18080](http://localhost:18080)
+
+Keycloak is used to manage users. Here you can log in with the user `admin` and password `admin`
+- Keycloak: [http://localhost:18080/auth/](http://localhost:18080/auth/)
 
 The workflow engine Zeebe is available using gRPC at `localhost:26500`.
 
@@ -133,20 +154,94 @@ In addition to the local environment setup with docker-compose, you can download
 
 Feedback and updates are welcome!
 
-## Using this template
+## Connectors
 
-Fork [this repository](https://github.com/camunda-community-hub/camunda-8-lowcode-ui-template) on GitHub
-and rename/refactor the following artifacts:
+Both docker-compose files contain our [out-of-the-box Connectors](https://docs.camunda.io/docs/components/integration-framework/connectors/out-of-the-box-connectors/available-connectors-overview/).
 
-* `groupId`, `artifactId`, `name`, and `description` in [pom.xml](pom.xml)
-* `process/@id` and `process/@name` in [src/main/resources/models/camunda-process.bpmn](src/main/resources/models/camunda-process.bpmn)
-* `ProcessConstansts#BPMN_PROCESS_ID` in [src/main/java/org/example/camunda/process/solution/ProcessConstants.java](src/main/java/org/example/camunda/process/solution/ProcessConstants.java)
-* Java package name, e.g. `org.example.camunda.process.solution.*`
+Refer to the [Connector installation guide](https://docs.camunda.io/docs/self-managed/connectors-deployment/install-and-start/) for details on how to provide the related Connector templates for modeling.
 
-By forking this project, you can stay connected to improvements that we do to this template and simply pull updates into your fork, e.g. by using GitHub's Web UI or the following commands:
+To inject secrets into the Connector runtime they can be added to the
+[`connector-secrets.txt`](connector-secrets.txt) file inside the repository in the format `NAME=VALUE`
+per line. The secrets will then be available in the Connector runtime with the
+format `secrets.NAME`.
 
-```sh
-git remote add upstream git@github.com:camunda-community-hub/camunda-8-lowcode-ui-template.git
-git pull upstream main
-git push
+To add custom Connectors either create a new docker image bundling them as
+described [here](https://github.com/camunda/connectors-bundle/tree/main/runtime).
+
+Alternatively, you can mount new Connector JARs as volumes into the `/opt/app` folder by adding this to the docker-compose file. Keep in mind that the Connector JARs need to bring along all necessary dependencies inside the JAR.
+
+## Kibana
+
+A `kibana` profile is available in the provided docker compose files to support inspection and exploration of the Camunda Platform 8 data in Elasticsearch.
+It can be enabled by adding `--profile kibana` to your docker compose command.
+In addition to the other components, this profile spins up [Kibana](https://www.elastic.co/kibana/).
+Kibana can be used to explore the records exported by Zeebe into Elasticsearch, or to discover the data in Elasticsearch used by the other components (e.g. Operate).
+
+You can navigate to the Kibana web app and start exploring the data without login credentials:
+
+- Kibana: [http://localhost:5601](http://localhost:5601)
+
+> **Note**
+> You need to configure the index patterns in Kibana before you can explore the data.
+> - Go to `Management > Stack Management > Kibana > Index Patterns`.
+> - Create a new index pattern. For example, `zeebe-record-*` matches the exported records.
+>   - If you don't see any indexes then make sure to export some data first (e.g. deploy a process). The indexes of the records are created when the first record of this type is exported.
+> - Go to `Analytics > Discover` and select the index pattern.
+
+## Web Modeler Self-Managed Beta Release
+
+> :warning: Web Modeler Self-Managed is currently offered as a [beta release](https://docs.camunda.io/docs/next/reference/early-access#beta) with limited availability for enterprise customers only. It is not recommended for production use, and there is no maintenance service guaranteed. Special [terms & conditions](https://camunda.com/legal/terms/camunda-platform/camunda-platform-8-self-managed/) apply. However, we encourage you to provide feedback via your designated support channel or the [Camunda Forum](https://forum.camunda.io/).
+
+The Docker images for Web Modeler Beta are available in a private registry. Enterprise customers either already have credentials to this registry, or they can request access to this registry through their CSM contact at Camunda.
+
+To run Camunda Platform with Web Modeler Self-Managed clone this repo and issue the following commands:
+
+```
+$ docker login registry.camunda.cloud
+Username: your_username
+Password: ******
+Login Succeeded
+$ docker-compose -f docker-compose.yaml -f docker-compose-web-modeler-beta.yaml up -d
+```
+
+To tear down the whole environment run the following command
+
+```
+$ docker-compose -f docker-compose.yaml -f docker-compose-web-modeler-beta.yaml down -v
+```
+
+If you want to delete everything (including any data you created).
+Alternatively, if you want to keep the data run:
+
+```
+$ docker-compose -f docker-compose.yaml -f docker-compose-web-modeler-beta.yaml down
+```
+
+### Web Modeler
+Now you can access Web Modeler Self-Managed and log in with the user `demo` and password `demo` at [http://localhost:8070](http://localhost:8070).
+
+Once you are ready to deploy or execute processes use these settings to deploy to the local Zeebe instance:
+* Authentication: None
+* URL: `zeebe:26500`
+
+### Emails
+The setup includes [MailHog](https://github.com/mailhog/MailHog) as a test SMTP server. It captures all emails sent by Web Modeler, but does not forward them to the actual recipients. 
+
+You can access emails in MailHog's Web UI at [http://localhost:8075](http://localhost:8075).
+
+# Camunda Platform 7
+
+- [Documentation](https://docs.camunda.org/)
+- [GitHub](https://github.com/camunda/camunda-bpm-platform)
+
+# Troubleshooting
+## Running on arm64 based hardware
+When using arm64-based hardware like a M1 or M2 Mac the Keycloak container might not start because Bitnami only
+provides amd64-based images. Until bitnami adds
+[support for linux/arm64 images](https://github.com/bitnami/charts/issues/7305), you can build and tag an arm-based
+image locally using the following command. After building and tagging the image you can start the environment as
+described in [Using docker-compose](#using-docker-compose).
+
+```
+$ DOCKER_BUILDKIT=0 docker build -t bitnami/keycloak:19.0.3 "https://github.com/camunda/camunda-platform.git#main:.keycloak/"
 ```
