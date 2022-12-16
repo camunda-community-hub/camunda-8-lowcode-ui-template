@@ -245,3 +245,25 @@ described in [Using docker-compose](#using-docker-compose).
 ```
 $ DOCKER_BUILDKIT=0 docker build -t bitnami/keycloak:19.0.3 "https://github.com/camunda/camunda-platform.git#main:.keycloak/"
 ```
+
+
+## Pull from Upstream (for maintainers of the Low-Code UI Template)
+
+Pull in the latest updates from the [Process Solution Template](https://github.com/camunda-community-hub/camunda-8-process-solution-template),
+which this template was forked from, using:
+
+```sh
+git remote add upstream git@github.com:camunda-community-hub/camunda-8-process-solution-template.git
+git checkout -b pull-upstream
+git pull upstream main --no-rebase
+git mergetool
+git commit # to conclude merge
+git push --set-upstream origin pull-upstream
+gh pr create --title "Update from Process Solution Template" --body "Pulls in the latest updates from the [Process Solution Template](https://github.com/camunda-community-hub/camunda-8-process-solution-template) which this template was forked from"
+```
+
+Pulling another change into the same PR:
+```sh
+git pull upstream main --no-rebase
+git push
+```
