@@ -72,9 +72,11 @@ public class InternationalizationService {
     }
     JsonNode components = schema.get("components");
     for (JsonNode node : components) {
-      String label = node.get("label").asText();
-      if (t.getFormsTranslations().containsKey(label)) {
-        ((ObjectNode) node).put("label", t.getFormsTranslations().get(label));
+      if (node.get("label") != null) {
+        String label = node.get("label").asText();
+        if (t.getFormsTranslations().containsKey(label)) {
+          ((ObjectNode) node).put("label", t.getFormsTranslations().get(label));
+        }
       }
     }
     return schema;
