@@ -4,6 +4,7 @@ import io.camunda.tasklist.CamundaTaskListClient;
 import io.camunda.tasklist.auth.SaasAuthentication;
 import io.camunda.tasklist.auth.SelfManagedAuthentication;
 import io.camunda.tasklist.dto.Form;
+import io.camunda.tasklist.dto.TaskList;
 import io.camunda.tasklist.dto.TaskState;
 import io.camunda.tasklist.dto.Variable;
 import io.camunda.tasklist.exception.TaskListException;
@@ -161,7 +162,7 @@ public class TaskListService {
     return result;
   }
 
-  private List<Task> convert(List<io.camunda.tasklist.dto.Task> tasks) {
+  private List<Task> convert(TaskList tasks) {
     List<Task> result = new ArrayList<>();
     for (io.camunda.tasklist.dto.Task task : tasks) {
       result.add(convert(task));
