@@ -4,7 +4,7 @@
 # We recommend to use Kubernetes in production with our Helm Charts:
 # https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/
 # For local development, we recommend using KIND instead of `docker-compose`:
-# https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/#installing-the-camunda-helm-chart-locally-using-kind
+# https://docs.camunda.io/docs/self-managed/platform-deployment/helm-kubernetes/guides/local-kubernetes-cluster/
 
 # This is a full configuration with Zeebe, Operate, Tasklist, Optimize, Identity, Keycloak, and Elasticsearch
 # See docker-compose-core.yml for a lightweight configuration that does not include Optimize, Identity, and Keycloak.
@@ -12,7 +12,7 @@
 services:
 
   zeebe: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#zeebe
-    image: camunda/zeebe:${CAMUNDA_PLATFORM_VERSION:-8.1.1}
+    image: camunda/zeebe:${CAMUNDA_PLATFORM_VERSION:-8.1.5}
     container_name: zeebe
     ports:
       - "26500:26500"
@@ -34,7 +34,7 @@ services:
       - elasticsearch
 
   operate: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#operate
-    image: camunda/operate:${CAMUNDA_PLATFORM_VERSION:-8.1.1}
+    image: camunda/operate:${CAMUNDA_PLATFORM_VERSION:-8.1.5}
     container_name: operate
     ports:
       - "8081:8080"
@@ -61,7 +61,7 @@ services:
       - elasticsearch
 
   tasklist: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#tasklist
-    image: camunda/tasklist:${CAMUNDA_PLATFORM_VERSION:-8.1.1}
+    image: camunda/tasklist:${CAMUNDA_PLATFORM_VERSION:-8.1.5}
     container_name: tasklist
     ports:
       - "8082:8080"
@@ -88,11 +88,11 @@ services:
       - elasticsearch
 
   connectors: # https://docs.camunda.io/docs/components/integration-framework/connectors/out-of-the-box-connectors/available-connectors-overview/
-    image: camunda/connectors-bundle:${CAMUNDA_CONNECTORS_VERSION:-0.1.2}
+    image: camunda/connectors-bundle:${CAMUNDA_CONNECTORS_VERSION:-0.2.3}
     container_name: connectors
     environment:
-      - ZEEBE_ADDRESS=zeebe:26500
-      - ZEEBE_INSECURE=true
+      - ZEEBE_CLIENT_BROKER_GATEWAY-ADDRESS=zeebe:26500
+      - ZEEBE_CLIENT_SECURITY_PLAINTEXT=true
     env_file: connector-secrets.txt
     networks:
       - camunda-platform
@@ -100,7 +100,7 @@ services:
       - zeebe
 
   optimize: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#optimize
-    image: camunda/optimize:${CAMUNDA_OPTIMIZE_VERSION:-3.9.1}
+    image: camunda/optimize:${CAMUNDA_OPTIMIZE_VERSION:-3.9.3}
     container_name: optimize
     ports:
       - "8083:8090"
@@ -129,7 +129,7 @@ services:
 
   identity: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#identity
     container_name: identity
-    image: camunda/identity:${CAMUNDA_PLATFORM_VERSION:-8.1.1}
+    image: camunda/identity:${CAMUNDA_PLATFORM_VERSION:-8.1.5}
     ports:
       - "8084:8084"
     environment: # https://docs.camunda.io/docs/self-managed/identity/deployment/configuration-variables/
@@ -188,19 +188,20 @@ services:
 
   keycloak: # https://hub.docker.com/r/bitnami/keycloak
     container_name: keycloak
-    image: bitnami/keycloak:${KEYCLOAK_SERVER_VERSION:-16.1.1}
+    image: bitnami/keycloak:${KEYCLOAK_SERVER_VERSION:-19.0.3}
     volumes:
       - keycloak-theme:/opt/bitnami/keycloak/themes/identity
     ports:
       - "18080:8080"
     environment:
+      KEYCLOAK_HTTP_RELATIVE_PATH: /auth
       KEYCLOAK_DATABASE_HOST: postgres
       KEYCLOAK_DATABASE_PASSWORD: "#3]O?4RGj)DE7Z!9SA5"
       KEYCLOAK_ADMIN_USER: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     restart: on-failure
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9990/health" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/auth" ]
       interval: 30s
       timeout: 15s
       retries: 5
