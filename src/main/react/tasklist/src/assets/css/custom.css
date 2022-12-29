@@ -82,14 +82,22 @@ table.taskListContainer.table th:last-child {
   margin-bottom: 5px;
   justify-content: space-between;
   display: flex;
+}
+.taskListTitle > .title {
   font-size: 1.1rem;
   line-height: 33px;
   font-weight: 500;
 }
+.taskListTitle > .nbResults {
+  padding: 5px;
+}
+.taskListTitle > .nbResults > select {
+  margin: 2px;
+}
 .taskListFormContainer {
-	width:100%;
-	display:inline-block;
-	vertical-align: top
+  width: 100%;
+  display: inline-block;
+  vertical-align: top
 }
 .taskListFormContainer.enlarged {
     position: absolute;

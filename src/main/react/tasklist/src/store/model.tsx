@@ -25,6 +25,7 @@ export interface ITask {
   taskState: string;
   formKey: string;
   variables: IVariable[];
+  sortValues: string[];
   processDefinitionId: string;
 }
 
@@ -48,6 +49,9 @@ export interface ITaskSearch {
   group: string | undefined;
   state: string;
   pageSize: number | undefined;
+  search: string[] | undefined;
+  direction: string | undefined;
+  numPage: number;
 }
 
 export interface IFormViewer {

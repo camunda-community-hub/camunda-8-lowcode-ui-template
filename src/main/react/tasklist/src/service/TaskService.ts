@@ -1,6 +1,6 @@
 import store, { AppThunk } from '../store';
 import formService from './FormService';
-import { remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, prependTaskIntoList, setTask, setFormSchema, removeCurrentTask, setTaskSearch } from '../store/features/processes/slice';
+import { remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, prependTaskIntoList, setTask, setFormSchema, removeCurrentTask, setTaskSearch, before, after } from '../store/features/processes/slice';
 import { ITask, ITaskSearch } from '../store/model';
 import api from './api';
 import { Stomp, StompSubscription } from '@stomp/stompjs';
@@ -51,6 +51,12 @@ export class TaskService {
   setTaskSearch = (taskSearch: ITaskSearch): AppThunk => async dispatch => {
     dispatch(setTaskSearch(taskSearch));
   }
+  before = (): AppThunk => async dispatch => {
+    dispatch(before());
+  }
+  after = (): AppThunk => async dispatch => {
+    dispatch(after());
+  }
   setTask = (task: ITask | null): AppThunk => async dispatch => {
     console.log(task!.formKey);
     console.log(formService.customFormExists(task!.formKey));
@@ -73,7 +79,8 @@ export class TaskService {
   }
 
   fetchTasks = (): AppThunk => async dispatch => {
-    if (this.lastFetchTasks < Date.now() - 1000) { 
+    if (this.lastFetchTasks < Date.now() - 1000) {
+      this.lastFetchTasks = Date.now();
       try {
         dispatch(remoteLoading());
         const { data } = await api.post<ITask[]>('/tasks/search', store.getState().process.taskSearch);
@@ -81,7 +88,6 @@ export class TaskService {
       } catch (err:any) {
         dispatch(remoteLoadingFail(err.toString()));
       }
-      this.lastFetchTasks = Date.now();
     }
   }
   
