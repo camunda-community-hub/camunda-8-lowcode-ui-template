@@ -109,6 +109,10 @@ table.taskListContainer.table th:last-child {
   border: 1px solid #333;
   box-shadow: 0 5px 15px #000;
 }
+.taskListFormContainer.enlarged > .taskform #task-form{
+  height: 75vh;
+  overflow-y: auto;
+}
 span .assignedTo {
   font-size: smaller;
 }
