@@ -1,5 +1,8 @@
 package org.example.camunda.process.solution.facade.dto;
 
+import io.camunda.tasklist.dto.SearchType;
+import java.util.List;
+
 public class TaskSearch {
 
   private Boolean assigned;
@@ -9,6 +12,10 @@ public class TaskSearch {
   private String assignee;
 
   private Integer pageSize;
+
+  private List<String> search;
+
+  private SearchType direction;
 
   private String group;
 
@@ -50,5 +57,21 @@ public class TaskSearch {
 
   public void setAssigned(Boolean assigned) {
     this.assigned = assigned;
+  }
+
+  public List<String> getSearch() {
+    return search;
+  }
+
+  public void setSearch(List<String> search) {
+    this.search = search;
+  }
+
+  public SearchType getDirection() {
+    return direction;
+  }
+
+  public void setDirection(SearchType direction) {
+    this.direction = direction;
   }
 }

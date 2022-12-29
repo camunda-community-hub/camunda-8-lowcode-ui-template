@@ -4,6 +4,7 @@ import io.camunda.tasklist.CamundaTaskListClient;
 import io.camunda.tasklist.auth.SaasAuthentication;
 import io.camunda.tasklist.auth.SelfManagedAuthentication;
 import io.camunda.tasklist.dto.Form;
+import io.camunda.tasklist.dto.Pagination;
 import io.camunda.tasklist.dto.TaskList;
 import io.camunda.tasklist.dto.TaskState;
 import io.camunda.tasklist.dto.Variable;
@@ -99,28 +100,27 @@ public class TaskListService {
   }
 
   public List<Task> getTasks(TaskSearch taskSearch) throws TaskListException {
+    Pagination pagination =
+        new Pagination()
+            .setPageSize(taskSearch.getPageSize())
+            .setSearch(taskSearch.getSearch())
+            .setSearchType(taskSearch.getDirection());
     if (Boolean.TRUE.equals(taskSearch.getAssigned()) && taskSearch.getAssignee() != null) {
       return convert(
           getCamundaTaskListClient()
               .getAssigneeTasks(
-                  taskSearch.getAssignee(),
-                  TaskState.fromJson(taskSearch.getState()),
-                  taskSearch.getPageSize()));
+                  taskSearch.getAssignee(), TaskState.fromJson(taskSearch.getState()), pagination));
     }
     if (taskSearch.getGroup() != null) {
       return convert(
           getCamundaTaskListClient()
               .getGroupTasks(
-                  taskSearch.getGroup(),
-                  TaskState.fromJson(taskSearch.getState()),
-                  taskSearch.getPageSize()));
+                  taskSearch.getGroup(), TaskState.fromJson(taskSearch.getState()), pagination));
     }
     return convert(
         getCamundaTaskListClient()
             .getTasks(
-                taskSearch.getAssigned(),
-                TaskState.fromJson(taskSearch.getState()),
-                taskSearch.getPageSize()));
+                taskSearch.getAssigned(), TaskState.fromJson(taskSearch.getState()), pagination));
   }
 
   public List<Task> getGroupTasks(String group, TaskState state, Integer pageSize)

@@ -26,6 +26,7 @@ function TaskList() {
   const handleClose = () => setShowTaskFilter(false);
   const handleShow = () => setShowTaskFilter(true);
 
+  const loading = useSelector((state: any) => state.process.loading)
   const tasks = useSelector((state: any) => state.process.tasks)
   const taskSearch = useSelector((state: any) => state.process.taskSearch)
   type ObjectKey = keyof typeof taskSearch;
@@ -40,6 +41,18 @@ function TaskList() {
     dispatch(taskService.setTaskSearch(taskSearchClone));
   }
 
+  const changePageSize = (value: any) => {
+    let taskSearchClone = Object.assign({}, taskSearch);
+    taskSearchClone.pageSize = value * 1;
+    dispatch(taskService.setTaskSearch(taskSearchClone));
+  }
+  const before = () => {
+    dispatch(taskService.before());
+  }
+  const after = () => {
+    dispatch(taskService.after());
+  }
+
   useEffect(() => {
     dispatch(taskService.fetchTasks());
   });
@@ -47,8 +60,19 @@ function TaskList() {
   return (
     <div className="row flex-nowrap">
       <Col className="tasklist ps-md-2 pt-2">
-        <div className="taskListTitle bg-primary text-light">{t("Tasks")}
-          <Button variant="primary" onClick={handleShow}><i className="bi bi-funnel"></i></Button>
+        <div className="taskListTitle bg-primary text-light">
+          <span className="title">{t("Tasks")}</span>
+          <div className="nbResults">
+            {t("Show")}
+            <select value={taskSearch.pageSize} onChange={(evt) => changePageSize(evt.target.value)} disabled={loading}>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+            </select>
+            {t("results")}
+            </div>
+          <Button variant="primary" onClick={handleShow} disabled={loading}><i className="bi bi-funnel"></i></Button>
         </div>
         <Table striped hover variant="light" className="taskListContainer">
           <thead >
@@ -62,6 +86,12 @@ function TaskList() {
           <tbody>
             {tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>)}
           </tbody>
+          <tfoot>
+            <tr><td colSpan={4}>
+              <Button variant="outline-primary" onClick={before} disabled={loading}><i className="bi bi-arrow-left"></i> before</Button>
+              <Button variant="outline-primary" onClick={after} disabled={loading}>after <i className="bi bi-arrow-right"></i> </Button>
+            </td></tr>
+          </tfoot>
         </Table>
       </Col>
       <Col className="ps-md-2 pt-2">
