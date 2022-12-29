@@ -1,7 +1,7 @@
 package org.example.camunda.process.solution.worker;
 
-import io.camunda.zeebe.spring.client.annotation.ZeebeVariablesAsType;
-import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
+import io.camunda.zeebe.spring.client.annotation.JobWorker;
+import io.camunda.zeebe.spring.client.annotation.VariablesAsType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,8 +20,8 @@ public class AssigneeWorker {
 
   @Autowired private OrganizationService organizationService;
 
-  @ZeebeWorker(type = "selectAssignee", autoComplete = true)
-  public ProcessVariables selectAssignee(@ZeebeVariablesAsType ProcessVariables variables) {
+  @JobWorker(type = "selectAssignee")
+  public ProcessVariables selectAssignee(@VariablesAsType ProcessVariables variables) {
     LOG.info("Invoking myService with variables: " + variables);
 
     Collection<User> users = organizationService.allUsers();
