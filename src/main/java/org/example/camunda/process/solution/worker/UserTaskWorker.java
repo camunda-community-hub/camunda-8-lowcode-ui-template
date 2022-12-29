@@ -57,19 +57,13 @@ public class UserTaskWorker {
       String creationTime = sdf.format(new Date());
       task.setCreationTime(creationTime);
 
-      // Note: Job Key != Task Id :-(
+      // since 8.1.5, it seems that taskId and jobKey have become the same...
       String jobKey = Long.toString(job.getKey());
 
-      // But good news, job.getElementInstanceKey() is the "taskId" that is expected by task list
-      // graphql
-      String taskId = Long.toString(job.getElementInstanceKey());
-      task.setId(taskId);
-
-      // BUT!!! It's possible to send request to task list graphql to complete a request before the
-      // graphql knows about the task (because the exporter still hasn't finished). So, it's better
-      // to
-      // use zeebe client to complete the tasks.
-      // And if we're using zeebe client, we need to use job key
+      // obsolete : But good news, job.getElementInstanceKey() is the "taskId" that is expected by
+      // task list graphql
+      // String taskId = Long.toString(job.getElementInstanceKey());
+      task.setId(jobKey);
       task.setJobKey(jobKey);
 
       String bpmnProcessId = job.getBpmnProcessId();
