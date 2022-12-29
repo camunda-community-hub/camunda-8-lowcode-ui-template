@@ -59,6 +59,9 @@ const serverListSlice = createSlice({
       action: PayloadAction<ITask>,
     ) => {
       state.tasks = [action.payload, ...state.tasks];
+      if (state.taskSearch.pageSize && state.tasks.length > state.taskSearch.pageSize) {
+        state.tasks.splice(-1);
+      }
       //state.tasks.splice(0, 0, action.payload);
       //state.tasks.unshift(action.payload);
     },
