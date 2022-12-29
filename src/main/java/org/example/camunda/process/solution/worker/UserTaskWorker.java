@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.camunda.tasklist.dto.TaskState;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
-import io.camunda.zeebe.spring.client.annotation.ZeebeCustomHeaders;
-import io.camunda.zeebe.spring.client.annotation.ZeebeVariablesAsType;
-import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
+import io.camunda.zeebe.spring.client.annotation.CustomHeaders;
+import io.camunda.zeebe.spring.client.annotation.JobWorker;
+import io.camunda.zeebe.spring.client.annotation.VariablesAsType;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -29,12 +29,15 @@ public class UserTaskWorker {
 
   @Autowired private BpmnService bpmnService;
 
-  @ZeebeWorker(type = "io.camunda.zeebe:userTask", timeout = 2592000000L) // set timeout to 30 days
+  @JobWorker(
+      type = "io.camunda.zeebe:userTask",
+      autoComplete = false,
+      timeout = 2592000000L) // set timeout to 30 days
   public void listenUserTask(
       final JobClient client,
       final ActivatedJob job,
-      @ZeebeVariablesAsType Map<String, Object> variables,
-      @ZeebeCustomHeaders Map<String, String> headers) {
+      @VariablesAsType Map<String, Object> variables,
+      @CustomHeaders Map<String, String> headers) {
 
     try {
 

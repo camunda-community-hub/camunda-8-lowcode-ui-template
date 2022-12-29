@@ -1,8 +1,8 @@
 package org.example.camunda.process.solution.worker;
 
 import io.camunda.zeebe.client.api.response.ActivatedJob;
-import io.camunda.zeebe.spring.client.annotation.ZeebeVariable;
-import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
+import io.camunda.zeebe.spring.client.annotation.JobWorker;
+import io.camunda.zeebe.spring.client.annotation.Variable;
 import java.io.IOException;
 import java.util.Map;
 import javax.mail.MessagingException;
@@ -24,15 +24,15 @@ public class EmailWorker {
 
   @Autowired private MailService mailService;
 
-  @ZeebeWorker(type = "email", autoComplete = true, forceFetchAllVariables = true)
+  @JobWorker(type = "email", fetchAllVariables = true)
   public ProcessVariables sendEmail(
       ActivatedJob job,
-      @ZeebeVariable String to,
-      @ZeebeVariable String cc,
-      @ZeebeVariable String bcc,
-      @ZeebeVariable String subject,
-      @ZeebeVariable String template,
-      @ZeebeVariable String locale)
+      @Variable String to,
+      @Variable String cc,
+      @Variable String bcc,
+      @Variable String subject,
+      @Variable String template,
+      @Variable String locale)
       throws MessagingException, IOException {
     LOG.info(
         "Sending email to "
