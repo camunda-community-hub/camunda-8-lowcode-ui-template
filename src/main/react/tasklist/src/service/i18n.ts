@@ -19,7 +19,7 @@ const createI18n = (): i18nInstance => {
       lng: language,
       fallbackLng: "en",
     backend: {
-      loadPath: 'http://' + env.backend + '/api/i18n/{{lng}}/{{ns}}.json'
+      loadPath: env.backend + '/api/i18n/{{lng}}/{{ns}}.json'
     }
   });
 
