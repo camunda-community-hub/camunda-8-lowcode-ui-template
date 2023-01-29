@@ -53,7 +53,6 @@ public class InternationalizationController {
     intlService.deleteByName(languageName);
   }
 
-  @IsEditor
   @GetMapping(value = "/languages")
   @ResponseBody
   public List<Language> languages() {
