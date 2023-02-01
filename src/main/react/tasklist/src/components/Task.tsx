@@ -37,7 +37,7 @@ function Task(taskParam: { task: ITask }) {
       >
         <i className="bi bi-person-circle text-secondary"></i>
       </OverlayTrigger> : <></>}</td>
-      <td>{task.name}</td>
+      <td>{task.formKey == "processVariableFormKey" ? task.variables.formKey : task.name}</td>
       <td>{task.processName}</td>
       <td>{task.creationTime.slice(0, 16).replace("T", " ")}</td>
     </tr>
