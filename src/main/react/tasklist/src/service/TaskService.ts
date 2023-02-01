@@ -58,20 +58,22 @@ export class TaskService {
     dispatch(after());
   }
   setTask = (task: ITask | null): AppThunk => async dispatch => {
-    console.log(task!.formKey);
-    console.log(formService.customFormExists(task!.formKey));
-    
-    if (task && !formService.customFormExists(task.formKey)) {
-      let ln = localStorage.getItem('camundLocale');
-      let url = '/forms/' + task.processName + '/' + task.processDefinitionId + '/' + task.formKey + '/' + ln;
-      api.get(url).then(response => {
-        dispatch(setFormSchema(response.data));
-      }).catch(error => {
-        alert(error.message);
-      })
+    if (task) {
+      if (task.formKey === "processVariableFormKey") {
+        task = Object.assign({}, task);
+        task.formKey = task.variables.formKey;
+      }
+      if (!formService.customFormExists(task.formKey)) {
+        let ln = localStorage.getItem('camundLocale');
+        let url = '/forms/' + task.processName + '/' + task.processDefinitionId + '/' + task.formKey + '/' + ln;
+        api.get(url).then(response => {
+          dispatch(setFormSchema(response.data));
+        }).catch(error => {
+          alert(error.message);
+        })
+      }
     }
     dispatch(setTask(task));
-
   };
 
   getCurrentTask = (): ITask | null => {
