@@ -2,6 +2,7 @@ package org.example.camunda.process.solution.facade;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 import java.util.Map;
 import org.camunda.feel.FeelEngine;
@@ -43,6 +44,7 @@ public class FeelTestController extends AbstractController {
     if (scalaMapper == null) {
       scalaMapper = new ObjectMapper();
       scalaMapper.registerModule(new DefaultScalaModule());
+      scalaMapper.registerModule(new JavaTimeModule());
     }
     return scalaMapper;
   }
