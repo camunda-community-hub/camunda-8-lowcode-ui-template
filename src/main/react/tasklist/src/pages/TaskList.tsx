@@ -84,7 +84,7 @@ function TaskList() {
             </tr>
           </thead>
           <tbody>
-            {tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>)}
+            {tasks ? tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>) : <></>}
           </tbody>
           <tfoot>
             <tr><td colSpan={4}>
@@ -139,9 +139,9 @@ function TaskList() {
                 <InputGroup.Text>{t("Group")} :</InputGroup.Text>
                 <Form.Select disabled={"true" != taskSearch.assigned} aria-label="group" value={taskSearch.group} onChange={(evt) => changeFilter('group', evt.target.value)}>
                   <option value="">{t("Any group")}</option>
-                  {authService.getUser()?.groups.map((group: string, index: number) =>
+                  {authService.getUser()?.groups ? authService.getUser()?.groups.map((group: string, index: number) =>
                     <option key={group} value={group}>{group}</option>
-                  )}
+                  ) : <></>}
                 </Form.Select>
               </InputGroup>
             </Col>

@@ -7,7 +7,7 @@ import { Stomp, StompSubscription } from '@stomp/stompjs';
 import { env } from '../env';
 
 const connectStompClient = () => {
-  let myStompClient = Stomp.client(`ws://${env.backend}/ws`);
+  let myStompClient = Stomp.client(`ws://${env.ws}/ws`);
 
   myStompClient.onStompError = function (frame) {
     console.log('STOMP error');
