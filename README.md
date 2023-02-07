@@ -15,6 +15,14 @@ For more information about Self-Managed, including additional [development insta
 
 For production setups we recommend using [Helm charts](https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/) which can be found at [helm.camunda.io](https://helm.camunda.io/).
 
+### Forking to GitLab
+```
+gh repo clone camunda-community-hub/camunda-8-process-solution-template new-project-folder
+cd new-project-folder
+git remote set-url origin git@gitlab.com:new-project/new-repo
+```
+
+
 ## First steps with the application
 
 The application requires a running Zeebe engine.
