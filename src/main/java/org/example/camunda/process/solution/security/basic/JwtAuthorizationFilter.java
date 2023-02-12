@@ -39,6 +39,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
       chain.doFilter(request, response);
     } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
       SecurityContextHolder.clearContext();
+      chain.doFilter(request, response);
     }
   }
 

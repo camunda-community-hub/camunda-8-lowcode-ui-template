@@ -17,7 +17,7 @@ function ProcessList() {
   
   return (
     <div>
-      {processes.map((process: IProcess) =>
+      {processes && processes.map((process: IProcess) =>
         <div className="card" key={process.key}>
           <div className="card-body" key={process.key} onClick={() => openProcess(process)}>
             <h5 className="card-title text-primary">{process.name}</h5>

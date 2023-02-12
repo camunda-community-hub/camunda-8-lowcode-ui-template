@@ -4,10 +4,10 @@ import LoginForm from '../components/LoginForm'
 
 function Login() {
   return (
-	<div>
-	  <LoginHeader/>
-	  <LoginForm/>
-	</div>
+    <div>
+      <LoginHeader />
+      <LoginForm />
+    </div>
   );
 }
 
