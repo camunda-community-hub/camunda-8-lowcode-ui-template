@@ -40,11 +40,11 @@ import authService from './service/AuthService'
 function App() {
 
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.auth.data)
+  const user = useSelector((state: any) => state.auth.data);
 
   useEffect(() => {
     dispatch(authService.retrieveConnectedUser());
-  });
+  }, []);
 
   return (
     user && (user!.profile == 'Admin' || user!.profile == 'Editor') ?

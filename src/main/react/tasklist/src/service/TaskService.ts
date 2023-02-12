@@ -24,25 +24,33 @@ export class TaskService {
   stompSubscriptions: StompSubscription[] = [];
 
   connectToWebSockets = (username: string): AppThunk => async dispatch => {
-    const callback = (message: any) => {
-      let task = JSON.parse(message.body);
-      // Update the list of tasks
-      dispatch(this.insertNewTask(task));
+    try {
+      const callback = (message: any) => {
+        let task = JSON.parse(message.body);
+        // Update the list of tasks
+        dispatch(this.insertNewTask(task));
+      }
+      const subs = this.stompSubscriptions;
+      stompClient.onConnect = function (frame) {
+        subs.push(stompClient!.subscribe("/topic/" + username + "/userTask", callback));
+        subs.push(stompClient!.subscribe("/topic/userTask", callback));
+      };
+      stompClient.activate();
+    } catch (error: any) {
+      console.warn(error);
     }
-    const subs = this.stompSubscriptions;
-    stompClient.onConnect = function (frame) {
-      subs.push(stompClient!.subscribe("/topic/" + username + "/userTask", callback));
-      subs.push(stompClient!.subscribe("/topic/userTask", callback));
-    };
-    stompClient.activate();
   }
 
   disconnectFromWebScokets = () => {
+    try {
     for (let i = 0; i < this.stompSubscriptions.length; i++) {
       stompClient.unsubscribe(this.stompSubscriptions[i].id);
     }
     this.stompSubscriptions = [];
     stompClient.deactivate();
+    } catch (error: any) {
+      console.warn(error);
+  }
   }
 
   getTasks = (): ITask[] => {

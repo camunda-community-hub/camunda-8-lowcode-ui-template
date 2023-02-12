@@ -23,9 +23,10 @@ export class ProcessService {
     if (this.lastFetchProcesses < Date.now() - 10000) { 
       try {
         dispatch(remoteLoading());
-        const {data} = await api.get<IProcess[]>('/process/definition/latest');
+        const { data } = await api.get<IProcess[]>('/process/definition/latest');
+
         dispatch(remoteProcessesLoadingSuccess(data));
-      } catch (err:any) {
+      } catch (err: any) {
         dispatch(remoteLoadingFail(err.toString()));
       }
       this.lastFetchProcesses = Date.now();
