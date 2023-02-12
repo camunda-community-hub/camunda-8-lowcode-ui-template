@@ -23,7 +23,11 @@ and a [docker-compose.yaml](docker-compose.yaml) file for local development. For
 - [Zeebe Workflow Engine](https://github.com/camunda/zeebe)
 - [Contact](https://docs.camunda.io/contact/)
 
-It also contains a [React front-end](src/main/react/tasklist/) that you can execute independently (npm run start). This front-end rely on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js). If you want to have it served by your spring boot application, you should run a `mvnw package` at the project root.
+The Spring Boot Java application includes an example Tasklist [React front-end](src/main/react/tasklist/). Run `mvnw package` from the project root, start the Spring Boot app, and then browse to http://localhost:8080.
+
+This front-end relies on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js).
+
+If needed, you can also run the [React front-end](src/main/react/tasklist/) independent of the spring boot app. To do so, run `npm run start` to start a nodejs server serving the react app over port 3000. 
 
 ## Using this template
 
@@ -225,7 +229,7 @@ Once you are ready to deploy or execute processes use these settings to deploy t
 * URL: `zeebe:26500`
 
 ### Emails
-The setup includes [MailHog](https://github.com/mailhog/MailHog) as a test SMTP server. It captures all emails sent by Web Modeler, but does not forward them to the actual recipients. 
+The setup includes [MailHog](https://github.com/mailhog/MailHog) as a test SMTP server. It captures all emails sent by Web Modeler, but does not forward them to the actual recipients.
 
 You can access emails in MailHog's Web UI at [http://localhost:8075](http://localhost:8075).
 
