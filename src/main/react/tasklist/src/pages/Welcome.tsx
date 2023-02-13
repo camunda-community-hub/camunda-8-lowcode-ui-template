@@ -9,7 +9,7 @@ function Welcome() {
       <div className="row justify-content-center">
         <div className="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
           <div className="row welcome-header">
-            <div><img src={logo} alt="Camunda" width="150px"/></div>
+            <div><img src={logo} alt="Camunda" height="50px"/></div>
             <h1>Welcome to <strong>Camunda</strong></h1>
           </div>
           <div className="row">
