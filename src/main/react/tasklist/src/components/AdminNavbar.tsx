@@ -42,7 +42,7 @@ function AdminNavbar() {
     <>
       <nav className={form || mail || theme || language ? "navbar reduced navbar-light bg-dark" : "navbar navbar-light bg-light"} >
         <div className="container-fluid">
-          <Link to="/home"><img width="120" src={logo} className="custom-logo" alt="Camunda" /></Link>
+          <Link to="/home"><img height="50" src={logo} className="custom-logo" alt="Camunda" /></Link>
           <div>
             {form ?
               <InputGroup className="mb-3">

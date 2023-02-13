@@ -18,7 +18,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-light">
       <div className="container-fluid">
-        <Link to="/home"><img width="120" src={logo} className="custom-logo" alt="Camunda" /></Link>
+        <Link to="/home"><img height="50" src={logo} className="custom-logo" alt="Camunda" /></Link>
         <div>
 
           <div className="input-group mb-3">
