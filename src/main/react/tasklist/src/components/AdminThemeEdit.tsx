@@ -14,15 +14,24 @@ import { useTranslation } from "react-i18next";
 function AdminThemeEdit() {
   const { t } = useTranslation();
   const [showThemeGenerator, setShowThemeGenerator] = useState(false);
+  const [currentThemeColors, setCurrentThemeColors] = useState<any | null>(null);
+  const [theme, setTheme] = useState<any | null>(null);
 
 
-  const theme = adminThemeService.getCurrentTheme();
-  let generatorVariables = Object.assign({}, theme.variables);
+
+
+  useEffect(() => {
+    let theme2 = adminThemeService.getCurrentTheme();
+    if (theme2) {
+      setTheme(theme2);
+      setCurrentThemeColors(Object.assign({}, theme2.variables));
+  }
+  }, []);
 
   const setGenVar = (attribute: string, value: string) => {
-    let merged:any = {};
-    merged[attribute] = value;
-    Object.assign(generatorVariables, merged);
+    let copy = Object.assign({}, currentThemeColors);
+    copy[attribute] = value;
+    setCurrentThemeColors(copy);
   }
   const handleClose = () => setShowThemeGenerator(false);
   const handleShow = () => setShowThemeGenerator(true);
@@ -33,7 +42,7 @@ function AdminThemeEdit() {
   }, []);
 
   const generateCss = () => {
-    dispatch(adminThemeService.generateCss(generatorVariables));
+    dispatch(adminThemeService.generateCss(currentThemeColors));
     handleClose();
   }
 
@@ -42,9 +51,10 @@ function AdminThemeEdit() {
   }
 
   return (
+    currentThemeColors ? 
     <>
-      {theme.active ? <></> : <Button variant="primary" onClick={setActive}><i className="bi bi-check-lg"></i> {t("Set as active")}</Button>}
-      &nbsp;
+        {theme.active ? <></> : <Button variant="primary" onClick={setActive}><i className="bi bi-check-lg"></i> {t("Set as active")}</Button>}
+        &nbsp;
       <Button variant="primary" onClick={handleShow}>{t("Generate from variables")}</Button>
       <Row className="maileditor">
         <Col className="card">
@@ -61,35 +71,83 @@ function AdminThemeEdit() {
           <Modal.Body>
             <InputGroup className="mb-3">
               <InputGroup.Text>Primary</InputGroup.Text>
-              <Form.Control aria-label="Primary" placeholder="primary color" defaultValue={generatorVariables.primary} onChange={(evt) => setGenVar('primary', evt.target.value)}/>
+              <Form.Control aria-label="Primary" placeholder="primary color" value={currentThemeColors.primary} onChange={(evt) => setGenVar('primary', evt.target.value)} />
+              <Form.Control
+                type="color"
+                value={currentThemeColors.primary}
+                title="Choose your color"
+                onChange={(evt) => setGenVar('primary', evt.target.value)}
+              />
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Secondary</InputGroup.Text>
-              <Form.Control aria-label="Secondary" placeholder="secondary color" defaultValue={generatorVariables.secondary} onChange={(evt) => setGenVar('secondary', evt.target.value)} />
+                <Form.Control aria-label="Secondary" placeholder="secondary color" value={currentThemeColors.secondary} onChange={(evt) => setGenVar('secondary', evt.target.value)} />
+                <Form.Control
+                  type="color"
+                  value={currentThemeColors.secondary}
+                  title="Choose your color"
+                  onChange={(evt) => setGenVar('secondary', evt.target.value)}
+                />
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Success</InputGroup.Text>
-              <Form.Control aria-label="Success" placeholder="success color" defaultValue={generatorVariables.success} onChange={(evt) => setGenVar('sucess', evt.target.value)} />
+                <Form.Control aria-label="Success" placeholder="success color" value={currentThemeColors.success} onChange={(evt) => setGenVar('sucess', evt.target.value)} />
+                <Form.Control
+                  type="color"
+                  value={currentThemeColors.success}
+                  title="Choose your color"
+                  onChange={(evt) => setGenVar('success', evt.target.value)}
+                />
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Danger</InputGroup.Text>
-              <Form.Control aria-label="Danger" placeholder="danger color" defaultValue={generatorVariables.danger} onChange={(evt) => setGenVar('danger', evt.target.value)} />
+                <Form.Control aria-label="Danger" placeholder="danger color" value={currentThemeColors.danger} onChange={(evt) => setGenVar('danger', evt.target.value)} />
+                <Form.Control
+                  type="color"
+                  value={currentThemeColors.danger}
+                  title="Choose your color"
+                  onChange={(evt) => setGenVar('danger', evt.target.value)}
+                />
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Warning</InputGroup.Text>
-              <Form.Control aria-label="Warning" placeholder="warning color" defaultValue={generatorVariables.warning} onChange={(evt) => setGenVar('warning', evt.target.value)} />
+                <Form.Control aria-label="Warning" placeholder="warning color" value={currentThemeColors.warning} onChange={(evt) => setGenVar('warning', evt.target.value)} />
+                <Form.Control
+                  type="color"
+                  value={currentThemeColors.warning}
+                  title="Choose your color"
+                  onChange={(evt) => setGenVar('warning', evt.target.value)}
+                />
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Info</InputGroup.Text>
-              <Form.Control aria-label="Info" placeholder="info color" defaultValue={generatorVariables.info} onChange={(evt) => setGenVar('info', evt.target.value)} />
+                <Form.Control aria-label="Info" placeholder="info color" value={currentThemeColors.info} onChange={(evt) => setGenVar('info', evt.target.value)} />
+                <Form.Control
+                  type="color"
+                  value={currentThemeColors.info}
+                  title="Choose your color"
+                  onChange={(evt) => setGenVar('info', evt.target.value)}
+                />
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Light</InputGroup.Text>
-              <Form.Control aria-label="Light" placeholder="Light color" defaultValue={generatorVariables.light} onChange={(evt) => setGenVar('light', evt.target.value)} />
+                <Form.Control aria-label="Light" placeholder="Light color" value={currentThemeColors.light} onChange={(evt) => setGenVar('light', evt.target.value)} />
+                <Form.Control
+                  type="color"
+                  value={currentThemeColors.light}
+                  title="Choose your color"
+                  onChange={(evt) => setGenVar('light', evt.target.value)}
+                />
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Dark</InputGroup.Text>
-              <Form.Control aria-label="Dark" placeholder="Dark color" defaultValue={generatorVariables.dark} onChange={(evt) => setGenVar('dark', evt.target.value)} />
+                <Form.Control aria-label="Dark" placeholder="Dark color" value={currentThemeColors.dark} onChange={(evt) => setGenVar('dark', evt.target.value)} />
+                <Form.Control
+                  type="color"
+                  value={currentThemeColors.dark}
+                  title="Choose your color"
+                  onChange={(evt) => setGenVar('dark', evt.target.value)}
+                />
             </InputGroup>
           </Modal.Body>
           <Modal.Footer>
@@ -101,8 +159,9 @@ function AdminThemeEdit() {
               </Button>
           </Modal.Footer>
         </Modal>
-      </Row>
+    </Row>
     </>
+    : <></>
   );
 }
 
