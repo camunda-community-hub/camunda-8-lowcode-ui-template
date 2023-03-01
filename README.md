@@ -49,7 +49,7 @@ git push
 
 ### Forking to GitLab
 ```
-gh repo clone camunda-community-hub/camunda-8-process-solution-template new-project-folder
+gh repo clone camunda-community-hub/camunda-8-lowcode-ui-template new-project-folder
 cd new-project-folder
 git remote set-url origin git@gitlab.com:new-project/new-repo
 ```
