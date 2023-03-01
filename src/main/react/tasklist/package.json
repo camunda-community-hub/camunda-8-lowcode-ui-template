@@ -20,6 +20,7 @@
     "allotment": "^1.17.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
+    "camunda-bpmn-js": "^1.4.0",
     "dmn-js": "^13.0.0",
     "dmn-js-properties-panel": "^1.2.2",
     "i18next": "^21.9.2",
