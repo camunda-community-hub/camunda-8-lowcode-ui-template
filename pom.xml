@@ -135,6 +135,13 @@
       <artifactId>commons-text</artifactId>
       <version>1.10.0</version>
     </dependency>
+    
+    <!-- find workers to generate elt templates -->
+	<dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.10.2</version>
+	</dependency>
 	
     <!-- h2 runtime -->
     <dependency>

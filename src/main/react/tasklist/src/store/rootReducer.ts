@@ -8,6 +8,7 @@ import adminDmnsReducer from './features/adminDmns/slice';
 import adminMailsReducer from './features/adminMails/slice';
 import adminThemesReducer from './features/adminThemes/slice';
 import translationsReducer from './features/translations/slice';
+import workersReducer from './features/workers/slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   adminDmns: adminDmnsReducer,
   adminMails: adminMailsReducer,
   adminThemes: adminThemesReducer,
-  translations: translationsReducer
+  translations: translationsReducer,
+  workers: workersReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
