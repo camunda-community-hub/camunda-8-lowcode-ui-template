@@ -23,6 +23,7 @@
     "camunda-bpmn-js": "^1.4.0",
     "dmn-js": "^13.0.0",
     "dmn-js-properties-panel": "^1.2.2",
+    "formiojs": "^4.14.12",
     "i18next": "^21.9.2",
     "i18next-http-backend": "^1.4.4",
     "react": "^18.2.0",

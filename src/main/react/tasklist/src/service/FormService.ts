@@ -1,4 +1,4 @@
-import customForms from '../forms/'
+import customForms from '../forms/';
 import { IFormViewer } from '../store/model';
 import { Component, FC } from 'react';
 
