@@ -33,6 +33,7 @@ out/
 workspace.code-workspace
 
 h2/db.mv.db
+src/main/resources/client_secret_google_api.json
 
 ### React Js ###
 src/main/react/tasklist/.vs
