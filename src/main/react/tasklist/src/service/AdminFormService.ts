@@ -1,26 +1,40 @@
 import store, { AppThunk } from '../store';
-import { loadStart, loadSuccess, setCurrentForm, setFormName, setCurrentFormEditor, setCurrentFormPreview, fail, silentfail } from '../store/features/adminForms/slice';
+import { loadStart, loadSuccess, setCurrentForm, setFormName, setCurrentFormEditor, setCurrentFormBuilder, setCurrentFormPreview, fail, silentfail } from '../store/features/adminForms/slice';
 import { FormEditor } from '@camunda-community/form-js-editor';
+import { FormBuilder } from 'formiojs';
 import api from './api';
 
 export class AdminFormService {
   lastFetch: number = 0;
-  getDefaultForm = ():any => {
-    return {
-      name: 'New Form',
-      schema: {
-        components: [],
-        schemaVersion: 4,
-        type: "default",
-        id: "Form_" + Math.floor(1000000 + Math.random() * 9000000),
-        executionPlatform: "Camunda Cloud",
-        executionPlatformVersion: "1.1",
-        exporter: {
-          name: "Camunda Modeler",
-          version: "5.0.0"
-        }
-      },
-      previewData: '{}'
+  getDefaultForm = (formType: string): any => {
+    if (formType == 'formJs') {
+      return {
+        name: 'New Form',
+        generator: formType,
+        schema: {
+          components: [],
+          schemaVersion: 4,
+          type: "default",
+          id: "Form_" + Math.floor(1000000 + Math.random() * 9000000),
+          executionPlatform: "Camunda Cloud",
+          executionPlatformVersion: "1.1",
+          exporter: {
+            name: "Camunda Modeler",
+            version: "5.0.0"
+          }
+        },
+        previewData: '{}'
+      }
+    } else {
+      return {
+        name: 'New Form',
+        generator: formType,
+        schema: {
+          "_id": Math.floor(1000000 + Math.random() * 9000000),
+          "components": []
+        },
+        previewData: '{}'
+      }
     }
   }
   geForms = (): AppThunk => async dispatch => {
@@ -45,8 +59,8 @@ export class AdminFormService {
       this.lastFetch = Date.now();
     }
   }
-  newForm = (): AppThunk => async dispatch => {
-    dispatch(setCurrentForm(this.getDefaultForm()));
+  newForm = (formType: string): AppThunk => async dispatch => {
+    dispatch(setCurrentForm(this.getDefaultForm(formType)));
   }
   openForm = (name:string): AppThunk => async dispatch => {
     api.get('/edition/forms/' + name).then(response => {
@@ -74,9 +88,18 @@ export class AdminFormService {
   setFormEditor = (formEditor: FormEditor): AppThunk => async dispatch => {
     dispatch(setCurrentFormEditor(formEditor));
   }
+  setFormBuilder = (formBuilder: FormBuilder): AppThunk => async dispatch => {
+    dispatch(setCurrentFormBuilder(formBuilder));
+  }
   saveCurrentForm = () => {
     let form = JSON.parse(JSON.stringify(store.getState().adminForms.currentForm));
-    form.schema = store.getState().adminForms.formEditor.getSchema();
+    if (store.getState().adminForms.formEditor) {
+      form.schema = store.getState().adminForms.formEditor.getSchema();
+    } else {
+      console.log(store.getState().adminForms.formBuilder);
+      console.log(store.getState().adminForms.formBuilder._form);
+      form.schema = store.getState().adminForms.formBuilder._form;
+    }
     form.previewData = JSON.parse(form.previewData);
     api.post('/edition/forms', form).then(response => {
       form.modified = response.data.modified;

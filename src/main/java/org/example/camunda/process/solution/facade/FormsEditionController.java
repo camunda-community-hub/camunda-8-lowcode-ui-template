@@ -41,7 +41,11 @@ public class FormsEditionController extends AbstractController {
   @GetMapping("/{formKey}")
   @ResponseBody
   public Form getForm(@PathVariable String formKey) throws TaskListException, IOException {
-    return formService.findByName(formKey);
+    Form form = formService.findByName(formKey);
+    if (form.getGenerator() == null) {
+      form.setGenerator("formJs");
+    }
+    return form;
   }
 
   @IsEditor

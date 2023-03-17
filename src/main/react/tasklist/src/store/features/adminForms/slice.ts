@@ -5,6 +5,7 @@ interface AdminFormsState {
   forms: string[] | null;
   currentForm: any;
   formEditor: any;
+  formBuilder: any;
   previewData: string;
   loading: boolean;
   error: string | null;
@@ -14,6 +15,7 @@ const initialState: AdminFormsState = {
   forms: null,
   currentForm: null,
   formEditor: null,
+  formBuilder: null,
   previewData: '{}',
   loading: false,
   error: null,
@@ -53,6 +55,11 @@ const adminFormsSlice = createSlice({
     },
     setCurrentFormEditor: (state: AdminFormsState, action: PayloadAction<any>) => {
       state.formEditor = action.payload;
+      state.formBuilder = null;
+    },
+    setCurrentFormBuilder: (state: AdminFormsState, action: PayloadAction<any>) => {
+      state.formBuilder = action.payload;
+      state.formEditor = null;
     },
   },
 });
@@ -63,6 +70,7 @@ export const {
   setCurrentForm,
   setFormName,
   setCurrentFormEditor,
+  setCurrentFormBuilder,
   setCurrentFormPreview,
   fail,
   silentfail

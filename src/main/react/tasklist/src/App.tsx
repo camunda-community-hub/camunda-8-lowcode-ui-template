@@ -22,6 +22,7 @@ import WorkerList from './pages/WorkerList';
 import ElementTemplate from './pages/ElementTemplate';
 import './assets/css/bootstrap.min.css';
 import './assets/css/bootstrap-icons-1.7.2.css';
+import 'formiojs/dist/formio.full.min.css'
 import '@camunda-community/form-js/dist/assets/form-js.css';
 import '@camunda-community/form-js/dist/assets/form-js-editor.css';
 import '@camunda-community/form-js/dist/assets/dragula.css';
