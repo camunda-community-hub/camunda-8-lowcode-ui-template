@@ -46,7 +46,8 @@ function AdminNavbar() {
           <div>
             {form ?
               <InputGroup className="mb-3">
-                <Button variant="primary" onClick={handleShow}><i className="bi bi-eye"></i></Button>
+                {form.generator=='formJs' ?
+                <Button variant="primary" onClick={handleShow}><i className="bi bi-eye"></i></Button> : <></>}
                   <Form.Control aria-label="Form name" placeholder="Form name" value={form.name} onChange={(evt) => dispatch(adminFormService.setFormName(evt.target.value))} />
                   <Button variant="primary" onClick={() => adminFormService.saveCurrentForm()}>{t("Save")}</Button>
                   <Button variant="secondary" onClick={() => dispatch(adminFormService.setForm(null))}><i className="bi bi-arrow-return-left"></i> {t("Back")}</Button>

@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import adminFormService from '../service/AdminFormService';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
-import Modal from 'react-bootstrap/Modal';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Form from 'react-bootstrap/Form';
+import { Button, ListGroup, Table, Modal, InputGroup, Form } from 'react-bootstrap';
 import api from '../service/api';
 import { useTranslation } from "react-i18next";
 
 function AdminFormList() {
   const { t } = useTranslation();
   const [showFormUpload, setShowFormUpload] = useState(false);
+  const [showFormCreation, setShowFormCreation] = useState(false);
+  const [formType, setFormType] = useState<string>('formJs');
   const [uploadedData, setUploadedData] = useState<string|null>(null);
   const handleClose = () => setShowFormUpload(false);
   const handleShow = () => setShowFormUpload(true);
@@ -69,7 +67,7 @@ function AdminFormList() {
   return (
     <div>
       <br />
-      <Button variant="primary" onClick={() => dispatch(adminFormService.newForm())}><i className="bi bi-plus-square"></i> {t("New form")}</Button>
+      <Button variant="primary" onClick={() => setShowFormCreation(true)}><i className="bi bi-plus-square"></i> {t("New form")}</Button>
       <Button variant="primary" onClick={handleShow}><i className="bi bi-box-arrow-in-up"></i> {t("Load from a file")}</Button>
    
       <Table striped bordered hover>
@@ -107,6 +105,26 @@ function AdminFormList() {
         <Modal.Footer>
           <Button variant="primary" disabled={uploadedData==null} onClick={uploadForm}>Load</Button>
           <Button variant="secondary" onClick={handleClose}> Close</Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showFormCreation} onHide={() => setShowFormCreation(false)} >
+        <Modal.Header closeButton>
+          <Modal.Title>Create a form</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ListGroup defaultActiveKey="#formJs">
+            <ListGroup.Item action href="#formJs" onClick={()=>setFormType('formJs')}>
+              FormJS
+            </ListGroup.Item>
+            <ListGroup.Item action href="#formIo" onClick={() => setFormType('formIo')}>
+              FormIO
+            </ListGroup.Item>
+          </ListGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => dispatch(adminFormService.newForm(formType))}>New</Button>
+            <Button variant="secondary" onClick={() => setShowFormCreation(false)}> Close</Button>
         </Modal.Footer>
       </Modal>
   </div >

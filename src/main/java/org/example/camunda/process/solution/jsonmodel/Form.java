@@ -13,6 +13,8 @@ public class Form {
 
   private JsonNode previewData;
 
+  private String generator;
+
   public Form() {}
 
   public Form(String name, JsonNode schema) {
@@ -51,5 +53,13 @@ public class Form {
 
   public void setModified(Date modified) {
     this.modified = modified;
+  }
+
+  public String getGenerator() {
+    return generator;
+  }
+
+  public void setGenerator(String generator) {
+    this.generator = generator;
   }
 }
