@@ -1,6 +1,7 @@
 package org.example.camunda.process.solution.facade;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.camunda.operate.exception.OperateException;
 import io.camunda.tasklist.exception.TaskListException;
 import java.io.IOException;
@@ -75,6 +76,11 @@ public class FormsController extends AbstractController {
 
     Form form = formService.findByName(formKey);
     JsonNode schema = form.getSchema();
+    ObjectNode schemaModif = (ObjectNode) schema;
+    schemaModif.put("generator", "formJs");
+    if (form.getGenerator() != null) {
+      schemaModif.put("generator", form.getGenerator());
+    }
     if (locale != null) {
       internationalizationService.translateFormSchema(schema, locale);
     }
@@ -87,7 +93,12 @@ public class FormsController extends AbstractController {
   public JsonNode getInstanciationFormSchema(@PathVariable String bpmnProcessId)
       throws IOException {
     Form form = formService.findByName(bpmnProcessId);
-    return form.getSchema();
+    ObjectNode schemaModif = (ObjectNode) form.getSchema();
+    schemaModif.put("generator", "formJs");
+    if (form.getGenerator() != null) {
+      schemaModif.put("generator", form.getGenerator());
+    }
+    return schemaModif;
   }
 
   @Override
