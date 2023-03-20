@@ -1,6 +1,7 @@
 {
   "name" : "form-io-process",
   "modified" : 1675846215140,
+  "generator":"formIo",
   "schema" : {
   "_id": "57aa1d2a5b7a477b002717fe",
   "machineName": "examples:example",
