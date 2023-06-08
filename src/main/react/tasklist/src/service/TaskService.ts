@@ -73,7 +73,7 @@ export class TaskService {
       }
       if (!formService.customFormExists(task.formKey)) {
         let ln = localStorage.getItem('camundLocale');
-        let url = '/forms/' + task.processName + '/' + task.processDefinitionId + '/' + task.formKey + '/' + ln;
+        let url = '/forms/' + task.processDefinitionId + '/' + task.processDefinitionId + '/' + task.formKey + '/' + ln;
         api.get(url).then(response => {
           dispatch(setFormSchema(response.data));
         }).catch(error => {
