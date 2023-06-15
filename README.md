@@ -10,6 +10,9 @@ We've had some customers who would like to offer some "citizen dev tools" to the
 
 The goal of this project is to show how to build such a solution with [React](https://reactjs.org/), an [extended form-js](https://github.com/camunda-community-hub/extended-form-js), [Spring-Boot](https://spring.io/projects/spring-boot), [spring-zeebe](https://github.com/camunda-community-hub/spring-zeebe), [tasklist-client](https://github.com/camunda-community-hub/camunda-tasklist-client-java) and [operate-client](https://github.com/camunda-community-hub/camunda-operate-client-java)
 
+:information_source: DMN & FEEL tester have been externalized to [camunda-8-dev-tooling](https://github.com/camunda-community-hub/camunda-8-dev-tooling)
+:information_source: An example of bpmn-js integration is available in [camunda-custom-operation-tools](https://github.com/camunda-community-hub/camunda-custom-operation-tools)
+
 ## Repository content
 
 This repository contains a Java application template for Camunda Platform 8 using Spring Boot

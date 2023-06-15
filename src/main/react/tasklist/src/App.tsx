@@ -16,8 +16,6 @@ import AdminTranslations from "./pages/AdminTranslations";
 import AdminEmails from "./pages/AdminEmails";
 import AdminForms from "./pages/AdminForms";
 import AdminThemes from './pages/AdminThemes';
-import FeelTester from './pages/FeelTester';
-import AdminDmns from './pages/AdminDmns';
 import WorkerList from './pages/WorkerList';
 import ElementTemplate from './pages/ElementTemplate';
 import './assets/css/bootstrap.min.css';
@@ -27,15 +25,6 @@ import '@camunda-community/form-js/dist/assets/form-js.css';
 import '@camunda-community/form-js/dist/assets/form-js-editor.css';
 import '@camunda-community/form-js/dist/assets/dragula.css';
 import '@camunda-community/form-js/dist/assets/properties-panel.css';
-import 'dmn-js/dist/assets/diagram-js.css';
-import 'dmn-js/dist/assets/dmn-js-decision-table.css';
-import 'dmn-js/dist/assets/dmn-js-decision-table-controls.css';
-import 'dmn-js/dist/assets/dmn-js-drd.css';
-import 'dmn-js/dist/assets/dmn-js-literal-expression.css';
-import 'dmn-js/dist/assets/dmn-js-shared.css';
-import 'dmn-js/dist/assets/dmn-font/css/dmn.css';
-import 'dmn-js-properties-panel/dist/assets/dmn-js-properties-panel.css';
-import 'dmn-js-properties-panel/dist/assets/properties-panel.css';
 import './assets/css/custom.css';
 import './assets/css/login.css';
 import authService from './service/AuthService'
@@ -71,8 +60,6 @@ function App() {
             <Route path="theme" element={<AdminThemes />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="translations" element={<AdminTranslations />} />
-            <Route path="feel" element={<FeelTester />} />
-            <Route path="dmn" element={<AdminDmns />} />
             <Route path="templates" element={<WorkerList />} />
             <Route path="elementTemplate/*" element={<ElementTemplate />} />
             <Route path="*" element={<Undefined />} />
