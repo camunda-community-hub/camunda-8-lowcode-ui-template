@@ -18,8 +18,7 @@
 
   <properties>
     <java.version>17</java.version>
-    <spring-zeebe.version>8.1.17</spring-zeebe.version>
-    <zeebe.version>8.1.8</zeebe.version>
+    <spring-zeebe.version>8.2.2</spring-zeebe.version>
   </properties>
 
   <dependencies>
@@ -62,24 +61,6 @@
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt</artifactId>
       <version>0.9.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.camunda</groupId>
-      <artifactId>zeebe-client-java</artifactId>
-      <version>${zeebe.version}</version>
-    </dependency>
-
-    <dependency>
-      <!--  dmn evaluation -->
-      <groupId>io.camunda</groupId>
-      <artifactId>zeebe-dmn</artifactId>
-      <version>${zeebe.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.camunda</groupId>
-      <artifactId>zeebe-protocol-impl</artifactId>
-      <version>${zeebe.version}</version>
     </dependency>
 
     <dependency>
@@ -155,7 +136,6 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
   
   <dependencyManagement>
@@ -302,7 +282,7 @@
           <!-- see: https://docs.camunda.io/docs/components/best-practices/development/testing-process-definitions/#writing-process-tests-in-java -->
           <groupId>io.camunda</groupId>
           <artifactId>zeebe-process-test-extension</artifactId>
-          <version>${zeebe.version}</version>
+          <version>${spring-zeebe.version}</version>
           <scope>test</scope>
         </dependency>
         <dependency>
