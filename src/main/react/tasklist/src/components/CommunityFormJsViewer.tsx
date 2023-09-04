@@ -3,12 +3,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import type {} from 'redux-thunk/extend-redux';
 import taskService from '../service/TaskService';
 import processService from '../service/ProcessService';
-import { Form } from '@bpmn-io/form-js-viewer';
+import { Form } from '@camunda-community/form-js-viewer';
 import { IFormViewer } from '../store/model';
 
 import { useTranslation } from "react-i18next";
 
-function FormJsViewer(formViewer: IFormViewer) {
+function CommunityFormJsViewer(formViewer: IFormViewer) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const container = document.querySelector('#task-form');
@@ -58,4 +58,4 @@ function FormJsViewer(formViewer: IFormViewer) {
   
 }
 
-export default FormJsViewer;
+export default CommunityFormJsViewer;

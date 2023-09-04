@@ -1,13 +1,14 @@
 import store, { AppThunk } from '../store';
 import { loadStart, loadSuccess, setCurrentForm, setFormName, setCurrentFormEditor, setCurrentFormBuilder, setCurrentFormPreview, fail, silentfail } from '../store/features/adminForms/slice';
-import { FormEditor } from '@camunda-community/form-js-editor';
+import { FormEditor as CommunityFormEditor } from '@camunda-community/form-js-editor';
+import { FormEditor } from '@bpmn-io/form-js-editor';
 import { FormBuilder } from 'formiojs';
 import api from './api';
 
 export class AdminFormService {
   lastFetch: number = 0;
   getDefaultForm = (formType: string): any => {
-    if (formType == 'formJs') {
+    if (formType == 'formJs' || formType == 'extendedFormJs') {
       return {
         name: 'New Form',
         generator: formType,
@@ -85,7 +86,7 @@ export class AdminFormService {
   setFormName = (formName: string): AppThunk => async dispatch => {
     dispatch(setFormName(formName));
   }
-  setFormEditor = (formEditor: FormEditor): AppThunk => async dispatch => {
+  setFormEditor = (formEditor: FormEditor | CommunityFormEditor): AppThunk => async dispatch => {
     dispatch(setCurrentFormEditor(formEditor));
   }
   setFormBuilder = (formBuilder: FormBuilder): AppThunk => async dispatch => {

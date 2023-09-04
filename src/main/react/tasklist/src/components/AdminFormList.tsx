@@ -120,6 +120,9 @@ function AdminFormList() {
             <ListGroup.Item action href="#formIo" onClick={() => setFormType('formIo')}>
               FormIO
             </ListGroup.Item>
+            <ListGroup.Item action href="#extendedFormJs" onClick={() => setFormType('extendedFormJs')}>
+              (deprecated) Extended FormJS
+            </ListGroup.Item>
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
