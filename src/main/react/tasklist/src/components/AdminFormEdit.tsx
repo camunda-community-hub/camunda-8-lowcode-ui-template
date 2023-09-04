@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import adminFormService from '../service/AdminFormService';
-import { FormEditor } from '@camunda-community/form-js-editor';
+import { FormEditor as CommunityFormEditor } from '@camunda-community/form-js-editor';
+import { FormEditor } from '@bpmn-io/form-js-editor';
 import { FormBuilder } from 'formiojs';
 
 function AdminFormEdit() {
@@ -15,6 +16,12 @@ function AdminFormEdit() {
     div!.innerHTML = '';
     if (form.generator == 'formJs') {
       const formEditor = new FormEditor({
+        container: div
+      });
+      formEditor.importSchema(form.schema);
+      dispatch(adminFormService.setFormEditor(formEditor));
+    } else if (form.generator == 'extendedFormJs') {
+      const formEditor = new CommunityFormEditor({
         container: div
       });
       formEditor.importSchema(form.schema);
