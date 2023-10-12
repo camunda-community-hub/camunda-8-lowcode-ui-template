@@ -21,7 +21,7 @@ Fork [this repository](https://github.com/camunda-community-hub/camunda-process-
 and rename/refactor the following artifacts:
 
 * `groupId`, `artifactId`, `name`, and `description` in [pom.xml](pom.xml)
-* `process/@id` and `process/@name` in [src/main/resources/models/camunda-process.bpmn](src/main/resources/models/camunda-process.bpmn)
+* `process/@id` and `process/@name` in [src/main/resources/models/camunda-process.bpmn](src/main/resources/models/tech-talk-process.bpmn)
 * `ProcessConstansts#BPMN_PROCESS_ID` in [src/main/java/org/example/camunda/process/solution/ProcessConstants.java](src/main/java/org/example/camunda/process/solution/ProcessConstants.java)
 * Java package name, e.g. `org.example.camunda.process.solution.*`
 
@@ -182,7 +182,7 @@ Once you are ready to deploy or execute processes use these settings to deploy t
 * URL: `zeebe:26500`
 
 ### Emails
-The setup includes [MailHog](https://github.com/mailhog/MailHog) as a test SMTP server. It captures all emails sent by Web Modeler, but does not forward them to the actual recipients. 
+The setup includes [MailHog](https://github.com/mailhog/MailHog) as a test SMTP server. It captures all emails sent by Web Modeler, but does not forward them to the actual recipients.
 
 You can access emails in MailHog's Web UI at [http://localhost:8075](http://localhost:8075).
 
