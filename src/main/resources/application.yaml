@@ -1,0 +1,23 @@
+# https://github.com/camunda-community-hub/spring-zeebe#configuring-camunda-platform-8-saas-connection
+# https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
+
+zeebe.client:
+  cloud:
+    region: bru-2
+    clusterId: ef77449b-f72e-4be2-9a1d-f6b2d50acccd
+    clientId: pwnWrpmkQNiFIw~84JzjFEw9DDY~khlM
+    clientSecret: r6zmUkHBs8z-oRiDJvjoBwuCA88HXOjoNyjhKZceCGC-WmnxROnc8PL8t~0lhDA.
+
+resilience4j:
+  retry:
+    metrics.legacy.enabled: true
+    metrics.enabled: true
+    instances:
+      sendMessage:
+        enable-exponential-backoff: true
+        enable-randomized-wait: true
+        max-attempts: 10
+        wait-duration: 1s
+        exponential-max-wait-duration: 10s
+        randomized-wait-factor: 0.2
+        exponential-backoff-multiplier: 2

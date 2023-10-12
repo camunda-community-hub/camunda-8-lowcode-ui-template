@@ -2,7 +2,7 @@
 ![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
 [![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
 
-# Process Solution Template for Camunda Platform 8
+# Process Solution Template for Camunda Platform 8 using Java and Spring Boot
 
 This repository contains a Java application template for Camunda Platform 8 using Spring Boot
 and links to Camunda Platform 8 resources, the official release artifacts (binaries), and supporting config files for running Docker Compose as a local development option.
@@ -15,6 +15,19 @@ For more information about Self-Managed, including additional [development insta
 
 For production setups we recommend using [Helm charts](https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/) which can be found at [helm.camunda.io](https://helm.camunda.io/).
 
+## Using this template
+
+Fork [this repository](https://github.com/camunda-community-hub/camunda-process-solution-template) on GitHub
+and rename/refactor the following artifacts:
+
+By forking this project, you can stay connected to improvements that we do to this template and simply pull updates into your fork, e.g. by using GitHub's Web UI or the following commands:
+
+```sh
+git remote add upstream git@github.com:camunda-community-hub/camunda-8-process-solution-template.git
+git pull upstream main
+git push
+```
+
 ### Forking to GitLab
 ```
 gh repo clone camunda-community-hub/camunda-8-process-solution-template new-project-folder
@@ -22,6 +35,10 @@ cd new-project-folder
 git remote set-url origin git@gitlab.com:new-project/new-repo
 ```
 
+* `groupId`, `artifactId`, `name`, and `description` in [pom.xml](pom.xml)
+* `process/@id` and `process/@name` in [src/main/resources/models/camunda-process.bpmn](src/main/resources/models/camunda-process.bpmn)
+* `ProcessConstansts#BPMN_PROCESS_ID` in [src/main/java/org/example/camunda/process/solution/ProcessConstants.java](src/main/java/org/example/camunda/process/solution/ProcessConstants.java)
+* Java package name, e.g. `org.example.camunda.process.solution.*`
 
 ## First steps with the application
 
