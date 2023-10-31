@@ -20,6 +20,11 @@ For production setups we recommend using [Helm charts](https://docs.camunda.io/d
 Fork [this repository](https://github.com/camunda-community-hub/camunda-process-solution-template) on GitHub
 and rename/refactor the following artifacts:
 
+* `groupId`, `artifactId`, `name`, and `description` in [pom.xml](pom.xml)
+* `process/@id` and `process/@name` in [src/main/resources/models/camunda-process.bpmn](src/main/resources/models/camunda-process.bpmn)
+* `ProcessConstansts#BPMN_PROCESS_ID` in [src/main/java/org/example/camunda/process/solution/ProcessConstants.java](src/main/java/org/example/camunda/process/solution/ProcessConstants.java)
+* Java package name, e.g. `org.example.camunda.process.solution.*`
+
 By forking this project, you can stay connected to improvements that we do to this template and simply pull updates into your fork, e.g. by using GitHub's Web UI or the following commands:
 
 ```sh
@@ -35,11 +40,6 @@ cd new-project-folder
 git remote set-url origin git@gitlab.com:new-project/new-repo
 ```
 
-* `groupId`, `artifactId`, `name`, and `description` in [pom.xml](pom.xml)
-* `process/@id` and `process/@name` in [src/main/resources/models/camunda-process.bpmn](src/main/resources/models/camunda-process.bpmn)
-* `ProcessConstansts#BPMN_PROCESS_ID` in [src/main/java/org/example/camunda/process/solution/ProcessConstants.java](src/main/java/org/example/camunda/process/solution/ProcessConstants.java)
-* Java package name, e.g. `org.example.camunda.process.solution.*`
-
 ## First steps with the application
 
 The application requires a running Zeebe engine.
@@ -54,7 +54,6 @@ Run the application via
 
 Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
-## Using docker-compose
 ## Links to additional Camunda Platform 8 repos and assets
 
 - [Documentation](https://docs.camunda.io)
