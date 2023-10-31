@@ -21,6 +21,7 @@
     <spring-zeebe.version>8.3.1</spring-zeebe.version>
     <spring.zeebe.testcontainer.version>8.3.0-alpha6</spring.zeebe.testcontainer.version>
     <zeebe.version>8.3.1</zeebe.version>
+    <operate.client.version>8.3.0</operate.client.version>
   </properties>
 
   <dependencies>
@@ -98,7 +99,7 @@
     <dependency>
       <groupId>io.camunda</groupId>
       <artifactId>camunda-operate-client-java</artifactId>
-      <version>1.3.8</version>
+      <version>${operate.client.version}</version>
     </dependency>
 
     <!-- gmail, drive, thymeleaf & feel -->
