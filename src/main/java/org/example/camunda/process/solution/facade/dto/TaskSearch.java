@@ -1,6 +1,5 @@
 package org.example.camunda.process.solution.facade.dto;
 
-import io.camunda.tasklist.dto.SearchType;
 import java.util.List;
 
 public class TaskSearch {
@@ -15,7 +14,7 @@ public class TaskSearch {
 
   private List<String> search;
 
-  private SearchType direction;
+  private String direction;
 
   private String group;
 
@@ -67,11 +66,11 @@ public class TaskSearch {
     this.search = search;
   }
 
-  public SearchType getDirection() {
+  public String getDirection() {
     return direction;
   }
 
-  public void setDirection(SearchType direction) {
+  public void setDirection(String direction) {
     this.direction = direction;
   }
 }

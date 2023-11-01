@@ -1,6 +1,5 @@
 package org.example.camunda.process.solution.facade.dto;
 
-import io.camunda.tasklist.dto.TaskState;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ public class Task {
 
   private String creationTime;
 
-  private TaskState taskState;
+  private String taskState;
 
   private List<String> candidateGroups;
 
@@ -71,11 +70,11 @@ public class Task {
     this.creationTime = creationTime;
   }
 
-  public TaskState getTaskState() {
+  public String getTaskState() {
     return taskState;
   }
 
-  public void setTaskState(TaskState taskState) {
+  public void setTaskState(String taskState) {
     this.taskState = taskState;
   }
 

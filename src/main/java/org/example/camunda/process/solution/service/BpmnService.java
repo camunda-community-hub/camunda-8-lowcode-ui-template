@@ -1,7 +1,7 @@
 package org.example.camunda.process.solution.service;
 
 import io.camunda.operate.exception.OperateException;
-import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.tasklist.rest.exception.TaskListException;
 import org.example.camunda.process.solution.utils.BpmnUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

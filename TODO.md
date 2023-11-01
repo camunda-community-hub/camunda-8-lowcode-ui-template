@@ -1,0 +1,1 @@
+- Implement pagination in [TaskListService](src/main/java/org/example/camunda/process/solution/service/TaskListService.java)

@@ -1,6 +1,6 @@
 package org.example.camunda.process.solution.facade;
 
-import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.tasklist.rest.exception.TaskListException;
 import java.io.IOException;
 import java.util.List;
 import org.example.camunda.process.solution.jsonmodel.Form;

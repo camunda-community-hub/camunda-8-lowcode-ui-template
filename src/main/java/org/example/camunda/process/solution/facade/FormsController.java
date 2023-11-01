@@ -3,7 +3,7 @@ package org.example.camunda.process.solution.facade;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.camunda.operate.exception.OperateException;
-import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.tasklist.rest.exception.TaskListException;
 import java.io.IOException;
 import org.example.camunda.process.solution.jsonmodel.Form;
 import org.example.camunda.process.solution.security.annotation.IsAuthenticated;

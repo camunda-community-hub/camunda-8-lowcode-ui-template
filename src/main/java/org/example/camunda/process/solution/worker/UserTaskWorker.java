@@ -1,7 +1,7 @@
 package org.example.camunda.process.solution.worker;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.camunda.tasklist.dto.TaskState;
+import io.camunda.tasklist.rest.dto.emums.TaskState;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.CustomHeaders;
@@ -88,8 +88,7 @@ public class UserTaskWorker {
         }
       }
 
-      TaskState taskState = TaskState.CREATED;
-      task.setTaskState(taskState);
+      task.setTaskState(TaskState.CREATED);
       if (task.getAssignee() != null) {
         simpMessagingTemplate.convertAndSend("/topic/" + task.getAssignee() + "/userTask", task);
       } else {

@@ -1,6 +1,7 @@
 package org.example.camunda.process.solution.facade;
 
-import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.tasklist.rest.exception.TaskListException;
+import io.camunda.tasklist.rest.exception.TaskListRestException;
 import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Task;
@@ -30,13 +31,14 @@ public class TaskController extends AbstractController {
 
   @IsAuthenticated
   @GetMapping()
-  public List<Task> getTasks() throws TaskListException {
+  public List<Task> getTasks() throws TaskListException, TaskListRestException {
     return taskListService.getTasks(null, null);
   }
 
   @IsAuthenticated
   @GetMapping("/token/{token}")
-  public Task tokenTask(@PathVariable String token) throws TaskListException {
+  public Task tokenTask(@PathVariable String token)
+      throws TaskListException, TaskListRestException {
     TaskToken taskToken = taskListService.retrieveToken(token);
 
     return taskListService.getTask(taskToken.getTaskId());
@@ -44,27 +46,30 @@ public class TaskController extends AbstractController {
 
   @IsAuthenticated
   @PostMapping("/search")
-  public List<Task> searchTasks(@RequestBody TaskSearch taskSearch) throws TaskListException {
+  public List<Task> searchTasks(@RequestBody TaskSearch taskSearch)
+      throws TaskListException, TaskListRestException {
     return taskListService.getTasks(taskSearch);
   }
 
   @IsAuthenticated
   @GetMapping("/{taskId}/claim")
-  public Task claimTask(@PathVariable String taskId) throws TaskListException {
+  public Task claimTask(@PathVariable String taskId)
+      throws TaskListException, TaskListRestException {
     String username = getAuthenticatedUsername();
     return taskListService.claim(taskId, username);
   }
 
   @IsAuthenticated
   @GetMapping("/{taskId}/unclaim")
-  public Task unclaimTask(@PathVariable String taskId) throws TaskListException {
+  public Task unclaimTask(@PathVariable String taskId)
+      throws TaskListException, TaskListRestException {
     return taskListService.unclaim(taskId);
   }
 
   @IsAuthenticated
   @PostMapping("/{taskId}")
   public void completeTask(@PathVariable String taskId, @RequestBody Map<String, Object> variables)
-      throws TaskListException {
+      throws TaskListException, TaskListRestException {
 
     LOG.info("Completing task " + taskId + "` with variables: " + variables);
     taskListService.completeTask(taskId, variables);

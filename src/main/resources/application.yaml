@@ -8,18 +8,27 @@ keycloak:
 #  resource: CustomTasklist
 #  public-client: true
 #  principal-attribute: preferred_username
-  
 
 zeebe.client:
   broker.gatewayAddress: 127.0.0.1:26500
   security.plaintext: true
-  
-identity.clientId: pouet
-identity.clientSecret: CSf4Jqwcmw6HsEocpslOvVPjZ4t8DUoP
-keycloakUrl: http://localhost:18080
-tasklistUrl: http://localhost:8082/
-operateUrl: http://localhost:8081/
 
+# tasklist Self Managed
+tasklist:
+  client:
+    authorizationUrl: "http://localhost:18080/auth/realms/camunda-platform/protocol/openid-connect/token"
+    clientId: "TASKLIST_CLIENT_ID"
+    clientSecret: "TASKLIST_CLIENT_SECRET"
+    contentType: "application/x-www-form-urlencoded"
+    taskListBaseUrl: "http://localhost:8082"
+    audience: "tasklist.camunda.io"
+
+identity:
+  clientId: "CLIENT_ID"
+  clientSecret: "CLIENT_SECRET"
+
+keycloakUrl: http://localhost:18080
+operateUrl: http://localhost:8081/
 # used to build links when sending mails
 baseUrl: http://localhost:8080
 

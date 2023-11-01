@@ -7,7 +7,7 @@
   <description>A process solution for Camunda Platform 8</description>
   <groupId>org.example.camunda.process.solution</groupId>
   <artifactId>camunda-process-solution</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>8.3.1-SNAPSHOT</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -22,6 +22,7 @@
     <spring.zeebe.testcontainer.version>8.3.0-alpha6</spring.zeebe.testcontainer.version>
     <zeebe.version>8.3.1</zeebe.version>
     <operate.client.version>8.3.0</operate.client.version>
+    <tasklist.client.version>8.3.1-SNAPSHOT</tasklist.client.version>
   </properties>
 
   <dependencies>
@@ -84,16 +85,11 @@
       <version>1.6.14</version>
     </dependency>
 
-    <dependency>
-      <groupId>io.camunda</groupId>
-      <artifactId>camunda-tasklist-client-java</artifactId>
-      <version>1.6.0</version>
-    </dependency>
 
     <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp</artifactId>
-      <version>4.10.0</version>
+      <groupId>org.camunda.community</groupId>
+      <artifactId>camunda-8-tasklist-rest-java-client</artifactId>
+      <version>${tasklist.client.version}</version>
     </dependency>
 
     <dependency>

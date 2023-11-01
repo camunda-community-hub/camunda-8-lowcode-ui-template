@@ -1,17 +1,14 @@
 package org.example.camunda.process.solution.service;
 
-import io.camunda.tasklist.CamundaTaskListClient;
-import io.camunda.tasklist.auth.SaasAuthentication;
-import io.camunda.tasklist.auth.SelfManagedAuthentication;
-import io.camunda.tasklist.dto.Form;
-import io.camunda.tasklist.dto.Pagination;
-import io.camunda.tasklist.dto.TaskList;
-import io.camunda.tasklist.dto.TaskState;
-import io.camunda.tasklist.dto.Variable;
-import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.tasklist.rest.TaskListRestClient;
+import io.camunda.tasklist.rest.dto.requests.TaskAssignRequest;
+import io.camunda.tasklist.rest.dto.requests.TaskSearchRequest;
+import io.camunda.tasklist.rest.dto.responses.TaskResponse;
+import io.camunda.tasklist.rest.dto.responses.TaskSearchResponse;
+import io.camunda.tasklist.rest.exception.TaskListException;
+import io.camunda.tasklist.rest.exception.TaskListRestException;
 import io.camunda.zeebe.client.ZeebeClient;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -19,7 +16,6 @@ import org.example.camunda.process.solution.dao.TaskTokenRepository;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.facade.dto.TaskSearch;
 import org.example.camunda.process.solution.model.TaskToken;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,118 +23,78 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskListService {
 
-  @Value("${baseUrl}")
-  private String baseUrl;
+  @Value("baseUrl")
+  String baseUrl;
 
-  @Value("${zeebe.client.cloud.client-id:notProvided}")
-  private String clientId;
-
-  @Value("${zeebe.client.cloud.client-secret:notProvided}")
-  private String clientSecret;
-
-  @Value("${zeebe.client.cloud.clusterId:notProvided}")
-  private String clusterId;
-
-  @Value("${zeebe.client.cloud.region:notProvided}")
-  private String region;
-
-  @Value("${identity.clientId:notProvided}")
-  private String identityClientId;
-
-  @Value("${identity.clientSecret:notProvided}")
-  private String identityClientSecret;
-
-  @Value("${tasklistUrl:notProvided}")
-  private String tasklistUrl;
-
-  @Value("${keycloakUrl:notProvided}")
-  private String keycloakUrl;
-
-  private CamundaTaskListClient client;
+  @Autowired private TaskListRestClient taskListRestClient;
 
   @Autowired private ZeebeClient zeebeClient;
 
   @Autowired private TaskTokenRepository taskTokenRepository;
 
-  private CamundaTaskListClient getCamundaTaskListClient() throws TaskListException {
-    if (client == null) {
-      if (!"notProvided".equals(clientId)) {
-        SaasAuthentication sa = new SaasAuthentication(clientId, clientSecret);
-        client =
-            new CamundaTaskListClient.Builder()
-                .shouldReturnVariables()
-                .taskListUrl("https://" + region + ".tasklist.camunda.io/" + clusterId)
-                .authentication(sa)
-                .build();
-      } else {
-        SelfManagedAuthentication sma =
-            new SelfManagedAuthentication()
-                .clientId(identityClientId)
-                .clientSecret(identityClientSecret)
-                .keycloakUrl(keycloakUrl);
-        client =
-            new CamundaTaskListClient.Builder()
-                .shouldReturnVariables()
-                .taskListUrl(tasklistUrl)
-                .authentication(sma)
-                .build();
-      }
-    }
-    return client;
+  public Task claim(String taskId, String assignee)
+      throws TaskListRestException, TaskListException {
+    TaskAssignRequest taskAssignRequest = new TaskAssignRequest();
+    taskAssignRequest.setAssignee(assignee);
+    return convert(taskListRestClient.assignTask(taskId, taskAssignRequest));
   }
 
-  public Task claim(String taskId, String assignee) throws TaskListException {
-    return convert(getCamundaTaskListClient().claim(taskId, assignee));
+  public Task unclaim(String taskId) throws TaskListException, TaskListRestException {
+    return convert(taskListRestClient.unassignTask(taskId));
   }
 
-  public Task unclaim(String taskId) throws TaskListException {
-    return convert(getCamundaTaskListClient().unclaim(taskId));
+  public Task getTask(String taskId) throws TaskListException, TaskListRestException {
+    return convert(taskListRestClient.getTask(taskId));
   }
 
-  public Task getTask(String taskId) throws TaskListException {
-    return convert(getCamundaTaskListClient().getTask(taskId));
+  // TODO: implement pagination
+  public List<Task> getTasks(TaskSearch taskSearch)
+      throws TaskListException, TaskListRestException {
+    TaskSearchRequest taskSearchRequest = new TaskSearchRequest();
+
+    taskSearchRequest.setState(taskSearch.getState());
+
+    List<String> sortBy = new ArrayList<>();
+    sortBy.add(taskSearch.getDirection());
+    taskSearchRequest.setSort(sortBy);
+
+    taskSearchRequest.setAssigned(taskSearch.getAssigned());
+    taskSearchRequest.setAssignee(taskSearch.getAssignee());
+    taskSearchRequest.setCandidateGroup(taskSearch.getGroup());
+
+    return convert(taskListRestClient.searchTasks(taskSearchRequest));
   }
 
-  public List<Task> getTasks(TaskSearch taskSearch) throws TaskListException {
-    Pagination pagination =
-        new Pagination()
-            .setPageSize(taskSearch.getPageSize())
-            .setSearch(taskSearch.getSearch())
-            .setSearchType(taskSearch.getDirection());
-    if (Boolean.TRUE.equals(taskSearch.getAssigned()) && taskSearch.getAssignee() != null) {
-      return convert(
-          getCamundaTaskListClient()
-              .getAssigneeTasks(
-                  taskSearch.getAssignee(), TaskState.fromJson(taskSearch.getState()), pagination));
-    }
-    if (taskSearch.getGroup() != null) {
-      return convert(
-          getCamundaTaskListClient()
-              .getGroupTasks(
-                  taskSearch.getGroup(), TaskState.fromJson(taskSearch.getState()), pagination));
-    }
-    return convert(
-        getCamundaTaskListClient()
-            .getTasks(
-                taskSearch.getAssigned(), TaskState.fromJson(taskSearch.getState()), pagination));
+  public List<Task> getTasks(String state, Integer pageSize)
+      throws TaskListException, TaskListRestException {
+    TaskSearch taskSearch = new TaskSearch();
+    taskSearch.setPageSize(pageSize);
+    taskSearch.setState(state);
+    return getTasks(taskSearch);
   }
 
-  public List<Task> getGroupTasks(String group, TaskState state, Integer pageSize)
-      throws TaskListException {
-    return convert(getCamundaTaskListClient().getGroupTasks(group, state, pageSize));
+  // TODO: implement pageSize
+  public List<Task> getGroupTasks(String group, String state, Integer pageSize)
+      throws TaskListException, TaskListRestException {
+    TaskSearch taskSearch = new TaskSearch();
+    taskSearch.setPageSize(pageSize);
+    taskSearch.setState(state);
+    taskSearch.setGroup(group);
+    return getTasks(taskSearch);
   }
 
-  public List<Task> getAssigneeTasks(String assignee, TaskState state, Integer pageSize)
-      throws TaskListException {
-    return convert(getCamundaTaskListClient().getAssigneeTasks(assignee, state, pageSize));
+  public List<Task> getAssigneeTasks(String assignee, String state, Integer pageSize)
+      throws TaskListException, TaskListRestException {
+    TaskSearch taskSearch = new TaskSearch();
+    taskSearch.setPageSize(pageSize);
+    taskSearch.setAssignee(assignee);
+    taskSearch.setState(state);
+    return getTasks(taskSearch);
   }
 
-  public List<Task> getTasks(TaskState state, Integer pageSize) throws TaskListException {
-    return convert(getCamundaTaskListClient().getTasks(null, state, pageSize));
-  }
-
-  public void completeTask(String taskId, Map<String, Object> variables) throws TaskListException {
-    getCamundaTaskListClient().completeTask(taskId, variables);
+  public void completeTask(String taskId, Map<String, Object> variables)
+      throws TaskListException, TaskListRestException {
+    taskListRestClient.completeTask(taskId, variables);
   }
 
   public void completeTaskWithJobKey(Long jobKey, Map<String, Object> variables) {
@@ -146,14 +102,23 @@ public class TaskListService {
   }
 
   public String getForm(String processDefinitionId, String formId) throws TaskListException {
-    Form form = getCamundaTaskListClient().getForm(formId, processDefinitionId);
-    return form.getSchema();
+    throw new IllegalStateException("Not implemented");
   }
 
-  private Task convert(io.camunda.tasklist.dto.Task task) {
+  private Task convert(TaskResponse response) {
+    return new Task();
+  }
+
+  private List<Task> convert(List<TaskSearchResponse> responses) {
+    List results = new ArrayList();
+    results.add(new Task());
+    return results;
+  }
+
+  /*private Task convert(TaskResponse taskResponse) {
     Task result = new Task();
-    BeanUtils.copyProperties(task, result);
-    if (task.getVariables() != null) {
+    BeanUtils.copyProperties(taskResponse, result);
+    if (taskResponse.get.getVariables() != null) {
       result.setVariables(new HashMap<>());
       for (Variable var : task.getVariables()) {
         result.getVariables().put(var.getName(), var.getValue());
@@ -168,7 +133,7 @@ public class TaskListService {
       result.add(convert(task));
     }
     return result;
-  }
+  }*/
 
   public String generateLink(String taskId) {
     String token = generateTaskToken(taskId);
