@@ -17,9 +17,9 @@
   </parent>
 
   <properties>
-    <java.version>8</java.version>
-    <spring-zeebe.version>8.1.17</spring-zeebe.version>
-    <zeebe.version>8.1.8</zeebe.version>
+    <java.version>17</java.version>
+    <spring-zeebe.version>8.3.1</spring-zeebe.version>
+    <zeebe.version>8.3.1</zeebe.version>
   </properties>
 
   <dependencies>
@@ -55,6 +55,14 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Note: com.fasterxml.jackson.core.StreamReadConstraints was added in Jackson version 2.15.x -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.15.2</version>
       <scope>test</scope>
     </dependency>
 
