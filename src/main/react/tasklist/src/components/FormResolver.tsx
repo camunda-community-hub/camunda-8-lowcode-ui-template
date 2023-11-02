@@ -10,10 +10,10 @@ const getFormFinder = (formViewer: IFormViewer): FC<IFormViewer> => {
   if (formService.customFormExists(formViewer.formKey)) {
     return formService.getForm(formViewer.formKey)!;
   }
-  if (formViewer.schema.generator == 'formIo') {
+  if (formViewer.schema?.generator == 'formIo') {
     return FormIoViewer;
   }
-  if (formViewer.schema.generator == 'extendedFormJs') {
+  if (formViewer.schema?.generator == 'extendedFormJs') {
     return CommunityFormJsViewer;
   }
   return FormJsViewer;
