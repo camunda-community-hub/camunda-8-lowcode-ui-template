@@ -13,7 +13,8 @@ keycloak:
 zeebe.client:
   broker.gatewayAddress: 127.0.0.1:26500
   security.plaintext: true
-  
+
+# go to http://localhost:8084/applications/ and create application of type M2M with read/write access to Operate & Tasklist
 identity.clientId: pouet
 identity.clientSecret: CSf4Jqwcmw6HsEocpslOvVPjZ4t8DUoP
 keycloakUrl: http://localhost:18080
