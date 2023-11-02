@@ -64,6 +64,10 @@ You can run Zeebe locally using the instructions below for Docker Compose
 or have a look at our
 [recommended deployment options for Camunda Platform](https://docs.camunda.io/docs/self-managed/platform-deployment/#deployment-recommendation.).
 
+Before starting the app go to http://localhost:8084/applications/
+and create application of type M2M with read/write access to Operate & Tasklist
+and set `identity.clientId` and `identity.clientSecret` in [application.yaml](https://github.com/camunda-community-hub/camunda-8-lowcode-ui-template/blob/acf53b204efcae9c3136190ff2ce1808981a4375/src/main/resources/application.yaml#L17-L18).
+
 Run the application via
 ```
 ./mvnw spring-boot:run
