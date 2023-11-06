@@ -102,7 +102,7 @@ export class TaskService {
   }
   
   claim = (): AppThunk => async dispatch => {
-    let url = '/tasks/' + store.getState().process.currentTask!.id + '/claim/';
+    let url = '/tasks/' + store.getState().process.currentTask!.id + '/claim';
     api.get(url).then(response => {
       dispatch(assignTask(store.getState().auth.data!.username));
     }).catch(error => {
@@ -111,7 +111,7 @@ export class TaskService {
   }
 
   unclaim = (): AppThunk => async dispatch => {
-    let url = '/tasks/' + store.getState().process.currentTask!.id + '/unclaim/';
+    let url = '/tasks/' + store.getState().process.currentTask!.id + '/unclaim';
     api.get(url).then(response => {
       dispatch(unassignTask());
     }).catch(error => {

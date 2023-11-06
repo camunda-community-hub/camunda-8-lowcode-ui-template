@@ -14,11 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import org.example.camunda.process.solution.dao.TaskTokenRepository;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.facade.dto.TaskSearch;
-import org.example.camunda.process.solution.model.TaskToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,9 +23,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TaskListService {
-
-  @Value("${baseUrl}")
-  private String baseUrl;
 
   @Value("${zeebe.client.cloud.clientId:notProvided}")
   private String clientId;
@@ -57,8 +51,6 @@ public class TaskListService {
   private CamundaTaskListClient client;
 
   @Autowired private ZeebeClient zeebeClient;
-
-  @Autowired private TaskTokenRepository taskTokenRepository;
 
   private CamundaTaskListClient getCamundaTaskListClient() throws TaskListException {
     if (client == null) {
@@ -168,23 +160,5 @@ public class TaskListService {
       result.add(convert(task));
     }
     return result;
-  }
-
-  public String generateLink(String taskId) {
-    String token = generateTaskToken(taskId);
-    return baseUrl + "/direct-task.html?token=" + token;
-  }
-
-  public String generateTaskToken(String taskId) {
-    String token = UUID.randomUUID().toString();
-    TaskToken taskToken = new TaskToken();
-    taskToken.setTaskId(taskId);
-    taskToken.setToken(token);
-    taskTokenRepository.save(taskToken);
-    return token;
-  }
-
-  public TaskToken retrieveToken(String token) {
-    return taskTokenRepository.findByToken(token);
   }
 }

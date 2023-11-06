@@ -1,15 +1,6 @@
 # https://github.com/camunda-community-hub/spring-zeebe#configuring-camunda-platform-8-saas-connection
 # https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
 
-keycloak:
-  enabled: false
-#  auth-server-url: http://localhost:18080/auth
-#  realm: camunda-platform
-#  resource: CustomTasklist
-#  public-client: true
-#  principal-attribute: preferred_username
-  
-
 zeebe.client:
   broker.gatewayAddress: 127.0.0.1:26500
   security.plaintext: true
@@ -21,9 +12,6 @@ keycloakUrl: http://localhost:18080
 tasklistUrl: http://localhost:8082/
 operateUrl: http://localhost:8081/
 
-# used to build links when sending mails
-baseUrl: http://localhost:8080
-
 # this is to allow react application launched separately to access the WS
 websocket:
   allowedOrigin: "*"
@@ -31,20 +19,13 @@ websocket:
 # if set to true, process embedded forms will be pulled from local resources BPMN files. If false, forms will be pulled from Operate process definitions.
 embeddedForms.fromLocalResources: false
 
+springdoc.swagger-ui.path: /swagger-ui.html
+
 spring:
   servlet.multipart:
     max-file-size: 10MB
     max-request-size: 30MB
-  datasource:
-    url: jdbc:h2:file:./h2/db
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      ddl-auto: update
+ 
 server:
   port: 8080
   error:

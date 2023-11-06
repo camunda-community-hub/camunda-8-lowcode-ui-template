@@ -1,13 +1,12 @@
 package org.example.camunda.process.solution.facade;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
 import org.example.camunda.process.solution.facade.dto.AuthUser;
 import org.example.camunda.process.solution.facade.dto.Authentication;
 import org.example.camunda.process.solution.jsonmodel.User;
 import org.example.camunda.process.solution.security.SecurityUtils;
 import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
-import org.example.camunda.process.solution.service.KeycloakService;
 import org.example.camunda.process.solution.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +28,8 @@ public class AuthenticationController extends AbstractController {
   private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
   private OrganizationService organizationService;
-  private KeycloakService keycloakService;
 
-  public AuthenticationController(
-      OrganizationService organizationService, KeycloakService keycloakService) {
-    this.keycloakService = keycloakService;
+  public AuthenticationController(OrganizationService organizationService) {
     this.organizationService = organizationService;
   }
 
@@ -51,22 +47,15 @@ public class AuthenticationController extends AbstractController {
   @IsAuthenticated
   @GetMapping("/user")
   public AuthUser getUser() {
-    if (isKeycloakAuth()) {
-      return keycloakService.getUser(getRequest());
-    }
     User user = organizationService.getUserByUsername(getAuthenticatedUsername());
     return getAuthUser(user);
   }
 
   @GetMapping("/logout")
   public void logout() {
-    if (isKeycloakAuth()) {
-      keycloakService.logout(getRequest());
-    } else {
-      HttpSession session = getRequest().getSession(false);
-      if (session != null) {
-        session.invalidate();
-      }
+    HttpSession session = getRequest().getSession(false);
+    if (session != null) {
+      session.invalidate();
     }
   }
 

@@ -1,14 +1,13 @@
 package org.example.camunda.process.solution.facade;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
 import org.example.camunda.process.solution.security.SecurityUtils;
 import org.example.camunda.process.solution.security.UserPrincipal;
-import org.example.camunda.process.solution.service.KeycloakService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +24,6 @@ public abstract class AbstractController {
   private String keycloakEnabled;
 
   @Autowired private HttpServletRequest request;
-
-  @Autowired private KeycloakService keycloakService;
 
   public abstract Logger getLogger();
 
@@ -78,14 +75,7 @@ public abstract class AbstractController {
         .getResponse();
   }
 
-  protected boolean isKeycloakAuth() {
-    return Boolean.valueOf(keycloakEnabled);
-  }
-
   protected String getAuthenticatedUsername() {
-    if (isKeycloakAuth()) {
-      return keycloakService.getUsername(request);
-    }
     UserPrincipal jwtUser = SecurityUtils.getConnectedUser();
     return jwtUser.getUsername();
   }

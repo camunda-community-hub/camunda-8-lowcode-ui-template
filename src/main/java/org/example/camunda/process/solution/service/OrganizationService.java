@@ -1,5 +1,6 @@
 package org.example.camunda.process.solution.service;
 
+import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.PostConstruct;
 import org.example.camunda.process.solution.jsonmodel.Organization;
 import org.example.camunda.process.solution.jsonmodel.User;
 import org.example.camunda.process.solution.utils.JsonUtils;
