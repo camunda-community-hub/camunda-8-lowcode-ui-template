@@ -14,6 +14,7 @@ import javax.xml.xpath.XPathFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -41,18 +42,25 @@ public class BpmnUtils {
       DocumentBuilder builder = builderFactory.newDocumentBuilder();
 
       Document xmlDocument = builder.parse(bpmnInputStream);
-      XPath xPath = XPathFactory.newInstance().newXPath();
-      String expression = "//*[@id=\"" + nodeId + "\"]";
-      NodeList nodeList =
-          (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
-      if (nodeList != null && nodeList.getLength() == 1) {
-        return nodeList.item(0);
-      }
+      return getNodeFromDocument(xmlDocument, nodeId);
     } catch (IOException
         | XPathExpressionException
         | SAXException
         | ParserConfigurationException e) {
       LOG.error("Error reading the requested node id " + nodeId, e);
+    }
+    return null;
+  }
+
+  private static Node getNodeFromDocument(Document xmlDocument, String nodeId)
+      throws XPathExpressionException {
+
+    XPath xPath = XPathFactory.newInstance().newXPath();
+    String expression = "//*[@id=\"" + nodeId + "\"]";
+    NodeList nodeList =
+        (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+    if (nodeList != null && nodeList.getLength() == 1) {
+      return nodeList.item(0);
     }
     return null;
   }
@@ -112,5 +120,48 @@ public class BpmnUtils {
       schema = formNode.getFirstChild().getNodeValue();
     }
     return schema;
+  }
+
+  public static String getStartingFormSchema(String xml) {
+    return getStartingFormSchema(new ByteArrayInputStream(xml.getBytes(Charset.forName("UTF-8"))));
+  }
+
+  private static String getStartingFormSchema(InputStream bpmnInputStream) {
+    try {
+      DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder builder = builderFactory.newDocumentBuilder();
+
+      Document xmlDocument = builder.parse(bpmnInputStream);
+
+      String formKey = getStartingFormKey(xmlDocument);
+      if (formKey != null) {
+        String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
+        Node formNode = getNodeFromDocument(xmlDocument, formId);
+        if (formNode != null) {
+          return formNode.getFirstChild().getNodeValue();
+        }
+      }
+    } catch (IOException
+        | SAXException
+        | ParserConfigurationException
+        | XPathExpressionException e) {
+      LOG.error("Error reading the starting event", e);
+    }
+    return null;
+  }
+
+  private static String getStartingFormKey(Document xmlDocument) {
+    NodeList nodeList = xmlDocument.getElementsByTagName("bpmn:startEvent");
+
+    if (nodeList != null && nodeList.getLength() == 1) {
+      Node startEvent = nodeList.item(0);
+      if (startEvent instanceof Element) {
+        NodeList formDefs = ((Element) startEvent).getElementsByTagName("zeebe:formDefinition");
+        if (formDefs != null && formDefs.getLength() == 1) {
+          return formDefs.item(0).getAttributes().getNamedItem("formKey").getNodeValue();
+        }
+      }
+    }
+    return null;
   }
 }

@@ -10,6 +10,7 @@ import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.example.camunda.process.solution.service.BpmnService;
 import org.example.camunda.process.solution.service.FormService;
 import org.example.camunda.process.solution.service.InternationalizationService;
+import org.example.camunda.process.solution.service.OperateService;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class FormsController extends AbstractController {
 
   @Autowired private FormService formService;
   @Autowired private BpmnService bpmnService;
+  @Autowired private OperateService operateService;
   @Autowired private InternationalizationService internationalizationService;
 
   @IsAuthenticated
@@ -88,11 +90,19 @@ public class FormsController extends AbstractController {
   }
 
   @IsAuthenticated
-  @GetMapping("/instanciation/{bpmnProcessId}")
+  @GetMapping("/instanciation/{bpmnProcessId}/{processDefinitionId}")
   @ResponseBody
-  public JsonNode getInstanciationFormSchema(@PathVariable String bpmnProcessId)
-      throws IOException {
+  public JsonNode getInstanciationFormSchema(
+      @PathVariable String processDefinitionId, @PathVariable String bpmnProcessId)
+      throws IOException, NumberFormatException, OperateException {
+    String schema = operateService.getInitializationForm(processDefinitionId);
+    if (schema != null) {
+      return JsonUtils.toJsonNode(schema);
+    }
     Form form = formService.findByName(bpmnProcessId);
+    if (form == null) {
+      return null;
+    }
     ObjectNode schemaModif = (ObjectNode) form.getSchema();
     schemaModif.put("generator", "formJs");
     if (form.getGenerator() != null) {

@@ -1,1 +1,66 @@
-{"name":"task2","modified":1659369979228,"schema":{"components":[{"label":"Initial mesage","type":"textfield","id":"Field_1bwxjh7","key":"intialMessage"},{"label":"First assignee","type":"textfield","id":"Field_1908ac0","key":"assignee1","disabled":true},{"label":"Attachment","type":"fileUpload","id":"Field_0gbo3d6","key":"file","validate":{"required":false},"disabled":true},{"label":"Second assignee","type":"textfield","id":"Field_03wzyh4","key":"assignee2","disabled":true},{"label":"Should display comments","type":"checkbox","id":"Field_0xzfkhk","key":"displayComments","defaultValue":true},{"label":"Table","type":"table","id":"Field_05kasu1","key":"comments","hiddenFx":"data.displayComments != true","headers":"comment, important","headersNames":"Comment, Important","editableColumns":"comment[text], important[bool]","dynamicRows":true}],"schemaVersion":4,"type":"default","id":"Form_4371168","executionPlatform":"Camunda Cloud","executionPlatformVersion":"1.1","exporter":{"name":"Camunda Modeler","version":"5.0.0"}},"previewData":{"toto":"pouet"}}
+{
+  "name" : "task2",
+  "modified" : 1699256955907,
+  "schema" : {
+    "components" : [ {
+      "label" : "Initial mesage",
+      "type" : "textfield",
+      "id" : "Field_1bwxjh7",
+      "key" : "intialMessage"
+    }, {
+      "label" : "First assignee",
+      "type" : "textfield",
+      "id" : "Field_1908ac0",
+      "key" : "assignee1",
+      "disabled" : true
+    }, {
+      "label" : "Attachment",
+      "type" : "fileUpload",
+      "id" : "Field_0gbo3d6",
+      "key" : "file",
+      "validate" : {
+        "required" : false
+      },
+      "disabled" : true
+    }, {
+      "label" : "Second assignee",
+      "type" : "textfield",
+      "id" : "Field_03wzyh4",
+      "key" : "assignee2",
+      "disabled" : true
+    }, {
+      "label" : "Should display comments",
+      "type" : "checkbox",
+      "id" : "Field_0xzfkhk",
+      "key" : "displayComments",
+      "defaultValue" : true
+    }, {
+      "label" : "Table",
+      "type" : "table",
+      "id" : "Field_05kasu1",
+      "key" : "comments",
+      "hiddenFx" : "data.displayComments != true",
+      "headers" : "comment, important",
+      "headersNames" : "Comment, Important",
+      "editableColumns" : "comment[text], important[bool]",
+      "dynamicRows" : true
+    } ],
+    "schemaVersion" : 4,
+    "type" : "default",
+    "id" : "Form_4371168",
+    "executionPlatform" : "Camunda Cloud",
+    "executionPlatformVersion" : "1.1",
+    "exporter" : {
+      "name" : "Camunda Modeler",
+      "version" : "5.0.0"
+    }
+  },
+  "previewData" : {
+    "toto" : "pouet",
+    "comments" : [ {
+      "comment" : "a comment",
+      "important" : true
+    } ]
+  },
+  "generator" : "extendedFormJs"
+}

@@ -54,5 +54,6 @@
   },
   "previewData" : {
     "intialMessage" : "pouet"
-  }
+  },
+  "generator" : "extendedFormJs"
 }

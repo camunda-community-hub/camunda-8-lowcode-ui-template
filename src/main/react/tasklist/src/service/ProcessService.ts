@@ -34,7 +34,7 @@ export class ProcessService {
   }
   
   setProcess = (process: IProcess): AppThunk => async dispatch => {
-    let url = '/forms/instanciation/' + process.bpmnProcessId;
+    let url = '/forms/instanciation/' + process.bpmnProcessId+'/'+process.key;
     api.get(url).then(response => {
       dispatch(setFormSchema(response.data));
     }).catch(error => {

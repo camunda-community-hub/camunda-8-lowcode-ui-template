@@ -1,5 +1,5 @@
 {
-  "name" : "camunda-process",
+  "name" : "extended-formjs-task",
   "modified" : 1664798148989,
   "schema" : {
     "components" : [ {
@@ -45,5 +45,6 @@
   "previewData" : {
     "toto" : "pouet",
     "mygrid" : [ ]
-  }
+  },
+  "generator" : "extendedFormJs"
 }
