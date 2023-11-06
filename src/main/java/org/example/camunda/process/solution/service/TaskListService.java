@@ -30,10 +30,10 @@ public class TaskListService {
   @Value("${baseUrl}")
   private String baseUrl;
 
-  @Value("${zeebe.client.cloud.client-id:notProvided}")
+  @Value("${zeebe.client.cloud.clientId:notProvided}")
   private String clientId;
 
-  @Value("${zeebe.client.cloud.client-secret:notProvided}")
+  @Value("${zeebe.client.cloud.clientSecret:notProvided}")
   private String clientSecret;
 
   @Value("${zeebe.client.cloud.clusterId:notProvided}")

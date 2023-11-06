@@ -10,6 +10,7 @@ import io.camunda.operate.search.SearchQuery;
 import io.camunda.operate.search.Sort;
 import io.camunda.operate.search.SortOrder;
 import java.util.List;
+import org.example.camunda.process.solution.utils.BpmnUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +24,10 @@ public class OperateService {
 
   private static final Logger LOG = LoggerFactory.getLogger(OperateService.class);
 
-  @Value("${zeebe.client.cloud.client-id:notProvided}")
+  @Value("${zeebe.client.cloud.clientId:notProvided}")
   private String clientId;
 
-  @Value("${zeebe.client.cloud.client-secret:notProvided}")
+  @Value("${zeebe.client.cloud.clientSecret:notProvided}")
   private String clientSecret;
 
   @Value("${zeebe.client.cloud.clusterId:notProvided}")
@@ -75,9 +76,9 @@ public class OperateService {
     ProcessDefinitionFilter processDefinitionFilter = new ProcessDefinitionFilter.Builder().build();
     SearchQuery procDefQuery =
         new SearchQuery.Builder()
-            .withFilter(processDefinitionFilter)
-            .withSize(1000)
-            .withSort(new Sort("version", SortOrder.DESC))
+            .filter(processDefinitionFilter)
+            .size(1000)
+            .sort(new Sort("version", SortOrder.DESC))
             .build();
 
     return getCamundaOperateClient().searchProcessDefinitions(procDefQuery);
@@ -87,9 +88,9 @@ public class OperateService {
     ProcessDefinitionFilter processDefinitionFilter = new ProcessDefinitionFilter.Builder().build();
     SearchQuery procDefQuery =
         new SearchQuery.Builder()
-            .withFilter(processDefinitionFilter)
-            .withSize(1000)
-            .withSort(new Sort("version", SortOrder.DESC))
+            .filter(processDefinitionFilter)
+            .size(1000)
+            .sort(new Sort("version", SortOrder.DESC))
             .build();
 
     return getCamundaOperateClient().searchProcessDefinitions(procDefQuery);
@@ -99,5 +100,11 @@ public class OperateService {
   public String getProcessDefinitionXmlByKey(Long key) throws OperateException {
     LOG.info("Entering getProcessDefinitionXmlByKey for key " + key);
     return getCamundaOperateClient().getProcessDefinitionXml(key);
+  }
+
+  public String getInitializationForm(String processDefinitionId)
+      throws NumberFormatException, OperateException {
+    String xml = getProcessDefinitionXmlByKey(Long.valueOf(processDefinitionId));
+    return BpmnUtils.getStartingFormSchema(xml);
   }
 }
