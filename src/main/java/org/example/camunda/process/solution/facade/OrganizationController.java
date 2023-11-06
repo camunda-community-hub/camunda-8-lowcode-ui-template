@@ -70,9 +70,6 @@ public class OrganizationController extends AbstractController {
   @IsAdmin
   @GetMapping("enabled")
   public Map<String, Object> enabled() {
-    if (isKeycloakAuth()) {
-      return Map.of("enabled", false);
-    }
     return Map.of("enabled", true);
   }
 

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.facade.dto.TaskSearch;
-import org.example.camunda.process.solution.model.TaskToken;
 import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.example.camunda.process.solution.service.TaskListService;
 import org.slf4j.Logger;
@@ -32,14 +31,6 @@ public class TaskController extends AbstractController {
   @GetMapping()
   public List<Task> getTasks() throws TaskListException {
     return taskListService.getTasks(null, null);
-  }
-
-  @IsAuthenticated
-  @GetMapping("/token/{token}")
-  public Task tokenTask(@PathVariable String token) throws TaskListException {
-    TaskToken taskToken = taskListService.retrieveToken(token);
-
-    return taskListService.getTask(taskToken.getTaskId());
   }
 
   @IsAuthenticated

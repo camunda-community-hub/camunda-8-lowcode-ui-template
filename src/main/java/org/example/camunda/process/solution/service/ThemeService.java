@@ -2,6 +2,7 @@ package org.example.camunda.process.solution.service;
 
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
+import jakarta.annotation.PostConstruct;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.PostConstruct;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.example.camunda.process.solution.jsonmodel.Theme;
