@@ -19,14 +19,14 @@ export interface ITask {
   id: number;
   name: string;
   processName: string;
-  creationTime: string;
+  creationDate: string;
   assignee: string | null;
   candidateGroups: string[];
   taskState: string;
   formKey: string;
   variables: any;
   sortValues: string[];
-  processDefinitionId: string;
+  processDefinitionKey: string;
 }
 
 export interface IVariable {

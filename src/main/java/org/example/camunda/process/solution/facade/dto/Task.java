@@ -15,7 +15,7 @@ public class Task {
 
   private String assignee;
 
-  private String creationTime;
+  private String creationDate;
 
   private TaskState taskState;
 
@@ -29,7 +29,7 @@ public class Task {
 
   private String formKey;
 
-  private String processDefinitionId;
+  private String processDefinitionKey;
 
   public String getId() {
     return id;
@@ -63,12 +63,12 @@ public class Task {
     this.assignee = assignee;
   }
 
-  public String getCreationTime() {
-    return creationTime;
+  public String getCreationDate() {
+    return creationDate;
   }
 
-  public void setCreationTime(String creationTime) {
-    this.creationTime = creationTime;
+  public void setCreationDate(String creationDate) {
+    this.creationDate = creationDate;
   }
 
   public TaskState getTaskState() {
@@ -119,12 +119,12 @@ public class Task {
     this.formKey = formKey;
   }
 
-  public String getProcessDefinitionId() {
-    return processDefinitionId;
+  public String getProcessDefinitionKey() {
+    return processDefinitionKey;
   }
 
-  public void setProcessDefinitionId(String processDefinitionId) {
-    this.processDefinitionId = processDefinitionId;
+  public void setProcessDefinitionKey(String processDefinitionKey) {
+    this.processDefinitionKey = processDefinitionKey;
   }
 
   public String getJobKey() {
