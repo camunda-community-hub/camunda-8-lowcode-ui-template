@@ -39,7 +39,7 @@ function Task(taskParam: { task: ITask }) {
       </OverlayTrigger> : <></>}</td>
       <td>{task.formKey == "processVariableFormKey" ? task.variables.formKey : task.name}</td>
       <td>{task.processName}</td>
-      <td>{task.creationTime.slice(0, 16).replace("T", " ")}</td>
+      <td>{task.creationDate.slice(0, 16).replace("T", " ")}</td>
     </tr>
   );
 }

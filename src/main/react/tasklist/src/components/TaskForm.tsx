@@ -4,9 +4,7 @@ import type {} from 'redux-thunk/extend-redux';
 import authService from '../service/AuthService';
 import taskService from '../service/TaskService';
 import FormResolver from './FormResolver';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
-import Button from 'react-bootstrap/Button';
+import { OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 

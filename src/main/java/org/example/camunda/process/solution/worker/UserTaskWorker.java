@@ -48,14 +48,14 @@ public class UserTaskWorker {
       task.setVariables(variables);
 
       String processDefinitionKey = Long.toString(job.getProcessDefinitionKey());
-      task.setProcessDefinitionId(processDefinitionKey);
+      task.setProcessDefinitionKey(processDefinitionKey);
 
       String formKey = headers.get("io.camunda.zeebe:formKey");
       task.setFormKey(formKey);
 
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
       String creationTime = sdf.format(new Date());
-      task.setCreationTime(creationTime);
+      task.setCreationDate(creationTime);
 
       // since 8.1.5, it seems that taskId and jobKey have become the same...
       String jobKey = Long.toString(job.getKey());
