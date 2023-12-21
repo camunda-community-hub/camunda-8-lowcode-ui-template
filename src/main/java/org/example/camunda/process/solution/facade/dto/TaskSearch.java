@@ -2,6 +2,7 @@ package org.example.camunda.process.solution.facade.dto;
 
 import io.camunda.tasklist.dto.SearchType;
 import java.util.List;
+import java.util.Map;
 
 public class TaskSearch {
 
@@ -11,13 +12,15 @@ public class TaskSearch {
 
   private String assignee;
 
+  private String group;
+
+  private Map<String, Object> filterVariables;
+
   private Integer pageSize;
 
   private List<String> search;
 
   private SearchType direction;
-
-  private String group;
 
   public String getState() {
     return state;
@@ -73,5 +76,13 @@ public class TaskSearch {
 
   public void setDirection(SearchType direction) {
     this.direction = direction;
+  }
+
+  public Map<String, Object> getFilterVariables() {
+    return filterVariables;
+  }
+
+  public void setFilterVariables(Map<String, Object> filterVariables) {
+    this.filterVariables = filterVariables;
   }
 }

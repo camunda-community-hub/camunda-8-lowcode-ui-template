@@ -14,6 +14,7 @@ import Processes from "./pages/Processes";
 import AdminUsers from "./pages/AdminUsers";
 import AdminTranslations from "./pages/AdminTranslations";
 import AdminEmails from "./pages/AdminEmails";
+import AdminTasklist from "./pages/AdminTasklist";
 import AdminForms from "./pages/AdminForms";
 import AdminThemes from './pages/AdminThemes';
 import WorkerList from './pages/WorkerList';
@@ -61,6 +62,7 @@ function App() {
             <Route path="mails" element={<AdminEmails />} />
             <Route path="theme" element={<AdminThemes />} />
             <Route path="users" element={<AdminUsers />} />
+            <Route path="tasklistconf" element={<AdminTasklist/> }/>
             <Route path="translations" element={<AdminTranslations />} />
             <Route path="templates" element={<WorkerList />} />
             <Route path="elementTemplate/*" element={<ElementTemplate />} />

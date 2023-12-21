@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.facade.dto.TaskSearch;
+import org.example.camunda.process.solution.utils.JsonUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -97,22 +98,26 @@ public class TaskListService {
             .setPageSize(taskSearch.getPageSize())
             .setSearch(taskSearch.getSearch())
             .setSearchType(taskSearch.getDirection());
-    if (Boolean.TRUE.equals(taskSearch.getAssigned()) && taskSearch.getAssignee() != null) {
-      return convert(
-          getCamundaTaskListClient()
-              .getAssigneeTasks(
-                  taskSearch.getAssignee(), TaskState.fromJson(taskSearch.getState()), pagination));
+    io.camunda.tasklist.dto.TaskSearch tasklistSearch = new io.camunda.tasklist.dto.TaskSearch();
+    if (taskSearch.getFilterVariables() != null) {
+      for (Map.Entry<String, Object> filter : taskSearch.getFilterVariables().entrySet()) {
+        if (filter.getValue() instanceof String) {
+          tasklistSearch.addVariableFilter(
+              filter.getKey(), JsonUtils.eventuallyJsonNode((String) filter.getValue()));
+        } else {
+          tasklistSearch.addVariableFilter(filter.getKey(), filter.getValue());
+        }
+      }
     }
-    if (taskSearch.getGroup() != null) {
-      return convert(
-          getCamundaTaskListClient()
-              .getGroupTasks(
-                  taskSearch.getGroup(), TaskState.fromJson(taskSearch.getState()), pagination));
-    }
-    return convert(
-        getCamundaTaskListClient()
-            .getTasks(
-                taskSearch.getAssigned(), TaskState.fromJson(taskSearch.getState()), pagination));
+
+    tasklistSearch.setAssigned(taskSearch.getAssigned());
+
+    tasklistSearch.setAssignee(taskSearch.getAssignee());
+    tasklistSearch.setState(TaskState.fromJson(taskSearch.getState()));
+    tasklistSearch.setGroup(taskSearch.getGroup());
+    tasklistSearch.setPagination(pagination);
+
+    return convert(getCamundaTaskListClient().getTasks(tasklistSearch));
   }
 
   public List<Task> getGroupTasks(String group, TaskState state, Integer pageSize)

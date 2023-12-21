@@ -18,7 +18,10 @@ import Card from 'react-bootstrap/Card';
 
 import { useTranslation } from "react-i18next";
 
+let timeOutId: any | undefined = undefined;
 function TaskList() {
+  const [typing, setTyping] = useState(false);
+  const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [showTaskFilter, setShowTaskFilter] = useState(false);
@@ -41,6 +44,16 @@ function TaskList() {
     dispatch(taskService.setTaskSearch(taskSearchClone));
   }
 
+  const changeFilterVariableFilter = (variable: string, value: any) => {
+    let taskSearchClone = JSON.parse(JSON.stringify(taskSearch));
+    if (value == "") {
+      taskSearchClone.filterVariables[variable] = undefined;
+    } else {
+      taskSearchClone.filterVariables[variable] = value;
+    }
+    dispatch(taskService.setTaskSearch(taskSearchClone));
+  }
+
   const changePageSize = (value: any) => {
     let taskSearchClone = Object.assign({}, taskSearch);
     taskSearchClone.pageSize = value * 1;
@@ -54,8 +67,25 @@ function TaskList() {
   }
 
   useEffect(() => {
+    dispatch(taskService.loadTasklistConf());
     dispatch(taskService.fetchTasks());
-  });
+  }, []);
+
+  useEffect(() => {
+    if (!typing) {
+      dispatch(taskService.fetchTasks());
+    }
+  }, [taskSearch]);
+
+  useEffect(() => {
+    if (typing) {
+      setTyping(false);
+      if (timeOutId) {
+        clearTimeout(timeOutId);
+      }
+      timeOutId = setTimeout(() => dispatch(taskService.fetchTasks()), 600);
+    }
+  }, [typing]);
 
   return (
     <div className="row flex-nowrap">
@@ -103,17 +133,19 @@ function TaskList() {
         </Modal.Header>
         <Modal.Body>
           <Row>
-            <Col>
-              <InputGroup className="mb-3">
-                <InputGroup.Text>{t("State")}</InputGroup.Text>
-                <Form.Select aria-label="state" value={taskSearch.state} onChange={(evt) => changeFilter('state', evt.target.value)}>
-                  <option value="CREATED" >{t("Created")}</option>
-                  <option value="COMPLETED">{t("Completed")}</option>
-                  <option value="CANCELED">{t("Canceled")}</option>
-                </Form.Select>
-              </InputGroup>
-            </Col>
-            <Col>
+            {tasklistConf && tasklistConf.defaultFilters.state ?
+              <Col xs={12} sm={6} lg={6} xxl={4}>
+                <InputGroup className="mb-3">
+                  <InputGroup.Text>{t("State")}</InputGroup.Text>
+                  <Form.Select aria-label="state" value={taskSearch.state} onChange={(evt) => changeFilter('state', evt.target.value)}>
+                    <option value="CREATED" >{t("Created")}</option>
+                    <option value="COMPLETED">{t("Completed")}</option>
+                    <option value="CANCELED">{t("Canceled")}</option>
+                  </Form.Select>
+                </InputGroup>
+              </Col> : <></>}
+            {tasklistConf && tasklistConf.defaultFilters.assigned ?
+            <Col xs={12} sm={6} lg={6} xxl={4}>
               <InputGroup className="mb-3">
                 <InputGroup.Text>{t("Assigned")}</InputGroup.Text>
                 <Form.Select aria-label="assigned" value={taskSearch.assigned} onChange={(evt) => changeFilter('assigned', evt.target.value)}>
@@ -122,19 +154,19 @@ function TaskList() {
                   <option value="false">{t("No")}</option>
                 </Form.Select>
               </InputGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+            </Col> : <></>}
+            {tasklistConf && tasklistConf.defaultFilters.assignee ?
+            <Col xs={12} sm={6} lg={6} xxl={4}>
               <InputGroup className="mb-3">
                 <InputGroup.Text>{t("Assignee")} :</InputGroup.Text>
                 <Form.Select disabled={"true"!=taskSearch.assigned} aria-label="assignee" value={taskSearch.assignee} onChange={(evt) => changeFilter('assignee', evt.target.value)}>
                   <option value="">{t("Any user")}</option>
                   <option value={authService.getUser()?.username}>{t("Me")}</option>
                 </Form.Select>
-              </InputGroup>
-            </Col>
-            <Col>
+                </InputGroup>
+              </Col> : <></>}
+            {tasklistConf && tasklistConf.defaultFilters.group ?
+            <Col xs={12} sm={6} lg={6} xxl={4}>
               <InputGroup className="mb-3">
                 <InputGroup.Text>{t("Group")} :</InputGroup.Text>
                 <Form.Select disabled={"true" != taskSearch.assigned} aria-label="group" value={taskSearch.group} onChange={(evt) => changeFilter('group', evt.target.value)}>
@@ -144,8 +176,36 @@ function TaskList() {
                   ) : <></>}
                 </Form.Select>
               </InputGroup>
-            </Col>
+              </Col> : <></>}
+            {(tasklistConf && tasklistConf.variablesFilters) ? tasklistConf.variablesFilters.map((filter: any, index: number) =>
+              <Col xs={12} sm={6} lg={6} xxl={4} key={index}>
+                <InputGroup className="mb-3">
+                  <InputGroup.Text>{filter.customVariable} :</InputGroup.Text>
+                  {filter.type == "list" ?
+                    <Form.Select value={taskSearch.filterVariables[filter.customVariable]} onChange={(evt) => changeFilterVariableFilter(filter.customVariable, evt.target.value)}>
+                      <option value="">{t("Any value")}</option>
+                      {filter.values ? filter.values.map((value: string, indexVariable: number) =>
+                        <option key={indexVariable} value={value}>{value}</option>
+                      ) : <></>}
+                    </Form.Select>
+                    :
+                    
+                    filter.type == "boolean" ?
+                      <Form.Select value={taskSearch.filterVariables[filter.customVariable]} onChange={(evt) => changeFilterVariableFilter(filter.customVariable, evt.target.value)}>
+                      <option value="">{t("Any value")}</option>
+                      <option value="true">{t("Yes")}</option>
+                      <option value="false">{t("No")}</option>
+                    </Form.Select>
+                      :
+                        <Form.Control type={filter.type} value={taskSearch.filterVariables[filter.customVariable]} onChange={(evt) => { changeFilterVariableFilter(filter.customVariable, evt.target.value); setTyping(true); }} />
+                    
+                  }
+                </InputGroup>
+                </Col>)
+                : <></>
+              }
           </Row>
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>

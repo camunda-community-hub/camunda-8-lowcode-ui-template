@@ -19,6 +19,14 @@ public class JsonUtils {
 
   private static ObjectMapper mapper;
 
+  public static Object eventuallyJsonNode(String someString) {
+    try {
+      return toJsonNode(someString);
+    } catch (IOException e) {
+      return someString;
+    }
+  }
+
   public static JsonNode toJsonNode(InputStream is) throws IOException {
     return getObjectMapper().readTree(is);
   }
