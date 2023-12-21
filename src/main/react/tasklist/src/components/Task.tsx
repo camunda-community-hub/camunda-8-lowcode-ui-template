@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { ITask } from '../store/model';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -8,6 +9,8 @@ import taskService from '../service/TaskService';
 import { useTranslation } from "react-i18next";
 
 function Task(taskParam: { task: ITask }) {
+  const navigate = useNavigate();
+  const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentTask = useSelector((state: any) => state.process.currentTask)
@@ -21,7 +24,12 @@ function Task(taskParam: { task: ITask }) {
   }
 
   const openTask = (event: any) => {
-    dispatch(taskService.setTask(task));
+    console.log(tasklistConf);
+    if (!tasklistConf.splitPage) {
+      dispatch(taskService.setTask(task, navigate("/tasklist/taskForm")));
+    } else {
+      dispatch(taskService.setTask(task));
+    }
   }
   const renderAssigneeTooltip = (props:any) => (
     <Tooltip id="button-tooltip" {...props}>

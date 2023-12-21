@@ -87,7 +87,7 @@ export class TaskService {
   after = (): AppThunk => async dispatch => {
     dispatch(after());
   }
-  setTask = (task: ITask | null): AppThunk => async dispatch => {
+  setTask = (task: ITask | null, callback?: any): AppThunk => async dispatch => {
     if (task) {
       if (task.formKey === "processVariableFormKey") {
         task = Object.assign({}, task);
@@ -98,6 +98,9 @@ export class TaskService {
         let url = '/forms/' + task.processName + '/' + task.processDefinitionKey + '/' + task.formKey + '/' + ln;
         api.get(url).then(response => {
           dispatch(setFormSchema(response.data));
+          if (callback) {
+            callback();
+          }
         }).catch(error => {
           alert(error.message);
         })
@@ -139,9 +142,12 @@ export class TaskService {
     })
   }
 
-  submitTask = (data: any): AppThunk => async dispatch => {
+  submitTask = (data: any, callback?: any): AppThunk => async dispatch => {
     api.post('/tasks/' + store.getState().process.currentTask!.id, data).then(response => {
       dispatch(removeCurrentTask());
+      if (callback) {
+        callback();
+      }
     }).catch(error => {
       alert(error.message);
     })

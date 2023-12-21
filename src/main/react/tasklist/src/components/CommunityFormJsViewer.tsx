@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
 import type {} from 'redux-thunk/extend-redux';
 import taskService from '../service/TaskService';
@@ -10,6 +11,9 @@ import { useTranslation } from "react-i18next";
 
 function CommunityFormJsViewer(formViewer: IFormViewer) {
   const { t } = useTranslation();
+
+  const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const container = document.querySelector('#task-form');
   let errors:string[] = [];
@@ -40,7 +44,11 @@ function CommunityFormJsViewer(formViewer: IFormViewer) {
 	}
     if (errors.length == 0) {
       if (formViewer.variables) {
-        dispatch(taskService.submitTask(bpmnForm._getState().data));
+        if (!tasklistConf.splitPage) {
+          dispatch(taskService.submitTask(bpmnForm._getState().data, navigate("/tasklist")));
+        } else {
+          dispatch(taskService.submitTask(bpmnForm._getState().data));
+        }
       } else {
         dispatch(processService.instantiate(bpmnForm._getState().data));
       }
