@@ -1,16 +1,25 @@
 package org.example.camunda.process.solution.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.camunda.operate.CamundaOperateClient;
 import io.camunda.operate.auth.SaasAuthentication;
 import io.camunda.operate.auth.SelfManagedAuthentication;
 import io.camunda.operate.dto.ProcessDefinition;
+import io.camunda.operate.dto.Variable;
 import io.camunda.operate.exception.OperateException;
 import io.camunda.operate.search.ProcessDefinitionFilter;
 import io.camunda.operate.search.SearchQuery;
 import io.camunda.operate.search.Sort;
 import io.camunda.operate.search.SortOrder;
+import io.camunda.operate.search.VariableFilter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.example.camunda.process.solution.utils.BpmnUtils;
+import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -106,5 +115,19 @@ public class OperateService {
       throws NumberFormatException, OperateException {
     String xml = getProcessDefinitionXmlByKey(Long.valueOf(processDefinitionId));
     return BpmnUtils.getStartingFormSchema(xml);
+  }
+
+  public Map<String, Set<JsonNode>> listVariables() throws OperateException, IOException {
+    List<Variable> vars =
+        getCamundaOperateClient()
+            .searchVariables(new SearchQuery.Builder().filter(new VariableFilter()).build());
+    Map<String, Set<JsonNode>> result = new HashMap<>();
+    for (Variable var : vars) {
+      if (!result.containsKey(var.getName())) {
+        result.put(var.getName(), new HashSet<>());
+      }
+      result.get(var.getName()).add(JsonUtils.toJsonNode(var.getValue()));
+    }
+    return result;
   }
 }

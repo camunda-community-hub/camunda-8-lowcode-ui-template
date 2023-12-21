@@ -48,6 +48,7 @@ export interface ITaskSearch {
   assignee: string | undefined;
   group: string | undefined;
   state: string;
+  filterVariables: any | undefined;
   pageSize: number | undefined;
   search: string[] | undefined;
   direction: string | undefined;

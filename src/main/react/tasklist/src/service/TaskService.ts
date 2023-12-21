@@ -1,6 +1,6 @@
 import store, { AppThunk } from '../store';
 import formService from './FormService';
-import { remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, prependTaskIntoList, setTask, setFormSchema, removeCurrentTask, setTaskSearch, before, after } from '../store/features/processes/slice';
+import { setTasklistConf, remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, prependTaskIntoList, setTask, setFormSchema, removeCurrentTask, setTaskSearch, before, after } from '../store/features/processes/slice';
 import { ITask, ITaskSearch } from '../store/model';
 import api from './api';
 import { Stomp, StompSubscription } from '@stomp/stompjs';
@@ -20,8 +20,30 @@ const stompClient = connectStompClient();
 
 export class TaskService {
 
-  lastFetchTasks: number = 0;
   stompSubscriptions: StompSubscription[] = [];
+
+  listVariables = async () => {
+    const { data } = await api.get<any>('/tasklistconf/variables');
+    return data;
+  }
+
+  loadTasklistConf = (): AppThunk => async dispatch => {
+    if (!store.getState().process.tasklistConf) {
+      api.get('/tasklistconf').then(response => {
+        dispatch(setTasklistConf(response.data));
+      }).catch(error => {
+        alert(error.message);
+      })
+    }
+  }
+
+  saveTasklistConf = (tasklistConf: any): AppThunk => async dispatch => {
+      api.post('/tasklistconf', tasklistConf).then(response => {
+        dispatch(setTasklistConf(response.data));
+      }).catch(error => {
+        alert(error.message);
+      })
+  }
 
   connectToWebSockets = (username: string): AppThunk => async dispatch => {
     try {
@@ -89,8 +111,7 @@ export class TaskService {
   }
 
   fetchTasks = (): AppThunk => async dispatch => {
-    if (this.lastFetchTasks < Date.now() - 1000) {
-      this.lastFetchTasks = Date.now();
+    
       try {
         dispatch(remoteLoading());
         const { data } = await api.post<ITask[]>('/tasks/search', store.getState().process.taskSearch);
@@ -98,7 +119,6 @@ export class TaskService {
       } catch (err:any) {
         dispatch(remoteLoadingFail(err.toString()));
       }
-    }
   }
   
   claim = (): AppThunk => async dispatch => {
@@ -146,7 +166,6 @@ export class TaskService {
       }
     }
     if (shouldInsert) {
-      this.lastFetchTasks = Date.now();
       dispatch(prependTaskIntoList(task));
     }
 

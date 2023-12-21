@@ -4,6 +4,7 @@ import { IProcess, ITask, ITaskSearch } from '../../model';
 export interface ProcessListState {
   processes: IProcess[];
   previousSearch: ITaskSearch;
+  tasklistConf: any;
   taskSearch: ITaskSearch;
   tasks: ITask[];
   currentTask: ITask|null;
@@ -16,11 +17,12 @@ export interface ProcessListState {
 export const initialState: ProcessListState = {
   processes:[],
   tasks: [],
+  tasklistConf: null,
   previousSearch: {
-    assigned: undefined, assignee: undefined, group: undefined, state: 'CREATED', pageSize: 10, search: undefined, direction: undefined, numPage:0
+    assigned: undefined, assignee: undefined, group: undefined, state: 'CREATED', filterVariables: {}, pageSize: 10, search: undefined, direction: undefined, numPage:0
   },
   taskSearch: {
-    assigned: undefined, assignee: undefined, group: undefined, state: 'CREATED', pageSize: 10, search: undefined, direction: undefined, numPage: 0
+    assigned: undefined, assignee: undefined, group: undefined, state: 'CREATED', filterVariables: {}, pageSize: 10, search: undefined, direction: undefined, numPage: 0
   },
   currentTask: null,
   currentProcess: null,
@@ -46,6 +48,13 @@ const serverListSlice = createSlice({
     ) => {
       state.loading = false;
       state.processes = action.payload;
+    },
+    setTasklistConf: (
+      state: ProcessListState,
+      action: PayloadAction<any>,
+    ) => {
+      state.loading = false;
+      state.tasklistConf = action.payload;
     },
     remoteTasksLoadingSuccess: (
       state: ProcessListState,
@@ -156,6 +165,7 @@ export const {
   setTaskSearch,
   before,
   after,
+  setTasklistConf
 } = serverListSlice.actions;
 
 export default serverListSlice.reducer;

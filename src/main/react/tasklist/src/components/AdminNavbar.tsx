@@ -84,6 +84,9 @@ function AdminNavbar() {
           <div className="bg-primary menu">
             <NavLink className={({ isActive }) =>
               isActive ? "text-light menu-item selected" : "text-light menu-item"
+            } to="/admin/tasklistconf">{t("Tasklist")}</NavLink>
+            <NavLink className={({ isActive }) =>
+              isActive ? "text-light menu-item selected" : "text-light menu-item"
             } to="/admin/forms">{t("Forms")}</NavLink>
             <NavLink className={({ isActive }) =>
               isActive ? "text-light menu-item selected" : "text-light menu-item"
