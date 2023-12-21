@@ -80,24 +80,21 @@ table.taskListContainer.table th:last-child {
   overflow: auto;
   height: calc(100vh - 100px);
 }
-.taskListTitle {
-  border-radius: 0.25rem;
-  padding: 0px 5px;
-  margin-bottom: 5px;
+
+.pagination {
   justify-content: space-between;
   display: flex;
+  width: 100%;
 }
-.taskListTitle > .title {
-  font-size: 1.1rem;
-  line-height: 33px;
-  font-weight: 500;
-}
-.taskListTitle > .nbResults {
-  padding: 5px;
-}
-.taskListTitle > .nbResults > select {
-  margin: 2px;
-}
+  .pagination .taskListFilter {
+    border-radius: 0.25rem;
+    padding: 0px 12px;
+    margin-bottom: 5px;
+    justify-content: space-between;
+    display: flex;
+    width: 220px;
+    line-height: 38px;
+  }
 .taskListFormContainer {
   width: 100%;
   display: inline-block;

@@ -90,20 +90,7 @@ function TaskList() {
   return (
     <div className="row flex-nowrap">
       <Col className="tasklist ps-md-2 pt-2">
-        <div className="taskListTitle bg-primary text-light">
-          <span className="title">{t("Tasks")}</span>
-          <div className="nbResults">
-            {t("Show")}
-            <select value={taskSearch.pageSize} onChange={(evt) => changePageSize(evt.target.value)} disabled={loading}>
-              <option>5</option>
-              <option>10</option>
-              <option>20</option>
-              <option>50</option>
-            </select>
-            {t("results")}
-            </div>
-          <Button variant="primary" onClick={handleShow} disabled={loading}><i className="bi bi-funnel"></i></Button>
-        </div>
+       
         <Table striped hover variant="light" className="taskListContainer">
           <thead >
             <tr >
@@ -117,16 +104,33 @@ function TaskList() {
             {tasks ? tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>) : <></>}
           </tbody>
           <tfoot>
-            <tr><td colSpan={4}>
-              <Button variant="outline-primary" onClick={before} disabled={loading}><i className="bi bi-arrow-left"></i> before</Button>
-              <Button variant="outline-primary" onClick={after} disabled={loading}>after <i className="bi bi-arrow-right"></i> </Button>
+            <tr><td colSpan={6} >
+              <div className="pagination">
+                <Button variant="outline-primary" onClick={before} disabled={loading}><i className="bi bi-arrow-left"></i> before</Button>
+                <div className="taskListFilter bg-lightgreen text-light">
+
+                  <div className="text-primary">
+                    {t("Show")} &nbsp;
+                    <select value={taskSearch.pageSize} onChange={(evt) => changePageSize(evt.target.value)} disabled={loading}>
+                      <option>5</option>
+                      <option>10</option>
+                      <option>20</option>
+                      <option>50</option>
+                    </select> &nbsp;
+                    {t("results")}
+                  </div>
+                  <Button variant="primary" onClick={handleShow} disabled={loading}><i className="bi bi-funnel"></i></Button>
+                </div>
+                <Button variant="outline-primary" onClick={after} disabled={loading}>after <i className="bi bi-arrow-right"></i> </Button>
+              </div>
             </td></tr>
           </tfoot>
         </Table>
       </Col>
-      <Col className="ps-md-2 pt-2">
-        <TaskForm />
-      </Col>
+      {tasklistConf.splitPage ?
+        <Col className="ps-md-2 pt-2">
+          <TaskForm />
+        </Col> : <></>}
       <Modal show={showTaskFilter} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{t("Tasks filters")}</Modal.Title>

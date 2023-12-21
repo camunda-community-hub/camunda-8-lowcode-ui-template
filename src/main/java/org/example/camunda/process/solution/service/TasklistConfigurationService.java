@@ -37,34 +37,10 @@ public class TasklistConfigurationService {
     TasklistConf conf = new TasklistConf();
     conf.setSplitPage(true);
     conf.setColumns(new ArrayList<>());
-    conf.getColumns()
-        .add(Map.of("label", "Id", "value", "id", "type", "number", "showAssignee", "true"));
-    conf.getColumns()
-        .add(
-            Map.of(
-                "label", "Task name", "value", "name", "type", "string", "showAssignee", "false"));
-    conf.getColumns()
-        .add(
-            Map.of(
-                "label",
-                "Process",
-                "value",
-                "processName",
-                "type",
-                "string",
-                "showAssignee",
-                "false"));
-    conf.getColumns()
-        .add(
-            Map.of(
-                "label",
-                "Date",
-                "value",
-                "creationDate",
-                "type",
-                "datetime",
-                "showAssignee",
-                "false"));
+    conf.getColumns().add(Map.of("label", "Id", "value", "id", "type", "number"));
+    conf.getColumns().add(Map.of("label", "Task name", "value", "name", "type", "string"));
+    conf.getColumns().add(Map.of("label", "Process", "value", "processName", "type", "string"));
+    conf.getColumns().add(Map.of("label", "Date", "value", "creationDate", "type", "datetime"));
     conf.setDefaultFilters(
         Map.of("state", true, "assigned", true, "assignee", true, "group", true));
     conf.setVariablesFilters(new ArrayList<>());

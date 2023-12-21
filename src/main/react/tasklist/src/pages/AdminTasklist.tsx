@@ -98,12 +98,13 @@ function AdminTasklist() {
   return (
     tasklistConf ?
       <>
+        <h4>Basic configuration</h4>
         <InputGroup className="mb-1">
           <Form.Check
             type="switch" checked={tasklistConf.splitPage} onChange={(evt) => update('splitPage', evt.target.checked)}
             label="Tasklist page also display the task (split mode)" />
         </InputGroup>
-
+        <hr />
         <h4>Default Filters</h4>
         <InputGroup className="mb-1">
           <Form.Check
@@ -130,7 +131,7 @@ function AdminTasklist() {
           </>
           : <></>
         }
-
+        <hr/>
         <h4>Variables Filters</h4>
         <Table striped bordered hover>
           <thead>

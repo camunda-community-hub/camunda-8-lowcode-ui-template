@@ -8,6 +8,7 @@ import SimpleLayout from "./SimpleLayout"
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 import TaskList from "./pages/TaskList";
+import TaskForm from "./pages/TaskForm";
 import Undefined from "./pages/Undefined";
 import Restricted from "./pages/Restricted";
 import Processes from "./pages/Processes";
@@ -53,6 +54,7 @@ function App() {
           <Route path="tasklist" element={<TasklistLayout />}>
             <Route index element={<TaskList />} />
             <Route path="tasks" element={<TaskList />} />
+            <Route path="taskForm" element={<TaskForm />} />
             <Route path="processes" element={<Processes />} />
             <Route path="*" element={<Undefined />} />
           </Route>
@@ -82,6 +84,7 @@ function App() {
             <Route path="tasklist" element={<TasklistLayout />}>
               <Route index element={<TaskList />} />
               <Route path="tasks" element={<TaskList />} />
+              <Route path="taskForm" element={<TaskForm />} />
               <Route path="processes" element={<Processes />} />
               <Route path="*" element={<Undefined />} />
             </Route>
