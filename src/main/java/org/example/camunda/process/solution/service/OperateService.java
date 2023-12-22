@@ -1,12 +1,16 @@
 package org.example.camunda.process.solution.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.camunda.common.auth.Authentication;
+import io.camunda.common.auth.JwtConfig;
+import io.camunda.common.auth.JwtCredential;
+import io.camunda.common.auth.Product;
+import io.camunda.common.auth.SaaSAuthentication;
+import io.camunda.common.auth.SelfManagedAuthentication;
 import io.camunda.operate.CamundaOperateClient;
-import io.camunda.operate.auth.SaasAuthentication;
-import io.camunda.operate.auth.SelfManagedAuthentication;
-import io.camunda.operate.dto.ProcessDefinition;
-import io.camunda.operate.dto.Variable;
 import io.camunda.operate.exception.OperateException;
+import io.camunda.operate.model.ProcessDefinition;
+import io.camunda.operate.model.Variable;
 import io.camunda.operate.search.ProcessDefinitionFilter;
 import io.camunda.operate.search.SearchQuery;
 import io.camunda.operate.search.Sort;
@@ -61,28 +65,36 @@ public class OperateService {
 
   private CamundaOperateClient getCamundaOperateClient() throws OperateException {
     if (client == null) {
+      String targetOperateUrl = operateUrl;
+      Authentication auth = null;
       if (!"notProvided".equals(clientId)) {
-        SaasAuthentication sa = new SaasAuthentication(clientId, clientSecret);
-        client =
-            new CamundaOperateClient.Builder()
-                .operateUrl("https://" + region + ".operate.camunda.io/" + clusterId)
-                .authentication(sa)
-                .build();
+        JwtConfig jwtConfig = new JwtConfig();
+        jwtConfig.addProduct(Product.OPERATE, new JwtCredential(clientId, clientSecret));
+        targetOperateUrl = "https://" + region + ".operate.camunda.io/" + clusterId;
+        auth = SaaSAuthentication.builder().jwtConfig(jwtConfig).build();
+
       } else {
-        SelfManagedAuthentication la =
-            new SelfManagedAuthentication()
-                .clientId(identityClientId)
-                .clientSecret(identityClientSecret)
-                .keycloakUrl(keycloakUrl);
-        client =
-            new CamundaOperateClient.Builder().operateUrl(operateUrl).authentication(la).build();
+        JwtConfig jwtConfig = new JwtConfig();
+        jwtConfig.addProduct(
+            Product.OPERATE, new JwtCredential(identityClientId, identityClientSecret));
+        auth =
+            SelfManagedAuthentication.builder()
+                .jwtConfig(jwtConfig)
+                .keycloakUrl(keycloakUrl)
+                .build();
       }
+      client =
+          CamundaOperateClient.builder()
+              .operateUrl(targetOperateUrl)
+              .authentication(auth)
+              .setup()
+              .build();
     }
     return client;
   }
 
   public List<ProcessDefinition> getProcessDefinitions() throws OperateException {
-    ProcessDefinitionFilter processDefinitionFilter = new ProcessDefinitionFilter.Builder().build();
+    ProcessDefinitionFilter processDefinitionFilter = ProcessDefinitionFilter.builder().build();
     SearchQuery procDefQuery =
         new SearchQuery.Builder()
             .filter(processDefinitionFilter)
@@ -94,7 +106,7 @@ public class OperateService {
   }
 
   public List<ProcessDefinition> getProcessDefinitionByKey(Long key) throws OperateException {
-    ProcessDefinitionFilter processDefinitionFilter = new ProcessDefinitionFilter.Builder().build();
+    ProcessDefinitionFilter processDefinitionFilter = ProcessDefinitionFilter.builder().build();
     SearchQuery procDefQuery =
         new SearchQuery.Builder()
             .filter(processDefinitionFilter)
