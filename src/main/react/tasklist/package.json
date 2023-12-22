@@ -25,6 +25,7 @@
     "formiojs": "^4.14.12",
     "i18next": "^21.9.2",
     "i18next-http-backend": "^1.4.4",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",

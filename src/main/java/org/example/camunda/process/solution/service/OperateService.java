@@ -120,7 +120,8 @@ public class OperateService {
   public Map<String, Set<JsonNode>> listVariables() throws OperateException, IOException {
     List<Variable> vars =
         getCamundaOperateClient()
-            .searchVariables(new SearchQuery.Builder().filter(new VariableFilter()).build());
+            .searchVariables(
+                new SearchQuery.Builder().filter(new VariableFilter()).size(1000).build());
     Map<String, Set<JsonNode>> result = new HashMap<>();
     for (Variable var : vars) {
       if (!result.containsKey(var.getName())) {
