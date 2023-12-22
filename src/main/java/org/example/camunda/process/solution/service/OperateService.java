@@ -105,18 +105,6 @@ public class OperateService {
     return getCamundaOperateClient().searchProcessDefinitions(procDefQuery);
   }
 
-  public List<ProcessDefinition> getProcessDefinitionByKey(Long key) throws OperateException {
-    ProcessDefinitionFilter processDefinitionFilter = ProcessDefinitionFilter.builder().build();
-    SearchQuery procDefQuery =
-        new SearchQuery.Builder()
-            .filter(processDefinitionFilter)
-            .size(1000)
-            .sort(new Sort("version", SortOrder.DESC))
-            .build();
-
-    return getCamundaOperateClient().searchProcessDefinitions(procDefQuery);
-  }
-
   @Cacheable("processXmls")
   public String getProcessDefinitionXmlByKey(Long key) throws OperateException {
     LOG.info("Entering getProcessDefinitionXmlByKey for key " + key);
