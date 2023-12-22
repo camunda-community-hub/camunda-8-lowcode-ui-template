@@ -1,7 +1,7 @@
 package org.example.camunda.process.solution.facade;
 
-import io.camunda.operate.dto.ProcessDefinition;
 import io.camunda.operate.exception.OperateException;
+import io.camunda.operate.model.ProcessDefinition;
 import io.camunda.zeebe.client.ZeebeClient;
 import java.util.ArrayList;
 import java.util.HashSet;
