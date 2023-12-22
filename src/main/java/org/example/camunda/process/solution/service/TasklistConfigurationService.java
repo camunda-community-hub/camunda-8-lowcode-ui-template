@@ -36,6 +36,8 @@ public class TasklistConfigurationService {
   public TasklistConf defaultTasklistConf() {
     TasklistConf conf = new TasklistConf();
     conf.setSplitPage(true);
+    conf.setFormatDate("DD/MM/YYYY");
+    conf.setFormatDatetime("DD/MM/YYYY HH:mm");
     conf.setColumns(new ArrayList<>());
     conf.getColumns().add(Map.of("label", "Id", "value", "id", "type", "number"));
     conf.getColumns().add(Map.of("label", "Task name", "value", "name", "type", "string"));

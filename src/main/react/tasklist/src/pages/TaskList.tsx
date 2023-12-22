@@ -95,16 +95,17 @@ function TaskList() {
           <thead >
             <tr >
               <th className="bg-primary text-light"></th>
-              <th className="bg-primary text-light">Task Name</th>
-              <th className="bg-primary text-light">Process Name</th>
-              <th className="bg-primary text-light">Date</th>
+              {tasklistConf && tasklistConf.columns ? tasklistConf.columns.map((column: any, index: number) =>
+                <th className="bg-primary text-light">{column.label}</th>)
+                : <></>}
             </tr>
           </thead>
           <tbody>
             {tasks ? tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>) : <></>}
           </tbody>
           <tfoot>
-            <tr><td colSpan={6} >
+            <tr>
+              <td colSpan={tasklistConf.columns ? tasklistConf.columns.length+1 : 1} >
               <div className="pagination">
                 <Button variant="outline-primary" onClick={before} disabled={loading}><i className="bi bi-arrow-left"></i> before</Button>
                 <div className="taskListFilter bg-lightgreen text-light">

@@ -5,10 +5,11 @@ import { ITask } from '../store/model';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import taskService from '../service/TaskService';
+import moment from "moment";
 
 import { useTranslation } from "react-i18next";
 
-function Task(taskParam: { task: ITask }) {
+function Task(taskParam: { task: any }) {
   const navigate = useNavigate();
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
   const { t } = useTranslation();
@@ -45,9 +46,14 @@ function Task(taskParam: { task: ITask }) {
       >
         <i className="bi bi-person-circle text-secondary"></i>
       </OverlayTrigger> : <></>}</td>
-      <td>{task.formKey == "processVariableFormKey" ? task.variables.formKey : task.name}</td>
-      <td>{task.processName}</td>
-      <td>{task.creationDate.slice(0, 16).replace("T", " ")}</td>
+      {tasklistConf && tasklistConf.columns ? tasklistConf.columns.map((column: any, index: number) =>
+        <td>{column.type == "date" && tasklistConf.formatDate && tasklistConf.formatDate!="" ?
+          column.variable ? moment(task.variables[column.value == "customValue" ? column.customValue : column.value]).format(tasklistConf.formatDate) : moment(task[column.value]).format(tasklistConf.formatDate)
+          : column.type == "dateTime" && tasklistConf.formatDatetime && tasklistConf.formatDatetime != "" ?
+            column.variable ? moment(task.variables[column.value == "customValue" ? column.customValue : column.value]).format(tasklistConf.formatDatetime) : moment(task[column.value]).format(tasklistConf.formatDatetime)
+          : column.variable ? task.variables[column.value == "customValue" ? column.customValue : column.value] : task[column.value]}
+        </td>)
+        : <></>}
     </tr>
   );
 }
