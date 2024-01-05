@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 let timeOutId: any | undefined = undefined;
 function TaskList() {
   const [typing, setTyping] = useState(false);
-  const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
+  const tasklistConf = useSelector((state: any) => state.process.tasklistConf);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [showTaskFilter, setShowTaskFilter] = useState(false);
@@ -90,7 +90,7 @@ function TaskList() {
   return (
     <div className="row flex-nowrap">
       <Col className="tasklist ps-md-2 pt-2">
-       
+
         <Table striped hover variant="light" className="taskListContainer">
           <thead >
             <tr >
@@ -105,7 +105,7 @@ function TaskList() {
           </tbody>
           <tfoot>
             <tr>
-              <td colSpan={tasklistConf.columns ? tasklistConf.columns.length+1 : 1} >
+              <td colSpan={tasklistConf && tasklistConf.columns ? tasklistConf.columns.length+1 : 1} >
               <div className="pagination">
                 <Button variant="outline-primary" onClick={before} disabled={loading}><i className="bi bi-arrow-left"></i> before</Button>
                 <div className="taskListFilter bg-lightgreen text-light">
@@ -128,7 +128,7 @@ function TaskList() {
           </tfoot>
         </Table>
       </Col>
-      {tasklistConf.splitPage ?
+      {tasklistConf && tasklistConf.splitPage ?
         <Col className="ps-md-2 pt-2">
           <TaskForm />
         </Col> : <></>}
@@ -194,7 +194,7 @@ function TaskList() {
                       ) : <></>}
                     </Form.Select>
                     :
-                    
+
                     filter.type == "boolean" ?
                       <Form.Select value={taskSearch.filterVariables[filter.customVariable]} onChange={(evt) => changeFilterVariableFilter(filter.customVariable, evt.target.value)}>
                       <option value="">{t("Any value")}</option>
@@ -203,7 +203,7 @@ function TaskList() {
                     </Form.Select>
                       :
                         <Form.Control type={filter.type} value={taskSearch.filterVariables[filter.customVariable]} onChange={(evt) => { changeFilterVariableFilter(filter.customVariable, evt.target.value); setTyping(true); }} />
-                    
+
                   }
                 </InputGroup>
                 </Col>)
