@@ -26,11 +26,11 @@ and a [docker-compose.yaml](docker-compose.yaml) file for local development. For
 - [Zeebe Workflow Engine](https://github.com/camunda/zeebe)
 - [Contact](https://docs.camunda.io/contact/)
 
-The Spring Boot Java application includes an example Tasklist [React front-end](src/main/react/tasklist/). Run `mvnw package` from the project root, start the Spring Boot app, and then browse to http://localhost:8080.
+The Spring Boot Java application includes an example Tasklist [React front-end](src/main/react/tasklist/). Run `make buildfront` from the project root, start the Spring Boot app (`make run` or `mvnw spring-boot:run`), and then browse to http://localhost:8080.
 
 This front-end relies on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js).
 
-If needed, you can also run the [React front-end](src/main/react/tasklist/) independent of the spring boot app. To do so, run `npm run start` to start a nodejs server serving the react app over port 3000.
+If needed, you can also run the [React front-end](src/main/react/tasklist/) independent of the spring boot app. To do so, run `npm run start` to start a nodejs server serving the react app over port 3000. You can also use the `make runfront`
 
 ## Using this template
 
@@ -89,30 +89,6 @@ You can create forms with 3 different approaches :
 
 Translations will be managed from the backend in the 2 first approaches. Input labels should be references in the Forms translations.
 In the 3rd case, translation will be managed from the front-end and translations should be added in the "siteTranslations".
-
-## Secure the app with keycloak
-If you want to secure your app with keycloak, you can set the keycloak.enabled to true and uncomment the properties in the application.yaml file
-
-```yaml
-keycloak:
-  enabled: true
-  auth-server-url: http://localhost:18080/auth
-  realm: camunda-platform
-  resource: CustomTasklist
-  public-client: true
-  principal-attribute: preferred_username
-```
-
-This application relies on 3 kind of users :
-- Admin : has a role Admin
-- Editor : has a role Editor
-- User : is connected without Admin or Editor roles.
-
-> :information_source: To use the application with Keycloak, create the Admin role and assign it to (at least) one user.
-
-> :information_source: The application also relies on groups. So you should add a custom mapper into your keycloak client with :
-- Type : Group Membership
-- Token Claim Name : groups
 
 ## Google integration
 If you want to send emails through Gmail (what is coded for now), you will need to download a [client_secret_google_api.json from your Google console] (https://console.cloud.google.com/) and put it in your resources folder.
