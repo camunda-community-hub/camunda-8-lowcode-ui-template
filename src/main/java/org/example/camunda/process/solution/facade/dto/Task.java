@@ -29,6 +29,12 @@ public class Task {
 
   private String formKey;
 
+  private String formId;
+
+  private Long formVersion;
+
+  private Boolean isFormEmbedded;
+
   private String processDefinitionKey;
 
   public String getId() {
@@ -117,6 +123,30 @@ public class Task {
 
   public void setFormKey(String formKey) {
     this.formKey = formKey;
+  }
+
+  public String getFormId() {
+    return formId;
+  }
+
+  public void setFormId(String formId) {
+    this.formId = formId;
+  }
+
+  public Long getFormVersion() {
+    return formVersion;
+  }
+
+  public void setFormVersion(Long formVersion) {
+    this.formVersion = formVersion;
+  }
+
+  public Boolean getIsFormEmbedded() {
+    return isFormEmbedded;
+  }
+
+  public void setIsFormEmbedded(Boolean isFormEmbedded) {
+    this.isFormEmbedded = isFormEmbedded;
   }
 
   public String getProcessDefinitionKey() {

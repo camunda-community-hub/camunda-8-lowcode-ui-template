@@ -73,8 +73,7 @@ public class UserTaskWorker {
       String taskActivityId = job.getElementId();
       // !!! The name of the bpmn file in the "src/main/resources/models" directory must match the
       // process id in order for this to work!
-      String taskName =
-          bpmnService.getTaskName(bpmnProcessId, processDefinitionKey, taskActivityId);
+      String taskName = bpmnService.getTaskName(processDefinitionKey, taskActivityId);
       task.setName(taskName);
 
       if (!job.getCustomHeaders().isEmpty()) {

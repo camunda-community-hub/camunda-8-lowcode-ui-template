@@ -25,12 +25,6 @@ public class BpmnUtils {
 
   private static final Logger LOG = LoggerFactory.getLogger(BpmnUtils.class);
 
-  private static Node getNodeFromBpmnFile(String bpmnFileName, String nodeId) {
-    InputStream bpmnIs =
-        BpmnUtils.class.getClassLoader().getResourceAsStream("models/" + bpmnFileName);
-    return getNodeFromBpmn(bpmnIs, nodeId);
-  }
-
   private static Node getNodeFromBpmn(String xml, String nodeId) {
     return getNodeFromBpmn(
         new ByteArrayInputStream(xml.getBytes(Charset.forName("UTF-8"))), nodeId);
@@ -77,12 +71,13 @@ public class BpmnUtils {
 
   public static String getTaskNameFromBpmn(String xml, String activityId) {
     LOG.info("get TaskName for " + activityId);
-    String taskName = activityId;
+
     Node taskNode = getNodeFromBpmn(xml, activityId);
     if (taskNode != null) {
-      taskName = taskNode.getAttributes().getNamedItem("name").getNodeValue();
+      Node taskNameNode = taskNode.getAttributes().getNamedItem("name");
+      if (taskNameNode != null) return taskNameNode.getNodeValue();
     }
-    return taskName;
+    return activityId;
   }
 
   public static String getFormSchemaFromBpmn(String xml, String formId) {
@@ -95,73 +90,69 @@ public class BpmnUtils {
     return schema;
   }
 
-  public static String getProcessNameFromFile(String bpmnFileName, String bpmnProcessId) {
-    String processName = bpmnProcessId;
-    Node processNode = getNodeFromBpmnFile(bpmnFileName, bpmnProcessId);
-    if (processNode != null) {
-      processName = processNode.getAttributes().getNamedItem("name").getNodeValue();
-    }
-    return processName;
-  }
-
-  public static String getTaskNameFromFile(String bpmnFileName, String activityId) {
-    String taskName = activityId;
-    Node taskNode = getNodeFromBpmnFile(bpmnFileName, activityId);
-    if (taskNode != null) {
-      taskName = taskNode.getAttributes().getNamedItem("name").getNodeValue();
-    }
-    return taskName;
-  }
-
-  public static String getFormSchemaFromFile(String bpmnFileName, String formId) {
-    String schema = null;
-    Node formNode = getNodeFromBpmnFile(bpmnFileName, formId);
-    if (formNode != null) {
-      schema = formNode.getFirstChild().getNodeValue();
-    }
-    return schema;
-  }
-
-  public static String getStartingFormSchema(String xml) {
-    return getStartingFormSchema(new ByteArrayInputStream(xml.getBytes(Charset.forName("UTF-8"))));
-  }
-
-  private static String getStartingFormSchema(InputStream bpmnInputStream) {
+  public static String getEmbeddedSartingFormSchema(Document xmlDocument, String formKey) {
     try {
-      DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-      DocumentBuilder builder = builderFactory.newDocumentBuilder();
-
-      Document xmlDocument = builder.parse(bpmnInputStream);
-
-      String formKey = getStartingFormKey(xmlDocument);
       if (formKey != null) {
         String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
-        Node formNode = getNodeFromDocument(xmlDocument, formId);
+        Node formNode;
+
+        formNode = getNodeFromDocument(xmlDocument, formId);
+
         if (formNode != null) {
           return formNode.getFirstChild().getNodeValue();
         }
       }
-    } catch (IOException
-        | SAXException
-        | ParserConfigurationException
-        | XPathExpressionException e) {
-      LOG.error("Error reading the starting event", e);
+      return null;
+    } catch (XPathExpressionException e) {
+      return null;
     }
-    return null;
   }
 
-  private static String getStartingFormKey(Document xmlDocument) {
+  public static String getEmbeddedStartingFormKey(Document xmlDocument) {
     NodeList nodeList = xmlDocument.getElementsByTagName("bpmn:startEvent");
 
-    if (nodeList != null && nodeList.getLength() == 1) {
-      Node startEvent = nodeList.item(0);
-      if (startEvent instanceof Element) {
-        NodeList formDefs = ((Element) startEvent).getElementsByTagName("zeebe:formDefinition");
-        if (formDefs != null && formDefs.getLength() == 1) {
-          return formDefs.item(0).getAttributes().getNamedItem("formKey").getNodeValue();
+    if (nodeList != null && nodeList.getLength() >= 1) {
+      for (int i = 0; i < nodeList.getLength(); i++) {
+        Node startEvent = nodeList.item(i);
+        if (startEvent instanceof Element) {
+          NodeList formDefs = ((Element) startEvent).getElementsByTagName("zeebe:formDefinition");
+          if (formDefs != null && formDefs.getLength() == 1) {
+            Node formKey = formDefs.item(0).getAttributes().getNamedItem("formKey");
+            if (formKey != null) return formKey.getNodeValue();
+          }
         }
       }
     }
     return null;
+  }
+
+  public static String getLinkedStartingFormId(Document xmlDocument) {
+    NodeList nodeList = xmlDocument.getElementsByTagName("bpmn:startEvent");
+
+    if (nodeList != null && nodeList.getLength() >= 1) {
+      for (int i = 0; i < nodeList.getLength(); i++) {
+        Node startEvent = nodeList.item(i);
+        if (startEvent instanceof Element) {
+          NodeList formDefs = ((Element) startEvent).getElementsByTagName("zeebe:formDefinition");
+          if (formDefs != null && formDefs.getLength() == 1) {
+            Node formId = formDefs.item(0).getAttributes().getNamedItem("formId");
+            if (formId != null) return formId.getNodeValue();
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  public static Document getXmlDocument(String xml) {
+
+    try {
+      DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder builder = builderFactory.newDocumentBuilder();
+
+      return builder.parse(new ByteArrayInputStream(xml.getBytes(Charset.forName("UTF-8"))));
+    } catch (SAXException | IOException | ParserConfigurationException e) {
+      return null;
+    }
   }
 }

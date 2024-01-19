@@ -88,20 +88,20 @@ function TaskList() {
   }, [typing]);
 
   return (
+    tasks && tasklistConf ?
     <div className="row flex-nowrap">
       <Col className="tasklist ps-md-2 pt-2">
-       
         <Table striped hover variant="light" className="taskListContainer">
           <thead >
             <tr >
               <th className="bg-primary text-light"></th>
-              {tasklistConf && tasklistConf.columns ? tasklistConf.columns.map((column: any, index: number) =>
+              {tasklistConf.columns ? tasklistConf.columns.map((column: any, index: number) =>
                 <th className="bg-primary text-light">{column.label}</th>)
                 : <></>}
             </tr>
           </thead>
           <tbody>
-            {tasks ? tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>) : <></>}
+            {tasks.map((task: ITask) => <Task task={task} key={task.id}></Task>)}
           </tbody>
           <tfoot>
             <tr>
@@ -138,7 +138,7 @@ function TaskList() {
         </Modal.Header>
         <Modal.Body>
           <Row>
-            {tasklistConf && tasklistConf.defaultFilters.state ?
+            {tasklistConf.defaultFilters.state ?
               <Col xs={12} sm={6} lg={6} xxl={4}>
                 <InputGroup className="mb-3">
                   <InputGroup.Text>{t("State")}</InputGroup.Text>
@@ -149,7 +149,7 @@ function TaskList() {
                   </Form.Select>
                 </InputGroup>
               </Col> : <></>}
-            {tasklistConf && tasklistConf.defaultFilters.assigned ?
+            {tasklistConf.defaultFilters.assigned ?
             <Col xs={12} sm={6} lg={6} xxl={4}>
               <InputGroup className="mb-3">
                 <InputGroup.Text>{t("Assigned")}</InputGroup.Text>
@@ -160,7 +160,7 @@ function TaskList() {
                 </Form.Select>
               </InputGroup>
             </Col> : <></>}
-            {tasklistConf && tasklistConf.defaultFilters.assignee ?
+            {tasklistConf.defaultFilters.assignee ?
             <Col xs={12} sm={6} lg={6} xxl={4}>
               <InputGroup className="mb-3">
                 <InputGroup.Text>{t("Assignee")} :</InputGroup.Text>
@@ -170,7 +170,7 @@ function TaskList() {
                 </Form.Select>
                 </InputGroup>
               </Col> : <></>}
-            {tasklistConf && tasklistConf.defaultFilters.group ?
+            {tasklistConf.defaultFilters.group ?
             <Col xs={12} sm={6} lg={6} xxl={4}>
               <InputGroup className="mb-3">
                 <InputGroup.Text>{t("Group")} :</InputGroup.Text>
@@ -182,7 +182,7 @@ function TaskList() {
                 </Form.Select>
               </InputGroup>
               </Col> : <></>}
-            {(tasklistConf && tasklistConf.variablesFilters) ? tasklistConf.variablesFilters.map((filter: any, index: number) =>
+            {tasklistConf.variablesFilters ? tasklistConf.variablesFilters.map((filter: any, index: number) =>
               <Col xs={12} sm={6} lg={6} xxl={4} key={index}>
                 <InputGroup className="mb-3">
                   <InputGroup.Text>{filter.customVariable} :</InputGroup.Text>
@@ -218,7 +218,8 @@ function TaskList() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+      </div>
+      : <></>
   );
 }
 
