@@ -14,14 +14,13 @@ import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
-import Card from 'react-bootstrap/Card';
 
 import { useTranslation } from "react-i18next";
 
 let timeOutId: any | undefined = undefined;
 function TaskList() {
   const [typing, setTyping] = useState(false);
-  const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
+  const tasklistConf = useSelector((state: any) => state.process.tasklistConf);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [showTaskFilter, setShowTaskFilter] = useState(false);
@@ -194,7 +193,7 @@ function TaskList() {
                       ) : <></>}
                     </Form.Select>
                     :
-                    
+
                     filter.type == "boolean" ?
                       <Form.Select value={taskSearch.filterVariables[filter.customVariable]} onChange={(evt) => changeFilterVariableFilter(filter.customVariable, evt.target.value)}>
                       <option value="">{t("Any value")}</option>
@@ -203,7 +202,7 @@ function TaskList() {
                     </Form.Select>
                       :
                         <Form.Control type={filter.type} value={taskSearch.filterVariables[filter.customVariable]} onChange={(evt) => { changeFilterVariableFilter(filter.customVariable, evt.target.value); setTyping(true); }} />
-                    
+
                   }
                 </InputGroup>
                 </Col>)
