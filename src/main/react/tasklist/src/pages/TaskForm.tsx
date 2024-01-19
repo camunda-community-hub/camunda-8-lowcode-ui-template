@@ -13,8 +13,8 @@ import { useTranslation } from "react-i18next";
 function TaskForm(props: any) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const currentTask = useSelector((state: any) => state.process.currentTask)
   const currentSchema = useSelector((state: any) => state.process.currentFormSchema)
+  const currentTask = useSelector((state: any) => state.process.currentTask)
   const disabled = !currentTask || !currentTask.assignee || currentTask.assignee != authService.getUser()!.username;
 
   const claim = () => {
@@ -29,7 +29,7 @@ function TaskForm(props: any) {
     </Tooltip>
   );
   return (
-    currentTask ?
+    currentSchema && currentTask ?
       <div className=" mt-2">
       <div className="card taskform">
         <h5 className="card-title bg-primary text-light" > {currentTask.name} {currentTask.assignee ? <OverlayTrigger

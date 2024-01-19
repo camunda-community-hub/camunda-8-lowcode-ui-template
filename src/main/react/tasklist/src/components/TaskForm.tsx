@@ -12,8 +12,8 @@ function TaskForm(props: any) {
   const { t } = useTranslation();
   const [enlarged, setEnlarged] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const currentTask = useSelector((state: any) => state.process.currentTask)
   const currentSchema = useSelector((state: any) => state.process.currentFormSchema)
+  const currentTask = useSelector((state: any) => state.process.currentTask)
   const disabled = !currentTask || !currentTask.assignee || currentTask.assignee != authService.getUser()!.username;
 
   const claim = () => {
@@ -28,7 +28,7 @@ function TaskForm(props: any) {
     </Tooltip>
   );
   return (
-    currentTask ?
+    currentSchema && currentTask ?
       <div className={enlarged ? "taskListFormContainer enlarged" : "taskListFormContainer"}>
       <div className="card taskform">
         <h5 className="card-title bg-primary text-light" > {currentTask.name} {currentTask.assignee ? <OverlayTrigger
