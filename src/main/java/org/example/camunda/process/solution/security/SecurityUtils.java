@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.jsonmodel.User;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -59,6 +60,13 @@ public final class SecurityUtils {
   @SuppressWarnings("unchecked")
   public static UserPrincipal getConnectedUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    if (authentication.getClass().equals(AnonymousAuthenticationToken.class)) {
+      String username = "anonymous";
+      String email = "";
+      return new UserPrincipal(username, email);
+    }
+
     LinkedHashMap<String, Object> principalUser =
         (LinkedHashMap<String, Object>) authentication.getPrincipal();
     String username = (String) principalUser.get("username");

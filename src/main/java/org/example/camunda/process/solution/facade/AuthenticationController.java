@@ -61,8 +61,11 @@ public class AuthenticationController extends AbstractController {
 
   private AuthUser getAuthUser(User user) {
     AuthUser authUser = new AuthUser();
+    if (user == null) {
+      authUser.setUsername("anonymous");
+      return authUser;
+    }
     BeanUtils.copyProperties(user, authUser);
-
     authUser.setToken(SecurityUtils.getJWTToken(user));
     return authUser;
   }
