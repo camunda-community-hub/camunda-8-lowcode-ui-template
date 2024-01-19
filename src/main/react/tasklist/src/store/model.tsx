@@ -24,6 +24,8 @@ export interface ITask {
   candidateGroups: string[];
   taskState: string;
   formKey: string;
+  formId: string;
+  isFormEmbedded: boolean;
   variables: any;
   sortValues: string[];
   processDefinitionKey: string;

@@ -16,9 +16,6 @@ operateUrl: http://localhost:8081/
 websocket:
   allowedOrigin: "*"
 
-# if set to true, process embedded forms will be pulled from local resources BPMN files. If false, forms will be pulled from Operate process definitions.
-embeddedForms.fromLocalResources: false
-
 springdoc.swagger-ui.path: /swagger-ui.html
 
 spring:

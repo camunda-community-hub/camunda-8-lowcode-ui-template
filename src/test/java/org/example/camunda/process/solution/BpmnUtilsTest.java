@@ -1,7 +1,6 @@
 package org.example.camunda.process.solution;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,28 +24,9 @@ public class BpmnUtilsTest {
   }
 
   @Test
-  public void testGetTaskNameFromFile() {
-    String taskName = BpmnUtils.getTaskNameFromFile("camunda-process.bpmn", "task1");
-    assertEquals("Task with extended FormJs", taskName);
-  }
-
-  @Test
   public void testGetTaskNameFromBpmn() {
     String taskName = BpmnUtils.getTaskNameFromBpmn(XML, "task1");
     assertEquals("Task with extended FormJs", taskName);
-  }
-
-  @Test
-  public void testGetFormSchemaFromFile() {
-    String schema = BpmnUtils.getFormSchemaFromFile("camunda-process.bpmn", "userTaskForm_3cosl6j");
-    assertNotNull(schema);
-  }
-
-  @Test
-  public void testGetProcessNameFromFile() {
-    String processName =
-        BpmnUtils.getProcessNameFromFile("camunda-process.bpmn", "camunda-process");
-    assertEquals("camunda-process", processName);
   }
 
   @Test

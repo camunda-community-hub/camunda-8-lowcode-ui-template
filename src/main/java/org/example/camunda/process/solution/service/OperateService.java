@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.example.camunda.process.solution.utils.BpmnUtils;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,14 +68,20 @@ public class OperateService {
       Authentication auth = null;
       if (!"notProvided".equals(clientId)) {
         JwtConfig jwtConfig = new JwtConfig();
-        jwtConfig.addProduct(Product.OPERATE, new JwtCredential(clientId, clientSecret));
+        jwtConfig.addProduct(
+            Product.OPERATE,
+            new JwtCredential(
+                clientId,
+                clientSecret,
+                "operate.camunda.io",
+                "https://login.cloud.camunda.io/oauth/token"));
         targetOperateUrl = "https://" + region + ".operate.camunda.io/" + clusterId;
         auth = SaaSAuthentication.builder().jwtConfig(jwtConfig).build();
 
       } else {
         JwtConfig jwtConfig = new JwtConfig();
         jwtConfig.addProduct(
-            Product.OPERATE, new JwtCredential(identityClientId, identityClientSecret));
+            Product.OPERATE, new JwtCredential(identityClientId, identityClientSecret, null, null));
         auth =
             SelfManagedAuthentication.builder()
                 .jwtConfig(jwtConfig)
@@ -109,12 +114,6 @@ public class OperateService {
   public String getProcessDefinitionXmlByKey(Long key) throws OperateException {
     LOG.info("Entering getProcessDefinitionXmlByKey for key " + key);
     return getCamundaOperateClient().getProcessDefinitionXml(key);
-  }
-
-  public String getInitializationForm(String processDefinitionId)
-      throws NumberFormatException, OperateException {
-    String xml = getProcessDefinitionXmlByKey(Long.valueOf(processDefinitionId));
-    return BpmnUtils.getStartingFormSchema(xml);
   }
 
   public Map<String, Set<JsonNode>> listVariables() throws OperateException, IOException {

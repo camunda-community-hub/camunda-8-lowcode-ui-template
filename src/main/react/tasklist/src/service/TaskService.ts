@@ -95,7 +95,12 @@ export class TaskService {
       }
       if (!formService.customFormExists(task.formKey)) {
         let ln = localStorage.getItem('camundLocale');
-        let url = '/forms/' + task.processName + '/' + task.processDefinitionKey + '/' + task.formKey + '/' + ln;
+        let url = '/forms/' + task.processDefinitionKey + '/' + task.formKey + '/' + ln;
+        if (task.formId) {
+          url = '/forms/' + task.processDefinitionKey + '/linked/' + task.formId + '/' + ln;
+        } else if (task.formKey.startsWith("camunda-forms:bpmn:")) {
+          url = '/forms/' + task.processDefinitionKey + '/embedded/' + task.formKey + '/' + ln;
+        }
         api.get(url).then(response => {
           dispatch(setFormSchema(response.data));
           if (callback) {

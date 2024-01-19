@@ -1,8 +1,6 @@
 package org.example.camunda.process.solution.service;
 
 import io.camunda.tasklist.CamundaTaskListClient;
-import io.camunda.tasklist.auth.SaasAuthentication;
-import io.camunda.tasklist.auth.SelfManagedAuthentication;
 import io.camunda.tasklist.dto.Form;
 import io.camunda.tasklist.dto.Pagination;
 import io.camunda.tasklist.dto.TaskList;
@@ -56,24 +54,19 @@ public class TaskListService {
   private CamundaTaskListClient getCamundaTaskListClient() throws TaskListException {
     if (client == null) {
       if (!"notProvided".equals(clientId)) {
-        SaasAuthentication sa = new SaasAuthentication(clientId, clientSecret);
         client =
-            new CamundaTaskListClient.Builder()
+            CamundaTaskListClient.builder()
                 .shouldReturnVariables()
                 .taskListUrl("https://" + region + ".tasklist.camunda.io/" + clusterId)
-                .authentication(sa)
+                .saaSAuthentication(clientId, clientSecret)
                 .build();
       } else {
-        SelfManagedAuthentication sma =
-            new SelfManagedAuthentication()
-                .clientId(identityClientId)
-                .clientSecret(identityClientSecret)
-                .keycloakUrl(keycloakUrl);
+
         client =
-            new CamundaTaskListClient.Builder()
+            CamundaTaskListClient.builder()
                 .shouldReturnVariables()
                 .taskListUrl(tasklistUrl)
-                .authentication(sma)
+                .selfManagedAuthentication(identityClientId, identityClientSecret, keycloakUrl)
                 .build();
       }
     }
