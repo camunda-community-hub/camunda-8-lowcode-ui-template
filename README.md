@@ -123,7 +123,7 @@ docker compose -f docker-compose-core.yaml up -d
 
 ### Deploying BPMN diagrams
 
-In addition to the local environment setup with docker compose, you can download the [Camunda Desktop Modeler](https://camunda.com/download/modeler/) to locally model BPMN diagrams for execution and directly deploy them to your local environment.
+In addition to the local environment setup with docker compose, use the [Camunda Desktop Modeler](#desktop-modeler) to locally model BPMN diagrams for execution and directly deploy them to your local environment.
 As an enterprise customer, you can [use Web Modeler](#web-modeler-self-managed).
 
 Feedback and updates are welcome!
@@ -171,6 +171,28 @@ You can navigate to the Kibana web app and start exploring the data without logi
 > - Create a new index pattern. For example, `zeebe-record-*` matches the exported records.
 >   - If you don't see any indexes then make sure to export some data first (e.g. deploy a process). The indexes of the records are created when the first record of this type is exported.
 > - Go to `Analytics > Discover` and select the index pattern.
+
+## Desktop Modeler
+
+> :information_source: The Desktop Modeler is [open source, free to use](https://github.com/camunda/camunda-modeler).
+
+[Download the Desktop Modeler](https://camunda.com/download/modeler/) and start modeling BPMN, DMN and Camunda Forms on your local machine.
+
+### Deploy or execute a process
+
+#### Without authentication
+Once you are ready to deploy or execute processes use these settings to deploy to the local Zeebe instance:
+* Authentication: `None`
+* URL: `http://localhost:26500`
+
+#### With Zeebe request authentication
+If you enabled authentication for GRPC requests on Zeebe you need to provide client credentials when deploying and executing processes:
+* Authentication: `OAuth`
+* URL: `http://localhost:26500`
+* Client ID: `zeebe`
+* Client secret: `zecret`
+* OAuth URL: `http://localhost:18080/auth/realms/camunda-platform/protocol/openid-connect/token`
+* Audience: `zeebe-api`
 
 ## Web Modeler Self-Managed
 
@@ -245,19 +267,33 @@ $ DOCKER_BUILDKIT=0 docker build -t bitnami/keycloak:19.0.3 "https://github.com/
 
 ## Resource based authorizations
 
-You can control access to specific processes and decision tables in Operate and Tasklist with resource
-based authorization.
+You can control access to specific processes and decision tables in Operate and Tasklist with [resource based authorization](https://docs.camunda.io/docs/self-managed/concepts/access-control/resource-authorizations/).
 
 This feature is disabled by default and can be enabled by setting
-`RESOURCE_AUTHORIZATIONS_ENABLED` to `true`, e.g. via running:
+`RESOURCE_AUTHORIZATIONS_ENABLED` to `true`, either via the [`.env`](.env) file or through the command line:
 
 ```
 RESOURCE_AUTHORIZATIONS_ENABLED=true docker compose up -d
 ```
+
 or by modifying the default value in the [`.env`](.env) file.
 
 Read more about resource based authorizations in the [documentation](https://docs.camunda.io/docs/self-managed/concepts/access-control/resource-authorizations/).
 
+## Multi-Tenancy
+
+You can use [multi-tenancy](https://docs.camunda.io/docs/self-managed/concepts/multi-tenancy/) to achieve tenant-based isolation.
+
+This feature is disabled by default and can be enabled by setting
+`MULTI_TENANCY_ENABLED` to `true`, either via the [`.env`](.env) file or through the command line:
+
+```
+ZEEBE_AUTHENICATION_MODE=identity MULTI_TENANCY_ENABLED=true docker compose up -d
+```
+
+As seen above the feature also requires you to use `identity` as an authentication provider.
+
+Ensure you [setup tenants in identity](https://docs.camunda.io/docs/self-managed/identity/user-guide/tenants/managing-tenants/) after you started the platform.
 
 ## Camunda Platform 7
 
