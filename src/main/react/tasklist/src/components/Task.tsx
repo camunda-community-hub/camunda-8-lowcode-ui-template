@@ -37,6 +37,30 @@ function Task(taskParam: { task: any }) {
       {task.assignee}
     </Tooltip>
   );
+
+  const display = (column: any): string => {
+    let key = column.value;
+    if (key == "customValue") {
+      key = column.customValue;
+    }
+    let value = "";
+    if (column.variable) {
+      value = task.variables[key];
+    } else {
+      value = task[key];
+    }
+    if (column.type == "date" && tasklistConf.formatDate && tasklistConf.formatDate != "") {
+      return moment(value).format(tasklistConf.formatDate);
+    }
+    if (column.type == "dateTime" && tasklistConf.formatDate && tasklistConf.formatDate != "") {
+      return moment(value).format(tasklistConf.formatDatetime);
+    }
+    if (column.type == "object") {
+      return JSON.stringify(value);
+    }
+    return value;
+  }
+
   return (
     <tr className={getClassName()} onClick={openTask}>
       <td>{task.assignee ? <OverlayTrigger
@@ -47,11 +71,7 @@ function Task(taskParam: { task: any }) {
         <i className="bi bi-person-circle text-secondary"></i>
       </OverlayTrigger> : <></>}</td>
       {tasklistConf && tasklistConf.columns ? tasklistConf.columns.map((column: any, index: number) =>
-        <td>{column.type == "date" && tasklistConf.formatDate && tasklistConf.formatDate!="" ?
-          column.variable ? moment(task.variables[column.value == "customValue" ? column.customValue : column.value]).format(tasklistConf.formatDate) : moment(task[column.value]).format(tasklistConf.formatDate)
-          : column.type == "dateTime" && tasklistConf.formatDatetime && tasklistConf.formatDatetime != "" ?
-            column.variable ? moment(task.variables[column.value == "customValue" ? column.customValue : column.value]).format(tasklistConf.formatDatetime) : moment(task[column.value]).format(tasklistConf.formatDatetime)
-          : column.variable ? task.variables[column.value == "customValue" ? column.customValue : column.value] : task[column.value]}
+        <td>{display(column) }
         </td>)
         : <></>}
     </tr>

@@ -15,14 +15,14 @@ function FormJsViewer(formViewer: IFormViewer) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let errors: string[] = [];
-  let bpmnForm: Form | null = null;
+  const [bpmnForm, setBpmnForm] = useState<Form | null>(null);
 
   useEffect(() => {
-    const container = document.querySelector('#task-form');
+    const container = document.getElementById('task-form');
     if (container && formViewer.schema) {
       container.innerHTML = '';
 
-      bpmnForm = new Form({ container: container });
+      let bpmnForm = new Form({ container: container });
       if (formViewer.disabled) {
         bpmnForm.setProperty('readOnly', true);
       }
@@ -30,6 +30,7 @@ function FormJsViewer(formViewer: IFormViewer) {
         function (result: any) {
           console.log(result);
         });
+      setBpmnForm(bpmnForm);
     }
   }, []);
 

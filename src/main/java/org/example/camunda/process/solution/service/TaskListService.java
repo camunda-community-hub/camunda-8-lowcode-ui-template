@@ -56,7 +56,6 @@ public class TaskListService {
       if (!"notProvided".equals(clientId)) {
         client =
             CamundaTaskListClient.builder()
-                .shouldReturnVariables()
                 .taskListUrl("https://" + region + ".tasklist.camunda.io/" + clusterId)
                 .saaSAuthentication(clientId, clientSecret)
                 .build();
@@ -64,7 +63,6 @@ public class TaskListService {
 
         client =
             CamundaTaskListClient.builder()
-                .shouldReturnVariables()
                 .taskListUrl(tasklistUrl)
                 .selfManagedAuthentication(identityClientId, identityClientSecret, keycloakUrl)
                 .build();
@@ -86,6 +84,11 @@ public class TaskListService {
   }
 
   public List<Task> getTasks(TaskSearch taskSearch) throws TaskListException {
+    return getTasks(taskSearch, null);
+  }
+
+  public List<Task> getTasks(TaskSearch taskSearch, List<String> fetchVariables)
+      throws TaskListException {
     Pagination pagination =
         new Pagination()
             .setPageSize(taskSearch.getPageSize())
@@ -109,8 +112,14 @@ public class TaskListService {
     tasklistSearch.setState(TaskState.fromJson(taskSearch.getState()));
     tasklistSearch.setGroup(taskSearch.getGroup());
     tasklistSearch.setPagination(pagination);
-
+    if (fetchVariables != null) {
+      tasklistSearch.setIncludeVariables(fetchVariables);
+    }
     return convert(getCamundaTaskListClient().getTasks(tasklistSearch));
+  }
+
+  public Map<String, Object> getVariables(String taskId) throws TaskListException {
+    return mapVariables(getCamundaTaskListClient().getVariables(taskId));
   }
 
   public List<Task> getGroupTasks(String group, TaskState state, Integer pageSize)
@@ -144,10 +153,15 @@ public class TaskListService {
     Task result = new Task();
     BeanUtils.copyProperties(task, result);
     if (task.getVariables() != null) {
-      result.setVariables(new HashMap<>());
-      for (Variable var : task.getVariables()) {
-        result.getVariables().put(var.getName(), var.getValue());
-      }
+      result.setVariables(mapVariables(task.getVariables()));
+    }
+    return result;
+  }
+
+  public Map<String, Object> mapVariables(List<Variable> variables) {
+    Map<String, Object> result = new HashMap<>();
+    for (Variable var : variables) {
+      result.put(var.getName(), var.getValue());
     }
     return result;
   }
