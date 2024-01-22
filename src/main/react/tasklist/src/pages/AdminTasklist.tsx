@@ -198,6 +198,7 @@ function AdminTasklist() {
                       <option value="string">string</option>
                       <option value="number">number</option>
                       <option value="boolean">boolean</option>
+                      <option value="object">object</option>
                     </Form.Select></td>
                     <td>
                       {filter.type && filter.type == "list" ?
@@ -280,6 +281,7 @@ function AdminTasklist() {
                         <option value="date">Date</option>
                         <option value="dateTime">Date Time</option>
                         <option value="list">List</option>
+                        <option value="object">object</option>
                       </Form.Select>
 
                     </td>

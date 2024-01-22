@@ -1,12 +1,16 @@
 package org.example.camunda.process.solution.facade;
 
 import io.camunda.tasklist.exception.TaskListException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.facade.dto.TaskSearch;
+import org.example.camunda.process.solution.jsonmodel.TasklistConf;
 import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.example.camunda.process.solution.service.TaskListService;
+import org.example.camunda.process.solution.service.TasklistConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +30,29 @@ public class TaskController extends AbstractController {
   private static final Logger LOG = LoggerFactory.getLogger(TaskController.class);
 
   @Autowired private TaskListService taskListService;
-
-  @IsAuthenticated
-  @GetMapping()
-  public List<Task> getTasks() throws TaskListException {
-    return taskListService.getTasks(null, null);
-  }
+  @Autowired private TasklistConfigurationService tasklistConfigurationService;
 
   @IsAuthenticated
   @PostMapping("/search")
   public List<Task> searchTasks(@RequestBody TaskSearch taskSearch) throws TaskListException {
-    return taskListService.getTasks(taskSearch);
+    try {
+      TasklistConf conf = tasklistConfigurationService.get();
+      List<String> fetchVariables = new ArrayList<>();
+      for (Map<String, Object> column : conf.getColumns()) {
+        if (column.containsKey("variable") && (Boolean) column.get("variable")) {
+          fetchVariables.add((String) column.get("value"));
+        }
+      }
+      return taskListService.getTasks(taskSearch, fetchVariables);
+    } catch (IOException e) {
+      return taskListService.getTasks(taskSearch);
+    }
+  }
+
+  @IsAuthenticated
+  @GetMapping("/{taskId}/variables")
+  public Map<String, Object> getVariables(@PathVariable String taskId) throws TaskListException {
+    return taskListService.getVariables(taskId);
   }
 
   @IsAuthenticated
