@@ -1,6 +1,4 @@
 .welcome {
-  background: #fff url(../img/background.jfif) no-repeat center bottom fixed;
-  background-size: cover;
   height:100vh;
   padding-top: 100px;
 }

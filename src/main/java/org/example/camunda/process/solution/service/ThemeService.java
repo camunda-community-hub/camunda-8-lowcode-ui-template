@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DatabindException;
 import jakarta.annotation.PostConstruct;
 import java.awt.Color;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
@@ -22,11 +24,14 @@ import org.example.camunda.process.solution.utils.ColorUtils;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ThemeService {
 
   public static final String THEMES = "themes";
+  public static final String LOGOS = "logos";
+  public static final String BGS = "bgs";
 
   private Map<String, Theme> themes = new HashMap<>();
 
@@ -41,10 +46,8 @@ public class ThemeService {
     return Path.of(workspace).resolve(THEMES).resolve(name);
   }
 
-  public List<String> findNames() {
-    return Stream.of(Path.of(workspace).resolve(THEMES).toFile().listFiles())
-        .map(File::getName)
-        .collect(Collectors.toList());
+  public Set<String> findNames() {
+    return themes.keySet();
   }
 
   public Theme findByName(String name) throws StreamReadException, DatabindException, IOException {
@@ -192,10 +195,12 @@ public class ThemeService {
     File[] orgs = Path.of(workspace).resolve(THEMES).toFile().listFiles();
     if (orgs != null) {
       for (File file : orgs) {
-        Theme theme = JsonUtils.fromJsonFile(file.toPath(), Theme.class);
-        themes.put(theme.getName(), theme);
-        if (theme.isActive()) {
-          activeTheme = theme;
+        if (!file.getName().equals(BGS) && !file.getName().equals(LOGOS)) {
+          Theme theme = JsonUtils.fromJsonFile(file.toPath(), Theme.class);
+          themes.put(theme.getName(), theme);
+          if (theme.isActive()) {
+            activeTheme = theme;
+          }
         }
       }
     }
@@ -222,7 +227,49 @@ public class ThemeService {
       activeTheme = new Theme("defaultTheme", generateCss(variables));
       activeTheme.setVariables(variables);
       activeTheme.setActive(true);
+      activeTheme.setLogo("camunda.svg");
+      activeTheme.setBackground("background.jfif");
+      activeTheme.setLogoCss("height:50px; width:150px;");
+      activeTheme.setContent("");
       saveTheme(activeTheme);
     }
+  }
+
+  public File resolveLogo(String name) {
+    return Path.of(workspace).resolve(THEMES).resolve(LOGOS).resolve(name).toFile();
+  }
+
+  public void addLogo(MultipartFile file) throws IOException {
+    File logoFile = resolveLogo(file.getOriginalFilename());
+    logoFile.createNewFile();
+    try (FileOutputStream out = new FileOutputStream(logoFile)) {
+      IOUtils.copy(file.getInputStream(), out);
+    }
+    activeTheme.setLogo(file.getOriginalFilename());
+  }
+
+  public List<String> listLogos() {
+    return Stream.of(Path.of(workspace).resolve(THEMES).resolve(LOGOS).toFile().listFiles())
+        .map(File::getName)
+        .collect(Collectors.toList());
+  }
+
+  public File resolveBg(String name) {
+    return Path.of(workspace).resolve(THEMES).resolve(BGS).resolve(name).toFile();
+  }
+
+  public void addBg(MultipartFile file) throws IOException {
+    File bgFile = resolveBg(file.getOriginalFilename());
+    bgFile.createNewFile();
+    try (FileOutputStream out = new FileOutputStream(bgFile)) {
+      IOUtils.copy(file.getInputStream(), out);
+    }
+    activeTheme.setBackground(file.getOriginalFilename());
+  }
+
+  public List<String> listBgs() {
+    return Stream.of(Path.of(workspace).resolve(THEMES).resolve(BGS).toFile().listFiles())
+        .map(File::getName)
+        .collect(Collectors.toList());
   }
 }

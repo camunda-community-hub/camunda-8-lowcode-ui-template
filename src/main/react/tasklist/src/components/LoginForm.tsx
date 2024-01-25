@@ -15,7 +15,7 @@ function LoginForm() {
   };
 
   return (
-	<main className="container-fluid mainSignin">
+	<main className="container-fluid mainSignin bg">
 	  <div className="d-flex justify-content-center">
 		<form className="signin bg-dark text-light" onSubmit={login}>
 		  <h1 className="signin__title">Se connecter</h1>

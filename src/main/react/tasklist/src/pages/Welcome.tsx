@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 
 function Welcome() {
   return (
-    <div className="container-fluid welcome">
+    <div className="container-fluid welcome bg">
       <div className="row justify-content-center">
         <div className="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
           <div className="row welcome-header">

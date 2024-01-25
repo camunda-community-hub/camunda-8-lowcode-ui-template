@@ -1,5 +1,5 @@
 import store, { AppThunk } from '../store';
-import { loadStart, loadSuccess, setCurrentTheme, setContent, setVariables, setThemeName, fail, silentfail } from '../store/features/adminThemes/slice';
+import { loadStart, loadSuccess, setCurrentTheme, setVariables, fail, silentfail } from '../store/features/adminThemes/slice';
 import api from './api';
 
 export class AdminThemeService {
@@ -8,7 +8,11 @@ export class AdminThemeService {
     return {
       name: 'NewTheme',
       variables: { primary: "#0d6efd", secondary: "#6c757d", success: "#198754", danger: "#dc3545", warning: "#ffc107", info: "#0dcaf0", light: "#f8f9fa", dark: "#212529" },
-      Content: ''
+      content: '',
+      colors: '',
+      logo: 'camunda.svg',
+      logoCss: 'height:50px; border:0px;',
+      background: 'background.jfif'
     }
   }
   getThemes = (): AppThunk => async dispatch => {
@@ -33,12 +37,49 @@ export class AdminThemeService {
       this.lastFetch = Date.now();
     }
   }
+  getLogos = async (): Promise<string[]> => {
+   
+      try {
+        const { data } = await api.get<string[]>('/themes/logos');
+        return data
+      } catch (error: any) {
+        console.warn("Error fetching logos");
+      }
+    return [];
+  }
+  uploadLogo = async (file: any): Promise<any> => {
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const { data } = await api.post<any>('/themes/logo', formData);
+    return data;
+  }
+  getBgs = async (): Promise<string[]> => {
+
+    try {
+      const { data } = await api.get<string[]>('/themes/bgs');
+      return data
+    } catch (error: any) {
+      console.warn("Error fetching bgs");
+    }
+    return [];
+  }
+  uploadBg = async (file: any): Promise<any> => {
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const { data } = await api.post<any>('/themes/bg', formData);
+    return data;
+  }
   newTheme = (): AppThunk => async dispatch => {
     dispatch(setCurrentTheme(this.getDefaultTheme()));
   }
   openTheme = (name:string): AppThunk => async dispatch => {
     api.get('/themes/' + name).then(response => {
       dispatch(setCurrentTheme(response.data));
+      console.log(response.data);
     }).catch(error => {
       alert(error.message);
     })
@@ -53,11 +94,10 @@ export class AdminThemeService {
   setTheme = (theme: any): AppThunk => async dispatch => {
     dispatch(setCurrentTheme(theme));
   }
-  setContent = (content: string): AppThunk => async dispatch => {
-    dispatch(setContent(content));
-  }
-  setThemeName = (themeName: string): AppThunk => async dispatch => {
-    dispatch(setThemeName(themeName));
+  setThemeName = (name: string): AppThunk => async dispatch => {
+    let theme = Object.assign({}, store.getState().adminThemes.currentTheme);
+    theme.name = name;
+    dispatch(setCurrentTheme(theme));
   }
   saveCurrentTheme = (): AppThunk => async dispatch => {
     let theme = Object.assign({}, store.getState().adminThemes.currentTheme);
@@ -70,7 +110,9 @@ export class AdminThemeService {
   generateCss = (variables: any): AppThunk => async dispatch => {
     dispatch(setVariables(variables));
     api.post('/themes/generate', variables).then(response => {
-      dispatch(setContent(response.data));
+      let theme = Object.assign({}, store.getState().adminThemes.currentTheme);
+      theme.colors = response.data;
+      dispatch(setCurrentTheme(theme));
     }).catch(error => {
       alert(error.message);
     })
