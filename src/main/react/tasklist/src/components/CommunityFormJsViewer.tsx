@@ -13,6 +13,7 @@ function CommunityFormJsViewer(formViewer: IFormViewer) {
   const { t } = useTranslation();
 
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
+  const task = useSelector((state: any) => state.process.currentTask)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let errors: string[] = [];
@@ -33,7 +34,7 @@ function CommunityFormJsViewer(formViewer: IFormViewer) {
         });
       setBpmnForm(bpmnForm);
     }
-  }, []);
+  }, [task]);
 
 
   const submit = () => {
