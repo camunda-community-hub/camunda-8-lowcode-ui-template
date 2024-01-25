@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 function FormJsViewer(formViewer: IFormViewer) {
   const { t } = useTranslation();
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
+  const task = useSelector((state: any) => state.process.currentTask)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let errors: string[] = [];
@@ -32,7 +33,7 @@ function FormJsViewer(formViewer: IFormViewer) {
         });
       setBpmnForm(bpmnForm);
     }
-  }, []);
+  }, [task]);
 
 
   const submit = () => {

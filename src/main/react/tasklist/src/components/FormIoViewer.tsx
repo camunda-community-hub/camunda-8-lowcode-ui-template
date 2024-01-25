@@ -13,6 +13,7 @@ let formIoForm:any = null;
 function FormIoViewer(formViewer: IFormViewer) {
   const { t } = useTranslation();
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
+  const task = useSelector((state: any) => state.process.currentTask)
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -26,7 +27,7 @@ function FormIoViewer(formViewer: IFormViewer) {
 
   useEffect(() => {
     loadFormIo();
-  }, []);
+  }, [task]);
 
   const submit = () => {
     if (formViewer.variables) {
