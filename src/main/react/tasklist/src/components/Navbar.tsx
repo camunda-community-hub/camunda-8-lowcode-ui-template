@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Route, Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import authService from '../service/AuthService';
-import logo from '../assets/img/logo.svg'
 import LanguageSelector from './LanguageSelector';
 
 import { useTranslation } from "react-i18next";
@@ -18,7 +17,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-light">
       <div className="container-fluid">
-        <Link to="/home"><img height="50" src={logo} className="custom-logo" alt="Camunda" /></Link>
+        <Link to="/home"><div className="logo"></div></Link>
         <div>
 
           <div className="input-group mb-3">

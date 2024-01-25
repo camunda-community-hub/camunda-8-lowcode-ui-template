@@ -39,12 +39,6 @@ const adminThemesSlice = createSlice({
       state.currentTheme = action.payload;
       state.lastUpdate = new Date();
     },
-    setThemeName: (state: AdminThemesState, action: PayloadAction<string>) => {
-      state.currentTheme.name = action.payload;
-    },
-    setContent: (state: AdminThemesState, action: PayloadAction<string>) => {
-      state.currentTheme.content = action.payload;
-    },
     setVariables: (state: AdminThemesState, action: PayloadAction<any>) => {
       state.currentTheme.variables = action.payload;
     },
@@ -55,8 +49,6 @@ export const {
   loadStart,
   loadSuccess,
   setCurrentTheme,
-  setThemeName,
-  setContent,
   setVariables,
   fail,
   silentfail

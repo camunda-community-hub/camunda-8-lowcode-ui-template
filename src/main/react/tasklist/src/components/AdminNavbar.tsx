@@ -7,7 +7,6 @@ import adminMailService from '../service/AdminMailService';
 import adminThemeService from '../service/AdminThemeService';
 import adminOrgService from '../service/AdminOrgService';
 import adminTranslationService from '../service/AdminTranslationService';
-import logo from '../assets/img/logo.svg'
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -42,7 +41,7 @@ function AdminNavbar() {
     <>
       <nav className={form || mail || theme || language ? "navbar reduced navbar-light bg-dark" : "navbar navbar-light bg-light"} >
         <div className="container-fluid">
-          <Link to="/home"><img height="50" src={logo} className="custom-logo" alt="Camunda" /></Link>
+          <Link to="/home"><div className="logo"></div></Link>
           <div>
             {form ?
               <InputGroup className="mb-3">
