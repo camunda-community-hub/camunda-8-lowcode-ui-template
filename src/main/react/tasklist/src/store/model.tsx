@@ -46,7 +46,7 @@ export interface IProcess {
 }
 
 export interface ITaskSearch {
-  assigned: boolean | undefined;
+  assigned: string | undefined;
   assignee: string | undefined;
   group: string | undefined;
   state: string;

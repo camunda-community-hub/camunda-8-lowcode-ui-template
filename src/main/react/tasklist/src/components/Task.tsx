@@ -71,7 +71,7 @@ function Task(taskParam: { task: any }) {
         <i className="bi bi-person-circle text-secondary"></i>
       </OverlayTrigger> : <></>}</td>
       {tasklistConf && tasklistConf.columns ? tasklistConf.columns.map((column: any, index: number) =>
-        <td>{display(column) }
+        <td key={ index }>{display(column) }
         </td>)
         : <></>}
     </tr>

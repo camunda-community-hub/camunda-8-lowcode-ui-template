@@ -3,9 +3,9 @@ import { IProcess, ITask, ITaskSearch } from '../../model';
 
 export interface ProcessListState {
   processes: IProcess[];
-  previousSearch: ITaskSearch;
   tasklistConf: any;
-  taskSearch: ITaskSearch;
+  previousSearch: ITaskSearch | null;
+  taskSearch: ITaskSearch | null;
   tasks: ITask[];
   currentTask: ITask|null;
   currentProcess: IProcess | null;
@@ -18,12 +18,8 @@ export const initialState: ProcessListState = {
   processes:[],
   tasks: [],
   tasklistConf: null,
-  previousSearch: {
-    assigned: undefined, assignee: undefined, group: undefined, state: 'CREATED', filterVariables: {}, pageSize: 10, search: undefined, direction: undefined, numPage:0
-  },
-  taskSearch: {
-    assigned: undefined, assignee: undefined, group: undefined, state: 'CREATED', filterVariables: {}, pageSize: 10, search: undefined, direction: undefined, numPage: 0
-  },
+  previousSearch: null,
+  taskSearch: null,
   currentTask: null,
   currentProcess: null,
   currentFormSchema: null,
@@ -68,7 +64,7 @@ const serverListSlice = createSlice({
       action: PayloadAction<ITask>,
     ) => {
       state.tasks = [action.payload, ...state.tasks];
-      if (state.taskSearch.pageSize && state.tasks.length > state.taskSearch.pageSize) {
+      if (state.taskSearch && state.taskSearch.pageSize && state.tasks.length > state.taskSearch.pageSize) {
         state.tasks.splice(-1);
       }
       //state.tasks.splice(0, 0, action.payload);
@@ -86,20 +82,22 @@ const serverListSlice = createSlice({
     before: (
       state: ProcessListState
     ) => {
-      if (state.taskSearch.numPage > 0) {
-        if (state.tasks && state.tasks.length > 0) {
-          state.taskSearch.direction = 'BEFORE';
-          state.taskSearch.search = state.tasks[0].sortValues;
-          state.taskSearch.numPage = state.taskSearch.numPage - 1;
-        } else {
-          state.taskSearch = state.previousSearch;
+      if (state.taskSearch != null) {
+        if (state.taskSearch.numPage > 0) {
+          if (state.tasks && state.tasks.length > 0) {
+            state.taskSearch.direction = 'BEFORE';
+            state.taskSearch.search = state.tasks[0].sortValues;
+            state.taskSearch.numPage = state.taskSearch.numPage - 1;
+          } else if (state.previousSearch != null) {
+            state.taskSearch = state.previousSearch;
+          }
         }
       }
     },
     after: (
       state: ProcessListState
     ) => {
-      if (state.tasks && state.tasks.length == state.taskSearch.pageSize) {
+      if (state.taskSearch!=null && state.tasks && state.tasks.length == state.taskSearch.pageSize) {
         state.previousSearch = Object.assign({}, state.taskSearch);
         state.taskSearch.direction = 'AFTER';
         state.taskSearch.search = state.tasks[state.tasks.length - 1].sortValues;

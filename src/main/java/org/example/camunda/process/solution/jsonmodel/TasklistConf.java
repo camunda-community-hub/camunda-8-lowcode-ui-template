@@ -6,11 +6,20 @@ import java.util.Map;
 public class TasklistConf {
 
   private Boolean splitPage;
+  private Boolean filterOnAssignee;
   private String formatDate;
   private String formatDatetime;
   private List<Map<String, Object>> columns;
   private Map<String, Boolean> defaultFilters;
   private List<Map<String, Object>> variablesFilters;
+
+  public Boolean getFilterOnAssignee() {
+    return filterOnAssignee;
+  }
+
+  public void setFilterOnAssignee(Boolean filterOnAssignee) {
+    this.filterOnAssignee = filterOnAssignee;
+  }
 
   public List<Map<String, Object>> getColumns() {
     return columns;
