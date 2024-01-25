@@ -33,12 +33,17 @@ function TaskList() {
   const taskSearch = useSelector((state: any) => state.process.taskSearch)
   type ObjectKey = keyof typeof taskSearch;
 
+
   const changeFilter = (property: ObjectKey, value: any) => {
     let taskSearchClone = Object.assign({}, taskSearch);
     if (value) {
       taskSearchClone![property] = value;
     } else {
       taskSearchClone![property] = null;
+    }
+    if (taskSearchClone.assigned == undefined || taskSearchClone.assigned == "false" ) {
+      taskSearchClone.assignee = undefined;
+      taskSearchClone.group = undefined;
     }
     dispatch(taskService.setTaskSearch(taskSearchClone));
   }
@@ -67,14 +72,13 @@ function TaskList() {
 
   useEffect(() => {
     dispatch(taskService.loadTasklistConf());
-    dispatch(taskService.fetchTasks());
   }, []);
 
   useEffect(() => {
-    if (!typing) {
+    if (taskSearch && tasklistConf && !typing) {
       dispatch(taskService.fetchTasks());
     }
-  }, [taskSearch]);
+  }, [taskSearch, tasklistConf]);
 
   useEffect(() => {
     if (typing) {
@@ -87,7 +91,7 @@ function TaskList() {
   }, [typing]);
 
   return (
-    tasks && tasklistConf ?
+    tasks && tasklistConf && taskSearch ?
     <div className="row flex-nowrap">
       <Col className="tasklist ps-md-2 pt-2">
         <Table striped hover variant="light" className="taskListContainer">
@@ -95,7 +99,7 @@ function TaskList() {
             <tr >
               <th className="bg-primary text-light"></th>
               {tasklistConf.columns ? tasklistConf.columns.map((column: any, index: number) =>
-                <th className="bg-primary text-light">{column.label}</th>)
+                <th className="bg-primary text-light" key={index}>{column.label}</th>)
                 : <></>}
             </tr>
           </thead>
@@ -149,13 +153,13 @@ function TaskList() {
                 </InputGroup>
               </Col> : <></>}
             {tasklistConf.defaultFilters.assigned ?
-            <Col xs={12} sm={6} lg={6} xxl={4}>
+                <Col xs={12} sm={6} lg={6} xxl={4}>
               <InputGroup className="mb-3">
                 <InputGroup.Text>{t("Assigned")}</InputGroup.Text>
-                <Form.Select aria-label="assigned" value={taskSearch.assigned} onChange={(evt) => changeFilter('assigned', evt.target.value)}>
-                  <option value="">{t("Any")}</option>
-                  <option value="true">{t("Yes")}</option>
-                  <option value="false">{t("No")}</option>
+                    <Form.Select aria-label="assigned" value={taskSearch.assigned ? taskSearch.assigned : ''} onChange={(evt) => changeFilter('assigned', evt.target.value)}>
+                      <option value="">{t("Any")}</option>
+                      <option value="true">{t("Yes")}</option>
+                      <option value="false">{t("No")}</option>
                 </Form.Select>
               </InputGroup>
             </Col> : <></>}
@@ -163,7 +167,7 @@ function TaskList() {
             <Col xs={12} sm={6} lg={6} xxl={4}>
               <InputGroup className="mb-3">
                 <InputGroup.Text>{t("Assignee")} :</InputGroup.Text>
-                <Form.Select disabled={"true"!=taskSearch.assigned} aria-label="assignee" value={taskSearch.assignee} onChange={(evt) => changeFilter('assignee', evt.target.value)}>
+                    <Form.Select disabled={"true" != taskSearch.assigned} aria-label="assignee" value={taskSearch.assignee ? taskSearch.assignee : ''} onChange={(evt) => changeFilter('assignee', evt.target.value)}>
                   <option value="">{t("Any user")}</option>
                   <option value={authService.getUser()?.username}>{t("Me")}</option>
                 </Form.Select>
@@ -173,7 +177,7 @@ function TaskList() {
             <Col xs={12} sm={6} lg={6} xxl={4}>
               <InputGroup className="mb-3">
                 <InputGroup.Text>{t("Group")} :</InputGroup.Text>
-                <Form.Select disabled={"true" != taskSearch.assigned} aria-label="group" value={taskSearch.group} onChange={(evt) => changeFilter('group', evt.target.value)}>
+                    <Form.Select disabled={"true" != taskSearch.assigned} aria-label="group" value={taskSearch.group ? taskSearch.group : ''} onChange={(evt) => changeFilter('group', evt.target.value)}>
                   <option value="">{t("Any group")}</option>
                   {authService.getUser()?.groups ? authService.getUser()?.groups.map((group: string, index: number) =>
                     <option key={group} value={group}>{group}</option>

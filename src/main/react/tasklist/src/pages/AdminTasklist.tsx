@@ -130,6 +130,10 @@ function AdminTasklist() {
               type="switch" checked={tasklistConf.splitPage} onChange={(evt) => update('splitPage', evt.target.checked)}
               label="Tasklist page also display the task (split mode)" />
 
+            <Form.Check
+              type="switch" checked={tasklistConf.filterOnAssignee} onChange={(evt) => update('filterOnAssignee', evt.target.checked)}
+              label="Tasks automatically filtered on assignee" />
+
             <InputGroup className="mb-3">
               <InputGroup.Text>Date format</InputGroup.Text>
               <Form.Control value={tasklistConf.formatDate} onChange={(evt) => update('formatDate', evt.target.value)} />

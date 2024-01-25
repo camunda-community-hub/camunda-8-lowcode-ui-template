@@ -63,6 +63,20 @@ export class TaskService {
     }
   }
 
+  filterOnAssignee = (assignee: string): AppThunk => async dispatch => {
+    let { data } = await api.get<any>('/tasklistconf');
+    dispatch(setTasklistConf(data));
+    let conf = data;
+    let taskSearch: ITaskSearch = {
+      assigned: undefined, assignee: undefined, group: undefined, state: 'CREATED', filterVariables: {}, pageSize: 10, search: undefined, direction: undefined, numPage: 0
+    }
+    if (conf.filterOnAssignee) {
+      taskSearch.assigned = "true";
+      taskSearch.assignee = assignee;
+    }
+    dispatch(setTaskSearch(taskSearch));
+  }
+
   disconnectFromWebScokets = () => {
     try {
     for (let i = 0; i < this.stompSubscriptions.length; i++) {
@@ -162,26 +176,27 @@ export class TaskService {
 
   insertNewTask = (task: ITask): AppThunk => async dispatch => {
     const taskSearch = store.getState().process.taskSearch;
-    let shouldInsert = true;
-    if (taskSearch.assignee != null) {
-      if (taskSearch.assignee !== task.assignee) {
-        shouldInsert = false;
+    if (taskSearch != null) {
+      let shouldInsert = true;
+      if (taskSearch.assignee != null) {
+        if (taskSearch.assignee !== task.assignee) {
+          shouldInsert = false;
+        }
+      }
+      if (taskSearch.state != null) {
+        if (taskSearch.state !== task.taskState) {
+          shouldInsert = false;
+        }
+      }
+      if (taskSearch.group != null) {
+        if (task.candidateGroups.indexOf(taskSearch.group) < 0) {
+          shouldInsert = false;
+        }
+      }
+      if (shouldInsert) {
+        dispatch(prependTaskIntoList(task));
       }
     }
-    if (taskSearch.state != null) {
-      if (taskSearch.state !== task.taskState) {
-        shouldInsert = false;
-      }
-    }
-    if (taskSearch.group != null) {
-      if (task.candidateGroups.indexOf(taskSearch.group)<0) {
-        shouldInsert = false;
-      }
-    }
-    if (shouldInsert) {
-      dispatch(prependTaskIntoList(task));
-    }
-
   };
 }
 

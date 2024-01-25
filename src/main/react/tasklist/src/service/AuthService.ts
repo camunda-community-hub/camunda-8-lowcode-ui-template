@@ -19,11 +19,8 @@ export class AuthService {
       if (store.getState().auth.data) {
         try {
           const { data } = await api.get<IUser>('/auth/user');
-          if (data.token) {
-            api.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
-          }
-          localStorage.setItem('camundaTasklistUser', JSON.stringify(data));
-          dispatch(signInSuccess(data));
+
+          dispatch(this.setUser(data));
         }
         catch (error: any) {
           dispatch(this.signOut());
@@ -34,14 +31,7 @@ export class AuthService {
   isAlreadyAuthenticated = (): AppThunk => async dispatch => {
     try {
       const { data } = await api.get<IUser>('/auth/user');
-
-      if (data.token) {
-        api.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
-      }
-      localStorage.setItem('camundaTasklistUser', JSON.stringify(data));
-      dispatch(signInSuccess(data));
-
-      dispatch(taskService.connectToWebSockets(data.username));
+      dispatch(this.setUser(data));
     }
     catch (error: any) {
       if (error.response) {
@@ -65,11 +55,7 @@ export class AuthService {
         let user: IUser = JSON.parse(storedUser);
 
         if (user) {
-          if (user.token) {
-            api.defaults.headers.common['Authorization'] = 'Bearer ' + user.token;
-          }
-          dispatch(signInSuccess(user));
-          dispatch(taskService.connectToWebSockets(user.username));
+          dispatch(this.setUser(user));
         }
       }
     }
@@ -81,11 +67,7 @@ export class AuthService {
 
       const { data } = await api.post<IUser>('/auth/login', { 'username': username, 'password': password });
 
-      api.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
-      localStorage.setItem('camundaTasklistUser', JSON.stringify(data));
-      dispatch(signInSuccess(data));
-
-      dispatch(taskService.connectToWebSockets(data.username));
+      dispatch(this.setUser(data));
     } catch (error: any) {
       if (error.response) {
         // The request was made. server responded out of range of 2xx
@@ -99,6 +81,16 @@ export class AuthService {
         dispatch(fail(error.toString()));
       }
     }
+  };
+
+  setUser = (user: IUser): AppThunk => async dispatch => {
+    if (user.token) {
+      api.defaults.headers.common['Authorization'] = 'Bearer ' + user.token;
+    }
+    dispatch(taskService.filterOnAssignee(user.username));
+    localStorage.setItem('camundaTasklistUser', JSON.stringify(user));
+    dispatch(signInSuccess(user));
+    dispatch(taskService.connectToWebSockets(user.username));
   };
 
   signOut = (): AppThunk => async dispatch => {
