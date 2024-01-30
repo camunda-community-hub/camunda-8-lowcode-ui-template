@@ -9,7 +9,6 @@ import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 import TaskList from "./pages/TaskList";
 import TaskForm from "./pages/TaskForm";
-import Undefined from "./pages/Undefined";
 import Restricted from "./pages/Restricted";
 import Processes from "./pages/Processes";
 import AdminUsers from "./pages/AdminUsers";
@@ -49,14 +48,14 @@ function App() {
           <Route path="/" element={<SimpleLayout />}>
             <Route index element={<Welcome />} />
             <Route path="home" element={<Welcome />} />
-            <Route path="*" element={<Undefined />} />
+            <Route path="*" element={<Welcome />} />
           </Route>
           <Route path="tasklist" element={<TasklistLayout />}>
             <Route index element={<TaskList />} />
             <Route path="tasks" element={<TaskList />} />
             <Route path="taskForm" element={<TaskForm />} />
             <Route path="processes" element={<Processes />} />
-            <Route path="*" element={<Undefined />} />
+            <Route path="*" element={<Welcome />} />
           </Route>
           <Route path="admin" element={<AdminLayout />}>
             <Route index element={<AdminForms />} />
@@ -68,7 +67,7 @@ function App() {
             <Route path="translations" element={<AdminTranslations />} />
             <Route path="templates" element={<WorkerList />} />
             <Route path="elementTemplate/*" element={<ElementTemplate />} />
-            <Route path="*" element={<Undefined />} />
+            <Route path="*" element={<Welcome />} />
           </Route>
         </Routes>
       </BrowserRouter>
@@ -79,14 +78,14 @@ function App() {
             <Route path="/" element={<SimpleLayout />}>
               <Route index element={<Welcome />} />
               <Route path="home" element={<Welcome />} />
-              <Route path="*" element={<Undefined />} />
+              <Route path="*" element={<Welcome />} />
             </Route>
             <Route path="tasklist" element={<TasklistLayout />}>
               <Route index element={<TaskList />} />
               <Route path="tasks" element={<TaskList />} />
               <Route path="taskForm" element={<TaskForm />} />
               <Route path="processes" element={<Processes />} />
-              <Route path="*" element={<Undefined />} />
+              <Route path="*" element={<Welcome />} />
             </Route>
             <Route path="admin" element={<SimpleLayout />}>
               <Route index element={<Restricted />} />
@@ -100,7 +99,7 @@ function App() {
             <Route path="/" element={<SimpleLayout />}>
               <Route index element={<Welcome />} />
               <Route path="home" element={<Welcome />} />
-              <Route path="*" element={<Undefined />} />
+              <Route path="*" element={<Welcome />} />
             </Route>
             <Route path="tasklist" element={<SimpleLayout />}>
               <Route index element={<Login />} />

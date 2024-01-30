@@ -3,6 +3,7 @@ import store, { AppThunk } from '../store';
 import { authStart, signInSuccess, signOutSuccess, fail, silentfail } from '../store/features/auth/slice';
 import { IUser } from '../store/model';
 import api from './api';
+import { env } from '../env';
 import taskService from './TaskService';
 
 export class AuthService {
@@ -95,6 +96,9 @@ export class AuthService {
 
   signOut = (): AppThunk => async dispatch => {
     try {
+      if ("oauth2" == store.getState().auth.data?.token) {
+        window.location.replace(env.backend + '/logout');
+      }
       await api.get<IUser>('/auth/logout');
       api.defaults.headers.common['Authorization'] = '';
       localStorage.removeItem('camundaTasklistUser');

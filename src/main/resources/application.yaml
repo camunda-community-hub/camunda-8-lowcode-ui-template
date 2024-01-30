@@ -22,7 +22,18 @@ spring:
   servlet.multipart:
     max-file-size: 10MB
     max-request-size: 30MB
- 
+
+  security.oauth2:
+    enabled: false
+    client:
+      registration.customTaskList:
+        client-id: customTasklist
+        client-secret: lSmJzWhpzGyYKf3Zmo3vekJndcJ2EXu3
+        authorization-grant-type: authorization_code
+        scope: openid, profile
+        redirect-uri: http://localhost:8080/login/oauth2/code/customTaskList
+      provider.customTaskList.issuer-uri: http://localhost:18080/auth/realms/camunda-platform
+   
 server:
   port: 8080
   error:

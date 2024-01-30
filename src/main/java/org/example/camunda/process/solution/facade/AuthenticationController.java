@@ -11,6 +11,7 @@ import org.example.camunda.process.solution.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController extends AbstractController {
 
   private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+
+  @Value("${spring.security.oauth2.enabled:false}")
+  private Boolean oauth2Enabled;
 
   private OrganizationService organizationService;
 
@@ -47,8 +51,11 @@ public class AuthenticationController extends AbstractController {
   @IsAuthenticated
   @GetMapping("/user")
   public AuthUser getUser() {
+    if (oauth2Enabled) {
+      return SecurityUtils.getOAuth2User();
+    }
     User user = organizationService.getUserByUsername(getAuthenticatedUsername());
-    return getAuthUser(user);
+    return SecurityUtils.getAuthUser(user);
   }
 
   @GetMapping("/logout")

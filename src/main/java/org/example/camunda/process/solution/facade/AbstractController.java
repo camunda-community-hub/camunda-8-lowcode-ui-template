@@ -10,7 +10,6 @@ import org.example.camunda.process.solution.security.SecurityUtils;
 import org.example.camunda.process.solution.security.UserPrincipal;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -19,9 +18,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 public abstract class AbstractController {
-
-  @Value("${keycloak.enabled:false}")
-  private String keycloakEnabled;
 
   @Autowired private HttpServletRequest request;
 

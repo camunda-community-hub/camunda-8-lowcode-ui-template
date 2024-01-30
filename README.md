@@ -81,6 +81,27 @@ The first time you use the project, you should be able to connect with demo/demo
 
 When you start the application for the first time, an "ACME" organization is created for you with a single user demo/demo with admin rights. When you access the landing page, you'll be able to access the "admin" section where you can [manage forms](https://github.com/camunda-community-hub/extended-form-js), [mail templates](https://github.com/camunda-community-hub/thymeleaf-feel) and your organization.
 
+## Oauth2 integration
+If you want to use this application with an Oauth provider, you can just configure the spring.security.oauth2 properties in the application.yaml file.
+
+```yaml
+spring:
+  security.oauth2:
+    enabled: true
+    client:
+      registration.customTaskList:
+        client-id: customTasklist
+        client-secret: XXX
+        authorization-grant-type: authorization_code
+        scope: openid, profile
+        redirect-uri: http://localhost:8080/login/oauth2/code/customTaskList
+      provider.customTaskList.issuer-uri: http://localhost:18080/auth/realms/camunda-platform
+```
+
+The first property is to enable it.
+
+You need to configure the client properly into your IDP. In Keycloak, if you want to use permissions and groups, you should add mappers in to client scope. Pay attention that roles are expected to be prefixed with ROLE_
+
 ## Forms
 You can create forms with 3 different approaches :
 - Embedded forms into your process definition (classic approach)

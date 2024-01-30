@@ -5,16 +5,22 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.example.camunda.process.solution.exception.TechnicalException;
+import org.example.camunda.process.solution.facade.dto.AuthUser;
 import org.example.camunda.process.solution.jsonmodel.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public final class SecurityUtils {
   public static final String PREFIX_TOKEN = "Bearer ";
@@ -61,10 +67,15 @@ public final class SecurityUtils {
   public static UserPrincipal getConnectedUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    if (authentication.getClass().equals(AnonymousAuthenticationToken.class)) {
+    if (authentication instanceof AnonymousAuthenticationToken) {
       String username = "anonymous";
       String email = "";
       return new UserPrincipal(username, email);
+    }
+    if (authentication instanceof OAuth2AuthenticationToken) {
+      OAuth2User user = ((OAuth2AuthenticationToken) authentication).getPrincipal();
+
+      return new UserPrincipal(user.getAttribute("preferred_username"), user.getAttribute("email"));
     }
 
     LinkedHashMap<String, Object> principalUser =
@@ -88,5 +99,40 @@ public final class SecurityUtils {
       }
     }
     return profile;
+  }
+
+  public static AuthUser getAuthUser(User user) {
+    AuthUser authUser = new AuthUser();
+    if (user == null) {
+      authUser.setUsername("anonymous");
+      return authUser;
+    }
+    BeanUtils.copyProperties(user, authUser);
+    authUser.setToken(getJWTToken(user));
+    return authUser;
+  }
+
+  public static AuthUser getOAuth2User() {
+    AuthUser user = new AuthUser();
+    OAuth2User principal =
+        ((OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
+            .getPrincipal();
+    List<String> roles =
+        ((Map<String, List<String>>) principal.getAttribute("realm_access")).get("roles");
+
+    user.setUsername(principal.getAttribute("given_name"));
+    user.setEmail(principal.getAttribute("email"));
+    user.setProfile("User");
+    if (roles.contains("ROLE_Admin") || roles.contains("Admin")) {
+      user.setProfile("Admin");
+    } else if (roles.contains("ROLE_Editor") || roles.contains("Editor")) {
+      user.setProfile("Editor");
+    }
+    List<String> groups = (List<String>) principal.getAttribute("groups");
+    if (groups != null) {
+      user.setGroups(new HashSet<>(groups));
+    }
+    user.setToken("oauth2");
+    return user;
   }
 }
