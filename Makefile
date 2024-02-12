@@ -14,15 +14,15 @@ endif
 	cp -r src/main/react/tasklist/build src/main/resources/static
 	-rm -rf target
 
-package:	
-	mvnw clean package
+package:
+	./mvnw clean package
 
 run:
-	mvnw spring-boot:run
+	./mvnw spring-boot:run
 
 npminstall:
 	cd src/main/react/tasklist; npm install
-  
+
 builddockerimage:
 	docker build -t camunda-community/camunda-lowcode-ui .
 
