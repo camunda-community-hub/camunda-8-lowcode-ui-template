@@ -34,7 +34,7 @@ function CommunityFormJsViewer(formViewer: IFormViewer) {
         });
       setBpmnForm(bpmnForm);
     }
-  }, [task]);
+  }, [formViewer]);
 
 
   const submit = () => {

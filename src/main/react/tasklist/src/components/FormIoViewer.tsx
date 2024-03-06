@@ -27,7 +27,7 @@ function FormIoViewer(formViewer: IFormViewer) {
 
   useEffect(() => {
     loadFormIo();
-  }, [task]);
+  }, [formViewer]);
 
   const submit = () => {
     if (formViewer.variables) {
