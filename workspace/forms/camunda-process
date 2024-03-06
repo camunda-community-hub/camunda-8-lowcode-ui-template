@@ -1,0 +1,35 @@
+{
+  "name" : "camunda-process",
+  "modified" : 1699256955907,
+  "schema" : {
+  "components": [
+    {
+      "text": "## Camunda Process Start Form",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_0camqrv",
+        "columns": null
+      },
+      "id": "Field_1efmog4"
+    }
+  ],
+  "type": "default",
+  "id": "Form_07gc6mf",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.4.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.20.0"
+  },
+  "schemaVersion": 15
+},
+"previewData" : {
+    "toto" : "pouet",
+    "comments" : [ {
+      "comment" : "a comment",
+      "important" : true
+    } ]
+  },
+  "generator" : "extendedFormJs"
+ }
