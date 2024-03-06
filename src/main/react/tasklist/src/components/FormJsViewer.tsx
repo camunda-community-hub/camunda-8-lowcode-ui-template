@@ -33,7 +33,7 @@ function FormJsViewer(formViewer: IFormViewer) {
         });
       setBpmnForm(bpmnForm);
     }
-  }, [task]);
+  }, [formViewer]);
 
 
   const submit = () => {
