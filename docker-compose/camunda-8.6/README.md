@@ -1,113 +1,14 @@
-[![Community Extension](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
-![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
-[![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
+# Camunda Platform 8
 
-# Low-code Solution Template for Camunda Platform 8 using React, Java and Spring Boot
-
-We've had some customers who would like to offer some "citizen dev tools" to their business users :
-- build Forms using drag'n drop tools like [form-js](https://bpmn.io/toolkit/form-js/) but with more components.
-- build/adapt mail templates
-
-The goal of this project is to show how to build such a solution with [React](https://reactjs.org/), an [extended form-js](https://github.com/camunda-community-hub/extended-form-js), [Spring-Boot](https://spring.io/projects/spring-boot), [spring-zeebe](https://github.com/camunda-community-hub/spring-zeebe), [tasklist-client](https://github.com/camunda-community-hub/camunda-tasklist-client-java) and [operate-client](https://github.com/camunda-community-hub/camunda-operate-client-java)
-
-:information_source: DMN & FEEL tester have been externalized to [camunda-8-dev-tooling](https://github.com/camunda-community-hub/camunda-8-dev-tooling)
-:information_source: An example of bpmn-js integration is available in [camunda-custom-operation-tools](https://github.com/camunda-community-hub/camunda-custom-operation-tools)
-
-The Spring Boot Java application includes an example Tasklist [React front-end](src/main/react/tasklist/). Run `make buildfront` from the project root, start the Spring Boot app (`make run` or `mvnw spring-boot:run`), and then browse to http://localhost:8080.
-
-This front-end relies on a [customized version of @bpmnio/form-js](https://github.com/camunda-community-hub/extended-form-js).
-
-If needed, you can also run the [React front-end](src/main/react/tasklist/) independent of the spring boot app. To do so, run `npm run start` to start a nodejs server serving the react app over port 3000. You can also use the `make runfront`
-
-The first time you use the project, you should be able to connect with demo/demo to create new forms, mail templates and manage your user organization.
-
-When you start the application for the first time, an "ACME" organization is created for you with a single user demo/demo with admin rights. When you access the landing page, you'll be able to access the "admin" section where you can [manage forms](https://github.com/camunda-community-hub/extended-form-js), [mail templates](https://github.com/camunda-community-hub/thymeleaf-feel) and your organization.
-
-## Oauth2 integration
-If you want to use this application with an Oauth provider, you can just configure the spring.security.oauth2 properties in the application.yaml file.
-
-```yaml
-spring:
-  security.oauth2:
-    enabled: true
-    client:
-      registration.customTaskList:
-        client-id: customTasklist
-        client-secret: XXX
-        authorization-grant-type: authorization_code
-        scope: openid, profile
-        redirect-uri: http://localhost:8080/login/oauth2/code/customTaskList
-      provider.customTaskList.issuer-uri: http://localhost:18080/auth/realms/camunda-platform
-```
-
-The first property is to enable it.
-
-You need to configure the client properly into your IDP. In Keycloak, if you want to use permissions and groups, you should add mappers in to client scope. Pay attention that roles are expected to be prefixed with ROLE_
-
-## Forms
-You can create forms with 3 different approaches :
-- Embedded forms into your process definition (classic approach)
-- Create Extended Forms from the admin application. Form name should match the formKey. Forms will be stored in the workspace/forms folder.
-- Create custom react forms. From the react application, in the forms folder, create your custom forms. You should then reference them in the customForms map in the forms/index.ts file.
-
-Translations will be managed from the backend in the 2 first approaches. Input labels should be references in the Forms translations.
-In the 3rd case, translation will be managed from the front-end and translations should be added in the "siteTranslations".
-
-## Google integration
-If you want to send emails through Gmail (what is coded for now), you will need to download a [client_secret_google_api.json from your Google console] (https://console.cloud.google.com/) and put it in your resources folder.
-
+This repository contains links to Camunda Platform 8 resources, the official release artifacts (binaries), and supporting config files for running Docker Compose as a local development option. 
 
 :warning: **Docker Compose is only recommended for local development.** :warning:
 
 We recommend using [SaaS](https://camunda.com/get-started/) or [Helm/Kubernetes](https://docs.camunda.io/docs/self-managed/setup/overview/) for development.
 
-For more information about Self-Managed, including additional [development installation options](https://docs.camunda.io/docs/self-managed/setup/overview/), see our [documentation](https://docs.camunda.io/docs/self-managed/about-self-managed/).
+For more information, check Camunda 8 Self-Managed official [documentation](https://docs.camunda.io/docs/self-managed/about-self-managed/).
 
-
-For production setups we recommend using [Helm charts](https://docs.camunda.io/docs/self-managed/setup/install/) which can be found at [helm.camunda.io](https://helm.camunda.io/).
-
-## First steps with the application
-
-The application requires a running Zeebe engine.
-You can run Zeebe locally using the instructions below for Docker Compose
-or have a look at our
-[recommended deployment options for Camunda Platform](https://docs.camunda.io/docs/self-managed/platform-deployment/#deployment-recommendation.).
-
-Before starting the app go to Identity and create application of type M2M with read/write access to Operate & Tasklist
-and set `identity.clientId` and `identity.clientSecret` in [application.yaml](src/main/resources/application.yaml#L17-L18).
-
-Run the application via
-```
-./mvnw spring-boot:run
-```
-Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-
-UI [http://localhost:8080/](http://localhost:8080/)
-
-## Using this template
-
-Fork [this repository](https://github.com/camunda-community-hub/camunda-8-lowcode-ui-template) on GitHub
-and rename/refactor the following artifacts:
-
-* `groupId`, `artifactId`, `name`, and `description` in [pom.xml](pom.xml)
-* `process/@id` and `process/@name` in [src/main/resources/models/camunda-process.bpmn](src/main/resources/models/camunda-process.bpmn)
-* `ProcessConstansts#BPMN_PROCESS_ID` in [src/main/java/org/example/camunda/process/solution/ProcessConstants.java](src/main/java/org/example/camunda/process/solution/ProcessConstants.java)
-* Java package name, e.g. `org.example.camunda.process.solution.*`
-
-By forking this project, you can stay connected to improvements that we do to this template and simply pull updates into your fork, e.g. by using GitHub's Web UI or the following commands:
-
-```sh
-git remote add upstream git@github.com:camunda-community-hub/camunda-8-lowcode-ui-template.git
-git pull upstream main
-git push
-```
-
-### Forking to GitLab
-```
-gh repo clone camunda-community-hub/camunda-8-lowcode-ui-template new-project-folder
-cd new-project-folder
-git remote set-url origin git@gitlab.com:new-project/new-repo
-```
+For production setups we recommend using [Helm charts](https://docs.camunda.io/docs/self-managed/setup/install/) which can be found at [helm.camunda.io](https://helm.camunda.io/
 
 ## Links to additional Camunda Platform 8 repos and assets
 
@@ -119,11 +20,15 @@ git remote set-url origin git@gitlab.com:new-project/new-repo
 - [Zeebe Workflow Engine](https://github.com/camunda/zeebe)
 - [Contact](https://docs.camunda.io/contact/)
 
-## Using Docker Compose
+## Using docker compose
 
 > :information_source: The docker-compose file in this repository uses the latest [compose specification](https://docs.docker.com/compose/compose-file/), which was introduced with docker compose version 1.27.0+. Please make sure to use an up-to-date docker compose version.
 
 > :information_source: Docker 20.10.16+ is required.
+
+> :information_source: The Web Modeler service names have changed with `8.6.0-alpha2`. Run `docker compose stop modeler-webapp modeler-restapi modeler-websockets` when upgrading from a previous version to stop the old services.
+
+Be sure you are in the correct directory when running all the following commands. Use `cd docker-compose/camunda-8.6` to navigate to the correct directory.
 
 To spin up a complete Camunda Platform 8 Self-Managed environment locally the [docker-compose.yaml](docker-compose.yaml) file in this repository can be used.
 
@@ -137,13 +42,12 @@ The full environment contains these components:
 - Elasticsearch
 - Keycloak
 - PostgreSQL
-
-> :information_source: Web Modeler is not included by default. Please follow [the instructions below](#web-modeler-self-managed) to install it.
+- Web Modeler (Restapi, Webapp and Websockets)
 
 Clone this repo and issue the following command to start your environment:
 
 ```
-docker compose up -d
+docker compose --profile full up -d
 ```
 
 Wait a few minutes for the environment to start up and settle down. Monitor the logs, especially the Keycloak container log, to ensure the components have started.
@@ -154,6 +58,7 @@ Now you can navigate to the different web apps and log in with the user `demo` a
 - Optimize: [http://localhost:8083](http://localhost:8083)
 - Identity: [http://localhost:8084](http://localhost:8084)
 - Elasticsearch: [http://localhost:9200](http://localhost:9200)
+- Web Modeler: [http://localhost:8070](http://localhost:8070)
 
 Keycloak is used to manage users. Here you can log in with the user `admin` and password `admin`
 - Keycloak: [http://localhost:18080/auth/](http://localhost:18080/auth/)
@@ -163,14 +68,14 @@ The workflow engine Zeebe is available using gRPC at `localhost:26500`.
 To tear down the whole environment run the following command:
 
 ```
-docker compose down -v
+docker compose --profile full down -v
 ```
 
-Zeebe, Operate, Tasklist, along with Optimize require a separate network from Identity as you'll see in the docker-compose file.
+Zeebe, Operate, Tasklist, Web Modeler along with Optimize require a separate network from Identity as you'll see in the docker-compose file. Web Modeler also requires another separate network.
 
 ### Using the basic components
 
-If Optimize, Identity, and Keycloak are not needed you can use the [docker-compose-core.yaml](docker-compose-core.yaml) instead which does not include these components:
+If Optimize, Web Modeler, Identity, and Keycloak are not needed you can use the [docker-compose-core.yaml](docker-compose-core.yaml) instead which does not include these components:
 
 ```
 docker compose -f docker-compose-core.yaml up -d
@@ -251,31 +156,27 @@ If you enabled authentication for GRPC requests on Zeebe you need to provide cli
 
 ## Web Modeler Self-Managed
 
-> :information_source: Web Modeler Self-Managed is available to Camunda enterprise customers only.
+> :information_source: Non-production installations of Web Modeler are restricted to five collaborators per project. Refer to [the documentation](https://docs.camunda.io/docs/next/reference/licenses/) for more information.
 
-The Docker images for Web Modeler are available in a private registry. Enterprise customers either already have credentials to this registry, or they can request access to this registry through their CSM contact at Camunda.
+Web Modeler can be run standalone with only Identity, Keycloak and Postgres as dependencies.
 
-To run Camunda Platform with Web Modeler Self-Managed clone this repo and issue the following commands:
+Issue the following commands to only start Web Modeler and its dependencies:
 
 ```
-$ docker login registry.camunda.cloud
-Username: your_username
-Password: ******
-Login Succeeded
-$ docker compose -f docker-compose.yaml -f docker-compose-web-modeler.yaml up -d
+docker compose --profile modeling up -d
 ```
 
 To tear down the whole environment run the following command
 
 ```
-$ docker compose -f docker-compose.yaml -f docker-compose-web-modeler.yaml down -v
+docker compose --profile modeling down -v
 ```
 
 If you want to delete everything (including any data you created).
 Alternatively, if you want to keep the data run:
 
 ```
-$ docker compose -f docker-compose.yaml -f docker-compose-web-modeler.yaml down
+docker compose --profile modeling down
 ```
 
 ### Login
@@ -298,7 +199,7 @@ If you enabled authentication for GRPC requests on Zeebe you need to provide cli
 * Audience: `zeebe-api`
 
 ### Emails
-The setup includes [Mailpit](https://github.com/axllent/mailpit) as a test SMTP server. It captures all emails sent by Web Modeler, but does not forward them to the actual recipients.
+The setup includes [Mailpit](https://github.com/axllent/mailpit) as a test SMTP server. It captures all emails sent by Web Modeler, but does not forward them to the actual recipients. 
 
 You can access emails in Mailpit's Web UI at [http://localhost:8075](http://localhost:8075).
 
@@ -322,18 +223,14 @@ $ DOCKER_BUILDKIT=0 docker build -t bitnami/keycloak:19.0.3 "https://github.com/
 
 ## Resource based authorizations
 
-You can control access to specific processes and decision tables in Operate and Tasklist with [resource-based authorization](https://docs.camunda.io/docs/self-managed/concepts/access-control/resource-authorizations/).
+You can control access to specific processes and decision tables in Operate and Tasklist with [resource based authorization](https://docs.camunda.io/docs/self-managed/concepts/access-control/resource-authorizations/).
 
-This feature is disabled by default and can be enabled by setting
+This feature is disabled by default and can be enabled by setting 
 `RESOURCE_AUTHORIZATIONS_ENABLED` to `true`, either via the [`.env`](.env) file or through the command line:
 
 ```
-RESOURCE_AUTHORIZATIONS_ENABLED=true docker compose up -d
+RESOURCE_AUTHORIZATIONS_ENABLED=true docker compose --profile full up -d
 ```
-
-or by modifying the default value in the [`.env`](.env) file.
-
-Read more about resource based authorizations in the [documentation](https://docs.camunda.io/docs/self-managed/concepts/access-control/resource-authorizations/).
 
 ## Multi-Tenancy
 
@@ -343,12 +240,12 @@ This feature is disabled by default and can be enabled by setting
 `MULTI_TENANCY_ENABLED` to `true`, either via the [`.env`](.env) file or through the command line:
 
 ```
-ZEEBE_AUTHENICATION_MODE=identity MULTI_TENANCY_ENABLED=true docker compose up -d
+ZEEBE_AUTHENICATION_MODE=identity MULTI_TENANCY_ENABLED=true docker compose --profile full up -d
 ```
 
 As seen above the feature also requires you to use `identity` as an authentication provider.
 
-Ensure you [setup tenants in identity](https://docs.camunda.io/docs/self-managed/identity/user-guide/tenants/managing-tenants/) after you start the platform.
+Ensure you [setup tenants in identity](https://docs.camunda.io/docs/self-managed/identity/user-guide/tenants/managing-tenants/) after you started the platform.
 
 ## Camunda Platform 7
 
