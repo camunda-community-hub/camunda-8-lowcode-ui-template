@@ -1,9 +1,10 @@
 # https://github.com/camunda-community-hub/spring-zeebe#configuring-camunda-platform-8-saas-connection
 # https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
 
-zeebe.client:
-  broker.gatewayAddress: 127.0.0.1:26500
-  security.plaintext: true
+camunda:
+  client:
+    zeebe:
+      base-url: http://127.0.0.1:26500
 
 # go to http://localhost:8084/applications/ and create application of type M2M with read/write access to Operate & Tasklist
 identity.clientId: pouet
@@ -33,7 +34,7 @@ spring:
         # scope: openid, profile
         # redirect-uri: http://localhost:8080/login/oauth2/code/customTaskList
       # provider.customTaskList.issuer-uri: http://localhost:18080/auth/realms/camunda-platform
-   
+
 server:
   port: 8080
   error:
