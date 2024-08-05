@@ -18,8 +18,8 @@
 
   <properties>
     <java.version>17</java.version>
-    <spring-zeebe.version>8.4.0</spring-zeebe.version>
-    <zeebe-test.version>8.4.0</zeebe-test.version>
+    <spring-zeebe.version>8.5.3</spring-zeebe.version>
+    <zeebe-test.version>8.5.3</zeebe-test.version>
   </properties>
 
   <dependencies>
@@ -86,7 +86,7 @@
     <dependency>
       <groupId>io.camunda</groupId>
       <artifactId>camunda-tasklist-client-java</artifactId>
-      <version>8.4.0.3</version>
+      <version>8.5.3.4</version>
     </dependency>
 
     <!-- gmail, drive, thymeleaf & feel -->

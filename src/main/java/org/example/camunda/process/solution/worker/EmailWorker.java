@@ -24,7 +24,7 @@ public class EmailWorker {
 
   @Autowired private MailService mailService;
 
-  @JobWorker(type = "email", fetchAllVariables = true)
+  @JobWorker
   public ProcessVariables sendEmail(
       ActivatedJob job,
       @Variable String to,
