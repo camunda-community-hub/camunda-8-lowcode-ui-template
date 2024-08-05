@@ -110,7 +110,7 @@ public class TaskListService {
 
     tasklistSearch.setAssignee(taskSearch.getAssignee());
     tasklistSearch.setState(TaskState.fromJson(taskSearch.getState()));
-    tasklistSearch.setGroup(taskSearch.getGroup());
+    tasklistSearch.setCandidateGroup(taskSearch.getGroup());
     tasklistSearch.setPagination(pagination);
     if (fetchVariables != null) {
       tasklistSearch.setIncludeVariables(fetchVariables);

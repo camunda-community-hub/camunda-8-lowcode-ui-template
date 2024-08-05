@@ -7,6 +7,11 @@ import io.camunda.common.auth.JwtCredential;
 import io.camunda.common.auth.Product;
 import io.camunda.common.auth.SaaSAuthentication;
 import io.camunda.common.auth.SelfManagedAuthentication;
+import io.camunda.common.auth.identity.IdentityConfig;
+import io.camunda.common.auth.identity.IdentityContainer;
+import io.camunda.common.json.SdkObjectMapper;
+import io.camunda.identity.sdk.Identity;
+import io.camunda.identity.sdk.IdentityConfiguration;
 import io.camunda.operate.CamundaOperateClient;
 import io.camunda.operate.exception.OperateException;
 import io.camunda.operate.model.ProcessDefinition;
@@ -76,16 +81,29 @@ public class OperateService {
                 "operate.camunda.io",
                 "https://login.cloud.camunda.io/oauth/token"));
         targetOperateUrl = "https://" + region + ".operate.camunda.io/" + clusterId;
-        auth = SaaSAuthentication.builder().jwtConfig(jwtConfig).build();
-
+        auth =
+            SaaSAuthentication.builder()
+                .withJwtConfig(jwtConfig)
+                .withJsonMapper(new SdkObjectMapper())
+                .build();
       } else {
+        String tokenUrl = keycloakUrl;
+        IdentityConfig identityConfig = new IdentityConfig();
+        IdentityConfiguration identityConfiguration =
+            new IdentityConfiguration(
+                tokenUrl, tokenUrl, identityClientId, identityClientSecret, identityClientId);
+        Identity identity = new Identity(identityConfiguration);
+        identityConfig.addProduct(
+            Product.OPERATE, new IdentityContainer(identity, identityConfiguration));
+
         JwtConfig jwtConfig = new JwtConfig();
         jwtConfig.addProduct(
-            Product.OPERATE, new JwtCredential(identityClientId, identityClientSecret, null, null));
+            Product.OPERATE,
+            new JwtCredential(identityClientId, identityClientSecret, identityClientId, tokenUrl));
         auth =
             SelfManagedAuthentication.builder()
-                .jwtConfig(jwtConfig)
-                .keycloakUrl(keycloakUrl)
+                .withJwtConfig(jwtConfig)
+                .withIdentityConfig(identityConfig)
                 .build();
       }
       client =

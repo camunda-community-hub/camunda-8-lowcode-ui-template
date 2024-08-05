@@ -37,6 +37,8 @@ public class Task {
 
   private String processDefinitionKey;
 
+  private String taskDefinitionId;
+
   public String getId() {
     return id;
   }
@@ -163,5 +165,13 @@ public class Task {
 
   public void setJobKey(String jobKey) {
     this.jobKey = jobKey;
+  }
+
+  public String getTaskDefinitionId() {
+    return taskDefinitionId;
+  }
+
+  public void setTaskDefinitionId(String taskDefinitionId) {
+    this.taskDefinitionId = taskDefinitionId;
   }
 }

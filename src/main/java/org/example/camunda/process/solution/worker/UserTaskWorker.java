@@ -65,6 +65,7 @@ public class UserTaskWorker {
       // String taskId = Long.toString(job.getElementInstanceKey());
       task.setId(jobKey);
       task.setJobKey(jobKey);
+      task.setTaskDefinitionId(job.getElementId());
 
       String bpmnProcessId = job.getBpmnProcessId();
 
