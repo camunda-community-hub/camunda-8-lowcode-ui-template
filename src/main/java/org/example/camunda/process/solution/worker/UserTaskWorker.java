@@ -13,19 +13,17 @@ import java.util.List;
 import java.util.Map;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.service.BpmnService;
+import org.example.camunda.process.solution.service.SseEmitterManager;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserTaskWorker {
 
   private static final Logger LOG = LoggerFactory.getLogger(UserTaskWorker.class);
-
-  @Autowired private SimpMessagingTemplate simpMessagingTemplate;
 
   @Autowired private BpmnService bpmnService;
 
@@ -90,11 +88,8 @@ public class UserTaskWorker {
 
       TaskState taskState = TaskState.CREATED;
       task.setTaskState(taskState);
-      if (task.getAssignee() != null) {
-        simpMessagingTemplate.convertAndSend("/topic/" + task.getAssignee() + "/userTask", task);
-      } else {
-        simpMessagingTemplate.convertAndSend("/topic/userTask", task);
-      }
+      SseEmitterManager.broadcast(task);
+
     } catch (Exception e) {
       LOG.error("Exception occured in UserTaskWorker", e);
       client

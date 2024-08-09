@@ -8,7 +8,7 @@ import { Component, FC } from 'react';
 
 const getFormFinder = (formViewer: IFormViewer): FC<IFormViewer> => {
   if (formService.customFormExists(formViewer.formKey)) {
-    return formService.getForm(formViewer.formKey)!;
+    return formService.getCustomForm(formViewer.formKey)!;
   }
   if (formViewer.schema?.generator == 'formIo') {
     return FormIoViewer;

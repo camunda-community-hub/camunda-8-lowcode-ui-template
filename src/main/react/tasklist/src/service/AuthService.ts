@@ -91,7 +91,7 @@ export class AuthService {
     dispatch(taskService.filterOnAssignee(user.username));
     localStorage.setItem('camundaTasklistUser', JSON.stringify(user));
     dispatch(signInSuccess(user));
-    dispatch(taskService.connectToWebSockets(user.username));
+    dispatch(taskService.subscribeTasks(user.username));
   };
 
   signOut = (): AppThunk => async dispatch => {
@@ -103,7 +103,7 @@ export class AuthService {
       api.defaults.headers.common['Authorization'] = '';
       localStorage.removeItem('camundaTasklistUser');
       try {
-        taskService.disconnectFromWebScokets();
+        taskService.disconnectFromTasks();
       } catch (error: any) {
         console.warn('Error', error.message);
       }

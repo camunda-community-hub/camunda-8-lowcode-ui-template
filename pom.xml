@@ -86,7 +86,7 @@
     <dependency>
       <groupId>io.camunda</groupId>
       <artifactId>camunda-tasklist-client-java</artifactId>
-      <version>8.5.3.4</version>
+      <version>8.5.3.6</version>
     </dependency>
 
     <!-- gmail, drive, thymeleaf & feel -->

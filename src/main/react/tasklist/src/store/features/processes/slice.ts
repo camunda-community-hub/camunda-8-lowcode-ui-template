@@ -129,20 +129,11 @@ const serverListSlice = createSlice({
     },
     setProcess: (
       state: ProcessListState,
-      action: PayloadAction<IProcess|null>,
+      action: PayloadAction<IProcess | null>
     ) => {
       state.currentProcess = action.payload;
     },
-    removeCurrentTask: (
-      state: ProcessListState
-    ) => {
-      let i = 0;
-      for (; i < state.tasks.length; i++) {
-        if (state.tasks[i].id === state.currentTask!.id) {
-          state.tasks.splice(i, 1);
-          break;
-        }
-      }
+    removeCurrentTask: (state: ProcessListState) => {
       state.currentTask = null;
     }
   },
