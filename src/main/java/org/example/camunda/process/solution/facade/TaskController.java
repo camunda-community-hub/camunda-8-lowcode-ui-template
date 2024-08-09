@@ -77,16 +77,6 @@ public class TaskController extends AbstractController {
     taskListService.completeTask(taskId, variables);
   }
 
-  @IsAuthenticated
-  @PostMapping("/withJobKey/{jobKey}")
-  public void completeTaskWithJobKey(
-      @PathVariable Long jobKey, @RequestBody Map<String, Object> variables)
-      throws TaskListException {
-
-    LOG.info("Completing task by job key " + jobKey + "` with variables: " + variables);
-    taskListService.completeTaskWithJobKey(jobKey, variables);
-  }
-
   @Override
   public Logger getLogger() {
     return LOG;

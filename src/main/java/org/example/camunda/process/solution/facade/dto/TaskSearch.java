@@ -22,6 +22,10 @@ public class TaskSearch {
 
   private SearchType direction;
 
+  private String processDefinitionKey;
+
+  private String taskDefinitionId;
+
   public String getState() {
     return state;
   }
@@ -42,8 +46,9 @@ public class TaskSearch {
     return pageSize;
   }
 
-  public void setPageSize(Integer pageSize) {
+  public TaskSearch setPageSize(Integer pageSize) {
     this.pageSize = pageSize;
+    return this;
   }
 
   public String getGroup() {
@@ -84,5 +89,23 @@ public class TaskSearch {
 
   public void setFilterVariables(Map<String, Object> filterVariables) {
     this.filterVariables = filterVariables;
+  }
+
+  public String getProcessDefinitionKey() {
+    return processDefinitionKey;
+  }
+
+  public TaskSearch setProcessDefinitionKey(String processDefinitionKey) {
+    this.processDefinitionKey = processDefinitionKey;
+    return this;
+  }
+
+  public String getTaskDefinitionId() {
+    return taskDefinitionId;
+  }
+
+  public TaskSearch setTaskDefinitionId(String taskDefinitionId) {
+    this.taskDefinitionId = taskDefinitionId;
+    return this;
   }
 }

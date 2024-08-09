@@ -80,6 +80,13 @@ function TaskList() {
     }
   }, [taskSearch, tasklistConf]);
 
+
+  useEffect(() => {
+    if (tasks.length > 0) {
+      dispatch(taskService.setTask(tasks[0]));
+    }
+  }, [tasks]);
+
   useEffect(() => {
     if (typing) {
       setTyping(false);

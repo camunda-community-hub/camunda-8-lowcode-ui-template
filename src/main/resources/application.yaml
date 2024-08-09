@@ -2,9 +2,12 @@
 # https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
 
 zeebe.client:
-  broker.gatewayAddress: 127.0.0.1:26500
-  security.plaintext: true
-
+  cloud:
+    region: bru-2
+    clusterId: 234ea3a4-b496-4eba-8949-3341185fc69f
+    clientId: wrnr98~iPV.mQHczCL4nfcpLR.aH5Srz
+    clientSecret: 1h24E9K6B~zbofT~L91yFrvEjlig70FGjQXcwNzP9d8g80sKeci4RTsY6mPNHDR5
+              
 # go to http://localhost:8084/applications/ and create application of type M2M with read/write access to Operate & Tasklist
 identity.clientId: pouet
 identity.clientSecret: CSf4Jqwcmw6HsEocpslOvVPjZ4t8DUoP
@@ -25,15 +28,7 @@ spring:
 
   security.oauth2:
     enabled: false
-    # client:
-      # registration.customTaskList:
-        # client-id: customTasklist
-        # client-secret: lSmJzWhpzGyYKf3Zmo3vekJndcJ2EXu3
-        # authorization-grant-type: authorization_code
-        # scope: openid, profile
-        # redirect-uri: http://localhost:8080/login/oauth2/code/customTaskList
-      # provider.customTaskList.issuer-uri: http://localhost:18080/auth/realms/camunda-platform
-   
+
 server:
   port: 8080
   error:

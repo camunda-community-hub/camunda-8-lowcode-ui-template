@@ -1,27 +1,15 @@
 import store, { AppThunk } from '../store';
 import formService from './FormService';
-import { setTasklistConf, remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, prependTaskIntoList, setTask, setFormSchema, removeCurrentTask, setTaskSearch, before, after } from '../store/features/processes/slice';
+import { setTasklistConf, remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, setTask, setTaskSearch, before, after } from '../store/features/processes/slice';
 import { ITask, ITaskSearch } from '../store/model';
 import api from './api';
-import { Stomp, StompSubscription } from '@stomp/stompjs';
 import { env } from '../env';
 
-const connectStompClient = () => {
-  let myStompClient = Stomp.client(`ws://${env.ws}/ws`);
-
-  myStompClient.onStompError = function (frame) {
-    console.log('STOMP error');
-  };
-
-  return myStompClient;
-}
-
-const stompClient = connectStompClient();
 
 export class TaskService {
 
-  stompSubscriptions: StompSubscription[] = [];
-
+  taskSource?: EventSource;
+  tasks: ITask[] = [];
   listVariables = async () => {
     const { data } = await api.get<any>('/tasklistconf/variables');
     return data;
@@ -45,22 +33,20 @@ export class TaskService {
       })
   }
 
-  connectToWebSockets = (username: string): AppThunk => async dispatch => {
-    try {
-      const callback = (message: any) => {
-        let task = JSON.parse(message.body);
-        // Update the list of tasks
-        dispatch(this.insertNewTask(task));
-      }
-      const subs = this.stompSubscriptions;
-      stompClient.onConnect = function (frame) {
-        subs.push(stompClient!.subscribe("/topic/" + username + "/userTask", callback));
-        subs.push(stompClient!.subscribe("/topic/userTask", callback));
-      };
-      stompClient.activate();
-    } catch (error: any) {
-      console.warn(error);
+  subscribeTasks = (username: string): AppThunk => async dispatch => {
+    this.taskSource = new EventSource(env.backend +"/api/jobKey/tasks/" + username);
+    this.taskSource.onmessage = event => {
+      let task = JSON.parse(event.data);
+      //dispatch(taskService.loadJobKeyForm(task));
+      console.log('received event', event);
+      //navigate("/tasklist");
+      //dispatch(taskService.setTask(task, navigate("/tasklist/taskForm")));
+      dispatch(this.insertNewTask(task));
     }
+  }
+
+  disconnectFromTasks = () => {
+    this.taskSource!.close();
   }
 
   filterOnAssignee = (assignee: string): AppThunk => async dispatch => {
@@ -75,18 +61,6 @@ export class TaskService {
       taskSearch.assignee = assignee;
     }
     dispatch(setTaskSearch(taskSearch));
-  }
-
-  disconnectFromWebScokets = () => {
-    try {
-    for (let i = 0; i < this.stompSubscriptions.length; i++) {
-      stompClient.unsubscribe(this.stompSubscriptions[i].id);
-    }
-    this.stompSubscriptions = [];
-    stompClient.deactivate();
-    } catch (error: any) {
-      console.warn(error);
-  }
   }
 
   getTasks = (): ITask[] => {
@@ -104,27 +78,14 @@ export class TaskService {
   setTask = (task: ITask | null, callback?: any): AppThunk => async dispatch => {
     if (task) {
       task = Object.assign({}, task);
-      const { data } = await api.get('/tasks/' + task.id + '/variables');
-      task.variables = data;
-      if (task.formKey === "processVariableFormKey") {
-        task.formKey = task.variables.formKey;
+      if (!task.jobKey) {
+        const { data } = await api.get('/tasks/' + task.id + '/variables');
+        task.variables = data;
       }
-      if (!formService.customFormExists(task.formKey)) {
-        let ln = localStorage.getItem('camundLocale');
-        let url = '/forms/' + task.processDefinitionKey + '/' + task.formKey + '/' + ln;
-        if (task.formId) {
-          url = '/forms/' + task.processDefinitionKey + '/linked/' + task.formId + '/' + ln;
-        } else if (task.formKey.startsWith("camunda-forms:bpmn:")) {
-          url = '/forms/' + task.processDefinitionKey + '/embedded/' + task.formKey + '/' + ln;
-        }
-        api.get(url).then(response => {
-          dispatch(setFormSchema(response.data));
-          if (callback) {
-            callback();
-          }
-        }).catch(error => {
-          alert(error.message);
-        })
+      dispatch(formService.loadForm(task));
+
+      if (callback) {
+        callback();
       }
     }
     dispatch(setTask(task));
@@ -139,33 +100,56 @@ export class TaskService {
       try {
         dispatch(remoteLoading());
         const { data } = await api.post<ITask[]>('/tasks/search', store.getState().process.taskSearch);
-        dispatch(remoteTasksLoadingSuccess(data));
+        this.tasks = data;
+        dispatch(this.storeTasks(this.tasks));
       } catch (err:any) {
         dispatch(remoteLoadingFail(err.toString()));
       }
   }
   
   claim = (): AppThunk => async dispatch => {
+    if (store.getState().process.currentTask!.jobKey) {
+      dispatch(assignTask(store.getState().auth.data!.username));
+    } else {
     let url = '/tasks/' + store.getState().process.currentTask!.id + '/claim';
     api.get(url).then(response => {
       dispatch(assignTask(store.getState().auth.data!.username));
     }).catch(error => {
       alert(error.message);
     })
+    }
   }
 
   unclaim = (): AppThunk => async dispatch => {
-    let url = '/tasks/' + store.getState().process.currentTask!.id + '/unclaim';
-    api.get(url).then(response => {
+    if (store.getState().process.currentTask!.jobKey) {
       dispatch(unassignTask());
-    }).catch(error => {
-      alert(error.message);
-    })
+    } else {
+      let url = '/tasks/' + store.getState().process.currentTask!.id + '/unclaim';
+      api.get(url).then(response => {
+        dispatch(unassignTask());
+      }).catch(error => {
+        alert(error.message);
+      })
+    }
   }
 
   submitTask = (data: any, callback?: any): AppThunk => async dispatch => {
-    api.post('/tasks/' + store.getState().process.currentTask!.id, data).then(response => {
-      dispatch(removeCurrentTask());
+    let url = '/tasks/' + store.getState().process.currentTask!.id
+    if (store.getState().process.currentTask!.jobKey) {
+      url = '/jobKey/' + store.getState().process.currentTask!.jobKey;
+    }
+
+    let indexTask = 0;
+    for (; indexTask < this.tasks.length; indexTask++) {
+      if (this.tasks[indexTask].id === store.getState().process.currentTask!.id) {
+        break;
+      }
+    }
+    api.post(url, data).then(response => {
+      this.tasks.splice(indexTask, 1);
+      dispatch(this.storeTasks(this.tasks));
+      //dispatch(removeTask(indexTask));
+      //dispatch(removeCurrentTask());
       if (callback) {
         callback();
       }
@@ -194,10 +178,21 @@ export class TaskService {
         }
       }
       if (shouldInsert) {
-        dispatch(prependTaskIntoList(task));
+
+        this.tasks = [task, ...this.tasks];
+        if (taskSearch && taskSearch.pageSize && this.tasks.length > taskSearch.pageSize) {
+          this.tasks.splice(-1);
+        }
+        dispatch(this.storeTasks(this.tasks));
+        //dispatch(prependTaskIntoList(task));
       }
     }
   };
+
+  storeTasks = (tasks: ITask[]): AppThunk => async dispatch => {
+    let store = Object.assign([], this.tasks);
+    dispatch(remoteTasksLoadingSuccess(store));
+  }
 }
 
 const taskService = new TaskService();

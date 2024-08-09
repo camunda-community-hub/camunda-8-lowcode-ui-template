@@ -17,6 +17,7 @@ export interface Password {
 
 export interface ITask {
   id: number;
+  jobKey: number;
   name: string;
   processName: string;
   creationDate: string;
@@ -29,6 +30,7 @@ export interface ITask {
   variables: any;
   sortValues: string[];
   processDefinitionKey: string;
+  taskDefinitionId: string;
 }
 
 export interface IVariable {

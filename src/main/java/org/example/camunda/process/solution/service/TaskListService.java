@@ -107,13 +107,17 @@ public class TaskListService {
     }
 
     tasklistSearch.setAssigned(taskSearch.getAssigned());
-
+    tasklistSearch.setTaskDefinitionId(taskSearch.getTaskDefinitionId());
     tasklistSearch.setAssignee(taskSearch.getAssignee());
-    tasklistSearch.setState(TaskState.fromJson(taskSearch.getState()));
+    if (taskSearch.getState() != null) {
+      tasklistSearch.setState(TaskState.fromJson(taskSearch.getState()));
+    }
     tasklistSearch.setCandidateGroup(taskSearch.getGroup());
     tasklistSearch.setPagination(pagination);
     if (fetchVariables != null) {
-      tasklistSearch.setIncludeVariables(fetchVariables);
+      for (String var : fetchVariables) {
+        tasklistSearch.fetchVariable(var);
+      }
     }
     return convert(getCamundaTaskListClient().getTasks(tasklistSearch));
   }
