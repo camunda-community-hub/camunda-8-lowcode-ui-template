@@ -109,7 +109,9 @@ public class TaskListService {
         }
       }
     }
-    tasklistSearch.setProcessInstanceKey(String.valueOf(taskSearch.getProcessInstanceKey()));
+    if (taskSearch.getProcessInstanceKey() != null) {
+      tasklistSearch.setProcessInstanceKey(String.valueOf(taskSearch.getProcessInstanceKey()));
+    }
     tasklistSearch.setAssigned(taskSearch.getAssigned());
     tasklistSearch.setTaskDefinitionId(taskSearch.getTaskDefinitionId());
     tasklistSearch.setAssignee(taskSearch.getAssignee());
