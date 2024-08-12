@@ -32,6 +32,7 @@ import '@bpmn-io/form-js/dist/assets/properties-panel.css';
 import './assets/css/custom.css';
 import './assets/css/login.css';
 import authService from './service/AuthService'
+import CaseManagement from "./pages/CaseManagement";
 
 function App() {
 
@@ -69,6 +70,7 @@ function App() {
             <Route path="translations" element={<AdminTranslations />} />
             <Route path="templates" element={<WorkerList />} />
             <Route path="elementTemplate/*" element={<ElementTemplate />} />
+            <Route path="casemgmt" element={<CaseManagement />} />
             <Route path="*" element={<Welcome />} />
           </Route>
         </Routes>

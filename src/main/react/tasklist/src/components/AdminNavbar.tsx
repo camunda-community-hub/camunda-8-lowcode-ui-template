@@ -86,6 +86,9 @@ function AdminNavbar() {
             } to="/admin/tasklistconf">{t("Tasklist")}</NavLink>
             <NavLink className={({ isActive }) =>
               isActive ? "text-light menu-item selected" : "text-light menu-item"
+            } to="/admin/casemgmt">{t("Case Management")}</NavLink>
+            <NavLink className={({ isActive }) =>
+              isActive ? "text-light menu-item selected" : "text-light menu-item"
             } to="/admin/forms">{t("Forms")}</NavLink>
             <NavLink className={({ isActive }) =>
               isActive ? "text-light menu-item selected" : "text-light menu-item"
