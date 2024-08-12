@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class TasklistConf {
 
+  private Boolean displayIntancePage;
   private Boolean splitPage;
   private Boolean filterOnAssignee;
   private String formatDate;
@@ -12,6 +13,14 @@ public class TasklistConf {
   private List<Map<String, Object>> columns;
   private Map<String, Boolean> defaultFilters;
   private List<Map<String, Object>> variablesFilters;
+
+  public Boolean getDisplayIntancePage() {
+    return displayIntancePage;
+  }
+
+  public void setDisplayIntancePage(Boolean displayIntancePage) {
+    this.displayIntancePage = displayIntancePage;
+  }
 
   public Boolean getFilterOnAssignee() {
     return filterOnAssignee;
