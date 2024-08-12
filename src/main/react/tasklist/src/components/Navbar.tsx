@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 function Navbar() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const tasklistConf = useSelector((state: any) => state.process.tasklistConf);
 
   const logout = (event: any) => {
     dispatch(authService.signOut());
@@ -28,6 +29,11 @@ function Navbar() {
         </div>
       </div>
       <div className="bg-primary menu">
+        {tasklistConf.displayIntancesPage ?
+          <NavLink to="/tasklist/instances" className={({ isActive }) =>
+            isActive ? "text-light menu-item selected" : "text-light menu-item"
+          } >{t("Instances page")}</NavLink>
+          :<></>}
         <NavLink to="/tasklist/tasks" className={({ isActive }) =>
           isActive ? "text-light menu-item selected" : "text-light menu-item"
         } >{t("Tasks")}</NavLink>

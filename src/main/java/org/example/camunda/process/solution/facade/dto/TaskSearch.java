@@ -26,12 +26,15 @@ public class TaskSearch {
 
   private String taskDefinitionId;
 
+  private Long processInstanceKey;
+
   public String getState() {
     return state;
   }
 
-  public void setState(String state) {
+  public TaskSearch setState(String state) {
     this.state = state;
+    return this;
   }
 
   public String getAssignee() {
@@ -106,6 +109,15 @@ public class TaskSearch {
 
   public TaskSearch setTaskDefinitionId(String taskDefinitionId) {
     this.taskDefinitionId = taskDefinitionId;
+    return this;
+  }
+
+  public Long getProcessInstanceKey() {
+    return processInstanceKey;
+  }
+
+  public TaskSearch setProcessInstanceKey(Long processInstanceId) {
+    this.processInstanceKey = processInstanceId;
     return this;
   }
 }

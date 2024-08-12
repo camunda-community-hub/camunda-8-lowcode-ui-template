@@ -14,19 +14,29 @@ import io.camunda.identity.sdk.Identity;
 import io.camunda.identity.sdk.IdentityConfiguration;
 import io.camunda.operate.CamundaOperateClient;
 import io.camunda.operate.exception.OperateException;
+import io.camunda.operate.model.FlowNodeInstance;
 import io.camunda.operate.model.ProcessDefinition;
+import io.camunda.operate.model.ProcessInstance;
+import io.camunda.operate.model.ProcessInstanceState;
+import io.camunda.operate.model.SearchResult;
 import io.camunda.operate.model.Variable;
+import io.camunda.operate.search.FlowNodeInstanceFilter;
 import io.camunda.operate.search.ProcessDefinitionFilter;
+import io.camunda.operate.search.ProcessInstanceFilter;
 import io.camunda.operate.search.SearchQuery;
 import io.camunda.operate.search.Sort;
 import io.camunda.operate.search.SortOrder;
 import io.camunda.operate.search.VariableFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,5 +157,95 @@ public class OperateService {
       result.get(var.getName()).add(JsonUtils.toJsonNode(var.getValue()));
     }
     return result;
+  }
+
+  public SearchResult<ProcessInstance> getProcessInstances(
+      String bpmnProcessId, ProcessInstanceState state, Integer pageSize, Long after)
+      throws OperateException {
+    SearchQuery q =
+        new SearchQuery.Builder()
+            .filter(
+                ProcessInstanceFilter.builder().state(state).bpmnProcessId(bpmnProcessId).build())
+            .size(pageSize)
+            .build();
+    if (after != null) {
+      q.setSearchAfter(List.of(after));
+    }
+    return getCamundaOperateClient().searchProcessInstanceResults(q);
+  }
+
+  public List<Variable> getVariables(Long processInstanceKey) throws OperateException {
+    return getCamundaOperateClient()
+        .searchVariables(
+            new SearchQuery.Builder()
+                .filter(VariableFilter.builder().processInstanceKey(processInstanceKey).build())
+                .size(1000)
+                .build());
+  }
+
+  public Map<Long, Map<String, Object>> getVariables(List<ProcessInstance> processInstances)
+      throws OperateException {
+    try {
+      Map<Long, Future<List<Variable>>> futures = new HashMap<>();
+      Map<Long, Map<String, Object>> instanceMap = new HashMap<>();
+      for (ProcessInstance instance : processInstances) {
+        instanceMap.put(instance.getKey(), new HashMap<>());
+        futures.put(
+            instance.getKey(),
+            CompletableFuture.supplyAsync(
+                () -> {
+                  try {
+                    return getVariables(instance.getKey());
+                  } catch (OperateException e) {
+                    return null;
+                  }
+                }));
+      }
+      for (Map.Entry<Long, Future<List<Variable>>> varFutures : futures.entrySet()) {
+        List<Variable> vars = varFutures.getValue().get();
+        for (Variable var : vars) {
+          instanceMap.get(varFutures.getKey()).put(var.getName(), var.getValue());
+        }
+      }
+      futures.clear();
+      return instanceMap;
+    } catch (ExecutionException | InterruptedException e) {
+      throw new OperateException("Error loading instances variables", e);
+    }
+  }
+
+  public List<Long> getSubProcessInstances(Long processInstanceKey) throws OperateException {
+    SearchQuery q =
+        new SearchQuery.Builder()
+            .filter(
+                ProcessInstanceFilter.builder()
+                    .parentKey(processInstanceKey)
+                    .state(ProcessInstanceState.ACTIVE)
+                    .build())
+            .size(100)
+            .build();
+
+    List<ProcessInstance> subprocs = getCamundaOperateClient().searchProcessInstances(q);
+    List<Long> result = new ArrayList<>();
+    for (ProcessInstance i : subprocs) {
+      result.add(i.getKey());
+      result.addAll(getSubProcessInstances(i.getKey()));
+    }
+
+    return result;
+  }
+
+  public List<FlowNodeInstance> getProcessInstanceHistory(Long processInstanceKey)
+      throws OperateException {
+    FlowNodeInstanceFilter flowNodeFilter =
+        FlowNodeInstanceFilter.builder().processInstanceKey(processInstanceKey).build();
+    SearchQuery procInstQuery =
+        new SearchQuery.Builder()
+            .filter(flowNodeFilter)
+            .size(1000)
+            .sort(new Sort("startDate", SortOrder.DESC))
+            .build();
+
+    return getCamundaOperateClient().searchFlowNodeInstances(procInstQuery);
   }
 }

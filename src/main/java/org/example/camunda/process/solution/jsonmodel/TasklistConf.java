@@ -5,7 +5,9 @@ import java.util.Map;
 
 public class TasklistConf {
 
-  private Boolean displayIntancePage;
+  private Boolean displayIntancesPage;
+  private String instancesBpmnProcessId;
+  private List<Map<String, Object>> instancesColumns;
   private Boolean splitPage;
   private Boolean filterOnAssignee;
   private String formatDate;
@@ -14,12 +16,28 @@ public class TasklistConf {
   private Map<String, Boolean> defaultFilters;
   private List<Map<String, Object>> variablesFilters;
 
-  public Boolean getDisplayIntancePage() {
-    return displayIntancePage;
+  public Boolean getDisplayIntancesPage() {
+    return displayIntancesPage;
   }
 
-  public void setDisplayIntancePage(Boolean displayIntancePage) {
-    this.displayIntancePage = displayIntancePage;
+  public void setDisplayIntancesPage(Boolean displayIntancesPage) {
+    this.displayIntancesPage = displayIntancesPage;
+  }
+
+  public String getInstancesBpmnProcessId() {
+    return instancesBpmnProcessId;
+  }
+
+  public void setInstancesBpmnProcessId(String instancesBpmnProcessId) {
+    this.instancesBpmnProcessId = instancesBpmnProcessId;
+  }
+
+  public List<Map<String, Object>> getInstancesColumns() {
+    return instancesColumns;
+  }
+
+  public void setInstancesColumns(List<Map<String, Object>> instancesColumns) {
+    this.instancesColumns = instancesColumns;
   }
 
   public Boolean getFilterOnAssignee() {

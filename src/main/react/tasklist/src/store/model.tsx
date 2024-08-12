@@ -66,6 +66,12 @@ export interface IFormViewer {
   disabled: boolean;
 }
 
+export interface IInstanceViewer {
+  instancekey: number;
+  processDefinitionKey: number;
+}
+
+
 export interface Organization {
   oldname: string;
   name: string;

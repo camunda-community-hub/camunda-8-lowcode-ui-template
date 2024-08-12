@@ -1,5 +1,6 @@
 package org.example.camunda.process.solution.service;
 
+import io.camunda.operate.exception.OperateException;
 import io.camunda.tasklist.CamundaTaskListClient;
 import io.camunda.tasklist.dto.Form;
 import io.camunda.tasklist.dto.Pagination;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import org.example.camunda.process.solution.facade.dto.Task;
 import org.example.camunda.process.solution.facade.dto.TaskSearch;
 import org.example.camunda.process.solution.utils.JsonUtils;
@@ -105,7 +109,7 @@ public class TaskListService {
         }
       }
     }
-
+    tasklistSearch.setProcessInstanceKey(String.valueOf(taskSearch.getProcessInstanceKey()));
     tasklistSearch.setAssigned(taskSearch.getAssigned());
     tasklistSearch.setTaskDefinitionId(taskSearch.getTaskDefinitionId());
     tasklistSearch.setAssignee(taskSearch.getAssignee());
@@ -176,5 +180,33 @@ public class TaskListService {
       result.add(convert(task));
     }
     return result;
+  }
+
+  public List<Task> getTasks(List<Long> processInstances, String state) throws OperateException {
+    try {
+      Map<Long, Future<List<Task>>> futures = new HashMap<>();
+      List<Task> tasks = new ArrayList<>();
+      for (Long instanceKey : processInstances) {
+        futures.put(
+            instanceKey,
+            CompletableFuture.supplyAsync(
+                () -> {
+                  try {
+                    return getTasks(
+                        new TaskSearch().setState(state).setProcessInstanceKey(instanceKey));
+                  } catch (TaskListException e) {
+                    return null;
+                  }
+                }));
+      }
+      for (Map.Entry<Long, Future<List<Task>>> tasksFutures : futures.entrySet()) {
+        List<Task> futTasks = tasksFutures.getValue().get();
+        tasks.addAll(futTasks);
+      }
+      futures.clear();
+      return tasks;
+    } catch (ExecutionException | InterruptedException e) {
+      throw new OperateException("Error loading instances tasks", e);
+    }
   }
 }

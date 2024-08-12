@@ -32,6 +32,7 @@ export class AdminTranslationService {
         "Group": "Group",
         "Group name": "Group name",
         "Groups": "Groups",
+        "Instances page": "Cases",
         "Internationalization": "Internationalization",
         "Language code": "Language code",
         "Language name": "Langue name",

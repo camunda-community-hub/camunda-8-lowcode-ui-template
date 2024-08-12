@@ -120,12 +120,40 @@ function AdminTasklist() {
     dispatch(taskService.saveTasklistConf(clone));
   }
 
+  const addInstancesColumn = () => {
+    let clone = JSON.parse(JSON.stringify(tasklistConf));
+    if (!clone.instancesColumns) {
+      clone.instancesColumns = [];
+    }
+    clone.instancesColumns.push({ "label": "Column header", "value": "id", "type": "number" });
+    dispatch(taskService.saveTasklistConf(clone));
+  }
+  const changeInstancesColumn = (index: number, attribute: string, value: any) => {
+    let clone = JSON.parse(JSON.stringify(tasklistConf));
+    clone.instancesColumns[index][attribute] = value;
+    if (attribute == "variable") {
+      if (value) {
+        clone.instancesColumns[index].value = variableNames![0];
+      } else {
+        clone.instancesColumns[index].value = "key";
+      }
+
+    }
+    dispatch(taskService.saveTasklistConf(clone));
+  }
+  const deleteInstancesColumn = (index: number) => {
+    let clone = JSON.parse(JSON.stringify(tasklistConf));
+    clone.instancesColumns.splice(index, 1);
+    dispatch(taskService.saveTasklistConf(clone));
+  }
+
   return (
     tasklistConf ?
       <Accordion defaultActiveKey="0">
         <Accordion.Item eventKey="0">
           <Accordion.Header>Basic configuration</Accordion.Header>
           <Accordion.Body>
+
             <Form.Check
               type="switch" checked={tasklistConf.splitPage} onChange={(evt) => update('splitPage', evt.target.checked)}
               label="Tasklist page also display the task (split mode)" />
@@ -146,7 +174,7 @@ function AdminTasklist() {
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="1">
-          <Accordion.Header>Default Filters</Accordion.Header>
+          <Accordion.Header>Task Default Filters</Accordion.Header>
           <Accordion.Body>
             <Form.Check
               type="switch" checked={tasklistConf.defaultFilters.state} onChange={(evt) => updateSub('defaultFilters', 'state', evt.target.checked)}
@@ -170,7 +198,7 @@ function AdminTasklist() {
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="2">
-          <Accordion.Header>Variables Filters</Accordion.Header>
+          <Accordion.Header>Task Variables Filters</Accordion.Header>
           <Accordion.Body>
             <Table striped bordered hover variant="primary">
               <thead>
@@ -229,7 +257,7 @@ function AdminTasklist() {
             </Table></Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="3">
-          <Accordion.Header>Columns</Accordion.Header>
+          <Accordion.Header>Task Columns</Accordion.Header>
           <Accordion.Body>
             <Table striped bordered hover variant="primary">
               <thead>
@@ -294,6 +322,82 @@ function AdminTasklist() {
                 ) : <></>}
               </tbody>
             </Table>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="4">
+          <Accordion.Header>Instances</Accordion.Header>
+          <Accordion.Body>
+            <Form.Check
+              type="switch" checked={tasklistConf.displayIntancesPage} onChange={(evt) => update('displayIntancesPage', evt.target.checked)}
+              label="Display the instance page" />
+            {tasklistConf.displayIntancesPage ?
+              <>
+              <InputGroup className="mb-3">
+                <InputGroup.Text>BpmnProcessId of instances to display</InputGroup.Text>
+                <Form.Control value={tasklistConf.instancesBpmnProcessId} onChange={(evt) => update('instancesBpmnProcessId', evt.target.value)} />
+                </InputGroup>
+                Instances columns
+            <Table striped bordered hover variant="primary">
+              <thead>
+                <tr>
+                  <th><Button variant="success" onClick={addInstancesColumn}><i className="bi bi-plus-circle"></i></Button></th>
+                  <th>Column Label</th>
+                  <th>What to display</th>
+                  <th>Type</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                    {tasklistConf.instancesColumns ? tasklistConf.instancesColumns.map((column: any, index: number) =>
+                  <tr key={index}>
+                    <td>{index}</td>
+                    <td>
+                      <Form.Control value={column.label} onChange={(evt) => changeInstancesColumn(index, 'label', evt.target.value)} />
+                    </td>
+                    <td>
+                      <Form.Check
+                            type="switch" checked={column.variable} onChange={(evt) => changeInstancesColumn(index, 'variable', evt.target.checked)}
+                        label="Display a variable" />
+                      {column.variable ?
+                        <>
+                              <Form.Select value={column.value} onChange={(evt) => changeInstancesColumn(index, 'value', evt.target.value)}>
+                            <option value="customValue">-- Custom value --</option>
+                            {variableNames ? variableNames.map((filterVariable: string, index2: number) =>
+                              <option key={index2} value={filterVariable}>{filterVariable}</option>
+                            ) : <></>}
+                          </Form.Select>
+                          {column.value && column.value == "customValue" ?
+                                <Form.Control value={column.customValue} onChange={(evt) => changeInstancesColumn(index, 'customValue', evt.target.value)} />
+                            : <></>}
+                        </>
+                        :
+                            <Form.Select value={column.value} onChange={(evt) => changeInstancesColumn(index, 'value', evt.target.value)}>
+                          <option value="key">Instance key</option>
+                              <option value="bpmnProcessId">bpmnProcessId</option>
+                              <option value="startDate">Start Date</option>
+                              <option value="state">Instance state</option>
+                              <option value="processDefinitionKey">Process definition key</option>
+                        </Form.Select>
+                      }
+                    </td>
+                    <td>
+                          <Form.Select value={column.type} onChange={(evt) => changeInstancesColumn(index, 'type', evt.target.value)}>
+                        <option value="number">Number</option>
+                        <option value="string">String</option>
+                        <option value="date">Date</option>
+                        <option value="dateTime">Date Time</option>
+                        <option value="list">List</option>
+                        <option value="object">object</option>
+                      </Form.Select>
+
+                    </td>
+                    <td><Button variant="danger" onClick={() => deleteInstancesColumn(index)}><i className="bi bi-trash"></i></Button></td>
+                  </tr>
+                ) : <></>}
+              </tbody>
+                </Table>
+              </>
+              : <></>}
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>

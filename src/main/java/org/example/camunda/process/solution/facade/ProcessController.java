@@ -1,6 +1,7 @@
 package org.example.camunda.process.solution.facade;
 
 import io.camunda.operate.exception.OperateException;
+import io.camunda.operate.model.FlowNodeInstance;
 import io.camunda.operate.model.ProcessDefinition;
 import io.camunda.zeebe.client.ZeebeClient;
 import java.util.ArrayList;
@@ -85,5 +86,20 @@ public class ProcessController {
       }
     }
     return result;
+  }
+
+  @IsAuthenticated
+  @GetMapping("/xml/{processDefinitionKey}")
+  public String getXml(@PathVariable Long processDefinitionKey) throws OperateException {
+
+    return operateService.getProcessDefinitionXmlByKey(processDefinitionKey);
+  }
+
+  @IsAuthenticated
+  @GetMapping("/histo/{processInstanceKey}")
+  public List<FlowNodeInstance> getProcessHistory(@PathVariable Long processInstanceKey)
+      throws OperateException {
+
+    return operateService.getProcessInstanceHistory(processInstanceKey);
   }
 }
