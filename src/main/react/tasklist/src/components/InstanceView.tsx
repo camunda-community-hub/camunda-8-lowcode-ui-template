@@ -76,13 +76,9 @@ function InstanceView(props: IInstanceViewer) {
 
 
   const colorActivity = (navigatedViewer: any, id: string, color: string) => {
-    console.log(navigatedViewer);
-    console.log(id);
     const elementRegistry = navigatedViewer.get('elementRegistry');
     const graphicsFactory = navigatedViewer.get('graphicsFactory');
     const element = elementRegistry.get(id);
-    console.log(elementRegistry);
-    console.log(element);
     if (element?.di !== undefined) {
       element.di.set('stroke', color);
 

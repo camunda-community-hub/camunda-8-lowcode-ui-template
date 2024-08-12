@@ -1,0 +1,24 @@
+{
+  "bpmnProcessIdMessages" : {
+    "camunda-process" : [ ],
+    "customer_onboarding_en" : [ {
+      "id" : "Event_0j2jtmr",
+      "enabled" : true,
+      "bpmnProcessId" : "customer_onboarding_en",
+      "elementId" : null,
+      "message" : "REASSIGN",
+      "name" : "Reassign case",
+      "formKey" : null,
+      "correlationKey" : "=applicationNumber"
+    }, {
+      "id" : "BoundaryEvent_1i1spfe",
+      "enabled" : true,
+      "bpmnProcessId" : "customer_onboarding_en",
+      "elementId" : "UserTask_DecideOnApplication",
+      "message" : "Message_DocumentRequested",
+      "name" : "document needed",
+      "formKey" : null,
+      "correlationKey" : "= documentReferenceId"
+    } ]
+  }
+}

@@ -2,12 +2,22 @@ package org.example.camunda.process.solution.facade.dto.casemgmt;
 
 public class MessageConf {
 
+  private String id;
   private boolean enabled;
   private String bpmnProcessId;
   private String elementId;
   private String message;
   private String name;
   private String formKey;
+  private String correlationKey;
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public boolean isEnabled() {
     return enabled;
@@ -55,5 +65,13 @@ public class MessageConf {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getCorrelationKey() {
+    return correlationKey;
+  }
+
+  public void setCorrelationKey(String correlationKey) {
+    this.correlationKey = correlationKey;
   }
 }
