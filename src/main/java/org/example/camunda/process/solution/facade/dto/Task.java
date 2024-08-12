@@ -1,6 +1,7 @@
 package org.example.camunda.process.solution.facade.dto;
 
 import io.camunda.tasklist.dto.TaskState;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,8 @@ public class Task {
   private String processDefinitionKey;
 
   private String taskDefinitionId;
+
+  private OffsetDateTime dueDate;
 
   public String getId() {
     return id;
@@ -173,5 +176,13 @@ public class Task {
 
   public void setTaskDefinitionId(String taskDefinitionId) {
     this.taskDefinitionId = taskDefinitionId;
+  }
+
+  public OffsetDateTime getDueDate() {
+    return dueDate;
+  }
+
+  public void setDueDate(OffsetDateTime dueDate) {
+    this.dueDate = dueDate;
   }
 }

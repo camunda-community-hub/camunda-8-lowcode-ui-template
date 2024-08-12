@@ -80,8 +80,15 @@ table.taskListContainer.table th:last-child {
   overflow: auto;
   height: calc(100vh - 100px);
 }
-
-.pagination {
+  .tasklist tr td.danger {
+    color:red;
+    font-weight: bold;
+  }
+  .tasklist tr td.warning {
+    color: orange;
+    font-weight: bold;
+  }
+  .pagination {
   justify-content: space-between;
   display: flex;
   width: 100%;

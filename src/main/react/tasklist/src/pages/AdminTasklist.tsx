@@ -298,6 +298,7 @@ function AdminTasklist() {
                           <option value="name">Task Name</option>
                           <option value="processName">Process Name</option>
                           <option value="creationDate">Creation Date</option>
+                          <option value="dueDate">Due date</option>
                           <option value="assignee">Assignee</option>
                           <option value="candidateGroups">Candidate groups</option>
                           <option value="taskState">Task state</option>

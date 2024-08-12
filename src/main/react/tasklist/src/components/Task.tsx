@@ -49,17 +49,30 @@ function Task(taskParam: { task: any }) {
     } else {
       value = task[key];
     }
-    if (column.type == "date" && tasklistConf.formatDate && tasklistConf.formatDate != "") {
+    if (value && column.type == "date" && tasklistConf.formatDate && tasklistConf.formatDate != "") {
       return moment(value).format(tasklistConf.formatDate);
     }
-    if (column.type == "dateTime" && tasklistConf.formatDate && tasklistConf.formatDate != "") {
+    if (value && column.type == "dateTime" && tasklistConf.formatDate && tasklistConf.formatDate != "") {
       return moment(value).format(tasklistConf.formatDatetime);
     }
-    if (column.type == "object") {
+    if (value && column.type == "object") {
       return JSON.stringify(value);
     }
     return value;
   }
+  const className = (column: any): string => {
+    if (column.value == 'dueDate') {
+      let value = task.dueDate;
+      if (value) {
+        let valDate = new Date(value);
+        if (valDate < new Date()) { return 'danger'; }
+        if (valDate.toISOString().substring(0, 10) == new Date().toISOString().substring(0, 10)) { return 'warning'; }
+       
+      }
+    }
+    return '';
+  }
+
 
   return (
     <tr className={getClassName()} onClick={openTask}>
@@ -71,7 +84,7 @@ function Task(taskParam: { task: any }) {
         <i className="bi bi-person-circle text-secondary"></i>
       </OverlayTrigger> : <></>}</td>
       {tasklistConf && tasklistConf.columns ? tasklistConf.columns.map((column: any, index: number) =>
-        <td key={ index }>{display(column) }
+        <td key={index} className={className(column)}>{display(column)}
         </td>)
         : <></>}
     </tr>

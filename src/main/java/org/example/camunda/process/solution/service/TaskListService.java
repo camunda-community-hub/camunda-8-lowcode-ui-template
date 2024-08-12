@@ -8,6 +8,9 @@ import io.camunda.tasklist.dto.TaskList;
 import io.camunda.tasklist.dto.TaskState;
 import io.camunda.tasklist.dto.Variable;
 import io.camunda.tasklist.exception.TaskListException;
+import io.camunda.tasklist.generated.model.TaskOrderBy;
+import io.camunda.tasklist.generated.model.TaskOrderBy.FieldEnum;
+import io.camunda.tasklist.generated.model.TaskOrderBy.OrderEnum;
 import io.camunda.zeebe.client.ZeebeClient;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,6 +122,10 @@ public class TaskListService {
       tasklistSearch.setState(TaskState.fromJson(taskSearch.getState()));
     }
     tasklistSearch.setCandidateGroup(taskSearch.getGroup());
+    pagination.setSort(
+        List.of(
+            new TaskOrderBy().field(FieldEnum.DUEDATE).order(OrderEnum.ASC),
+            new TaskOrderBy().field(FieldEnum.CREATIONTIME).order(OrderEnum.ASC)));
     tasklistSearch.setPagination(pagination);
     if (fetchVariables != null) {
       for (String var : fetchVariables) {

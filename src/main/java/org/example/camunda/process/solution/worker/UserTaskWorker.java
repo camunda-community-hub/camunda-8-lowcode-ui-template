@@ -8,6 +8,8 @@ import io.camunda.zeebe.spring.client.annotation.CustomHeaders;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.VariablesAsType;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,11 @@ public class UserTaskWorker {
 
       String formKey = headers.get("io.camunda.zeebe:formKey");
       task.setFormKey(formKey);
+      if (headers.containsKey("io.camunda.zeebe:dueDate")) {
+        task.setDueDate(
+            OffsetDateTime.parse(
+                headers.get("io.camunda.zeebe:dueDate"), DateTimeFormatter.ISO_ZONED_DATE_TIME));
+      }
 
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
       String creationTime = sdf.format(new Date());
