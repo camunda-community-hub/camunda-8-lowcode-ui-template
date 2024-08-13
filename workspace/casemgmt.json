@@ -8,7 +8,7 @@
       "elementId" : null,
       "message" : "REASSIGN",
       "name" : "Reassign case",
-      "formKey" : null,
+      "formKey" : "NewAssigneeForm",
       "correlationKey" : "=applicationNumber"
     }, {
       "id" : "BoundaryEvent_1i1spfe",

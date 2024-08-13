@@ -12,6 +12,8 @@ public class Task {
 
   private String name;
 
+  private String processInstanceKey;
+
   private String processName;
 
   private String assignee;
@@ -56,6 +58,14 @@ public class Task {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getProcessInstanceKey() {
+    return processInstanceKey;
+  }
+
+  public void setProcessInstanceKey(String processInstanceKey) {
+    this.processInstanceKey = processInstanceKey;
   }
 
   public String getProcessName() {

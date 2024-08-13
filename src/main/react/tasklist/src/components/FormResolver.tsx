@@ -21,7 +21,7 @@ const getFormFinder = (formViewer: IFormViewer): FC<IFormViewer> => {
 
 function FormResolver(formViewer: IFormViewer) {
   const FormFinder: FC<IFormViewer> = getFormFinder(formViewer);
-  return (<FormFinder formKey={formViewer.formKey} schema={formViewer.schema} variables={formViewer.variables} disabled={formViewer.disabled}></FormFinder>)
+  return (<FormFinder id={formViewer.id} formKey={formViewer.formKey} schema={formViewer.schema} variables={formViewer.variables} disabled={formViewer.disabled}></FormFinder>)
 }
 
 export default FormResolver;

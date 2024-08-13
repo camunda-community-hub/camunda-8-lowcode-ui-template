@@ -183,6 +183,18 @@ public class OperateService {
                 .build());
   }
 
+  public Map<String, Object> getVariablesAsMap(Long processInstanceKey) throws OperateException {
+    return mapVariables(getVariables(processInstanceKey));
+  }
+
+  public Map<String, Object> mapVariables(List<Variable> variables) {
+    Map<String, Object> result = new HashMap<>();
+    for (Variable var : variables) {
+      result.put(var.getName(), var.getValue());
+    }
+    return result;
+  }
+
   public Map<Long, Map<String, Object>> getVariables(List<ProcessInstance> processInstances)
       throws OperateException {
     try {
@@ -247,5 +259,14 @@ public class OperateService {
             .build();
 
     return getCamundaOperateClient().searchFlowNodeInstances(procInstQuery);
+  }
+
+  public ProcessDefinition getProcessDefinition(Long processDefinitionKey) throws OperateException {
+    return getCamundaOperateClient().getProcessDefinition(processDefinitionKey);
+  }
+
+  public ProcessInstance getProcessInstance(Long processInstanceKey) throws OperateException {
+
+    return getCamundaOperateClient().getProcessInstance(processInstanceKey);
   }
 }

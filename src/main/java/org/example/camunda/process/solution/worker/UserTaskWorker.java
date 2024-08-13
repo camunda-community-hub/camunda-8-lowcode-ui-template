@@ -46,7 +46,7 @@ public class UserTaskWorker {
       Task task = new Task();
 
       task.setVariables(variables);
-
+      task.setProcessInstanceKey(String.valueOf(job.getProcessInstanceKey()));
       String processDefinitionKey = Long.toString(job.getProcessDefinitionKey());
       task.setProcessDefinitionKey(processDefinitionKey);
 

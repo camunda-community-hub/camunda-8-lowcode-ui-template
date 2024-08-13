@@ -18,7 +18,7 @@ function FormIoViewer(formViewer: IFormViewer) {
   const dispatch = useDispatch();
 
   const loadFormIo = async () => {
-    formIoForm = await Formio.createForm(document.getElementById('formio'), formViewer.schema!);
+    formIoForm = await Formio.createForm(document.getElementById(formViewer.id), formViewer.schema!);
     formIoForm.submission = {
       data: formViewer.variables,
     };
@@ -43,7 +43,7 @@ function FormIoViewer(formViewer: IFormViewer) {
 
   return (
     <div>
-      <div id="formio"></div>
+      <div id={formViewer.id} ></div>
       <div className="ms-2 me-2 mb-2 d-flex justify-content-between">
         <button disabled={formViewer.disabled} type="button" className="btn btn-primary" onClick={submit}><i className="bi bi-send"></i> {t("Submit")}</button>
       </div>

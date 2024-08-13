@@ -12,7 +12,7 @@ function InstantiationForm(props: any) {
 	currentProcess ?
 	  <div className="card taskform">
 		<h5 className="card-title bg-primary text-light" > {currentProcess.name}</h5>
-        <FormResolver formKey={null} schema={currentSchema} variables={undefined} disabled={false}></FormResolver>
+        <FormResolver id="instanciation-form" formKey={null} schema={currentSchema} variables={undefined} disabled={false}></FormResolver>
 	  </div> : <div />
   )
   

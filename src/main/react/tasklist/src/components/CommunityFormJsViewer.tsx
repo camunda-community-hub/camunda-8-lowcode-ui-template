@@ -20,7 +20,7 @@ function CommunityFormJsViewer(formViewer: IFormViewer) {
   const [bpmnForm, setBpmnForm] = useState<Form | null>(null);
 
   useEffect(() => {
-    const container = document.getElementById('task-form');
+    const container = document.getElementById(formViewer.id);
     if (container && formViewer.schema) {
       container.innerHTML = '';
 
@@ -62,7 +62,7 @@ function CommunityFormJsViewer(formViewer: IFormViewer) {
 
   return (
     <div>
-      <div id="task-form"></div>
+      <div id={formViewer.id}></div>
       <div className="ms-2 me-2 mb-2 d-flex justify-content-between">
         <button disabled={formViewer.disabled} type="button" className="btn btn-primary" onClick={submit}><i className="bi bi-send"></i> {t("Submit")}</button>
       </div>

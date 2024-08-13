@@ -5,6 +5,7 @@ import authService from '../service/AuthService';
 import taskService from '../service/TaskService';
 import FormResolver from './FormResolver';
 import { OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
+import CaseMgmtComponent from './CaseMgmtComponent';
 
 import { useTranslation } from "react-i18next";
 
@@ -37,20 +38,22 @@ function TaskForm(props: any) {
           overlay={renderAssigneeTooltip}
         >
           <i className="bi bi-person-circle "></i>
-        </OverlayTrigger> : <></>}</h5>
-        <div className="btnClaimUnClaim">
+          </OverlayTrigger> : <></>}</h5>
+          
+          <div className="btnClaimUnClaim d-flex flex-row-reverse">
+            {enlarged ?
+              <Button variant="outline-light" className="enlarge mx-2" onClick={() => setEnlarged(false)}><i className="bi bi-arrows-angle-contract"></i></Button>
+              :
+              <Button variant="outline-light" className="enlarge mx-2" onClick={() => setEnlarged(true)}><i className="bi bi-arrows-angle-expand"></i></Button>
+            }
             {currentTask.assignee ?
               <Button variant="dark" onClick={unclaim}> {t("Unclaim")}</Button>
               :
               <Button variant="dark" onClick={claim}>{t("Claim")}</Button>
             }
-            {enlarged ?
-              <Button variant="outline-light" className="enlarge" onClick={() => setEnlarged(false)}><i className="bi bi-arrows-angle-contract"></i></Button>
-              :
-              <Button variant="outline-light" className="enlarge" onClick={() => setEnlarged(true)}><i className="bi bi-arrows-angle-expand"></i></Button>
-            }
+            <CaseMgmtComponent type='task' taskEltId={currentTask.taskDefinitionId} processDefinitionKey={currentTask.processDefinitionKey} bpmnProcessId={null} processInstanceKey={currentTask.processInstanceKey} variables={currentTask.variables} />
           </div>
-        <FormResolver formKey={currentTask.formKey} schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormResolver>
+        <FormResolver id="task-form" formKey={currentTask.formKey} schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormResolver>
 	  </div></div> : <div />
   )
   

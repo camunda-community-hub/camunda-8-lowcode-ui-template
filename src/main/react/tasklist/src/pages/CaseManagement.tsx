@@ -140,9 +140,7 @@ function CaseManagement() {
   }
 
   const saveConf = (conf: any) => {
-    //setCaseMgmtConf(conf);
     api.post('/casemgmt', conf).then((response: any) => {
-      //setCaseMgmtConf(response.data);
       setCaseMgmtConf(response.data);
 
     }).catch((error: any) => {

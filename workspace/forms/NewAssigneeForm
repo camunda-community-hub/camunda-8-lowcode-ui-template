@@ -1,0 +1,28 @@
+{
+  "name" : "NewAssigneeForm",
+  "modified" : 1723536211698,
+  "schema" : {
+    "components" : [ {
+      "values" : [ {
+        "label" : "Value",
+        "value" : "value"
+      } ],
+      "label" : "New assignee",
+      "type" : "select",
+      "id" : "Field_1emgx61",
+      "key" : "assignee",
+      "dataSource" : "http://localhost:8080/api/simul/users"
+    } ],
+    "schemaVersion" : 4,
+    "type" : "default",
+    "id" : "Form_2051349",
+    "executionPlatform" : "Camunda Cloud",
+    "executionPlatformVersion" : "1.1",
+    "exporter" : {
+      "name" : "Camunda Modeler",
+      "version" : "5.0.0"
+    }
+  },
+  "previewData" : { },
+  "generator" : "extendedFormJs"
+}

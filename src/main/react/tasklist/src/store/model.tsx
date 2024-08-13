@@ -30,6 +30,7 @@ export interface ITask {
   variables: any;
   sortValues: string[];
   processDefinitionKey: string;
+  processInstanceKey: string;
   taskDefinitionId: string;
 }
 
@@ -60,6 +61,7 @@ export interface ITaskSearch {
 }
 
 export interface IFormViewer {
+  id: string;
   formKey: string | null;
   schema: any | null;
   variables: any | undefined;
@@ -69,8 +71,18 @@ export interface IFormViewer {
 export interface IInstanceViewer {
   instancekey: number;
   processDefinitionKey: number;
+  variables: any;
 }
 
+
+export interface CaseMgmtViewer {
+  type: string;
+  taskEltId: string | null;
+  bpmnProcessId: string|null;
+  processInstanceKey: number;
+  processDefinitionKey: string | null;
+  variables: any;
+}
 
 export interface Organization {
   oldname: string;

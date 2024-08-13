@@ -1,6 +1,6 @@
 import store, { AppThunk } from '../store';
 import formService from './FormService';
-import { setTasklistConf, remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, setTask, setTaskSearch, before, after } from '../store/features/processes/slice';
+import { setTasklistConf, remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, setTask, setTaskSearch, before, after, setMessagesConf } from '../store/features/processes/slice';
 import { ITask, ITaskSearch } from '../store/model';
 import api from './api';
 import { env } from '../env';
@@ -26,15 +26,15 @@ export class TaskService {
   }
 
   saveTasklistConf = (tasklistConf: any): AppThunk => async dispatch => {
-      api.post('/tasklistconf', tasklistConf).then(response => {
-        dispatch(setTasklistConf(response.data));
-      }).catch(error => {
-        alert(error.message);
-      })
+    api.post('/tasklistconf', tasklistConf).then(response => {
+      dispatch(setTasklistConf(response.data));
+    }).catch(error => {
+      alert(error.message);
+    })
   }
 
   subscribeTasks = (username: string): AppThunk => async dispatch => {
-    this.taskSource = new EventSource(env.backend +"/api/jobKey/tasks/" + username);
+    this.taskSource = new EventSource(env.backend + "/api/jobKey/tasks/" + username);
     this.taskSource.onmessage = event => {
       let task = JSON.parse(event.data);
       //dispatch(taskService.loadJobKeyForm(task));
@@ -83,6 +83,7 @@ export class TaskService {
         task.variables = data;
       }
       dispatch(formService.loadForm(task));
+      //dispatch(this.loadMessagesConf(task));
 
       if (callback) {
         callback();
@@ -91,32 +92,37 @@ export class TaskService {
     dispatch(setTask(task));
   };
 
+  loadMessagesConf = (task: ITask): AppThunk => async dispatch => {
+    const { data } = await api.get<any[]>('/casemgmt/messages/' + task.processDefinitionKey + '/' + task.taskDefinitionId);
+    dispatch(setMessagesConf(data));
+  }
+
   getCurrentTask = (): ITask | null => {
     return store.getState().process.currentTask;
   }
 
   fetchTasks = (): AppThunk => async dispatch => {
-    
-      try {
-        dispatch(remoteLoading());
-        const { data } = await api.post<ITask[]>('/tasks/search', store.getState().process.taskSearch);
-        this.tasks = data;
-        dispatch(this.storeTasks(this.tasks));
-      } catch (err:any) {
-        dispatch(remoteLoadingFail(err.toString()));
-      }
+
+    try {
+      dispatch(remoteLoading());
+      const { data } = await api.post<ITask[]>('/tasks/search', store.getState().process.taskSearch);
+      this.tasks = data;
+      dispatch(this.storeTasks(this.tasks));
+    } catch (err: any) {
+      dispatch(remoteLoadingFail(err.toString()));
+    }
   }
-  
+
   claim = (): AppThunk => async dispatch => {
     if (store.getState().process.currentTask!.jobKey) {
       dispatch(assignTask(store.getState().auth.data!.username));
     } else {
-    let url = '/tasks/' + store.getState().process.currentTask!.id + '/claim';
-    api.get(url).then(response => {
-      dispatch(assignTask(store.getState().auth.data!.username));
-    }).catch(error => {
-      alert(error.message);
-    })
+      let url = '/tasks/' + store.getState().process.currentTask!.id + '/claim';
+      api.get(url).then(response => {
+        dispatch(assignTask(store.getState().auth.data!.username));
+      }).catch(error => {
+        alert(error.message);
+      })
     }
   }
 

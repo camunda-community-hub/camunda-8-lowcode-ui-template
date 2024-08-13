@@ -9,6 +9,7 @@ import { Form, InputGroup, Table, Button, Row, Col, Accordion } from 'react-boot
 import { useTranslation } from "react-i18next";
 import { AxiosResponse } from 'axios';
 import taskService from '../service/TaskService';
+import CaseMgmtComponent from './CaseMgmtComponent';
 
 function InstanceView(props: IInstanceViewer) {
   const { t } = useTranslation();
@@ -18,19 +19,22 @@ function InstanceView(props: IInstanceViewer) {
   const [histo, setHisto] = useState<any[] | null>(null);
   const [tasks, setTasks] = useState<ITask[] | null>(null);
   const [state, setState] = useState("CREATED");
+  const tasklistConf = useSelector((state: any) => state.process.tasklistConf);
 
   useEffect(() => {
-    api.get('/process/xml/' + props.processDefinitionKey).then((response: any) => {
-      setXml(response.data);
-    }).catch((error: any) => {
-      alert(error.message);
-    })
-    api.get('/process/histo/' + props.instancekey).then((response: any) => {
-      setHisto(response.data);
-    }).catch((error: any) => {
-      alert(error.message);
-    })
-    loadTasks();
+    if (props && props.instancekey) {
+      api.get('/process/xml/' + props.processDefinitionKey).then((response: any) => {
+        setXml(response.data);
+      }).catch((error: any) => {
+        alert(error.message);
+      })
+      api.get('/process/histo/' + props.instancekey).then((response: any) => {
+        setHisto(response.data);
+      }).catch((error: any) => {
+        alert(error.message);
+      })
+      loadTasks();
+    }
   }, [props.instancekey]);
 
   useEffect(() => {
@@ -129,6 +133,7 @@ function InstanceView(props: IInstanceViewer) {
 
         </Table>
             : <></>}
+          <CaseMgmtComponent type='instance' taskEltId={null} processDefinitionKey={null} bpmnProcessId={tasklistConf.instancesBpmnProcessId} processInstanceKey={props.instancekey} variables={props.variables} />
           </Accordion.Body>
       </Accordion.Item>
     </Accordion>

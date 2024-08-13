@@ -44,7 +44,7 @@ public class CaseMgmtService {
   }
 
   private List<MessageConf> getByBpmnProcessId(String bpmnProcessId) throws IOException {
-    return INSTANCE.getMessagesConf(bpmnProcessId);
+    return get().getMessagesConf(bpmnProcessId);
   }
 
   public List<MessageConf> getMessagesConf(String bpmnProcessId) throws IOException {
@@ -55,10 +55,21 @@ public class CaseMgmtService {
       throws IOException {
     List<MessageConf> result = new ArrayList<>();
     for (MessageConf conf : getByBpmnProcessId(bpmnProcessId)) {
-      if (conf.getElementId() == null || elementId.equals(conf.getElementId())) {
+      if (conf.isEnabled()
+          && (conf.getElementId() == null || elementId.equals(conf.getElementId()))) {
         result.add(conf);
       }
     }
     return result;
+  }
+
+  public MessageConf getConfByMessage(String bpmnProcessId, String message) throws IOException {
+
+    for (MessageConf conf : getByBpmnProcessId(bpmnProcessId)) {
+      if (conf.isEnabled() && message.equals(conf.getMessage())) {
+        return conf;
+      }
+    }
+    return null;
   }
 }

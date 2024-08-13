@@ -12,6 +12,7 @@ export interface ProcessListState {
   currentFormSchema: string | null;
   loading: boolean;
   error: string | null;
+  messagesConf: any[];
 }
 
 export const initialState: ProcessListState = {
@@ -25,6 +26,7 @@ export const initialState: ProcessListState = {
   currentFormSchema: null,
   loading: false,
   error: null,
+  messagesConf: []
 };
 
 const serverListSlice = createSlice({
@@ -135,7 +137,13 @@ const serverListSlice = createSlice({
     },
     removeCurrentTask: (state: ProcessListState) => {
       state.currentTask = null;
-    }
+    },
+    setMessagesConf: (
+      state: ProcessListState,
+      action: PayloadAction<any[]>
+    ) => {
+      state.messagesConf = action.payload;
+    },
   },
 });
 
@@ -154,7 +162,8 @@ export const {
   setTaskSearch,
   before,
   after,
-  setTasklistConf
+  setTasklistConf,
+  setMessagesConf
 } = serverListSlice.actions;
 
 export default serverListSlice.reducer;

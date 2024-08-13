@@ -12,14 +12,13 @@ import { useTranslation } from "react-i18next";
 function FormJsViewer(formViewer: IFormViewer) {
   const { t } = useTranslation();
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf)
-  const task = useSelector((state: any) => state.process.currentTask)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let errors: string[] = [];
   const [bpmnForm, setBpmnForm] = useState<Form | null>(null);
 
   useEffect(() => {
-    const container = document.getElementById('task-form');
+    const container = document.getElementById(formViewer.id);
     if (container && formViewer.schema) {
       container.innerHTML = '';
 
@@ -29,7 +28,6 @@ function FormJsViewer(formViewer: IFormViewer) {
       }
       bpmnForm.importSchema(formViewer.schema, formViewer.variables).then(
         function (result: any) {
-          console.log(result);
         });
       setBpmnForm(bpmnForm);
     }
@@ -61,7 +59,7 @@ function FormJsViewer(formViewer: IFormViewer) {
 
   return (
     <div>
-      <div id="task-form"></div>
+      <div id={formViewer.id}></div>
       <div className="ms-2 me-2 mb-2 d-flex justify-content-between">
         <button disabled={formViewer.disabled} type="button" className="btn btn-primary" onClick={submit}><i className="bi bi-send"></i> {t("Submit")}</button>
       </div>

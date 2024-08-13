@@ -21,6 +21,15 @@ export class FormService {
     return null;
   }
 
+  getMessageForm = async (formKey: string):Promise<any> => {
+    if (!this.customFormExists(formKey)) {
+      let ln = localStorage.getItem('camundLocale');
+      const { data } = await api.get('/casemgmt/form/' + formKey+'?ln='+ln);
+      return data;
+    }
+    return null;
+  }
+
   loadForm = (task: ITask): AppThunk => async dispatch => {
     if (task.formKey === "processVariableFormKey") {
       task.formKey = task.variables.formKey;

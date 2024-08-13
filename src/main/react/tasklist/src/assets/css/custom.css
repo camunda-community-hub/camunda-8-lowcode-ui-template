@@ -133,7 +133,7 @@ span .assignedTo {
   font-size: smaller;
 }
 .btnClaimUnClaim {
-  width: 200px;
+  width: 300px;
   position: absolute;
   right: 15px;
   text-align: right;
@@ -224,6 +224,10 @@ span .assignedTo {
 .userGroupList {
   flex: 1 1;
 }
+.modal-body {
+  overflow: auto;
+}
+
 @media only screen and (max-width: 600px) {
   .fileViewer .modal-dialog {
     max-width: 100vw;

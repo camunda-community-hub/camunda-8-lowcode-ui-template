@@ -193,6 +193,6 @@
     flex: 1 1 auto;
     padding: 1rem;
     position: relative;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 200px);
 	border:0px;
 }
