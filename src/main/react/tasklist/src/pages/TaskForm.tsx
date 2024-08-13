@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { } from 'redux-thunk/extend-redux';
+import api from '../service/api';
 import authService from '../service/AuthService';
 import taskService from '../service/TaskService';
 import FormResolver from '../components/FormResolver';
-import { OverlayTrigger, Tooltip, Button, Dropdown, Modal, Alert } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip, Button, Dropdown, Modal, Alert, Row, Col, InputGroup, Form } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import CaseMgmtComponent from '../components/CaseMgmtComponent';
+import Documents from '../components/Documents';
 
 function TaskForm(props: any) {
   const { t } = useTranslation();
@@ -15,6 +17,8 @@ function TaskForm(props: any) {
   const currentSchema = useSelector((state: any) => state.process.currentFormSchema)
   const currentTask = useSelector((state: any) => state.process.currentTask)
   const disabled = !currentTask || !currentTask.assignee || currentTask.assignee != authService.getUser()!.username;
+
+
   const claim = () => {
     dispatch(taskService.claim());
   }
@@ -26,6 +30,8 @@ function TaskForm(props: any) {
       {currentTask.assignee}
     </Tooltip>
   );
+
+
 
   return (
     currentSchema && currentTask ?
@@ -46,9 +52,9 @@ function TaskForm(props: any) {
             }
             <CaseMgmtComponent type='task' taskEltId={currentTask.taskDefinitionId} processDefinitionKey={currentTask.processDefinitionKey} bpmnProcessId={null} processInstanceKey={currentTask.processInstanceKey} variables={currentTask.variables} />
           </div>
-          <FormResolver id="main-form" formKey={currentTask.formKey} schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormResolver>
+          <FormResolver id="page-form" formKey={currentTask.formKey} schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormResolver>
         </div>
-        
+        <Documents />
       </div> : <div />
   )
 

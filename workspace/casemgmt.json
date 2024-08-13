@@ -17,7 +17,7 @@
       "elementId" : "UserTask_DecideOnApplication",
       "message" : "Message_DocumentRequested",
       "name" : "document needed",
-      "formKey" : null,
+      "formKey" : "RequestDocumentsForm",
       "correlationKey" : "= documentReferenceId"
     } ]
   }

@@ -1,6 +1,7 @@
 import store, { AppThunk } from '../store';
 import formService from './FormService';
 import { setTasklistConf, remoteLoading, assignTask, unassignTask, remoteTasksLoadingSuccess, remoteLoadingFail, setTask, setTaskSearch, before, after, setMessagesConf } from '../store/features/processes/slice';
+import { setDocuments }  from '../store/features/docs/slice';
 import { ITask, ITaskSearch } from '../store/model';
 import api from './api';
 import { env } from '../env';
@@ -76,6 +77,8 @@ export class TaskService {
     dispatch(after());
   }
   setTask = (task: ITask | null, callback?: any): AppThunk => async dispatch => {
+
+    dispatch(this.loadDocs([]));
     if (task) {
       task = Object.assign({}, task);
       if (!task.jobKey) {
@@ -83,6 +86,9 @@ export class TaskService {
         task.variables = data;
       }
       dispatch(formService.loadForm(task));
+      if (task.variables.documents && task.variables.documents.length > 0) {
+        dispatch(this.loadDocs(task.variables.documents));
+      }
       //dispatch(this.loadMessagesConf(task));
 
       if (callback) {
@@ -95,6 +101,10 @@ export class TaskService {
   loadMessagesConf = (task: ITask): AppThunk => async dispatch => {
     const { data } = await api.get<any[]>('/casemgmt/messages/' + task.processDefinitionKey + '/' + task.taskDefinitionId);
     dispatch(setMessagesConf(data));
+  }
+
+  loadDocs = (docs: any[]): AppThunk => async dispatch => {
+    dispatch(setDocuments(docs));
   }
 
   getCurrentTask = (): ITask | null => {
@@ -140,6 +150,9 @@ export class TaskService {
   }
 
   submitTask = (data: any, callback?: any): AppThunk => async dispatch => {
+    if (store.getState().documents.docs.length > 0) {
+      data.documents = store.getState().documents.docs;
+    }
     let url = '/tasks/' + store.getState().process.currentTask!.id
     if (store.getState().process.currentTask!.jobKey) {
       url = '/jobKey/' + store.getState().process.currentTask!.jobKey;

@@ -42,4 +42,7 @@ public class AssigneeWorker {
       return null;
     }
   }
+
+  @JobWorker
+  public void mock() {}
 }

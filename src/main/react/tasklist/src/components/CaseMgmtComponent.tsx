@@ -27,7 +27,6 @@ function CaseMgmtComponent(props: CaseMgmtViewer) {
       if (props.type == "task") {
         api.get<any>('/casemgmt/messages/' + props.processDefinitionKey + '/' + props.taskEltId).then(response => {
           setMessagesConf(response.data);
-          console.log(response.data);
         }).catch(error => {
           alert(error.message);
         });

@@ -1,0 +1,69 @@
+{
+  "name" : "RequestDocumentsForm",
+  "modified" : 1723555518315,
+  "schema" : {
+    "components" : [ {
+      "text" : "Please provide the list of documents required",
+      "label" : "Text view",
+      "type" : "text",
+      "layout" : {
+        "row" : "Row_1wa03lc",
+        "columns" : null
+      },
+      "id" : "Field_1e7krf2"
+    }, {
+      "components" : [ {
+        "values" : [ {
+          "label" : "National Id",
+          "value" : "nationalId"
+        }, {
+          "label" : "Payslip",
+          "value" : "payslip"
+        }, {
+          "label" : "Proof of address",
+          "value" : "address"
+        } ],
+        "label" : "Type",
+        "type" : "select",
+        "layout" : {
+          "row" : "Row_1qviqcx",
+          "columns" : 6
+        },
+        "id" : "Field_1emabcd",
+        "key" : "type"
+      }, {
+        "label" : "Comments",
+        "type" : "textfield",
+        "layout" : {
+          "row" : "Row_1qviqcx",
+          "columns" : null
+        },
+        "id" : "Field_1pr0age",
+        "key" : "comment"
+      } ],
+      "showOutline" : true,
+      "isRepeating" : true,
+      "allowAddRemove" : true,
+      "defaultRepetitions" : 1,
+      "label" : "Documents",
+      "type" : "dynamiclist",
+      "layout" : {
+        "row" : "Row_1vhvl7k",
+        "columns" : null
+      },
+      "id" : "Field_01hc8mj",
+      "path" : "documents"
+    } ],
+    "schemaVersion" : 16,
+    "type" : "default",
+    "id" : "Form_8148110",
+    "executionPlatform" : "Camunda Cloud",
+    "executionPlatformVersion" : "1.1",
+    "exporter" : {
+      "name" : "Camunda Modeler",
+      "version" : "5.0.0"
+    }
+  },
+  "previewData" : { },
+  "generator" : "formJs"
+}

@@ -9,6 +9,7 @@ import adminMailsReducer from './features/adminMails/slice';
 import adminThemesReducer from './features/adminThemes/slice';
 import translationsReducer from './features/translations/slice';
 import workersReducer from './features/workers/slice';
+import docsReducer from './features/docs/slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   adminMails: adminMailsReducer,
   adminThemes: adminThemesReducer,
   translations: translationsReducer,
+  documents: docsReducer,
   workers: workersReducer
 });
 

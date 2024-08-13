@@ -1,0 +1,24 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "ef5cbfc"
+  },
+  "schemaVersion": 16,
+  "id": "user-upload-its-documents-06v2xlx",
+  "components": [
+    {
+      "label": "User comments",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_10u9c1q",
+        "columns": null
+      },
+      "id": "Field_109rbrp",
+      "key": "userComments",
+      "description": "please provide any comments you may have"
+    }
+  ],
+  "type": "default"
+}

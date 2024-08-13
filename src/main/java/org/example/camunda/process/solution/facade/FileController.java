@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.example.camunda.process.solution.facade.dto.FileHolder;
+import org.example.camunda.process.solution.service.InstanceFileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +37,8 @@ public class FileController {
 
   Map<String, FileHolder> files = new HashMap<>();
 
+  @Autowired InstanceFileService instanceFileService;
+
   @PostMapping(
       value = "upload",
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
@@ -58,6 +62,18 @@ public class FileController {
       return fileHolder;
     }
     return null;
+  }
+
+  @PostMapping(
+      value = "docUpload",
+      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public Map<String, Object> upload(
+      @RequestPart("body") Map<String, Object> variables,
+      @RequestPart(name = "files", required = false) List<MultipartFile> files)
+      throws IOException {
+
+    return instanceFileService.handleFiles(variables, files);
   }
 
   @GetMapping("serve/{fileReference}")
