@@ -1,9 +1,20 @@
 {
   "name" : "ACME",
-  "modified" : 1723464371694,
+  "modified" : 1723622622429,
   "active" : true,
   "cryptPassword" : true,
   "users" : [ {
+    "username" : "chris",
+    "password" : {
+      "value" : "$2a$10$8PMTbJwYesPVofc1r6N8GuJ91ZoEhqX0Lvpk3v895YKCw1IJd073C",
+      "encrypted" : true
+    },
+    "firstname" : "Christophe",
+    "lastname" : "D",
+    "email" : null,
+    "profile" : "user",
+    "groups" : [ "Finance", "HR" ]
+  }, {
     "username" : "demo",
     "password" : {
       "value" : "$2a$10$Car0YwUe13mXBgCXQSdQ7OzcVQemactINCHZG6RtwV5hGNxmNbJbO",
@@ -14,6 +25,17 @@
     "email" : "christophe.dame@camunda.com",
     "profile" : "Admin",
     "groups" : [ "HR", "IT" ]
+  }, {
+    "username" : "falko",
+    "password" : {
+      "value" : "$2a$10$LtmnJh1V6rBP.Ch6DplFt.xvle6.nrMWgh1LrPoljUrKSmXmskDFy",
+      "encrypted" : true
+    },
+    "firstname" : "Falko",
+    "lastname" : "M",
+    "email" : null,
+    "profile" : "user",
+    "groups" : [ "Sales" ]
   } ],
   "groups" : [ "Sales", "Finance", "HR", "IT" ]
 }

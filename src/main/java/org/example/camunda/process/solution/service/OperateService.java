@@ -178,8 +178,12 @@ public class OperateService {
     return getCamundaOperateClient()
         .searchVariables(
             new SearchQuery.Builder()
-                .filter(VariableFilter.builder().processInstanceKey(processInstanceKey).build())
-                .size(1000)
+                .filter(
+                    VariableFilter.builder()
+                        .processInstanceKey(processInstanceKey)
+                        .scopeKey(processInstanceKey)
+                        .build())
+                .size(200)
                 .build());
   }
 
@@ -187,37 +191,38 @@ public class OperateService {
     return mapVariables(getVariables(processInstanceKey));
   }
 
-  public Map<String, Object> mapVariables(List<Variable> variables) {
-    Map<String, Object> result = new HashMap<>();
-    for (Variable var : variables) {
-      result.put(var.getName(), var.getValue());
+  public Map<String, Object> mapVariables(List<Variable> variables) throws OperateException {
+    try {
+      Map<String, Object> result = new HashMap<>();
+      for (Variable var : variables) {
+        result.put(var.getName(), JsonUtils.toJsonNode(var.getValue()));
+      }
+      return result;
+    } catch (IOException e) {
+      throw new OperateException(e);
     }
-    return result;
   }
 
   public Map<Long, Map<String, Object>> getVariables(List<ProcessInstance> processInstances)
       throws OperateException {
     try {
-      Map<Long, Future<List<Variable>>> futures = new HashMap<>();
+      Map<Long, Future<Map<String, Object>>> futures = new HashMap<>();
       Map<Long, Map<String, Object>> instanceMap = new HashMap<>();
       for (ProcessInstance instance : processInstances) {
-        instanceMap.put(instance.getKey(), new HashMap<>());
         futures.put(
             instance.getKey(),
             CompletableFuture.supplyAsync(
                 () -> {
                   try {
-                    return getVariables(instance.getKey());
+                    return getVariablesAsMap(instance.getKey());
                   } catch (OperateException e) {
                     return null;
                   }
                 }));
       }
-      for (Map.Entry<Long, Future<List<Variable>>> varFutures : futures.entrySet()) {
-        List<Variable> vars = varFutures.getValue().get();
-        for (Variable var : vars) {
-          instanceMap.get(varFutures.getKey()).put(var.getName(), var.getValue());
-        }
+      for (Map.Entry<Long, Future<Map<String, Object>>> varFutures : futures.entrySet()) {
+        Map<String, Object> vars = varFutures.getValue().get();
+        instanceMap.put(varFutures.getKey(), vars);
       }
       futures.clear();
       return instanceMap;

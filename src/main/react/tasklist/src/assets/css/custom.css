@@ -336,3 +336,9 @@ span .assignedTo {
     .elementTemplate .panel .bio-properties-panel-group[data-group-id='group-ElementTemplates__Template'] .bio-properties-panel-dropdown-button {
       display: none;
     }
+
+.previewDocFrame {
+  width: calc(100% + 32px);
+  height: calc(100% + 26px);
+  margin: -16px;
+}

@@ -64,18 +64,6 @@ public class FileController {
     return null;
   }
 
-  @PostMapping(
-      value = "docUpload",
-      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-      produces = MediaType.APPLICATION_JSON_VALUE)
-  public Map<String, Object> upload(
-      @RequestPart("body") Map<String, Object> variables,
-      @RequestPart(name = "files", required = false) List<MultipartFile> files)
-      throws IOException {
-
-    return instanceFileService.handleFiles(variables, files);
-  }
-
   @GetMapping("serve/{fileReference}")
   @ResponseBody
   public ResponseEntity<Resource> serveFile(@PathVariable String fileReference) throws IOException {
@@ -94,6 +82,40 @@ public class FileController {
     return ResponseEntity.ok()
         .contentType(MediaType.valueOf(fileHolder.getContentType()))
         .contentLength(file.length())
+        .body(resource);
+  }
+
+  @PostMapping(
+      value = "/doc",
+      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public Map<String, Object> uploadDoc(
+      @RequestPart("body") Map<String, Object> variables,
+      @RequestPart(name = "files", required = false) List<MultipartFile> files)
+      throws IOException {
+
+    return instanceFileService.handleFiles(variables, files);
+  }
+
+  @GetMapping("/doc/{processInstanceKey}/{type}/{name}")
+  @ResponseBody
+  public ResponseEntity<Resource> serveDoc(
+      @PathVariable String processInstanceKey, @PathVariable String type, @PathVariable String name)
+      throws IOException {
+
+    HttpHeaders header = new HttpHeaders();
+    header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name);
+    header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+    header.add("Pragma", "no-cache");
+    header.add("Expires", "0");
+
+    Path path = instanceFileService.getPath(processInstanceKey, type, name);
+    String contentType = Files.probeContentType(path);
+    ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+
+    return ResponseEntity.ok()
+        .contentType(MediaType.valueOf(contentType))
+        .contentLength(resource.contentLength())
         .body(resource);
   }
 }

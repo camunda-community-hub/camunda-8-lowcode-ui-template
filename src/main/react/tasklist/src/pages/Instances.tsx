@@ -144,7 +144,7 @@ function Instances() {
 
         <Col className="ps-md-2 pt-2">
           {instance ?
-            <InstanceView instancekey={instance.key} processDefinitionKey={instance.processDefinitionKey} variables={instance.variables}/>
+            <InstanceView instancekey={instance.key} processDefinitionKey={instance.processDefinitionKey} variables={result.variables[instance.key]}/>
             : <></>}
         </Col>
       

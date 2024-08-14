@@ -7,6 +7,7 @@ import taskService from '../service/TaskService';
 import { Row, Col, InputGroup, Form } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
+import UploadedDoc from './UploadedDoc';
 
 function Documents(props: any) {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ function Documents(props: any) {
     formData.append('body', new Blob([JSON.stringify(doc)], {
       type: "application/json"
     }));
-    api.post('file/docUpload', formData,
+    api.post('file/doc', formData,
       {
         headers: {
           "Content-type": "multipart/form-data",
@@ -59,11 +60,7 @@ function Documents(props: any) {
           {docs.map((file: any, index: number) =>
             file.uploaded ?
               <Col key={index} xs={12} md={6} lg={6}>
-                <Form.Label>{file.type} : </Form.Label> <i>{file.comment}</i>
-                <InputGroup className="mb-3">
-                  <Form.Control value={file.filename} type="text" readOnly />
-                  <InputGroup.Text><i className="bi bi-eye"></i></InputGroup.Text>
-                </InputGroup>
+                <UploadedDoc file={file}/>
               </Col> : <></>
           )}
         </Row>

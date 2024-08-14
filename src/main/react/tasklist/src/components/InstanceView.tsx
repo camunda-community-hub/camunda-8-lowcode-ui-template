@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { AxiosResponse } from 'axios';
 import taskService from '../service/TaskService';
 import CaseMgmtComponent from './CaseMgmtComponent';
+import UploadedDoc from './UploadedDoc';
 
 function InstanceView(props: IInstanceViewer) {
   const { t } = useTranslation();
@@ -22,6 +23,7 @@ function InstanceView(props: IInstanceViewer) {
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf);
 
   useEffect(() => {
+    console.log(props.variables);
     if (props && props.instancekey) {
       api.get('/process/xml/' + props.processDefinitionKey).then((response: any) => {
         setXml(response.data);
@@ -136,6 +138,33 @@ function InstanceView(props: IInstanceViewer) {
           <CaseMgmtComponent type='instance' taskEltId={null} processDefinitionKey={null} bpmnProcessId={tasklistConf.instancesBpmnProcessId} processInstanceKey={props.instancekey} variables={props.variables} />
           </Accordion.Body>
       </Accordion.Item>
+      {props.variables && props.variables.documents && props.variables.documents.length > 0 ?
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>Documents</Accordion.Header>
+          <Accordion.Body>
+            <h5>Requested/Missing documents</h5>
+            <Row className="m-2">
+              {props.variables.documents.map((file: any, index: number) =>
+                !file.uploaded ?
+                  <Col key={index} xs={12} md={6} lg={6}>
+                    <Form.Label>{file.type} : </Form.Label> <i>{file.comment}</i>
+
+                  </Col> : <></>)}
+            </Row>
+            <hr/>
+            <h5>Documents presented</h5>
+            <Row className="m-2">
+              {props.variables.documents.map((file: any, index: number) =>
+                file.uploaded ?
+                  <Col key={index} xs={12} md={6} lg={6}>
+                    <UploadedDoc file={file} />
+                  </Col> : <></>
+              )}
+            </Row>
+          </Accordion.Body>
+        </Accordion.Item>
+        :
+        <></>}
     </Accordion>
   );
 }

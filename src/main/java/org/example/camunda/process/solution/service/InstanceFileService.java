@@ -50,4 +50,8 @@ public class InstanceFileService {
     }
     return variables;
   }
+
+  public Path getPath(String processInstanceKey, String type, String name) {
+    return resolveParent(processInstanceKey, type).resolve(name);
+  }
 }
