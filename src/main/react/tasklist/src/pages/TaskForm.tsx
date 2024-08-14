@@ -46,11 +46,11 @@ function TaskForm(props: any) {
           </OverlayTrigger> : <></>}</h5>
           <div className="btnClaimUnClaim d-flex flex-row-reverse">
             {currentTask.assignee ?
-              <Button variant="dark" onClick={unclaim}> {t("Unclaim")}</Button>
+              <Button variant="dark" onClick={unclaim} className="mx-2" > {t("Unclaim")}</Button>
               :
-              <Button variant="dark" onClick={claim}>{t("Claim")}</Button>
+              <Button variant="dark" onClick={claim} className="mx-2" >{t("Claim")}</Button>
             }
-            <CaseMgmtComponent type='task' taskEltId={currentTask.taskDefinitionId} processDefinitionKey={currentTask.processDefinitionKey} bpmnProcessId={null} processInstanceKey={currentTask.processInstanceKey} variables={currentTask.variables} />
+            <CaseMgmtComponent type='task' taskEltId={currentTask.taskDefinitionId} processDefinitionKey={currentTask.processDefinitionKey} bpmnProcessId={null} processInstanceKey={currentTask.processInstanceKey} variables={currentTask.variables} instances={null} redirect="/tasklist/instances" />
           </div>
           <FormResolver id="page-form" formKey={currentTask.formKey} schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormResolver>
         </div>

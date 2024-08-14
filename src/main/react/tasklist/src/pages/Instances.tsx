@@ -2,30 +2,38 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import api from '../service/api';
-import TaskForm from '../components/TaskForm';
-import authService from '../service/AuthService';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Modal from 'react-bootstrap/Modal';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Table from 'react-bootstrap/Table';
+
+import { Table, ButtonGroup, Row, Col, Modal, InputGroup, Form, Button, Dropdown } from 'react-bootstrap';
 import moment from "moment";
 
 import { useTranslation } from "react-i18next";
 import InstanceView from '../components/InstanceView';
+import CaseMgmtComponent from '../components/CaseMgmtComponent';
 
 function Instances() {
   const [instance, setInstance] = useState<any>(null);
   const [pagination, setPagination] = useState<any>({ "page": 0, "pageSize":10 });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
-  const [instances, setInstances] = useState<any>(null);
+  const [instances, setInstances] = useState<any[]|null>(null);
   const [state, setState] = useState("ACTIVE");
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf);
+  const [messagesConf, setMessagesConf] = useState<any>(null);
+  const [checkedInstances, setCheckedInstances] = useState<any[]>([]);
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (tasklistConf && tasklistConf.instancesBpmnProcessId) {
+      api.get<any>('/casemgmt/messages/' + tasklistConf.instancesBpmnProcessId).then(response => {
+        setMessagesConf(response.data);
+      }).catch(error => {
+        alert(error.message);
+      });
+    }
+  }, [tasklistConf]);
+
 
   const loadInstance = async (pagination: any) => {
     setLoading(true);
@@ -51,7 +59,7 @@ function Instances() {
     loadInstance(newPagination);
   }
   const after = () => {
-    const newPagination = { "page": pagination.page + 1, "pageSize": pagination.pageSize, "after": instances[instances.length-1].key };
+    const newPagination = { "page": pagination.page + 1, "pageSize": pagination.pageSize, "after": instances![instances!.length-1].key };
     setPagination(newPagination)
     loadInstance(newPagination);
   }
@@ -91,6 +99,33 @@ function Instances() {
     return value;
   }
 
+  const selectInstance = (index:number, checked: boolean) => {
+    let clone = JSON.parse(JSON.stringify(instances));
+    clone[index].checked = checked;
+    let checkedInst = [];
+    for (let i = 0; i < clone.length; i++) {
+      if (clone[i].checked) {
+        checkedInst.push(clone[i]);
+      }
+    }
+    setCheckedInstances(checkedInst);
+    console.log(checkedInst);
+    setInstances(clone);
+  }
+
+  const selectAll = (checked: boolean) => {
+    let clone = JSON.parse(JSON.stringify(instances));
+    for (let i = 0; i < clone.length; i++) {
+      clone[i].checked = checked;
+    }
+    if (checked) {
+      setCheckedInstances(clone);
+    } else {
+      setCheckedInstances([]);
+    }
+    setInstances(clone);
+  }
+
   return (
     instances && tasklistConf && tasklistConf.instancesColumns ?
       <Row>
@@ -103,17 +138,24 @@ function Instances() {
               <option value="CANCELED">{t("Canceled")}</option>
             </Form.Select>
           </InputGroup>
+          {checkedInstances.length > 0 ?
+            <CaseMgmtComponent type="multiInstances" taskEltId={null} bpmnProcessId={tasklistConf.instancesBpmnProcessId} processInstanceKey={0} instances={checkedInstances} processDefinitionKey={null} variables={{}} redirect="/tasklist/instances" />
+            :<></>
+}
         <Table striped hover variant="light" className="taskListContainer">
           <thead >
-            <tr >
+              <tr >
+                {messagesConf && messagesConf.length > 0 ? <th className="bg-primary text-light"><Form.Check onChange={(event: any) => selectAll(event.target.checked)}/></th> : <></>}
                 {tasklistConf.instancesColumns.map((column: any, index: number) =>
                 <th className="bg-primary text-light" key={index}>{column.label}</th>)}
             </tr>
           </thead>
           <tbody>
-              {instances.map((instance: any) =>
-                <tr key={instance.key} onClick={() => setInstance(instance)}>{tasklistConf.instancesColumns.map((column: any, index: number) =>
-                  <td key={index}>{display(instance, column)}
+              {instances.map((instance: any, indexInstance: number) =>
+                <tr key={instance.key} >
+                  {messagesConf && messagesConf.length > 0 ? <td><Form.Check checked={instance.checked} onChange={(event: any) => selectInstance(indexInstance, event.target.checked)} /></td> : <></>}
+                  {tasklistConf.instancesColumns.map((column: any, index: number) =>
+                    <td key={index} onClick={() => setInstance(instance)}>{display(instance, column)}
                   </td>)}</tr>
               )}
             </tbody>

@@ -82,6 +82,8 @@ export interface CaseMgmtViewer {
   processInstanceKey: number;
   processDefinitionKey: string | null;
   variables: any;
+  instances: any[] | null;
+  redirect: string;
 }
 
 export interface Organization {

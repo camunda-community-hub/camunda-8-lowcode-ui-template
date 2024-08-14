@@ -21,6 +21,7 @@ function InstanceView(props: IInstanceViewer) {
   const [tasks, setTasks] = useState<ITask[] | null>(null);
   const [state, setState] = useState("CREATED");
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf);
+  
 
   useEffect(() => {
     console.log(props.variables);
@@ -135,7 +136,7 @@ function InstanceView(props: IInstanceViewer) {
 
         </Table>
             : <></>}
-          <CaseMgmtComponent type='instance' taskEltId={null} processDefinitionKey={null} bpmnProcessId={tasklistConf.instancesBpmnProcessId} processInstanceKey={props.instancekey} variables={props.variables} />
+          <CaseMgmtComponent type='instance' taskEltId={null} processDefinitionKey={null} bpmnProcessId={tasklistConf.instancesBpmnProcessId} processInstanceKey={props.instancekey} variables={props.variables} instances={null} redirect="/tasklist/instances" />
           </Accordion.Body>
       </Accordion.Item>
       {props.variables && props.variables.documents && props.variables.documents.length > 0 ?

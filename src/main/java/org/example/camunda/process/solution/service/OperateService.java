@@ -1,5 +1,6 @@
 package org.example.camunda.process.solution.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.camunda.common.auth.Authentication;
 import io.camunda.common.auth.JwtConfig;
@@ -195,7 +196,23 @@ public class OperateService {
     try {
       Map<String, Object> result = new HashMap<>();
       for (Variable var : variables) {
-        result.put(var.getName(), JsonUtils.toJsonNode(var.getValue()));
+        JsonNode nodeValue = JsonUtils.toJsonNode(var.getValue());
+        if (nodeValue.canConvertToLong()) {
+          result.put(var.getName(), nodeValue.asLong());
+        } else if (nodeValue.isBoolean()) {
+          result.put(var.getName(), nodeValue.asBoolean());
+        } else if (nodeValue.isTextual()) {
+          result.put(var.getName(), nodeValue.textValue());
+        } else if (nodeValue.isArray()) {
+          result.put(
+              var.getName(),
+              JsonUtils.toParametrizedObject(var.getValue(), new TypeReference<List<?>>() {}));
+        } else {
+          result.put(
+              var.getName(),
+              JsonUtils.toParametrizedObject(
+                  var.getValue(), new TypeReference<Map<String, Object>>() {}));
+        }
       }
       return result;
     } catch (IOException e) {

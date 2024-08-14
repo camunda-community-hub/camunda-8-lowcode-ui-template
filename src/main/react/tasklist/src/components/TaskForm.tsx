@@ -43,16 +43,16 @@ function TaskForm(props: any) {
 
           <div className="btnClaimUnClaim d-flex flex-row-reverse">
             {enlarged ?
-              <Button variant="outline-light" className="enlarge mx-2" onClick={() => setEnlarged(false)}><i className="bi bi-arrows-angle-contract"></i></Button>
+              <Button variant="outline-light" className="enlarge" onClick={() => setEnlarged(false)}><i className="bi bi-arrows-angle-contract"></i></Button>
               :
-              <Button variant="outline-light" className="enlarge mx-2" onClick={() => setEnlarged(true)}><i className="bi bi-arrows-angle-expand"></i></Button>
+              <Button variant="outline-light" className="enlarge" onClick={() => setEnlarged(true)}><i className="bi bi-arrows-angle-expand"></i></Button>
             }
             {currentTask.assignee ?
-              <Button variant="dark" onClick={unclaim}> {t("Unclaim")}</Button>
+              <Button variant="dark" onClick={unclaim} className="mx-2" > {t("Unclaim")}</Button>
               :
-              <Button variant="dark" onClick={claim}>{t("Claim")}</Button>
+              <Button variant="dark" onClick={claim} className="mx-2" >{t("Claim")}</Button>
             }
-            <CaseMgmtComponent type='task' taskEltId={currentTask.taskDefinitionId} processDefinitionKey={currentTask.processDefinitionKey} bpmnProcessId={null} processInstanceKey={currentTask.processInstanceKey} variables={currentTask.variables} />
+            <CaseMgmtComponent type='task' taskEltId={currentTask.taskDefinitionId} processDefinitionKey={currentTask.processDefinitionKey} bpmnProcessId={null} processInstanceKey={currentTask.processInstanceKey} variables={currentTask.variables} instances={null} redirect="/tasklist/tasks" />
           </div>
           <FormResolver id="task-form" formKey={currentTask.formKey} schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormResolver>
         </div>

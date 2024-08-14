@@ -19,7 +19,6 @@ import org.example.camunda.process.solution.service.InternationalizationService;
 import org.example.camunda.process.solution.service.OperateService;
 import org.example.camunda.process.solution.service.casemgmt.CaseMgmtService;
 import org.example.camunda.process.solution.utils.FeelUtils;
-import org.example.camunda.process.solution.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -117,9 +116,8 @@ public class CaseManagementController {
     }
     Map<String, Object> instanceVariables = operateService.getVariablesAsMap(processInstanceKey);
     try {
-      String jsonCorrelationKey =
+      String correlationKey =
           (String) FeelUtils.evaluate(conf.getCorrelationKey().substring(1), instanceVariables);
-      String correlationKey = JsonUtils.toObject(jsonCorrelationKey, String.class);
       zeebeClient
           .newPublishMessageCommand()
           .messageName(message)

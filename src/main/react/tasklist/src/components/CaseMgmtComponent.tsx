@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import type { } from 'redux-thunk/extend-redux';
 import authService from '../service/AuthService';
@@ -16,6 +17,7 @@ import { CaseMgmtViewer, ITask } from '../store/model';
 
 function CaseMgmtComponent(props: CaseMgmtViewer) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   //const taskMessagesConf = useSelector((state: any) => state.process.messagesConf)
   const [messagesConf, setMessagesConf] = useState<any>(null);
   const [showMessageConf, setShowMessageConf] = useState<any>(null);
@@ -23,14 +25,20 @@ function CaseMgmtComponent(props: CaseMgmtViewer) {
   const [bpmnForm, setBpmnForm] = useState<any>(null);
 
   useEffect(() => {
-    if (props && props.type && props.processInstanceKey) {
+    if (props && props.type) {
       if (props.type == "task") {
         api.get<any>('/casemgmt/messages/' + props.processDefinitionKey + '/' + props.taskEltId).then(response => {
           setMessagesConf(response.data);
         }).catch(error => {
           alert(error.message);
         });
-      } else {
+      } else if (props.type == "instance") {
+        api.get<any>('/casemgmt/messages/' + props.bpmnProcessId).then(response => {
+          setMessagesConf(response.data);
+        }).catch(error => {
+          alert(error.message);
+        });
+      } else if (props.type == "multiInstances") {
         api.get<any>('/casemgmt/messages/' + props.bpmnProcessId).then(response => {
           setMessagesConf(response.data);
         }).catch(error => {
@@ -49,17 +57,29 @@ function CaseMgmtComponent(props: CaseMgmtViewer) {
         variables = bpmnForm._getState().data;
       }
     }
-    api.post<any>('/casemgmt/message/' + showMessageConf.message + '/' + props.processInstanceKey, variables).then(response => {
-      setMessageConfirmation(response.data);
-    }).catch(error => {
-      alert(error.message);
-    });
+    if (props.type == "task" || props.type == "instance") {
+      api.post<any>('/casemgmt/message/' + showMessageConf.message + '/' + props.processInstanceKey, variables).then(response => {
+        setMessageConfirmation(response.data);
+      }).catch(error => {
+        alert(error.message);
+      });
+    } else if (props.type == "multiInstances" && props.instances) {
+      for (let i = 0; i < props.instances.length; i++) {
+        api.post<any>('/casemgmt/message/' + showMessageConf.message + '/' + props.instances[i].key, variables).then(response => {
+          setMessageConfirmation(response.data);
+        }).catch(error => {
+          alert(error.message);
+        });
+      }
+      closeMessage();
+    }
   }
 
   const closeMessage = () => {
     setShowMessageConf(null);
     setMessageConfirmation(null);
     setBpmnForm(null);
+    navigate(props.redirect);
   }
 
   const openMessage = async (messageConf: any) => {
@@ -83,7 +103,9 @@ function CaseMgmtComponent(props: CaseMgmtViewer) {
 
   useEffect(() => {
     if (showMessageConf && showMessageConf.schema) {
+      console.log('ptouy');
       const container = document.getElementById("message-form");
+      console.log(container);
       if (container) {
         container.innerHTML = '';
         if (showMessageConf.schema.generator == 'formIo') {
@@ -91,6 +113,7 @@ function CaseMgmtComponent(props: CaseMgmtViewer) {
         }
         else if (showMessageConf.schema.generator == 'extendedFormJs') {
           let bpmnForm = new CommForm({ container: container });
+          console.log(JSON.parse(JSON.stringify(showMessageConf.schema)));
           bpmnForm.importSchema(showMessageConf.schema, props.variables).then(
             function (result: any) {
               console.log(result);
@@ -113,10 +136,10 @@ function CaseMgmtComponent(props: CaseMgmtViewer) {
     messagesConf && messagesConf.length>0 ?
       <>
         {messagesConf.length == 1 ?
-          <Button variant="dark" className="mx-2" onClick={() => openMessage(messagesConf[0])}>{messagesConf[0].name}</Button>
+          <Button variant="dark" onClick={() => openMessage(messagesConf[0])}>{messagesConf[0].name}</Button>
           : messagesConf && messagesConf.length > 1 ?
             <Dropdown>
-              <Dropdown.Toggle variant="dark" id="dropdown-basic" className="mx-2" >
+              <Dropdown.Toggle variant="dark" id="dropdown-basic">
                 More actions
               </Dropdown.Toggle>
               <Dropdown.Menu>
