@@ -19,6 +19,15 @@
       "name" : "document needed",
       "formKey" : "RequestDocumentsForm",
       "correlationKey" : "= documentReferenceId"
+    }, {
+      "id" : "Event_0ifx26t",
+      "enabled" : true,
+      "bpmnProcessId" : "customer_onboarding_en",
+      "elementId" : null,
+      "message" : "ON_DMD_ACTION",
+      "name" : "On demand action",
+      "formKey" : "onDemandActionForm",
+      "correlationKey" : "=applicationNumber"
     } ]
   }
 }

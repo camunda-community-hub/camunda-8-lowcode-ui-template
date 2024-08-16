@@ -1,0 +1,83 @@
+{
+  "name" : "onDemandActionForm",
+  "modified" : 1723796249786,
+  "schema" : {
+    "components" : [ {
+      "text" : "You're about to trigger the execution of the selected process.",
+      "label" : "Text view",
+      "type" : "text",
+      "layout" : {
+        "row" : "Row_0cafymf",
+        "columns" : null
+      },
+      "id" : "Field_0o079fc"
+    }, {
+      "values" : [ {
+        "label" : "Request an appointment",
+        "value" : "appointmentRequest"
+      }, {
+        "label" : "Request contacts update",
+        "value" : "contactUpdateRequest"
+      } ],
+      "label" : "Process selection",
+      "type" : "select",
+      "layout" : {
+        "row" : "Row_1m9i2lg",
+        "columns" : null
+      },
+      "id" : "Field_06dl8aj",
+      "key" : "subproc"
+    }, {
+      "components" : [ {
+        "label" : "Contact Name",
+        "type" : "textfield",
+        "layout" : {
+          "row" : "Row_0rgy3v2",
+          "columns" : null
+        },
+        "id" : "Field_1ykt8wx",
+        "key" : "textfield_iyz9lx"
+      }, {
+        "label" : "Phone",
+        "type" : "textfield",
+        "layout" : {
+          "row" : "Row_0rgy3v2",
+          "columns" : null
+        },
+        "id" : "Field_00ff2an",
+        "key" : "phone"
+      }, {
+        "label" : "Email",
+        "type" : "textfield",
+        "layout" : {
+          "row" : "Row_1lth1i1",
+          "columns" : null
+        },
+        "id" : "Field_0aky1hh",
+        "key" : "textfield_6m3crb"
+      } ],
+      "showOutline" : true,
+      "label" : "Appointpment details",
+      "type" : "group",
+      "layout" : {
+        "row" : "Row_1i9cl75",
+        "columns" : null
+      },
+      "id" : "Field_1w0bg2v",
+      "conditional" : {
+        "hide" : "=not(subproc=\"appointmentRequest\")"
+      }
+    } ],
+    "schemaVersion" : 16,
+    "type" : "default",
+    "id" : "Form_5432126",
+    "executionPlatform" : "Camunda Cloud",
+    "executionPlatformVersion" : "1.1",
+    "exporter" : {
+      "name" : "Camunda Modeler",
+      "version" : "5.0.0"
+    }
+  },
+  "previewData" : { },
+  "generator" : "formJs"
+}
