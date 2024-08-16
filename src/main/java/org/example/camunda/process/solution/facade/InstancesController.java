@@ -4,6 +4,8 @@ import io.camunda.operate.exception.OperateException;
 import io.camunda.operate.model.ProcessInstance;
 import io.camunda.operate.model.ProcessInstanceState;
 import io.camunda.operate.model.SearchResult;
+import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.api.response.CancelProcessInstanceResponse;
 import java.util.List;
 import org.example.camunda.process.solution.facade.dto.ProcessInstancesResult;
 import org.example.camunda.process.solution.facade.dto.Task;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,10 +30,13 @@ public class InstancesController {
   private static final Logger LOG = LoggerFactory.getLogger(InstancesController.class);
   private final OperateService operateService;
   private final TaskListService tasklistService;
+  private final ZeebeClient zeebeClient;
 
-  public InstancesController(OperateService operateService, TaskListService tasklistService) {
+  public InstancesController(
+      OperateService operateService, TaskListService tasklistService, ZeebeClient zeebeClient) {
     this.operateService = operateService;
     this.tasklistService = tasklistService;
+    this.zeebeClient = zeebeClient;
   }
 
   @IsAuthenticated
@@ -58,5 +64,13 @@ public class InstancesController {
     List<Long> instances = operateService.getSubProcessInstances(processInstanceKey);
     instances.add(processInstanceKey);
     return tasklistService.getTasks(instances, state);
+  }
+
+  @IsAuthenticated
+  @PostMapping("/cancel/{processInstanceKey}")
+  public CancelProcessInstanceResponse cancel(@PathVariable Long processInstanceKey)
+      throws OperateException {
+
+    return this.zeebeClient.newCancelInstanceCommand(processInstanceKey).send().join();
   }
 }

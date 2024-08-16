@@ -40,7 +40,14 @@ function CaseMgmtComponent(props: CaseMgmtViewer) {
         });
       } else if (props.type == "multiInstances") {
         api.get<any>('/casemgmt/messages/' + props.bpmnProcessId).then(response => {
-          setMessagesConf(response.data);
+          let actions = [{
+            "id": "cancelInstance",
+            "bpmnProcessId": props.bpmnProcessId,
+            "message": "cancelInstance",
+            "name": "cancel instances",
+            "correlationKey": "",
+          }].concat(response.data);
+          setMessagesConf(actions);
         }).catch(error => {
           alert(error.message);
         });
@@ -65,7 +72,11 @@ function CaseMgmtComponent(props: CaseMgmtViewer) {
       });
     } else if (props.type == "multiInstances" && props.instances) {
       for (let i = 0; i < props.instances.length; i++) {
-        api.post<any>('/casemgmt/message/' + showMessageConf.message + '/' + props.instances[i].key, variables).then(response => {
+        let url = '/instances/cancel/' + props.instances[i].key;
+        if (showMessageConf.correlationKey !== "" && showMessageConf.id !== 'cancelInstance') {
+          url = '/casemgmt/message/' + showMessageConf.message + '/' + props.instances[i].key;
+        }
+        api.post<any>(url, variables).then(response => {
           setMessageConfirmation(response.data);
         }).catch(error => {
           alert(error.message);

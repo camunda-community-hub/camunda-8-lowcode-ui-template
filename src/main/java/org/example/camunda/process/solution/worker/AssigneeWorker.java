@@ -44,5 +44,7 @@ public class AssigneeWorker {
   }
 
   @JobWorker
-  public void mock() {}
+  public void mock() {
+    LOG.info("mock");
+  }
 }

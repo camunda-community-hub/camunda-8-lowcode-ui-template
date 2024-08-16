@@ -145,7 +145,7 @@ function Instances() {
         <Table striped hover variant="light" className="taskListContainer">
           <thead >
               <tr >
-                {messagesConf && messagesConf.length > 0 ? <th className="bg-primary text-light"><Form.Check onChange={(event: any) => selectAll(event.target.checked)}/></th> : <></>}
+                 <th className="bg-primary text-light"><Form.Check onChange={(event: any) => selectAll(event.target.checked)}/></th>
                 {tasklistConf.instancesColumns.map((column: any, index: number) =>
                 <th className="bg-primary text-light" key={index}>{column.label}</th>)}
             </tr>
@@ -153,7 +153,7 @@ function Instances() {
           <tbody>
               {instances.map((instance: any, indexInstance: number) =>
                 <tr key={instance.key} >
-                  {messagesConf && messagesConf.length > 0 ? <td><Form.Check checked={instance.checked} onChange={(event: any) => selectInstance(indexInstance, event.target.checked)} /></td> : <></>}
+                  <td><Form.Check checked={instance.checked} onChange={(event: any) => selectInstance(indexInstance, event.target.checked)} /></td>
                   {tasklistConf.instancesColumns.map((column: any, index: number) =>
                     <td key={index} onClick={() => setInstance(instance)}>{display(instance, column)}
                   </td>)}</tr>
