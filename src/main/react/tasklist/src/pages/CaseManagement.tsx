@@ -6,11 +6,9 @@ import NavigatedViewer from 'camunda-bpmn-js/lib/camunda-cloud/NavigatedViewer';
 import Sidebar from '../components/Sidebar';
 import api from '../service/api';
 import processService from '../service/ProcessService';
-import { Form, InputGroup, Table, Button, Row, Col, Accordion } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
-import { AxiosResponse } from 'axios';
-import taskService from '../service/TaskService';
 
 function CaseManagement() {
   const { t } = useTranslation();
@@ -46,23 +44,23 @@ function CaseManagement() {
     }
   }, [proc]);
 
-  const addMessageConfIfRequired = (elt: any, elementId: string | null): any => {
+  const addMessageConfIfRequired = (elt: any, elementIds: string[] | null): any => {
     for (let i = 0; i < caseMgmtConf.bpmnProcessIdMessages[proc!.bpmnProcessId].length; i++) {
       let conf = caseMgmtConf.bpmnProcessIdMessages[proc!.bpmnProcessId][i];
-      if (conf.message == elt.businessObject.eventDefinitions[0].messageRef.name) {
+      if (conf.id == elt.id) {
         return conf;
       }
     }
-
+    console.log(elementIds);
     let clone = Object.assign({}, caseMgmtConf);
-    let conf = {
+   let conf = {
       "id": elt.id,
       "message": elt.businessObject.eventDefinitions[0].messageRef.name,
       "correlationKey": elt.businessObject.eventDefinitions[0].messageRef.extensionElements.values[0].correlationKey,
       "name": elt.businessObject.name,
       "enabled": false,
       "bpmnProcessId": proc!.bpmnProcessId,
-      "elementId": elementId,
+      "elementIds": elementIds,
       "formKey": null
     };
     clone.bpmnProcessIdMessages[proc!.bpmnProcessId].push(conf);
@@ -88,7 +86,18 @@ function CaseManagement() {
         const eltRegistry: any = viewer!.get('elementRegistry');
         eltRegistry.forEach((elt: any) => {
           if (elt.type == "bpmn:BoundaryEvent" && elt.businessObject.eventDefinitions && elt.businessObject.eventDefinitions[0].$type == "bpmn:MessageEventDefinition") {
-            let conf = addMessageConfIfRequired(elt, elt.host.id);
+            let hosts = [elt.host.id];
+            if (elt.host.type == "bpmn:SubProcess") {
+              hosts = [];
+              for (let i = 0; i<elt.host.children.length; i++) {
+                if (elt.host.children[i].type == "bpmn:UserTask") {
+                  hosts.push(elt.host.children[i].id);
+                }
+              }
+            }
+            console.log(elt);
+            console.log(hosts);
+            let conf = addMessageConfIfRequired(elt, hosts);
             if (conf.enabled) {
               colorActivity(viewer, elt.id, "#33CC66");
             } else {
@@ -97,7 +106,9 @@ function CaseManagement() {
             setMessageConf(elt.businessObject.eventDefinitions[0].messageRef.name);
           }
 
-          if (elt.type == "bpmn:StartEvent" && elt.businessObject.eventDefinitions && elt.businessObject.eventDefinitions[0].$type == "bpmn:MessageEventDefinition") {
+          if (elt.type == "bpmn:StartEvent" &&
+            elt.businessObject.eventDefinitions && elt.businessObject.eventDefinitions[0].$type == "bpmn:MessageEventDefinition" &&
+            elt.businessObject.$parent.$type == "bpmn:SubProcess") {
             let conf = addMessageConfIfRequired(elt, null);
             if (conf.enabled) {
               colorActivity(viewer, elt.id, "#33CC66");
@@ -168,12 +179,12 @@ function CaseManagement() {
                 <div className="d-flex align-items-start">
                   <div className="nav flex-column nav-pills me-3" role="tablist">
                     {proc && caseMgmtConf && caseMgmtConf.bpmnProcessIdMessages[proc.bpmnProcessId] && caseMgmtConf.bpmnProcessIdMessages[proc.bpmnProcessId].map((conf: any) =>
-                      <button className={conf.message == messageConf ? "nav-link active" : "nav-link"} role="tab" onClick={() => setMessageConf(conf.message)}> {conf.name} ({conf.message})</button>
+                      <button className={conf.id == messageConf ? "nav-link active" : "nav-link"} role="tab" onClick={() => setMessageConf(conf.id)}> {conf.name} ({conf.message})</button>
                     )}
                   </div>
                   <div className="tab-content" id="v-pills-tabContent">
                     {proc && caseMgmtConf && caseMgmtConf.bpmnProcessIdMessages[proc.bpmnProcessId] && caseMgmtConf.bpmnProcessIdMessages[proc.bpmnProcessId].map((conf: any, index: number) =>
-                      <div className={conf.message == messageConf ? "tab-pane fade show active" : "tab-pane fade"}>
+                      <div className={conf.id == messageConf ? "tab-pane fade show active" : "tab-pane fade"}>
 
                         <Form.Check
                           type="switch" checked={conf.enabled} onChange={(evt) => update(index, 'enabled', evt.target.checked)}
@@ -191,10 +202,10 @@ function CaseManagement() {
                           <InputGroup.Text>Name</InputGroup.Text>
                           <Form.Control value={conf.name} onChange={(evt) => update(index, 'name', evt.target.value)} />
                         </InputGroup>
-                        {conf.elementId ?
+                        {conf.elementIds ?
                           <InputGroup className="mb-3">
-                            <InputGroup.Text>ElementId</InputGroup.Text>
-                            <Form.Control value={conf.elementId} readOnly />
+                            <InputGroup.Text>ElementIds</InputGroup.Text>
+                            <Form.Control value={conf.elementIds} readOnly />
                           </InputGroup> : <></>}
                         <InputGroup className="mb-3">
                           <InputGroup.Text>FormKey</InputGroup.Text>

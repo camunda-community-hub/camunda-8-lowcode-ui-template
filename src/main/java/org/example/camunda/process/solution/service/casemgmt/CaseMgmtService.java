@@ -56,7 +56,9 @@ public class CaseMgmtService {
     List<MessageConf> result = new ArrayList<>();
     for (MessageConf conf : getByBpmnProcessId(bpmnProcessId)) {
       if (conf.isEnabled()
-          && (conf.getElementId() == null || elementId.equals(conf.getElementId()))) {
+          && (conf.getElementIds() == null
+              || conf.getElementIds().isEmpty()
+              || conf.getElementIds().contains(elementId))) {
         result.add(conf);
       }
     }
