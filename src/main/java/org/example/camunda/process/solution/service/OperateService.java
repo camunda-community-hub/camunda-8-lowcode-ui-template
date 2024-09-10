@@ -127,6 +127,24 @@ public class OperateService {
     return client;
   }
 
+  public ProcessDefinition getLatestProcessDefinition(String bpmnProcessId)
+      throws OperateException {
+    ProcessDefinitionFilter processDefinitionFilter =
+        ProcessDefinitionFilter.builder().bpmnProcessId(bpmnProcessId).build();
+    SearchQuery procDefQuery =
+        new SearchQuery.Builder()
+            .filter(processDefinitionFilter)
+            .size(1)
+            .sort(new Sort("version", SortOrder.DESC))
+            .build();
+
+    List<ProcessDefinition> def = getCamundaOperateClient().searchProcessDefinitions(procDefQuery);
+    if (def != null && def.size() > 0) {
+      return def.get(0);
+    }
+    return null;
+  }
+
   public List<ProcessDefinition> getProcessDefinitions() throws OperateException {
     ProcessDefinitionFilter processDefinitionFilter = ProcessDefinitionFilter.builder().build();
     SearchQuery procDefQuery =

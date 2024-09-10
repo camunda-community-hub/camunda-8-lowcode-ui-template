@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import api from '../service/api';
+import processService from '../service/ProcessService';
 
 import { Table, ButtonGroup, Row, Col, Modal, InputGroup, Form, Button, Dropdown } from 'react-bootstrap';
 import moment from "moment";
@@ -9,6 +10,7 @@ import moment from "moment";
 import { useTranslation } from "react-i18next";
 import InstanceView from '../components/InstanceView';
 import CaseMgmtComponent from '../components/CaseMgmtComponent';
+import InstantiationForm from '../components/InstantiationForm';
 
 function Instances() {
   const [instance, setInstance] = useState<any>(null);
@@ -20,6 +22,7 @@ function Instances() {
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf);
   const [messagesConf, setMessagesConf] = useState<any>(null);
   const [checkedInstances, setCheckedInstances] = useState<any[]>([]);
+  const [newInstance, setNewInstance] = useState<boolean>(false);
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -99,7 +102,7 @@ function Instances() {
     return value;
   }
 
-  const selectInstance = (index:number, checked: boolean) => {
+  const selectInstance = (index: number, checked: boolean) => {
     let clone = JSON.parse(JSON.stringify(instances));
     clone[index].checked = checked;
     let checkedInst = [];
@@ -126,10 +129,21 @@ function Instances() {
     setInstances(clone);
   }
 
+  const openProcess = () => {
+    dispatch(processService.setProcessById(tasklistConf.instancesBpmnProcessId));
+    setNewInstance(true);
+  }
+
+  const openInstance = (instance: any) => {
+    setNewInstance(false);
+    setInstance(instance);
+  }
+
   return (
     instances && tasklistConf && tasklistConf.instancesColumns ?
       <Row>
-      <Col className="tasklist ps-md-2 pt-2">
+        <Col className="tasklist ps-md-2 pt-2">
+          <Button variant="outline-primary" onClick={openProcess} className="mb-2"> <i className="bi bi-send"></i> New case</Button>
           <InputGroup className="mb-3">
             <InputGroup.Text>{t("State")}</InputGroup.Text>
             <Form.Select aria-label="state" value={state} onChange={(evt) => setState(evt.target.value)}>
@@ -155,13 +169,13 @@ function Instances() {
                 <tr key={instance.key} >
                   <td><Form.Check checked={instance.checked} onChange={(event: any) => selectInstance(indexInstance, event.target.checked)} /></td>
                   {tasklistConf.instancesColumns.map((column: any, index: number) =>
-                    <td key={index} onClick={() => setInstance(instance)}>{display(instance, column)}
+                    <td key={index} onClick={() => openInstance(instance)}>{display(instance, column)}
                   </td>)}</tr>
               )}
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan={tasklistConf.instancesColumns.length} >
+                <td colSpan={tasklistConf.instancesColumns.length+1} >
                   <div className="pagination">
                     <Button variant="outline-primary" onClick={before} disabled={loading}><i className="bi bi-arrow-left"></i> First page</Button>
                     <div className="taskListFilter bg-lightgreen text-light">
@@ -185,7 +199,11 @@ function Instances() {
       </Col>
 
         <Col className="ps-md-2 pt-2">
-          {instance ?
+          {newInstance ?
+            <div className="taskListFormContainer">
+              <InstantiationForm />
+            </div>
+            : instance ?
             <InstanceView instancekey={instance.key} processDefinitionKey={instance.processDefinitionKey} variables={result.variables[instance.key]}/>
             : <></>}
         </Col>

@@ -1,11 +1,13 @@
 package org.example.camunda.process.solution.facade.dto.casemgmt;
 
+import java.util.List;
+
 public class MessageConf {
 
   private String id;
   private boolean enabled;
   private String bpmnProcessId;
-  private String elementId;
+  private List<String> elementIds;
   private String message;
   private String name;
   private String formKey;
@@ -35,12 +37,12 @@ public class MessageConf {
     this.bpmnProcessId = bpmnProcessId;
   }
 
-  public String getElementId() {
-    return elementId;
+  public List<String> getElementIds() {
+    return elementIds;
   }
 
-  public void setElementId(String elementId) {
-    this.elementId = elementId;
+  public void setElementIds(List<String> elementIds) {
+    this.elementIds = elementIds;
   }
 
   public String getMessage() {

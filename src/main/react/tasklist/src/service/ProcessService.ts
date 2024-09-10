@@ -32,6 +32,13 @@ export class ProcessService {
       this.lastFetchProcesses = Date.now();
     }
   }
+
+  setProcessById = (processId: string): AppThunk => async dispatch => {
+    api.get('/process/latest/' + processId).then(response => {
+      dispatch(this.setProcess(response.data));
+    });
+  };
+
   
   setProcess = (process: IProcess): AppThunk => async dispatch => {
     let url = '/forms/instanciation/' + process.bpmnProcessId+'/'+process.key;

@@ -72,6 +72,13 @@ public class ProcessController {
   }
 
   @IsAuthenticated
+  @GetMapping("/latest/{bpmnProcessId}")
+  public ProcessDefinition latestDefinition(@PathVariable String bpmnProcessId)
+      throws OperateException {
+    return operateService.getLatestProcessDefinition(bpmnProcessId);
+  }
+
+  @IsAuthenticated
   @GetMapping("/definition/latest")
   public List<ProcessDefinition> latestDefinitions() throws OperateException {
     Set<String> present = new HashSet<>();
