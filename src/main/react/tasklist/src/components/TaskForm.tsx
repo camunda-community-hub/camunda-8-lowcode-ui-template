@@ -9,6 +9,7 @@ import CaseMgmtComponent from './CaseMgmtComponent';
 
 import { useTranslation } from "react-i18next";
 import Documents from './Documents';
+import InstanceComments from './InstanceComments';
 
 function TaskForm(props: any) {
   const { t } = useTranslation();
@@ -56,7 +57,14 @@ function TaskForm(props: any) {
           </div>
           <FormResolver id="task-form" formKey={currentTask.formKey} schema={currentSchema} variables={currentTask.variables} disabled={disabled}></FormResolver>
         </div>
-        <Documents /></div> : <div />
+        <Documents />
+        <div className="card taskform">
+          <h5 className="card-title bg-primary text-light" >Comments</h5>
+          <div className="p-4">
+            <InstanceComments instancekey={currentTask.processInstanceKey} processDefinitionKey={0} variables={null} />
+            </div>
+        </div>
+      </div> : <div />
   )
 
 }

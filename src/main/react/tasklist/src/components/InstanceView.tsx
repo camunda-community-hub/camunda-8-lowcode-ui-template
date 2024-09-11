@@ -11,6 +11,7 @@ import { AxiosResponse } from 'axios';
 import taskService from '../service/TaskService';
 import CaseMgmtComponent from './CaseMgmtComponent';
 import UploadedDoc from './UploadedDoc';
+import InstanceComments from './InstanceComments';
 
 function InstanceView(props: IInstanceViewer) {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ function InstanceView(props: IInstanceViewer) {
   const dispatch = useDispatch();
   const [xml, setXml] = useState<string | null>(null);
   const [histo, setHisto] = useState<any[] | null>(null);
+  const [comments, setComments] = useState<any[]>([]);
   const [tasks, setTasks] = useState<ITask[] | null>(null);
   const [state, setState] = useState("CREATED");
   const tasklistConf = useSelector((state: any) => state.process.tasklistConf);
@@ -36,6 +38,7 @@ function InstanceView(props: IInstanceViewer) {
       }).catch((error: any) => {
         alert(error.message);
       })
+      loadComments();
       loadTasks();
     }
   }, [props.instancekey]);
@@ -43,6 +46,23 @@ function InstanceView(props: IInstanceViewer) {
   useEffect(() => {
     loadTasks();
   }, [state]);
+
+  const submitComment = () => {
+    let value = (document.getElementById("newComment") as HTMLInputElement)!.value;
+    api.post('/process/comments/' + props.instancekey, { "content": value }).then((response: any) => {
+      setComments(response.data);
+    }).catch((error: any) => {
+      alert(error.message);
+    })
+  }
+
+  const loadComments = () => {
+    api.get('/process/comments/' + props.instancekey).then((response: any) => {
+      setComments(response.data);
+    }).catch((error: any) => {
+      alert(error.message);
+    })
+  }
 
   const loadTasks = () => {
     let tasksUrl = '/instances/tasks/' + props.instancekey;
@@ -166,6 +186,13 @@ function InstanceView(props: IInstanceViewer) {
         </Accordion.Item>
         :
         <></>}
+      <Accordion.Item eventKey="3">
+        <Accordion.Header>Comments</Accordion.Header>
+        <Accordion.Body>
+          <InstanceComments instancekey={props.instancekey} processDefinitionKey={props.processDefinitionKey} variables={null}/>
+
+        </Accordion.Body>
+      </Accordion.Item>
     </Accordion>
   );
 }

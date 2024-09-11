@@ -206,6 +206,26 @@ public class OperateService {
                 .build());
   }
 
+  public <T> T getVariable(Long processInstanceKey, String variableName, TypeReference<T> type)
+      throws OperateException {
+    List<Variable> res =
+        getCamundaOperateClient()
+            .searchVariables(
+                new SearchQuery.Builder()
+                    .filter(
+                        VariableFilter.builder()
+                            .processInstanceKey(processInstanceKey)
+                            .name(variableName)
+                            .scopeKey(processInstanceKey)
+                            .build())
+                    .size(1)
+                    .build());
+    if (res != null && res.size() > 0) {
+      return JsonUtils.toParametrizedObject(res.get(0).getValue(), type);
+    }
+    return null;
+  }
+
   public Map<String, Object> getVariablesAsMap(Long processInstanceKey) throws OperateException {
     return mapVariables(getVariables(processInstanceKey));
   }

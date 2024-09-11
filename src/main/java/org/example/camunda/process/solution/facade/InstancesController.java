@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/instances")
-public class InstancesController {
+public class InstancesController extends AbstractController {
 
   private static final Logger LOG = LoggerFactory.getLogger(InstancesController.class);
   private final OperateService operateService;
@@ -72,5 +72,10 @@ public class InstancesController {
       throws OperateException {
 
     return this.zeebeClient.newCancelInstanceCommand(processInstanceKey).send().join();
+  }
+
+  @Override
+  public Logger getLogger() {
+    return LOG;
   }
 }
