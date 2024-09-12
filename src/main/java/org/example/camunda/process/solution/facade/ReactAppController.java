@@ -12,7 +12,7 @@ public class ReactAppController {
 
   @RequestMapping(value = {"/home", "/admin/**", "/tasklist/**"})
   public String getIndex(HttpServletRequest request) {
-    return "/index.html";
+    return "/";
   }
 
   @GetMapping(value = {"", "/sso/login"})
