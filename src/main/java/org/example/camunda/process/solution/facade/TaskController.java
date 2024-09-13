@@ -74,6 +74,8 @@ public class TaskController extends AbstractController {
       throws TaskListException {
 
     LOG.info("Completing task " + taskId + "` with variables: " + variables);
+    // TODO : find a more elegant solution for the comments
+    variables.remove(ProcessController.COMMENTS_KEY);
     taskListService.completeTask(taskId, variables);
   }
 

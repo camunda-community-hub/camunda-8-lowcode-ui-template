@@ -1,11 +1,9 @@
 package org.example.camunda.process.solution.facade;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.camunda.operate.exception.OperateException;
 import io.camunda.operate.model.FlowNodeInstance;
 import io.camunda.operate.model.ProcessDefinition;
 import io.camunda.zeebe.client.ZeebeClient;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/process")
 public class ProcessController extends AbstractController {
+
+  public static final String COMMENTS_KEY = "instance_comments";
 
   private static final Logger LOG = LoggerFactory.getLogger(ProcessController.class);
   private final ZeebeClient zeebeClient;
@@ -110,46 +110,6 @@ public class ProcessController extends AbstractController {
       throws OperateException {
 
     return operateService.getProcessInstanceHistory(processInstanceKey);
-  }
-
-  @IsAuthenticated
-  @GetMapping("/comments/{processInstanceKey}")
-  public List<Map<String, String>> getComments(@PathVariable Long processInstanceKey)
-      throws OperateException {
-
-    List<Map<String, String>> list =
-        this.operateService.getVariable(
-            processInstanceKey, "comments", new TypeReference<List<Map<String, String>>>() {});
-    if (list != null) {
-      return list;
-    }
-    return new ArrayList<>();
-  }
-
-  @IsAuthenticated
-  @PostMapping("/comments/{processInstanceKey}")
-  public List<Map<String, String>> addComment(
-      @PathVariable Long processInstanceKey, @RequestBody Map<String, String> comment)
-      throws OperateException {
-    List<Map<String, String>> comments = getComments(processInstanceKey);
-    List<Map<String, String>> newComments = new ArrayList<>();
-    newComments.add(
-        Map.of(
-            "author",
-            getAuthenticatedUsername(),
-            "comment",
-            comment.get("content"),
-            "date",
-            LocalDateTime.now().toString().replace("T", " ").substring(0, 19)));
-    if (comments != null) {
-      newComments.addAll(comments);
-    }
-    this.zeebeClient
-        .newSetVariablesCommand(processInstanceKey)
-        .variables(Map.of("comments", newComments))
-        .send()
-        .join();
-    return newComments;
   }
 
   @Override

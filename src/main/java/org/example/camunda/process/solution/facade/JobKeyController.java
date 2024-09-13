@@ -84,7 +84,8 @@ public class JobKeyController {
   public void completeTaskWithJobKey(
       @PathVariable Long jobKey, @RequestBody Map<String, Object> variables)
       throws TaskListException {
-
+    // TODO : find a more elegant solution for the comments
+    variables.remove(ProcessController.COMMENTS_KEY);
     tasklistService.completeTaskWithJobKey(jobKey, variables);
   }
 }

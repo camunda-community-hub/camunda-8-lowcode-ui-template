@@ -38,7 +38,6 @@ function InstanceView(props: IInstanceViewer) {
       }).catch((error: any) => {
         alert(error.message);
       })
-      loadComments();
       loadTasks();
     }
   }, [props.instancekey]);
@@ -46,23 +45,6 @@ function InstanceView(props: IInstanceViewer) {
   useEffect(() => {
     loadTasks();
   }, [state]);
-
-  const submitComment = () => {
-    let value = (document.getElementById("newComment") as HTMLInputElement)!.value;
-    api.post('/process/comments/' + props.instancekey, { "content": value }).then((response: any) => {
-      setComments(response.data);
-    }).catch((error: any) => {
-      alert(error.message);
-    })
-  }
-
-  const loadComments = () => {
-    api.get('/process/comments/' + props.instancekey).then((response: any) => {
-      setComments(response.data);
-    }).catch((error: any) => {
-      alert(error.message);
-    })
-  }
 
   const loadTasks = () => {
     let tasksUrl = '/instances/tasks/' + props.instancekey;

@@ -16,7 +16,7 @@ function InstanceComments(props: IInstanceViewer) {
 
   const submitComment = () => {
     let value = (document.getElementById("newComment") as HTMLInputElement)!.value;
-    api.post('/process/comments/' + props.instancekey, { "content": value }).then((response: any) => {
+    api.post('/comments/' + props.instancekey, { "content": value }).then((response: any) => {
       setComments(response.data);
     }).catch((error: any) => {
       alert(error.message);
@@ -24,7 +24,7 @@ function InstanceComments(props: IInstanceViewer) {
   }
 
   const loadComments = () => {
-    api.get('/process/comments/' + props.instancekey).then((response: any) => {
+    api.get('/comments/' + props.instancekey).then((response: any) => {
       setComments(response.data);
     }).catch((error: any) => {
       alert(error.message);
