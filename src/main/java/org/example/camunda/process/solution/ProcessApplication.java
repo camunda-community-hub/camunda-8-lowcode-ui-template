@@ -2,6 +2,7 @@ package org.example.camunda.process.solution;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,7 @@ public class ProcessApplication {
   @Bean
   public OpenAPI swaggerOpenAPI() {
     return new OpenAPI()
+        .addSecurityItem(new SecurityRequirement().addList("authorization"))
         .components(
             new Components()
                 .addSecuritySchemes(
